@@ -14,8 +14,10 @@ export const createTheme = () => {};
 function createVariant<T, E>(config: RapidUiThemeConfig<T, E>) {
 	const { variants, defaultProps, sizes, baseStyle } = config;
 
+	// Cast sizes as a non-undefind type
 	const typedSizes = sizes as E;
 
+	// Generate our strict typings to only allow existing classNames
 	type Variant = keyof typeof variants;
 	type Size = keyof typeof typedSizes;
 
@@ -33,9 +35,15 @@ function createVariant<T, E>(config: RapidUiThemeConfig<T, E>) {
 		}
 	};
 
+	// Give the consumer their theme function
 	return (variant?: Variant, size?: Size) => {
-		let classNames = baseStyle
+		// Generate the classNames
+		let classNames = baseStyle || '';
+		// Merge the variants with the sizes
+		// NOTE: anything in the 'sizes' theme object will override variant styles
 		let sizeVariantClassNames = RapidStyles(getSizeClassNames(size), getVariantClassNames(variant) as string)
+
+
 
 		return RapidStyles(sizeVariantClassNames, baseStyle);
 	};

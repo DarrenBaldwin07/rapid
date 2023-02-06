@@ -26,7 +26,7 @@ export type DefaultProps<T extends ThemeSchema, E extends ThemeSchema> = {
 export type RapidUiThemeConfig<T, E> = T extends ThemeSchema
 	? E extends ThemeSchema
 		? {
-				baseStyle?: ClassValue;
+				baseStyle: ClassValue;
 				sizes?: E;
 				variants: T;
 				defaultProps: DefaultProps<T, E>;

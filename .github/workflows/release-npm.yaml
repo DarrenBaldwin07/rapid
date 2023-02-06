@@ -1,12 +1,14 @@
 name: Publish packages to npm
 
-# Github action for publishig all the Rapid packages (@Rapid/react, @Rapid/ui, etc)
+# Github action for publishig all the Rapid npm packages (@Rapid/react, @Rapid/ui, etc)
+# TODO: we may need to migrate from npm to pnpm in most of these
 on:
   push:
     branches:
       - main # only publish on push to main branch (following trunk based dev flow) -- ideally we just do this on tag in the future (prior to being open source)
 jobs:
   build-react:
+    name: Deploy @rapid/react
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,7 +29,9 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   build-ui:
+    name: Deploy @rapid/react
     runs-on: ubuntu-latest
       defaults:
         run:

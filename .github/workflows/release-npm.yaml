@@ -1,0 +1,50 @@
+name: Publish packages to npm
+
+# Github action for publishig all the Rapid packages (@Rapid/react, @Rapid/ui, etc)
+on:
+  push:
+    branches:
+      - main # only publish on push to main branch (following trunk based dev flow) -- ideally we just do this on tag in the future (prior to being open source)
+jobs:
+  build-react:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/rapid-react
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies and build 🔧
+        run: npm ci && npm run build
+      - name: Build package via Vite
+        run: npm run build
+      - name: Publish package on NPM 📦
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  build-ui:
+    runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: ./packages/rapid-ui
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Setup Node
+          uses: actions/setup-node@v2
+          with:
+            node-version: '14.x'
+            registry-url: 'https://registry.npmjs.org'
+        - name: Install dependencies and build 🔧
+          run: npm ci && npm run build
+        - name: Build package via Vite
+          run: npm run build
+        - name: Publish package on NPM 📦
+          run: npm publish
+          env:
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,9 @@
+# Javascript/Typescript
+node_modules
+dist
+
+# Rust
+target
+
+# Any
+build

@@ -1,0 +1,63 @@
+{
+	"name": "@rapid-web/ui",
+	"description": "User interface components for the Rapid framework. Made with 100% TailwindCSS and no runtime costs :)",
+	"version": "0.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Cincinnati-Ventures/cv-framework",
+		"directory": "packages/rapid-ui"
+	},
+	"main": "./dist/@rapid-web/ui.umd.js",
+	"module": "./dist/@rapid-web/ui.es.js",
+	"typings": "dist/@rapid-web/ui.es.d.ts",
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"scripts": {
+		"build": "vite build",
+		"test": "vitest",
+		"coverage": "vitest run --coverage",
+		"storybook": "start-storybook -p 6006",
+		"build-storybook": "build-storybook",
+		"watch:css": "npx tailwindcss -i ./src/styles/index.css -o ./src/styles/tailwind-dev.css --watch"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.20.12",
+		"@headlessui/react": "^1.7.7",
+		"@rollup/plugin-typescript": "^8.2.1",
+		"@storybook/addon-actions": "^6.5.16",
+		"@storybook/addon-essentials": "^6.5.16",
+		"@storybook/addon-interactions": "^6.5.16",
+		"@storybook/addon-links": "^6.5.16",
+		"@storybook/builder-vite": "^0.4.0",
+		"@storybook/react": "^6.5.16",
+		"@storybook/testing-library": "^0.0.13",
+		"@testing-library/jest-dom": "^5.16.4",
+		"@testing-library/react": "^13.3.0",
+		"@types/node": "^18.0.3",
+		"@types/react": "^18.0.15",
+		"@types/react-dom": "^18.0.6",
+		"@vitejs/plugin-react": "^3.0.1",
+		"babel-loader": "^8.3.0",
+		"happy-dom": "^6.0.3",
+		"prettier": "2.7.1",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"rollup-plugin-typescript-paths": "^1.3.0",
+		"tslib": "^2.4.0",
+		"typescript": "^4.9.3",
+		"vite": "^4.0.0",
+		"vite-plugin-dts": "^1.2.1",
+		"vite-tsconfig-paths": "^4.0.5",
+		"vitest": "^0.18.0"
+	},
+	"peerDependencies": {
+		"react": ">=18.2.0",
+		"react-dom": ">=18.2.0"
+	},
+	"dependencies": {
+		"storybook": "^6.5.16",
+		"tailwind-merge": "^1.9.0"
+	}
+}

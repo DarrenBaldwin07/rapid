@@ -3,6 +3,9 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+        maxWidth: {
+          'container': '1600px'
+        },
         boxShadow: {
             "button-focus": '0 0 0 5px #E0E0E090',
             "button-focus2": '0 0 0 5px #99E7FF90'

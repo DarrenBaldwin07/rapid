@@ -1,5 +1,6 @@
 import React from 'react';
 import { createVariant } from '../../theme';
+import { RapidStyles } from '../../utils';
 
 export const buttomTheme = createVariant({
 	baseStyle: 'p-3 transition-all ease duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
@@ -21,7 +22,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			<button
 				ref={ref}
 				{...rest}
-				className={buttomTheme('outline')}
+				className={RapidStyles(className, buttomTheme('default'))}
 			/>
 		);
 	},

@@ -1,16 +1,18 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button } from '../';
+import { Container } from '../';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-	title: 'Components/Button',
-	component: Button,
-} as ComponentMeta<typeof Button>;
+	title: 'Components/Layout/Container',
+	component: Container,
+} as ComponentMeta<typeof Container>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (_: any) => (
-	<Button>Hello World!</Button>
+const Template: ComponentStory<typeof Container> = (_: any) => (
+	<Container>
+        <div style={{backgroundColor: 'red', height: '50px'}} />
+    </Container>
 );
 
 export const Primary = Template.bind({});

@@ -1,4 +1,3 @@
-import { classes } from './../node_modules/@types/istanbul-lib-coverage/index.d';
 import { twMerge } from 'tailwind-merge';
 import { ClassValue } from './theme/types';
 

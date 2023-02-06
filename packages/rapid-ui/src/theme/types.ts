@@ -18,7 +18,7 @@ export type ThemeSchema = Record<
 >;
 
 export type DefaultProps<T extends ThemeSchema, E extends ThemeSchema> = {
-	size: ThemeSizes<E>;
+	size?: ThemeSizes<E>;
 	variant: ThemeVariants<T>;
 };
 

@@ -24,7 +24,7 @@ function createVariant<T, E>(config: RapidUiThemeConfig<T, E>) {
 		// Check if the consumer declared any sizes
 		if (sizes) {
 			// If they did then lets grab the classNames
-			return size ? sizes[size] as ClassValue : sizes[defaultProps.size] as ClassValue;
+			return size ? sizes[size] as ClassValue : sizes[defaultProps.size as keyof E] as ClassValue;
 		} else {
 			// Return an empty string with no size classNames
 			return '';

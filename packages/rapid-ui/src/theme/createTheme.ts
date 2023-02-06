@@ -1,12 +1,8 @@
 import {
 	ClassValue,
-	ClassProp,
-	ThemeSchema,
-	DefaultProps,
-	StringToBoolean,
 	RapidUiThemeConfig,
 } from './types';
-import { RapidStyles } from '../utils';
+import { RapidStyles, sanitizeClassNames } from '../utils';
 
 
 export const createTheme = () => {};
@@ -37,33 +33,13 @@ function createVariant<T, E>(config: RapidUiThemeConfig<T, E>) {
 
 	// Give the consumer their theme function
 	return (variant?: Variant, size?: Size) => {
-		// Generate the classNames
-		let classNames = baseStyle || '';
 		// Merge the variants with the sizes
 		// NOTE: anything in the 'sizes' theme object will override variant styles
-		let sizeVariantClassNames = RapidStyles(getSizeClassNames(size), getVariantClassNames(variant) as string)
+		let sizeVariantClassNames = RapidStyles(sanitizeClassNames(getSizeClassNames(size)), sanitizeClassNames(getVariantClassNames(variant) as string))
 
-
-
-		return RapidStyles(sizeVariantClassNames, baseStyle);
+		// Output the merged and sanitized ClassNames
+		return RapidStyles(sizeVariantClassNames, sanitizeClassNames(baseStyle));
 	};
 }
-
-const theme = createVariant({
-	baseStyle: 'bg-red-500',
-	variants: {
-		danger: 'text-red-500',
-		test: 'text-2'
-	},
-	sizes: {
-		lg: 'h-12',
-	},
-	defaultProps: {
-		size: 'lg',
-		variant: 'danger',
-	},
-});
-
-console.log(theme('danger', 'lg'))
 
 export default createVariant;

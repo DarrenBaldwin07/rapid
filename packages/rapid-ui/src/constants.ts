@@ -1,7 +1,7 @@
 // This is the entrypoint for all of our CSS styles in other applications
 export const TAILWIND_COMPONENTS_ENTRYPOINT =
 	'./node_modules/@rapid-web/ui/src/components/**/*.{js,jsx,ts,tsx}';
-
+// This is a extended tailwind theme that can be injected into the users tailwind config before usage
 const rapidTailwindTheme = {
 	extend: {
 		boxShadow: {

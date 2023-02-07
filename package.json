@@ -2,7 +2,7 @@
 	"name": "rapid-monorepo",
 	"private": true,
 	"version": "1.0.0",
-	"description": "The Monorepo for the rapid framework!",
+	"description": "The Monorepo for the rapid framework",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",

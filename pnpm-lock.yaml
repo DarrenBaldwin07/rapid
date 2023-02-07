@@ -110,6 +110,7 @@ importers:
       '@types/react-dom': ^18.0.6
       '@vitejs/plugin-react': ^3.0.1
       babel-loader: ^8.3.0
+      csstype: ^3.1.1
       happy-dom: ^6.0.3
       prettier: 2.7.1
       react: 18.2.0
@@ -124,6 +125,7 @@ importers:
       vite-tsconfig-paths: ^4.0.5
       vitest: ^0.18.0
     dependencies:
+      csstype: 3.1.1
       storybook: 6.5.16_aed6vusvogjrl3ch6j2aqnpvhe
       tailwind-merge: 1.9.0
     devDependencies:
@@ -5836,7 +5838,6 @@ packages:
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
-    dev: true
 
   /currently-unhandled/0.4.1:
     resolution: {integrity: sha512-/fITjgjGU50vjQ4FH6eUoYu+iUoUKIXws2hL15JJpIR+BbTxaXQsMuuyjtNh2WqsSBS5nsaZHFsFecyw5CCAng==}

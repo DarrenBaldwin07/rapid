@@ -21,7 +21,7 @@ function classNames(...classNames: Array<string | ConditionalClassName>) {
         // If we got a normal className, just push it to the result array and move on
         result.push(className);
         return result;
-    }, []).join(" ");
+    }, []).join(" "); // sanitize all the classNames by adding a space between each one
 };
 
 export default classNames;

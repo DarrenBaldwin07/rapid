@@ -1,7 +1,7 @@
-const { rapidStyles, rapidTailwindTheme, rapidPlugin } = require("@rapid-web/ui");
+const { rapidStylesPath, rapidTailwindTheme, rapidPlugin } = require("@rapid-web/ui");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}', rapidStyles],
+  content: ['./src/**/*.{js,jsx,ts,tsx}', rapidStylesPath],
   theme: rapidTailwindTheme,
   plugins: [rapidPlugin(
     {

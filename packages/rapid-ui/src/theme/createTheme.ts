@@ -1,7 +1,7 @@
 import {
-	ClassValue,
 	RapidUiThemeConfig,
 } from './types';
+import { ClassValue } from '../types';
 import { RapidStyles, sanitizeClassNames } from '../utils';
 
 // TODO: not yet sure what this will be exactly
@@ -26,12 +26,12 @@ function createVariant<T, E>(config: RapidUiThemeConfig<T, E>) {
 			// If they did then lets grab the classNames
 			return size ? sizes[size] as ClassValue : sizes[defaultProps.size as keyof E] as ClassValue;
 		} else {
-			// Return an empty string with no size classNames
+			// Return an empty string with no size classNames because the consumer did not input any sizes
 			return '';
 		}
 	};
 
-	// Give the consumer their theme function
+	// Give the consumer their callable theme function
 	return (variant?: Variant, size?: Size) => {
 		// Merge the variants with the sizes
 		// NOTE: anything in the 'sizes' theme object will override variant styles

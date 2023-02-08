@@ -1,4 +1,4 @@
-export type ClassValue = string | null | undefined | ClassValue[];
+import { ClassValue } from "../types";
 
 export type ClassProp =
 	| {

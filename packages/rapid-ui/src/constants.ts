@@ -1,8 +1,9 @@
 // This is the entrypoint for all of our CSS styles in other applications
 export const TAILWIND_COMPONENTS_ENTRYPOINT =
 	'./node_modules/@rapid-web/ui/src/components/**/*.{js,jsx,ts,tsx}';
+
 // This is a extended tailwind theme that can be injected into the users tailwind config before usage
-const rapidTailwindTheme = {
+const RAPID_TAILWIND_THEME = {
 	extend: {
 		boxShadow: {
 			'button-focus': '0 0 0 5px #E0E0E090',
@@ -28,4 +29,4 @@ const rapidTailwindTheme = {
 	},
 };
 
-export default rapidTailwindTheme;
+export default RAPID_TAILWIND_THEME;

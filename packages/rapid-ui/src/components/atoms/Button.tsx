@@ -22,7 +22,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			<button
 				ref={ref}
 				{...rest}
-				className={RapidStyles(className, buttomTheme('default'))}
+				className={RapidStyles(className, buttomTheme())}
 			/>
 		);
 	},

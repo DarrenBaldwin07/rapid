@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { ClassValue } from './theme/types';
+import { ClassValue } from './types';
 
 export const falsyToString = <T extends unknown>(value: T) =>
 	typeof value === 'boolean' ? `${value}` : value === 0 ? '0' : value;

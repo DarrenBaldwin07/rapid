@@ -1,12 +1,12 @@
-import { Button, Stack } from '@rapid-web/ui';
+import { Button, Stack, VStack } from '@rapid-web/ui';
 import './index.css'
 function App() {
 	return (
-		<Stack spacing='lg' direction='row'>
+		<VStack spacing='sm'>
 			<h1>Hello world</h1>
 			<h1>Hello world</h1>
 			<h1>Hello world</h1>
-		</Stack>
+		</VStack>
 
 	);
 }

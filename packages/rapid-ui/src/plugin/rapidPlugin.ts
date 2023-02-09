@@ -7,7 +7,6 @@ interface GlobalStyles {
     };
 }
 
-
 // A rapid tailwindCSS plugin
 // Currently, it only supports adding global styles in a little easier way
 function rapidPlugin(styles: GlobalStyles) {

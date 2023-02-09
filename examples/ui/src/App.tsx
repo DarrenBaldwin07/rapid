@@ -1,11 +1,13 @@
-import { Button } from '@rapid-web/ui';
-import './index.css';
-
+import { Button, Stack } from '@rapid-web/ui';
+import './index.css'
 function App() {
 	return (
-		<div className='flex align-center justify-center mt-24'>
-			<Button>Hello world</Button>
-		</div>
+		<Stack spacing='lg' direction='row'>
+			<h1>Hello world</h1>
+			<h1>Hello world</h1>
+			<h1>Hello world</h1>
+		</Stack>
+
 	);
 }
 

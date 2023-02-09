@@ -5,6 +5,9 @@ export const TAILWIND_COMPONENTS_ENTRYPOINT =
 // This is a extended tailwind theme that can be injected into the users tailwind config before usage
 const RAPID_TAILWIND_THEME = {
 	extend: {
+		maxWidth: {
+			'container': '100rem'
+		},
 		boxShadow: {
 			'button-focus': '0 0 0 5px #E0E0E090',
 			'button-focus2': '0 0 0 5px #99E7FF90',

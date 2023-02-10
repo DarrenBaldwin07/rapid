@@ -1,6 +1,7 @@
 import React from 'react';
 import { createVariant } from '../../theme';
 import { RapidStyles } from '../../utils';
+import {default as AliasSpinner} from './Spinner';
 
 export const buttomTheme = createVariant({
 	baseStyle: 'p-3 transition-all ease duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
@@ -14,16 +15,32 @@ export const buttomTheme = createVariant({
 	},
 });
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+	styles?: string;
+	isLoading?: boolean;
+	spinner?: React.ReactNode;
+}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, ...rest }, ref) => {
+	({ styles, isLoading = false, spinner, children, ...rest }, ref) => {
 		return (
 			<button
 				ref={ref}
 				{...rest}
-				className={RapidStyles(className, buttomTheme())}
-			/>
+				className={RapidStyles(styles, buttomTheme())}
+			>
+				{isLoading ? (
+					<>
+						{spinner ? (
+							spinner
+						) : (
+							<AliasSpinner size='sm' />
+						)}
+					</>
+				) : (
+					children
+				)}
+			</button>
 		);
 	},
 );

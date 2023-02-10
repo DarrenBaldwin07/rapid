@@ -4,6 +4,7 @@ import { RapidStyles } from '../../utils';
 type MaxWidth = 'sm' | 'md' | 'lg';
 
 interface ContainerProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+	styles: string;
 	maxWidth: MaxWidth
 }
 
@@ -18,15 +19,14 @@ const parseMaxWidth = (maxWidth: MaxWidth) => {
 	}
 }
 
-
 const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
-	({ className, maxWidth = 'lg', ...rest }, ref) => {
-		const styles = `container ${parseMaxWidth(maxWidth)} mx-auto px-4`;
+	({ styles, maxWidth = 'lg', ...rest }, ref) => {
+		const defaultStyles = `container ${parseMaxWidth(maxWidth)} mx-auto px-4`;
 		return (
 			<div
 				ref={ref}
 				{...rest}
-				className={RapidStyles(className, styles)}
+				className={RapidStyles(styles, defaultStyles)}
 			/>
 		);
 	},

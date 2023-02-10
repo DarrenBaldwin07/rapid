@@ -7,6 +7,7 @@ type Direction = 'row' | 'column';
 interface StackProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     spacing?: Spacing;
 	direction?: Direction;
+	styles?: string;
 }
 
 // ------------------- TAILWINDCSS CLASSES TO FORCE JIT TO COMPILE -------------------
@@ -18,7 +19,7 @@ interface StackProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDi
 // space-x-1.5
 
 const Stack = React.forwardRef<HTMLDivElement, StackProps>(
-	({ className, children, spacing = 'lg', direction = 'column', ...rest }, ref) => {
+	({ styles, children, spacing = 'lg', direction = 'column', ...rest }, ref) => {
 		// We only want to re-run this if children change
         const sanitizedChildren = useMemo(() => getValidReactChildren(children), [children]);
 
@@ -46,7 +47,7 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 			<div
 				ref={ref}
 				{...rest}
-				className={RapidStyles(className, getDirectionStyles(direction))}
+				className={RapidStyles(styles, getDirectionStyles(direction))}
 			>
                 {sanitizedChildren}
             </div>

@@ -34,3 +34,6 @@ export type RapidUiThemeConfig<T, E> = T extends ThemeSchema
 		: never
 	: never;
 
+interface RapidTheme {
+
+}

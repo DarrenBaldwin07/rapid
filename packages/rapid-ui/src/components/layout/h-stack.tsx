@@ -6,11 +6,11 @@ type Spacing = 'sm' | 'md' | 'lg';
 
 interface VStackProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     spacing?: Spacing;
+    styles?: string;
 }
 
 const HStack = React.forwardRef<HTMLDivElement, VStackProps>(
-	({ className, children, spacing = 'lg', ...rest }, ref) => {
-
+	({ styles, children, spacing = 'lg', ...rest }, ref) => {
 		// This component does not support custom dividers or wrapping (maybe a TODO ?)
 		return (
             <Stack
@@ -18,6 +18,7 @@ const HStack = React.forwardRef<HTMLDivElement, VStackProps>(
                 ref={ref}
                 spacing={spacing}
                 direction='row'
+                styles={styles}
             >
                 {children}
             </Stack>

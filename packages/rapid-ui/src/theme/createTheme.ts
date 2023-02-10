@@ -5,7 +5,9 @@ import { ClassValue } from '../types';
 import { RapidStyles, sanitizeClassNames } from '../utils';
 
 // TODO: not yet sure what this will be exactly
-export const createTheme = () => {};
+export const createTheme = () => {
+
+};
 
 function createVariant<T, E>(config: RapidUiThemeConfig<T, E>) {
 	const { variants, defaultProps, sizes, baseStyle } = config;

@@ -114,6 +114,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "rapid-ssr"
+version = "0.1.0"
+
+[[package]]
 name = "rapid-web"
 version = "0.1.0"
 

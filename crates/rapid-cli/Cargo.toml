@@ -3,6 +3,7 @@ name = "rapid-cli"
 version = "0.0.1"
 edition = "2021"
 description = "The CLI tool for the Rapid framework"
+repository = "https://github.com/DarrenBaldwin07/rapid"
 homepage = "https://cincinnati.ventures"
 license = "MIT"
 keywords = ["CLI", "web-framework", "rapid"]

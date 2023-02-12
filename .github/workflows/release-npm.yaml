@@ -21,17 +21,17 @@ jobs:
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Install pnpm
+        run: npm install -g pnpm
       - name: Install dependencies and build 🔧
-        run: npm ci && npm run build
-      - name: Build package via Vite
-        run: npm run build
+        run: pnpm install --frozen-lockfile && pnpm run build
       - name: Publish package on NPM 📦
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   build-ui:
-    name: Deploy @rapid/react
+    name: Deploy @rapid/ui
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,10 +45,10 @@ jobs:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies and build 🔧
-        run: npm ci && npm run build
+        run: npm ci
       - name: Build package via Vite
         run: npm run build
       - name: Publish package on NPM 📦
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

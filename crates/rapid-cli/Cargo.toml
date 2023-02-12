@@ -1,7 +1,10 @@
 [package]
 name = "rapid-cli"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+description = "The CLI tool for the Rapid framework"
+homepage = "https://cincinnati.ventures"
+keywords = ["CLI", "web-framework", "rapid"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

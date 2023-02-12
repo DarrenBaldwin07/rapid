@@ -13,6 +13,11 @@ pub struct RapidCLI {
 }
 
 impl RapidCLI {
+    pub fn new(config: Config) -> Self {
+        Self {
+            config
+        }
+    }
     pub fn parse() -> App {
         let usage = "rapid [SUBCAMMAND] [OPTIONS]";
         App::new("rapid")
@@ -22,6 +27,7 @@ impl RapidCLI {
             .help_template(get_help_template())
             .arg(flag("version", "Print version info and exit").short('V'))
             .arg(flag("help", "List command(s)"))
+            .subcommands(RapidCLI::commands())
     }
 
     pub fn commands() -> Vec<Command> {

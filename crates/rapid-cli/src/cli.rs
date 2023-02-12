@@ -1,48 +1,49 @@
-use clap::{Command, ArgMatches};
-use crate::{args::flag, commands::{self, RapidCommand}};
-
-pub type App = Command;
-
-pub struct Config {
-
-}
-
+use clap::{Parser, Subcommand};
+use crate::commands::new::new_command;
+#[derive(Debug, Parser)]
+#[clap(name = "rapid")]
+#[clap(version, about, long_about = None)]
+#[clap(help_template(get_help_template()))]
 pub struct RapidCLI {
-    // This config can be used for global env vars that can be passed on CLI init
-    pub config: Config,
+    #[clap(subcommand)]
+    command: Commands,
+
+    /// Env
+    #[clap(short, long, default_value = "dev")]
+    env: String,
+
+    /// Verbose
+    #[clap(short, long)]
+    verbose: bool,
 }
+
+#[derive(Debug, Subcommand)]
+enum Commands {
+
+    /// New
+    #[clap(arg_required_else_help = true)]
+    New {
+        /// Url
+        name: String,
+    },
+
+    /// Version
+    #[clap()]
+    Version
+}
+
 
 impl RapidCLI {
-    pub fn new(config: Config) -> Self {
-        Self {
-            config
+    pub fn execute(args: RapidCLI) {
+        match args.command {
+            Commands::Version => {
+                println!("v0.0.1");
+            }
+
+            Commands::New { name } => {
+                new_command(&name);
+            }
         }
-    }
-    pub fn parse() -> App {
-        let usage = "rapid [SUBCAMMAND] [OPTIONS]";
-        App::new("rapid")
-            .allow_external_subcommands(true)
-            .disable_colored_help(false)
-            .override_usage(usage)
-            .help_template(get_help_template())
-            .arg(flag("version", "Print version info and exit").short('V'))
-            .arg(flag("help", "List command(s)"))
-            .subcommands(RapidCLI::commands())
-    }
-
-    pub fn commands() -> Vec<Command> {
-        vec![
-            commands::new::New::cmd()
-        ]
-    }
-
-    pub fn execute_cammand(cmd: &str) ->  Option<fn(&mut Config, &ArgMatches) ->  Result<(), crate::cli::CliError<'static>>> {
-        let command_resolver = match cmd {
-            "new" => commands::new::New::execute,
-            _ => return None,
-        };
-
-        Some(command_resolver)
     }
 }
 

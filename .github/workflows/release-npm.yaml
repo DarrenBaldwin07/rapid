@@ -24,7 +24,7 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
       - name: Install dependencies and build 🔧
-        run: pnpm install --frozen-lockfile && pnpm run build
+        run: pnpm install --no-frozen-lockfile && pnpm run build
       - name: Publish package on NPM 📦
         run: npm publish --access public
         env:

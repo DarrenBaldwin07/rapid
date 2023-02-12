@@ -39,7 +39,6 @@ impl RapidCLI {
             Commands::Version => {
                 println!("v0.0.1");
             }
-
             Commands::New { name } => {
                 new_command(&name);
             }

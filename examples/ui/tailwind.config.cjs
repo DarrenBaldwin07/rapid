@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       ...rapidTailwindTheme
-    }
+    },
   },
   plugins: [rapidPlugin(
     {

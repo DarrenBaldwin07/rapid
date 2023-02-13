@@ -25,5 +25,4 @@ const rapidTailwindTheme = {
     },
 };
 
-
 export default rapidTailwindTheme;

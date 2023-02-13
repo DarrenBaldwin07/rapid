@@ -7,7 +7,7 @@ interface GlobalStyles {
     };
 }
 
-
+// Tailwind Utility classes we want to use inside of
 const tailwindUtilities = {
     '.spinner-slow': {
         animation: 'spin 3s linear infinite',
@@ -47,6 +47,7 @@ const tailwindUtilities = {
 
 // A rapid tailwindCSS plugin
 // Currently, it only supports adding global styles in a little easier way
+// TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
 function rapidPlugin(styles: GlobalStyles) {
     const globalStyles = styles.global;
     return plugin(function({ addBase, addUtilities }) {

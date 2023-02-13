@@ -34,6 +34,8 @@ export type RapidUiThemeConfig<T, E> = T extends ThemeSchema
 		: never
 	: never;
 
-interface RapidTheme {
+export type CreateVariant<T, E> = (variant?: keyof T | undefined, size?: keyof E | undefined) => string;
 
-}
+export interface RapidTheme {
+	button: (variant: string, size: string) => string;
+};

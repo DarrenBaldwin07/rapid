@@ -1,15 +1,21 @@
+
 import {
 	RapidUiThemeConfig,
+	CreateVariant,
+	RapidTheme
 } from './types';
 import { ClassValue } from '../types';
 import { RapidStyles, sanitizeClassNames } from '../utils';
 
+
 // TODO: not yet sure what this will be exactly
 export const createTheme = () => {
+	return {
 
+	};
 };
 
-function createVariant<T, E>(config: RapidUiThemeConfig<T, E>) {
+function createVariant<T, E>(config: RapidUiThemeConfig<T, E>): CreateVariant<T, E> {
 	const { variants, defaultProps, sizes, baseStyle } = config;
 
 	// Cast sizes as a non-undefind type

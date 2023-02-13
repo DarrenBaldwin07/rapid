@@ -23,8 +23,9 @@ impl RapidCommand for  New {
         )
     }
 
-    fn execute(_: &mut Config, _: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
+    fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
         println!("> Creating new Rapid project in current working dir!");
+        println!("{:?}", args.get_one::<PathBuf>("fullstack"));
         Ok(())
     }
 }

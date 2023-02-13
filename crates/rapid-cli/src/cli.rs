@@ -1,6 +1,6 @@
 use clap::{Command, ArgMatches, command};
 use crate::{args::flag, commands::{self, RapidCommand}};
-
+use std::process::exit;
 pub type App = Command;
 
 pub struct Config {}
@@ -11,6 +11,11 @@ pub struct RapidCLI {
 }
 
 impl RapidCLI {
+    pub fn new(config: Config) -> Self {
+        Self {
+            config
+        }
+    }
     pub fn parse() -> App {
         let usage = "rapid [SUBCAMMAND] [OPTIONS]";
         command!()
@@ -29,13 +34,29 @@ impl RapidCLI {
         ]
     }
 
-    pub fn execute_cammand(cmd: &str) ->  Option<fn(&mut Config, &ArgMatches) ->  Result<(), crate::cli::CliError<'static>>> {
+    pub fn execute_cammand(cmd: &str) ->  Option<fn(&Config, &ArgMatches) ->  Result<(), crate::cli::CliError<'static>>> {
         let command_resolver = match cmd {
             "new" => commands::new::New::execute,
             _ => return None,
         };
 
         Some(command_resolver)
+    }
+
+    pub fn run(&self, args: ArgMatches) -> Result<(), CliError<'static>> {
+        if let Some((cmd, args)) = args.subcommand() {
+            // Since we did find a sub-command match, lets
+            if let Some(cm) = RapidCLI::execute_cammand(cmd) {
+                let _ = cm(&self.config, args);
+            }
+            println!("We found a command!");
+        } else {
+            println!("{}", get_help_template());
+            exit(64);
+        }
+
+        // This outputs only when a command succeeds (would be cool to capture analytics here at some point)
+        Ok(())
     }
 }
 

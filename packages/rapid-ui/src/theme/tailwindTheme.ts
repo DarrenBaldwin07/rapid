@@ -20,7 +20,7 @@ const rapidTailwindTheme = {
         lightGrey: '#E0E0E0',
         secondaryGrey: '#C5C5C5',
         white: '#ffffff',
-        hoverWhite: '#F6F6F6',
+        hoverWhite: '#ççç',
         danger: '#E10000',
     },
 };

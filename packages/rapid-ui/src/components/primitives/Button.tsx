@@ -1,13 +1,15 @@
 import React from 'react';
 import { createVariant } from '../../theme';
 import { RapidStyles } from '../../utils';
-import {default as AliasSpinner} from './Spinner';
+import {default as AliasSpinner} from '../feedback/Spinner';
 
 export const buttomTheme = createVariant({
 	baseStyle: 'p-3 transition-all ease duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
 	variants: {
 		default: 'bg-gray-200 hover:bg-gray-300',
-		outline: 'bg-white border border-lightGrey'
+		outline: 'bg-white border border-lightGrey',
+		ghost: 'bg-transparent hover:bg-lightGrey',
+		link: 'bg-transparent active:text-secondaryGrey focus:shadow-none'
 	},
 	sizes: {},
 	defaultProps: {
@@ -28,6 +30,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				{...rest}
 				className={RapidStyles(styles, buttomTheme())}
+				disabled={isLoading}
 			>
 				{isLoading ? (
 					<>

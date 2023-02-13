@@ -9,9 +9,9 @@ import { RapidStyles, sanitizeClassNames } from '../utils';
 
 
 // TODO: not yet sure what this will be exactly
-export const createTheme = () => {
+export const createTheme = (theme: RapidTheme): RapidTheme => {
 	return {
-
+		...theme
 	};
 };
 

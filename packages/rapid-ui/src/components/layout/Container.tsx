@@ -3,7 +3,7 @@ import { RapidStyles } from '../../utils';
 
 type MaxWidth = 'sm' | 'md' | 'lg';
 
-interface ContainerProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 	styles?: string;
 	maxWidth?: MaxWidth
 }

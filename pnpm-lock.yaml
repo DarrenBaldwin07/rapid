@@ -26,7 +26,7 @@ importers:
 
   examples/ui:
     specifiers:
-      '@rapid-web/ui': workspace:^0.0.0
+      '@rapid-web/ui': workspace:^0.0.1
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
       '@vitejs/plugin-react-swc': ^3.0.0

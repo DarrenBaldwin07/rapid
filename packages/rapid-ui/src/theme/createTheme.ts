@@ -1,4 +1,3 @@
-
 import {
 	RapidUiThemeConfig,
 	CreateVariant,
@@ -6,7 +5,6 @@ import {
 } from './types';
 import { ClassValue } from '../types';
 import { RapidStyles, sanitizeClassNames } from '../utils';
-
 
 // TODO: not yet sure what this will be exactly
 export const createTheme = (theme: RapidTheme): RapidTheme => {

@@ -41,18 +41,25 @@ const tailwindUtilities = {
                 transform: 'rotate(360deg)'
             }
         }
-    }
+    },
 };
 
+const rapidThemeComponents = {
+    '.theme-test': {
+        '@apply bg-red-500': {}
+    }
+}
 
 // A rapid tailwindCSS plugin
 // Currently, it only supports adding global styles in a little easier way
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
 function rapidPlugin(styles: GlobalStyles) {
     const globalStyles = styles.global;
-    return plugin(function({ addBase, addUtilities }) {
+    return plugin(function({ addBase, addUtilities, addComponents }) {
         // Tailwind Utilities
-        addUtilities(tailwindUtilities)
+        addUtilities(tailwindUtilities);
+        // Rapid theme via tailwind components dir
+        addComponents(rapidThemeComponents);
         // Add in our global styles
         addBase(globalStyles);
     });

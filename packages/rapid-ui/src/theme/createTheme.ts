@@ -19,14 +19,14 @@ type themeObject = {
    *
    * @beta
    */
-export const createTheme = (theme: RapidTheme): RapidTheme => {
+export const createTheme = <T, E>(theme: RapidTheme<T, E>): RapidTheme<T, E> => {
 	return {
 		...theme
 	};
 };
 
 // Method for taking in a Rapid theme and generating formatted @apply styles for a tailwindCSS addComponents call
-export const generateTailwindPluginTheme = (theme: RapidTheme) => {
+export const generateTailwindPluginTheme = <T, E>(theme: RapidTheme<T, E>) => {
 	const themeKeys = Object.keys(theme);
 	const classNames: themeObject[] = [];
 	// Loop through the theme keys and generate the @apply styles for tailwind (eventually we want to add every rapidTheme component to this)

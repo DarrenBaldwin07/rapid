@@ -7,10 +7,10 @@ export const falsyToString = <T extends unknown>(value: T) =>
 
 export const sanitizeClassNames = (...classes: ClassValue[]) => {
 	// @ts-ignore
-	return classes.flat(Infinity).filter(Boolean).join(" ");
+	return classes.flat(Infinity).filter(Boolean).join(" "); // Infinity for some reason has issues with typescript 4.9.2
 }
-export function RapidStyles(classes: string | ClassValue, defaults: string | ClassValue) {
-	return twMerge(defaults, classes);
+export function RapidStyles(classes: string | ClassValue, defaults: string | ClassValue, themeClassName?: string) {
+	return twMerge(twMerge(defaults, classes), themeClassName);
 }
 
 

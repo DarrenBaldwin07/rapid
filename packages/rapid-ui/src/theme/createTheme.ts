@@ -6,13 +6,57 @@ import {
 import { ClassValue } from '../types';
 import { RapidStyles, sanitizeClassNames } from '../utils';
 
-// TODO: not yet sure what this will be exactly
+type themeObject = {
+	[key: string]: any;
+}
+
+
+/**
+   * A very simple RapidUI helper for structuring a rapid theme object
+   *
+   * @param config RapidUiThemeConfig
+   * @returns A HTML valid className
+   *
+   * @beta
+   */
 export const createTheme = (theme: RapidTheme): RapidTheme => {
 	return {
 		...theme
 	};
 };
 
+// Method for taking in a Rapid theme and generating formatted @apply styles for a tailwindCSS addComponents call
+export const generateTailwindPluginTheme = (theme: RapidTheme) => {
+	const themeKeys = Object.keys(theme);
+	const classNames: themeObject[] = [];
+	// Loop through the theme keys and generate the @apply styles for tailwind (eventually we want to add every rapidTheme component to this)
+	for (const key of themeKeys) {
+		switch(key) {
+			case 'button':
+				const className = '.rapid-button';
+				const styles = theme[key] as ((variant?: string | undefined, size?: string | undefined) => string);
+				const styleKey = `@apply ${styles()}`
+				const styleObject: themeObject = {
+					[className]: {
+						[styleKey]: {}
+					}
+				}
+				classNames.push(styleObject);
+		}
+	}
+
+	return classNames;
+}
+
+
+/**
+   * A RapidUI helper for easily creating component variants with Tailwind (similar to CVA)
+   *
+   * @param config RapidUiThemeConfig
+   * @returns A HTML valid className
+   *
+   * @beta
+   */
 function createVariant<T, E>(config: RapidUiThemeConfig<T, E>): CreateVariant<T, E> {
 	const { variants, defaultProps, sizes, baseStyle } = config;
 

@@ -3,6 +3,8 @@ import { createVariant } from '../../theme';
 import { RapidStyles } from '../../utils';
 import {default as AliasSpinner} from '../feedback/Spinner';
 
+const THEME_CLASSNAME = 'rapid-button';
+
 export const buttomTheme = createVariant({
 	baseStyle: 'p-3 transition-all ease duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
 	variants: {

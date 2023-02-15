@@ -1,10 +1,13 @@
 import plugin from 'tailwindcss/plugin';
+import { generateTailwindPluginTheme } from '../theme';
+import { RapidTheme } from '../theme';
 import type * as CSS from 'csstype';
 
-interface GlobalStyles {
+interface RapidPluginTheme {
     global: {
         [key: string]: CSS.Properties | any
     };
+    theme: RapidTheme;
 }
 
 // Tailwind Utility classes we want to use inside of
@@ -53,13 +56,14 @@ const rapidThemeComponents = {
 // A rapid tailwindCSS plugin
 // Currently, it only supports adding global styles in a little easier way
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
-function rapidPlugin(styles: GlobalStyles) {
+function rapidPlugin(styles: RapidPluginTheme) {
     const globalStyles = styles.global;
+    const theme = styles.theme;
     return plugin(function({ addBase, addUtilities, addComponents }) {
         // Tailwind Utilities
         addUtilities(tailwindUtilities);
         // Rapid theme via tailwind components dir
-        addComponents(rapidThemeComponents);
+        addComponents(generateTailwindPluginTheme(theme));
         // Add in our global styles
         addBase(globalStyles);
     });

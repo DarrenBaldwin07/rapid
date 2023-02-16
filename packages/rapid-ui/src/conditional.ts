@@ -3,7 +3,7 @@ interface ConditionalClassName {
     classNames: string;
 };
 
-// Simple helper function for adding conditional styles with tailwindCss
+// Simple helper function for adding conditional styles with tailwindCSS
 function classNames(...classNames: Array<string | ConditionalClassName>) {
     return classNames.reduce<Array<string | ConditionalClassName>>((result: (string | ConditionalClassName)[], className: string | ConditionalClassName) => {
         // Force-cast our className

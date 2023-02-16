@@ -10,7 +10,7 @@ interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
 
 const THEME_CLASSNAME = 'rapid-heading';
 
-const Heading = React.forwardRef<HTMLDivElement, HeadingProps>(
+const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
 	({ styles, size = 'lg', ...rest }, ref) => {
 		const getFontSize = (size: Size) => {
 			switch(size) {

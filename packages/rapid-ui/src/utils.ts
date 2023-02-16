@@ -13,7 +13,6 @@ export function RapidStyles(classes: string | ClassValue, defaults: string | Cla
 	return twMerge(twMerge(defaults, classes), themeClassName);
 }
 
-
 export function getValidReactChildren(children: React.ReactNode) {
 	return Children.toArray(children).filter((child) =>
 	  isValidElement(child),

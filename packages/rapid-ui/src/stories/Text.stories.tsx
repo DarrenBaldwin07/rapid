@@ -1,20 +1,16 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Container } from '../';
+import { Text } from '../';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-	title: 'Components/Layout/Container',
-	component: Container,
-} as ComponentMeta<typeof Container>;
+	title: 'Components/Layout/Text',
+	component: Text,
+} as ComponentMeta<typeof Text>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Container> = (_: any) => (
-	<Container>
-        <div style={{backgroundColor: 'red', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold'}}>
-			This is a Rapid-ui container
-		</div>
-    </Container>
+const Template: ComponentStory<typeof Text> = (_: any) => (
+	<Text>Hello World!</Text>
 );
 
 export const Primary = Template.bind({});

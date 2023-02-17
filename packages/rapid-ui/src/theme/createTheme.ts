@@ -4,7 +4,7 @@ import {
 	RapidTheme
 } from './types';
 import { ClassValue } from '../types';
-import { RapidStyles, sanitizeClassNames, isValidClassName } from '../utils';
+import { RapidStyles, sanitizeClassNames } from '../utils';
 import generateVariants from './generateVariants';
 
 export type ThemeObject = {

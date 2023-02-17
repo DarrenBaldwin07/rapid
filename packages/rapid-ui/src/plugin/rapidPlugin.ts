@@ -56,13 +56,18 @@ function rapidPlugin(styles: RapidPluginTheme) {
     const globalStyles = styles.global;
     const theme = !!styles.theme ? generateTailwindPluginTheme(styles.theme) : generateTailwindPluginTheme(defaultTheme);
     // Return back the plugin to tailwind...
-    return plugin(function({ addBase, addUtilities, addComponents }) {
+    return plugin(function({ addBase, addUtilities, addComponents, config }) {
         // Tailwind Utilities
         addUtilities(tailwindUtilities);
         // Rapid theme via tailwind components dir
         addComponents(theme);
         // Add in our global styles
         addBase(globalStyles);
+
+        config('safeList', [
+            {pattern: /rapid-/},
+            {pattern: /spinner-/},
+        ])
     });
 }
 

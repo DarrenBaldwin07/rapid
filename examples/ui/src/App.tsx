@@ -9,7 +9,7 @@ function App() {
 					<h1>Hello world</h1>
 					<h1>Hello world</h1>
 				</VStack>
-				<Button>Hello world</Button>
+				<Button variant='outline'>Hello world</Button>
 				<Spinner size='md' />
 				<Input />
 			</div>

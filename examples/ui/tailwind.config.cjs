@@ -5,7 +5,7 @@ module.exports = {
 
   theme: {
     extend: rapidTailwindTheme({
-      // We can extend the tailwind theme here
+      // We can extend the base rapidtailwind theme here
     })
   },
   plugins: [rapidPlugin(

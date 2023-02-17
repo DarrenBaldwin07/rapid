@@ -1,4 +1,5 @@
-![ui-banner (1)](https://user-images.githubusercontent.com/68653294/218370368-cd2ab10e-c770-48d7-a3f5-111b87f5f703.jpg)
+![ui-banner (3)](https://user-images.githubusercontent.com/68653294/219705922-6018b7e8-1b1f-429f-956b-7a0cead008f7.jpg)
+
 # A supercharged TailwindCSS framework with global theming and beautiful pre-built components. Inspired by Chakra-ui.
 > Note: this package uses NPM instead of PNPM due to current issues with pnpm + Storybookjs
 > The "all-in-one" TailwindCSS framework

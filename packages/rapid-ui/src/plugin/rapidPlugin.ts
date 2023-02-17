@@ -2,6 +2,7 @@ import plugin from 'tailwindcss/plugin';
 import { generateTailwindPluginTheme } from '../theme';
 import { RapidTheme } from '../theme';
 import defaultTheme from '../theme/defaultTheme';
+import tailwindUtilities from './utilities';
 import type * as CSS from 'csstype';
 
 interface RapidPluginTheme {
@@ -11,41 +12,13 @@ interface RapidPluginTheme {
     theme?: RapidTheme;
 }
 
-// Tailwind Utility classes we want to use inside of the consumers tailwindConfig
-const tailwindUtilities = {
-    '.spinner-slow': {
-        animation: 'spin 3s linear infinite',
-        '@keyframes spin': {
-            from: {
-                transform: 'rotate(0deg)'
-            },
-            to: {
-                transform: 'rotate(360deg)'
-            }
-        }
-    },
-    '.spinner-medium': {
-        animation: 'spin 1.5s linear infinite',
-        '@keyframes spin': {
-            from: {
-                transform: 'rotate(0deg)'
-            },
-            to: {
-                transform: 'rotate(360deg)'
-            }
-        }
-    },
-    '.spinner-fast': {
-        animation: 'spin 0.5s linear infinite',
-        '@keyframes spin': {
-            from: {
-                transform: 'rotate(0deg)'
-            },
-            to: {
-                transform: 'rotate(360deg)'
-            }
-        }
-    },
+// Extended tailwind theme
+// Currently it only allows
+const extendedTheme = {
+    safelist: [
+        {pattern: /rapid-/},
+        {pattern: /spinner-/},
+    ]
 };
 
 // A rapid tailwindCSS plugin
@@ -56,19 +29,16 @@ function rapidPlugin(styles: RapidPluginTheme) {
     const globalStyles = styles.global;
     const theme = !!styles.theme ? generateTailwindPluginTheme(styles.theme) : generateTailwindPluginTheme(defaultTheme);
     // Return back the plugin to tailwind...
-    return plugin(function({ addBase, addUtilities, addComponents, config }) {
-        // Tailwind Utilities
-        addUtilities(tailwindUtilities);
-        // Rapid theme via tailwind components dir
-        addComponents(theme);
-        // Add in our global styles
-        addBase(globalStyles);
-        // Safe list all rapid styles that need to be dynamic
-        config('safeList', [
-            {pattern: /rapid-/},
-            {pattern: /spinner-/},
-        ])
-    });
+    return plugin(function({ addBase, addUtilities, addComponents }) {
+            // Tailwind Utilities
+            addUtilities(tailwindUtilities);
+            // Rapid theme via tailwind components dir
+            addComponents(theme);
+            // Add in our global styles
+            addBase(globalStyles);
+        },
+        extendedTheme
+    );
 }
 
 

@@ -63,7 +63,7 @@ function rapidPlugin(styles: RapidPluginTheme) {
         addComponents(theme);
         // Add in our global styles
         addBase(globalStyles);
-
+        // Safe list all rapid styles that need to be dynamic
         config('safeList', [
             {pattern: /rapid-/},
             {pattern: /spinner-/},

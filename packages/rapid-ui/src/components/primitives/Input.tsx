@@ -11,12 +11,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 export const inputTheme = createVariant({
-  baseStyle: 'rounded-lg transition-all ease-out duration-300 outline-none border border-lightGrey focus:outline-none focus:shadow-button-focus focus:border-main',
+  baseStyle: 'h-9 rounded-lg transition-all ease-out duration-300 outline-none focus:outline-none focus:shadow-button-focus focus:border-main px-3 py-1',
 	variants: {
-		default: 'px-3 py-1',
-    filled: 'bg-lightGrey focus:bg-white',
-    flushed: '',
-    unstyled: '',
+		default: 'border border-lightGrey',
+    filled: 'border bg-lightGrey focus:bg-white',
+    flushed: 'px-0 rounded-none border-b border-t-0 border-l-0 border-r-0 focus:outline-none focus:shadow-none',
+    unstyled: 'border-none rounded-none px-0 focus:outline-none focus:shadow-none'
 	},
 	defaultProps: {
 		variant: 'default',

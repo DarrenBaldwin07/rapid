@@ -11,7 +11,7 @@ function App() {
 				</VStack>
 				<Button variant='outline'>Hello world</Button>
 				<Spinner size='md' />
-				<Input />
+				<Input variant='unstyled' />
 			</div>
 		</div>
 	);

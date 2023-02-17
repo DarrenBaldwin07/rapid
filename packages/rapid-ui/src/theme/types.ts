@@ -22,20 +22,17 @@ export type DefaultProps<T extends ThemeSchema, E extends ThemeSchema> = {
 	variant: ThemeVariants<T>;
 };
 
-// TODO: this type is yoinky (typescript does support double conditionals in types for some odd reason)
-export type RapidUiThemeConfig<T, E> = T extends ThemeSchema
-	? E extends ThemeSchema
-		? {
-				baseStyle: ClassValue;
-				sizes?: E;
-				variants: T;
-				defaultProps: DefaultProps<T, E>;
-		  }
-		: never
-	: never;
+// TODO: this type is yoinky (typescript does not support double conditionals in types for some odd reason)
+export type RapidUiThemeConfig<T extends ThemeSchema, E extends ThemeSchema> = {
+	baseStyle: ClassValue;
+	sizes?: E;
+	variants: T;
+	defaultProps: DefaultProps<T, E>;
+}
 
 export type CreateVariant<T, E> = (variant?: keyof T | undefined, size?: keyof E | undefined) => string;
 
 export interface RapidTheme<T, E> {
 	button?: CreateVariant<T, E>
+	input?: CreateVariant<T, E>
 };

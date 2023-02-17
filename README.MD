@@ -41,3 +41,4 @@ Rapid uses React and Rust as the foundation for its fullstack tooling. Do your h
   - Easy deployments with rapid deploy (GCP, cloudflare workers, Netlify)
   - Icon library integrated into the @Rapid/ui
   - Remix.run?
+  - Wasm powered server functions?!

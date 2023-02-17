@@ -1,8 +1,9 @@
-import { buttomTheme } from "../components";
+import { buttomTheme, inputTheme } from "../components";
 import { createTheme } from "./createTheme";
 
 const theme = createTheme({
-    button: buttomTheme
+    button: buttomTheme,
+    input: inputTheme
 });
 
 export default theme;

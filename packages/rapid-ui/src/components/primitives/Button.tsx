@@ -1,7 +1,7 @@
 import React from 'react';
 import { createVariant } from '../../theme';
 import { RapidStyles } from '../../utils';
-import {default as AliasSpinner} from '../feedback/Spinner';
+import { default as AliasSpinner } from '../feedback/Spinner';
 
 // This is the class name that will be used to apply the global rapid theme from tailwindCSS
 const THEME_CLASSNAME = 'rapid-button';
@@ -9,7 +9,7 @@ const THEME_CLASSNAME = 'rapid-button';
 export const buttomTheme = createVariant({
 	baseStyle: 'p-3 transition-all ease-out duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
 	variants: {
-		default: 'bg-gray-200 hover:bg-gray-300',
+		default: 'bg-main hover:bg-hoverMain text-white',
 		outline: 'bg-white border border-lightGrey',
 		ghost: 'bg-transparent hover:bg-lightGrey',
 		link: 'bg-transparent active:text-secondaryGrey focus:shadow-none'
@@ -40,7 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 						{spinner ? (
 							spinner
 						) : (
-							<AliasSpinner size='sm' />
+							<AliasSpinner size='sm' styles='border-white border-t-transparent border-r-transparent' />
 						)}
 					</>
 				) : (

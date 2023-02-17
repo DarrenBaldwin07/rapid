@@ -4,9 +4,9 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './node_modules/@rapid-web/ui/src/components/**/*.{js,jsx,ts,tsx}'],
 
   theme: {
-    extend: {
-      ...rapidTailwindTheme
-    },
+    extend: rapidTailwindTheme({
+      // We can extend the tailwind theme here
+    })
   },
   plugins: [rapidPlugin(
     {

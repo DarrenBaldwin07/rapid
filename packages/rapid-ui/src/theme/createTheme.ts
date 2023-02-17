@@ -1,3 +1,4 @@
+import { ThemeSchema } from './../../dist/theme/types.d';
 import {
 	RapidUiThemeConfig,
 	CreateVariant,
@@ -35,13 +36,25 @@ export const generateTailwindPluginTheme = <T, E>(theme: RapidTheme<T, E>) => {
 			case 'button':
 				const className = '.rapid-button';
 				const styles = theme[key] as ((variant?: string | undefined, size?: string | undefined) => string);
-				const styleKey = `@apply ${styles()}`
+				const styleKey = `@apply ${styles()}`;
 				const styleObject: themeObject = {
 					[className]: {
 						[styleKey]: {}
 					}
-				}
+				};
 				classNames.push(styleObject);
+				break;
+			case 'input':
+				const inputClassName = '.rapid-input';
+				const inputStyles = theme[key] as ((variant?: string | undefined, size?: string | undefined) => string);
+				const inputStyleKey = `@apply ${inputStyles()}`;
+				const inputStyleObject: themeObject = {
+					[inputClassName]: {
+						[inputStyleKey]: {}
+					}
+				};
+				classNames.push(inputStyleObject);
+				break;
 		}
 	}
 
@@ -57,8 +70,9 @@ export const generateTailwindPluginTheme = <T, E>(theme: RapidTheme<T, E>) => {
    *
    * @beta
    */
-function createVariant<T, E>(config: RapidUiThemeConfig<T, E>): CreateVariant<T, E> {
+function createVariant<T extends ThemeSchema, E extends ThemeSchema>(config: RapidUiThemeConfig<T, E>): CreateVariant<T, E> {
 	const { variants, defaultProps, sizes, baseStyle } = config;
+
 
 	// Cast sizes as a non-undefind type
 	const typedSizes = sizes as E;
@@ -67,6 +81,7 @@ function createVariant<T, E>(config: RapidUiThemeConfig<T, E>): CreateVariant<T,
 	type Variant = keyof typeof variants;
 	type Size = keyof typeof typedSizes;
 
+
 	// Get the variant based on either the default variant or the variant that was passed in as a prop
 	const getVariantClassNames = (variant?: Variant) => variant ? variants[variant] : variants[defaultProps.variant];
 
@@ -74,7 +89,7 @@ function createVariant<T, E>(config: RapidUiThemeConfig<T, E>): CreateVariant<T,
 		// Check if the consumer declared any sizes
 		if (sizes) {
 			// If they did then lets grab the classNames
-			return size ? sizes[size] as ClassValue : sizes[defaultProps.size as keyof E] as ClassValue;
+			return size ? sizes[size] as ClassValue : sizes[defaultProps.size as keyof E] as ClassValue || '';
 		} else {
 			// Return an empty string with no size classNames because the consumer did not input any sizes
 			return '';

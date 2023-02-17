@@ -4,7 +4,7 @@ import { Text } from '../';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-	title: 'Components/Layout/Text',
+	title: 'Components/primitives/Text',
 	component: Text,
 } as ComponentMeta<typeof Text>;
 

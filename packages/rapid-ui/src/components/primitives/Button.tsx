@@ -24,15 +24,22 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	styles?: string;
 	isLoading?: boolean;
 	spinner?: React.ReactNode;
+	variant?: string;
+}
+
+
+const getVariantClassName = (variant: string | undefined) => {
+	if (variant) return `rapid-button-${variant}`;
+	else return undefined;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ styles, isLoading = false, spinner, children, ...rest }, ref) => {
+	({ styles, isLoading = false, spinner, variant, children, ...rest }, ref) => {
 		return (
 			<button
 				ref={ref}
 				{...rest}
-				className={RapidStyles(styles, THEME_CLASSNAME)}
+				className={RapidStyles(styles, getVariantClassName(variant) || THEME_CLASSNAME)}
 				disabled={isLoading}
 			>
 				{isLoading ? (

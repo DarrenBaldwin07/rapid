@@ -1,14 +1,19 @@
 import { ThemeSchema } from './../../dist/theme/types.d';
 import {
 	RapidUiThemeConfig,
-	CreateVariant,
 	RapidTheme
 } from './types';
 import { ClassValue } from '../types';
-import { RapidStyles, sanitizeClassNames } from '../utils';
+import { RapidStyles, sanitizeClassNames, isValidClassName } from '../utils';
+import generateVariants from './generateVariants';
 
-type themeObject = {
+export type ThemeObject = {
 	[key: string]: any;
+}
+
+export interface VariantOutput {
+	variant: (variant?: string | undefined, size?: string | undefined) => string,
+	themeObject: any
 }
 
 
@@ -20,40 +25,28 @@ type themeObject = {
    *
    * @beta
    */
-export const createTheme = <T, E>(theme: RapidTheme<T, E>): RapidTheme<T, E> => {
+export const createTheme = (theme: RapidTheme): RapidTheme => {
 	return {
 		...theme
 	};
 };
 
 // Method for taking in a Rapid theme and generating formatted @apply styles for a tailwindCSS addComponents call
-export const generateTailwindPluginTheme = <T, E>(theme: RapidTheme<T, E>) => {
+export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 	const themeKeys = Object.keys(theme);
-	const classNames: themeObject[] = [];
+	const classNames: ThemeObject[] = [];
 	// Loop through the theme keys and generate the @apply styles for tailwind (eventually we want to add every rapidTheme component to this)
 	for (const key of themeKeys) {
 		switch(key) {
 			case 'button':
-				const className = '.rapid-button';
-				const styles = theme[key] as ((variant?: string | undefined, size?: string | undefined) => string);
-				const styleKey = `@apply ${styles()}`;
-				const styleObject: themeObject = {
-					[className]: {
-						[styleKey]: {}
-					}
-				};
-				classNames.push(styleObject);
+				const typedTheme = theme[key] as unknown as VariantOutput;
+				const styles = generateVariants(typedTheme, '.rapid-button');
+				classNames.push(...styles);
 				break;
 			case 'input':
-				const inputClassName = '.rapid-input';
-				const inputStyles = theme[key] as ((variant?: string | undefined, size?: string | undefined) => string);
-				const inputStyleKey = `@apply ${inputStyles()}`;
-				const inputStyleObject: themeObject = {
-					[inputClassName]: {
-						[inputStyleKey]: {}
-					}
-				};
-				classNames.push(inputStyleObject);
+				const typedInputTheme = theme[key] as unknown as VariantOutput;
+				const inputStyles = generateVariants(typedInputTheme, '.rapid-input');
+				classNames.push(...inputStyles);
 				break;
 		}
 	}
@@ -63,14 +56,14 @@ export const generateTailwindPluginTheme = <T, E>(theme: RapidTheme<T, E>) => {
 
 
 /**
-   * A RapidUI helper for easily creating component variants with Tailwind (similar to CVA)
+   * A RapidUI helper for easily creating component variants with Tailwind (similar to CVA: https://github.com/joe-bell/cva)
    *
    * @param config RapidUiThemeConfig
    * @returns A HTML valid className
    *
    * @beta
    */
-function createVariant<T extends ThemeSchema, E extends ThemeSchema>(config: RapidUiThemeConfig<T, E>): CreateVariant<T, E> {
+function createVariant<T extends ThemeSchema, E extends ThemeSchema>(config: RapidUiThemeConfig<T, E>): VariantOutput {
 	const { variants, defaultProps, sizes, baseStyle } = config;
 
 
@@ -96,15 +89,20 @@ function createVariant<T extends ThemeSchema, E extends ThemeSchema>(config: Rap
 		}
 	};
 
-	// Give the consumer their callable theme function
-	return (variant?: Variant, size?: Size) => {
-		// Merge the variants with the sizes
-		// NOTE: anything in the 'sizes' theme object will override variant styles
-		let sizeVariantClassNames = RapidStyles(sanitizeClassNames(getSizeClassNames(size)), sanitizeClassNames(getVariantClassNames(variant) as string))
+	const themeOutput = {
+		variant: (variant?: Variant, size?: Size) => {
+			// Merge the variants with the sizes
+			// NOTE: anything in the 'sizes' theme object will override variant styles
+			let sizeVariantClassNames = RapidStyles(sanitizeClassNames(getSizeClassNames(size)), sanitizeClassNames(getVariantClassNames(variant) as string))
 
-		// Output the merged and sanitized ClassNames
-		return RapidStyles(sizeVariantClassNames, sanitizeClassNames(baseStyle));
-	};
+			// Output the merged and sanitized ClassNames
+			return RapidStyles(sizeVariantClassNames, sanitizeClassNames(baseStyle));
+		},
+		themeObject: config
+	}
+
+	// Give the consumer their callable theme function
+	return themeOutput;
 }
 
 export default createVariant;

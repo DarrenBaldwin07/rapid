@@ -4,11 +4,11 @@ import { RapidTheme } from '../theme';
 import defaultTheme from '../theme/defaultTheme';
 import type * as CSS from 'csstype';
 
-interface RapidPluginTheme<T, E> {
+interface RapidPluginTheme {
     global: {
         [key: string]: CSS.Properties | any
     };
-    theme?: RapidTheme<T, E>;
+    theme?: RapidTheme;
 }
 
 // Tailwind Utility classes we want to use inside of the consumers tailwindConfig
@@ -51,7 +51,7 @@ const tailwindUtilities = {
 // A rapid tailwindCSS plugin
 // Currently, it only supports adding global styles in a little easier way
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
-function rapidPlugin<T, E>(styles: RapidPluginTheme<T, E>) {
+function rapidPlugin(styles: RapidPluginTheme) {
     // Grab our global styles and theme
     const globalStyles = styles.global;
     const theme = !!styles.theme ? generateTailwindPluginTheme(styles.theme) : generateTailwindPluginTheme(defaultTheme);

@@ -13,8 +13,13 @@ export function RapidStyles(classes: string | ClassValue, defaults: string | Cla
 	return twMerge(twMerge(defaults, classes), themeClassName);
 }
 
+export const isValidClassName = (className: string) => {
+	return /^[a-z0-9-]+$/.test(className);
+}
+
 export function getValidReactChildren(children: React.ReactNode) {
 	return Children.toArray(children).filter((child) =>
 	  isValidElement(child),
 	) as React.ReactElement[]
   }
+

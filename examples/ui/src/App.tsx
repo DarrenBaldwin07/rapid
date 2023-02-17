@@ -1,5 +1,5 @@
 import { Button, VStack, Spinner, Input } from '@rapid-web/ui';
-import './index.css'
+import './index.css';
 function App() {
 	return (
 		<div className='flex flex-col align-center justify-center w-screen h-screen p-12'>

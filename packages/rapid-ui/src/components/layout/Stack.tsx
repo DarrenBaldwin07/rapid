@@ -4,8 +4,12 @@ import { RapidStyles, getValidReactChildren } from '../../utils';
 type Spacing = 'sm' | 'md' | 'lg';
 type Direction = 'row' | 'column';
 
-interface StackProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    spacing?: Spacing;
+interface StackProps
+	extends React.DetailedHTMLProps<
+		React.HTMLAttributes<HTMLDivElement>,
+		HTMLDivElement
+	> {
+	spacing?: Spacing;
 	direction?: Direction;
 	styles?: string;
 }
@@ -19,9 +23,15 @@ interface StackProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDi
 // space-x-1.5
 
 const Stack = React.forwardRef<HTMLDivElement, StackProps>(
-	({ styles, children, spacing = 'lg', direction = 'column', ...rest }, ref) => {
+	(
+		{ styles, children, spacing = 'lg', direction = 'column', ...rest },
+		ref,
+	) => {
 		// We only want to re-run this if children change
-        const sanitizedChildren = useMemo(() => getValidReactChildren(children), [children]);
+		const sanitizedChildren = useMemo(
+			() => getValidReactChildren(children),
+			[children],
+		);
 
 		const getSpacing = (spacing: Spacing) => {
 			switch (spacing) {
@@ -30,18 +40,18 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 				case 'md':
 					return '3';
 				case 'lg':
-					return '6'
-			};
-		}
+					return '6';
+			}
+		};
 
 		const getDirectionStyles = (direction: Direction) => {
-			switch(direction) {
+			switch (direction) {
 				case 'row':
 					return `flex space-x-${getSpacing(spacing)}`;
 				case 'column':
 					return `flex flex-col space-y-${getSpacing(spacing)}`;
 			}
-		}
+		};
 		// This component does not support custom dividers or wrapping (maybe a TODO ?)
 		return (
 			<div
@@ -49,8 +59,8 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 				{...rest}
 				className={RapidStyles(styles, getDirectionStyles(direction))}
 			>
-                {sanitizedChildren}
-            </div>
+				{sanitizedChildren}
+			</div>
 		);
 	},
 );

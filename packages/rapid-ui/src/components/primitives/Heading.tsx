@@ -6,14 +6,14 @@ type Size = 'sm' | 'md' | 'lg';
 interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
 	styles?: string;
 	size?: Size;
-};
+}
 
 const THEME_CLASSNAME = 'rapid-heading';
 
 const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
 	({ styles, size = 'lg', ...rest }, ref) => {
 		const getFontSize = (size: Size) => {
-			switch(size) {
+			switch (size) {
 				case 'sm':
 					return 'text-sm';
 				case 'md':
@@ -22,7 +22,7 @@ const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
 					return 'text-xl';
 			}
 		};
-        const defaultStyles = getFontSize(size);
+		const defaultStyles = getFontSize(size);
 		return (
 			<h2
 				ref={ref}
@@ -36,5 +36,3 @@ const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
 Heading.displayName = 'Heading';
 
 export default Heading;
-
-

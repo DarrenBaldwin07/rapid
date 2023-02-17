@@ -5,23 +5,25 @@ type MaxWidth = 'sm' | 'md' | 'lg';
 
 interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 	styles?: string;
-	maxWidth?: MaxWidth
+	maxWidth?: MaxWidth;
 }
 
 const parseMaxWidth = (maxWidth: MaxWidth) => {
-	switch(maxWidth) {
+	switch (maxWidth) {
 		case 'sm':
-			return 'max-w-5xl'
+			return 'max-w-5xl';
 		case 'md':
-			return 'max-w-7xl'
+			return 'max-w-7xl';
 		case 'lg':
-			return 'max-w-container'
+			return 'max-w-container';
 	}
-}
+};
 
 const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 	({ styles, maxWidth = 'lg', ...rest }, ref) => {
-		const defaultStyles = `container ${parseMaxWidth(maxWidth)} mx-auto px-4`;
+		const defaultStyles = `container ${parseMaxWidth(
+			maxWidth,
+		)} mx-auto px-4`;
 		return (
 			<div
 				ref={ref}

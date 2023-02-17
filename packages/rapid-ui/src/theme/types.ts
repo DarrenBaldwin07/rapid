@@ -1,5 +1,5 @@
-import { ClassValue } from "../types";
-import { VariantOutput } from "./createTheme";
+import { ClassValue } from '../types';
+import { VariantOutput } from './createTheme';
 
 export type ClassProp =
 	| {
@@ -29,11 +29,14 @@ export type RapidUiThemeConfig<T extends ThemeSchema, E extends ThemeSchema> = {
 	sizes?: E;
 	variants: T;
 	defaultProps: DefaultProps<T, E>;
-}
+};
 
-export type CreateVariant<T, E> = (variant?: keyof T | undefined, size?: keyof E | undefined) => string;
+export type CreateVariant<T, E> = (
+	variant?: keyof T | undefined,
+	size?: keyof E | undefined,
+) => string;
 
 export interface RapidTheme {
-	button?: VariantOutput
-	input?: VariantOutput
-};
+	button?: VariantOutput;
+	input?: VariantOutput;
+}

@@ -11,10 +11,19 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Container> = (_: any) => (
 	<Container>
-        <div style={{backgroundColor: 'red', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold'}}>
+		<div
+			style={{
+				backgroundColor: 'red',
+				height: '50px',
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				fontWeight: 'bold',
+			}}
+		>
 			This is a Rapid-ui container
 		</div>
-    </Container>
+	</Container>
 );
 
 export const Primary = Template.bind({});

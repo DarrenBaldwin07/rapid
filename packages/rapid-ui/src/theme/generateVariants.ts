@@ -51,7 +51,6 @@ function generateVariants(theme: VariantOutput, baseClassName: string) {
 	};
 	classNames.push(styleObject);
 
-
 	return classNames;
 }
 

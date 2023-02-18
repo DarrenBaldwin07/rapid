@@ -4,7 +4,7 @@ import { createTheme } from './createTheme';
 const theme = createTheme({
 	button: buttomTheme,
 	input: inputTheme,
-	menuButton: menuButtonTheme
+	menuButton: menuButtonTheme,
 });
 
 export default theme;

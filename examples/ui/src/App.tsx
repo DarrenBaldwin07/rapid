@@ -1,4 +1,13 @@
-import { Button, VStack, Spinner, Input, MenuButton, MenuItem, MenuItems, Menu  } from '@rapid-web/ui';
+import {
+	Button,
+	VStack,
+	Spinner,
+	Input,
+	MenuButton,
+	MenuItem,
+	MenuItems,
+	Menu,
+} from '@rapid-web/ui';
 import './index.css';
 function App() {
 	return (
@@ -11,33 +20,35 @@ function App() {
 				</VStack>
 				<Button variant='outline'>Hello world</Button>
 				<Spinner size='md' />
-				<Input variant='unstyled' />
+				<Input />
 			</div>
 			<Menu>
-				<MenuButton>More</MenuButton>
+				<MenuButton variant='outline'>More</MenuButton>
 				<MenuItems>
 					<MenuItem>
 						{({ active }: any) => (
 							<a
-							className={`${active && 'bg-blue-500'}`}
-							href="/account-settings"
+								className={`${active && 'bg-blue-500'}`}
+								href='/account-settings'
 							>
-							Account settings
+								Account settings
 							</a>
 						)}
 					</MenuItem>
 					<MenuItem>
 						{({ active }: any) => (
 							<a
-							className={`${active && 'bg-blue-500'}`}
-							href="/account-settings"
+								className={`${active && 'bg-blue-500'}`}
+								href='/account-settings'
 							>
-							Documentation
+								Documentation
 							</a>
 						)}
 					</MenuItem>
 					<MenuItem disabled>
-						<span className="opacity-75">Invite a friend (coming soon!)</span>
+						<span className='opacity-75'>
+							Invite a friend (coming soon!)
+						</span>
 					</MenuItem>
 				</MenuItems>
 			</Menu>

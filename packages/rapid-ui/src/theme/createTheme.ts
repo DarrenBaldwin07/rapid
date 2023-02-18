@@ -51,7 +51,9 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 				classNames.push(...inputStyles);
 				break;
 			case 'menuButton':
-				const typedMenuButtonTheme = theme[key] as unknown as VariantOutput;
+				const typedMenuButtonTheme = theme[
+					key
+				] as unknown as VariantOutput;
 				const menuButtonStyles = generateVariants(
 					typedMenuButtonTheme,
 					'.rapid-menu-button',
@@ -108,7 +110,11 @@ function createVariant<T extends ThemeSchema, E extends ThemeSchema>(
 			let sizeVariantClassNames = RapidStyles(
 				sanitizeClassNames(getSizeClassNames(size)),
 				// We only want to apply variants if the user did not pass in a size
-				size ? '' : sanitizeClassNames(getVariantClassNames(variant) as string),
+				size
+					? ''
+					: sanitizeClassNames(
+							getVariantClassNames(variant) as string,
+					  ),
 			);
 
 			// Output the merged and sanitized ClassNames

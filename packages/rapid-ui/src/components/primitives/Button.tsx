@@ -16,7 +16,7 @@ export const buttomTheme = createVariant({
 		link: 'bg-transparent active:text-secondaryGrey focus:shadow-none',
 	},
 	sizes: {
-		'lg': 'h-20'
+		lg: 'h-20',
 	},
 	defaultProps: {
 		variant: 'default',
@@ -31,7 +31,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	size?: string;
 }
 
-const getVariantClassName = (variant: string | undefined, size: string | undefined) => {
+const getVariantClassName = (
+	variant: string | undefined,
+	size: string | undefined,
+) => {
 	const classNames = [];
 	if (size) classNames.push(`rapid-button-${size}`);
 	if (variant) classNames.push(`rapid-button-${variant}`);
@@ -45,7 +48,15 @@ const getVariantClassName = (variant: string | undefined, size: string | undefin
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
-		{ styles, isLoading = false, spinner, variant, size, children, ...rest },
+		{
+			styles,
+			isLoading = false,
+			spinner,
+			variant,
+			size,
+			children,
+			...rest
+		},
 		ref,
 	) => {
 		return (

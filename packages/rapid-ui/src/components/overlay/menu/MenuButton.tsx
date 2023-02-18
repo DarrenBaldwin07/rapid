@@ -20,14 +20,28 @@ export const menuButtonTheme = createVariant(
 
 interface MenuButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     styles?: string;
+    variant?: string;
+    size?: string;
 }
 
-const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(({ styles, ...rest }, ref) => {
+const getVariantClassName = (variant: string | undefined, size: string | undefined) => {
+    const classNames = [];
+    if (size) classNames.push(`rapid-menu-button-${size}`);
+    if (variant) classNames.push(`rapid-menu-button-${variant}`);
+
+    if (classNames.length > 0) {
+        return classNames.join(' ');
+    } else {
+        return undefined;
+    }
+}
+
+const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(({ styles, variant, size, ...rest }, ref) => {
     return (
         <HeadlessMenu.Button
             ref={ref}
             {...rest}
-            className={RapidStyles(styles, THEME_CLASSNAME)}
+            className={RapidStyles(styles, getVariantClassName(variant, size), THEME_CLASSNAME)}
         />
     )
 });

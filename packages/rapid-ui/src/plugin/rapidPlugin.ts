@@ -13,7 +13,8 @@ interface RapidPluginTheme {
 }
 
 // Extended tailwind theme
-// Currently it only allows
+// Currently it only supports the safelist option
+// TODO: we may want to see if we can simply throw our Tailwind theme
 const extendedTheme = {
 	safelist: [{ pattern: /rapid-/ }, { pattern: /spinner-/ }],
 };

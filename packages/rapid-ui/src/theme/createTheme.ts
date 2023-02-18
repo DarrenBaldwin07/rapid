@@ -99,7 +99,8 @@ function createVariant<T extends ThemeSchema, E extends ThemeSchema>(
 			// NOTE: anything in the 'sizes' theme object will override variant styles
 			let sizeVariantClassNames = RapidStyles(
 				sanitizeClassNames(getSizeClassNames(size)),
-				sanitizeClassNames(getVariantClassNames(variant) as string),
+				// We only want to apply variants if the user did not pass in a size
+				size ? '' : sanitizeClassNames(getVariantClassNames(variant) as string),
 			);
 
 			// Output the merged and sanitized ClassNames

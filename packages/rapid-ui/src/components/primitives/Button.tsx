@@ -15,7 +15,9 @@ export const buttomTheme = createVariant({
 		ghost: 'bg-transparent hover:bg-lightGrey',
 		link: 'bg-transparent active:text-secondaryGrey focus:shadow-none',
 	},
-	sizes: {},
+	sizes: {
+		'lg': 'h-20'
+	},
 	defaultProps: {
 		variant: 'default',
 	},
@@ -26,16 +28,24 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	isLoading?: boolean;
 	spinner?: React.ReactNode;
 	variant?: string;
+	size?: string;
 }
 
-const getVariantClassName = (variant: string | undefined) => {
-	if (variant) return `rapid-button-${variant}`;
-	else return undefined;
+const getVariantClassName = (variant: string | undefined, size: string | undefined) => {
+	const classNames = [];
+	if (size) classNames.push(`rapid-button-${size}`);
+	if (variant) classNames.push(`rapid-button-${variant}`);
+
+	if (classNames.length > 0) {
+		return classNames.join(' ');
+	} else {
+		return undefined;
+	}
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
-		{ styles, isLoading = false, spinner, variant, children, ...rest },
+		{ styles, isLoading = false, spinner, variant, size, children, ...rest },
 		ref,
 	) => {
 		return (
@@ -44,7 +54,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				{...rest}
 				className={RapidStyles(
 					styles,
-					getVariantClassName(variant) || THEME_CLASSNAME,
+					getVariantClassName(variant, size) || THEME_CLASSNAME,
 				)}
 				disabled={isLoading}
 			>

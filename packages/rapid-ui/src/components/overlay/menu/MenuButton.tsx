@@ -3,7 +3,7 @@ import { Menu as HeadlessMenu } from '@headlessui/react';
 import { RapidStyles } from '../../../utils';
 import { createVariant } from '../../../theme';
 
-const THEME_CLASSNAME = 'rapid-menu-button'
+const THEME_CLASSNAME = 'rapid-menu-button';
 
 export const menuButtonVariant = createVariant(
     {

@@ -3,9 +3,7 @@ import { Menu as HeadlessMenu } from '@headlessui/react';
 import { RapidStyles } from '../../../utils';
 import { createVariant } from '../../../theme';
 
-const THEME_CLASSNAMES = {
-    menuButton: 'rapid-menu-button',
-};
+const THEME_CLASSNAME = 'rapid-menu-button'
 
 export const menuButtonVariant = createVariant(
     {
@@ -30,10 +28,8 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(({ styles, ...
         <HeadlessMenu.Button
             ref={ref}
             {...rest}
-            className={RapidStyles(styles, THEME_CLASSNAMES.menuButton)}
-        >
-            MenuButton
-        </HeadlessMenu.Button>
+            className={RapidStyles(styles, THEME_CLASSNAME)}
+        />
     )
 });
 

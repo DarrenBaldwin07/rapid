@@ -1,4 +1,4 @@
-import { Button, VStack, Spinner, Input } from '@rapid-web/ui';
+import { Button, VStack, Spinner, Input, MenuButton, MenuItem, MenuItems, Menu  } from '@rapid-web/ui';
 import './index.css';
 function App() {
 	return (
@@ -9,10 +9,38 @@ function App() {
 					<h1>Hello world</h1>
 					<h1>Hello world</h1>
 				</VStack>
-				<Button size='lg' variant='outline'>Hello world</Button>
+				<Button variant='outline'>Hello world</Button>
 				<Spinner size='md' />
 				<Input variant='unstyled' />
 			</div>
+			<Menu>
+				<MenuButton>More</MenuButton>
+				<MenuItems>
+					<MenuItem>
+						{({ active }: any) => (
+							<a
+							className={`${active && 'bg-blue-500'}`}
+							href="/account-settings"
+							>
+							Account settings
+							</a>
+						)}
+					</MenuItem>
+					<MenuItem>
+						{({ active }: any) => (
+							<a
+							className={`${active && 'bg-blue-500'}`}
+							href="/account-settings"
+							>
+							Documentation
+							</a>
+						)}
+					</MenuItem>
+					<MenuItem disabled>
+						<span className="opacity-75">Invite a friend (coming soon!)</span>
+					</MenuItem>
+				</MenuItems>
+			</Menu>
 		</div>
 	);
 }

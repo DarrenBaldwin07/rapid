@@ -39,4 +39,5 @@ export type CreateVariant<T, E> = (
 export interface RapidTheme {
 	button?: VariantOutput;
 	input?: VariantOutput;
+	menuButton?: VariantOutput;
 }

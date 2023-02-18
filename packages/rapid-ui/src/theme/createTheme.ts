@@ -50,6 +50,14 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 				);
 				classNames.push(...inputStyles);
 				break;
+			case 'menuButton':
+				const typedMenuButtonTheme = theme[key] as unknown as VariantOutput;
+				const menuButtonStyles = generateVariants(
+					typedMenuButtonTheme,
+					'.rapid-menu-button',
+				);
+				classNames.push(...menuButtonStyles);
+				break;
 		}
 	}
 

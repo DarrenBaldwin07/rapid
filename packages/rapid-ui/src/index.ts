@@ -1,4 +1,3 @@
-export * from '@headlessui/react';
 export * from './components';
 export * from './plugin';
 export * from './theme';

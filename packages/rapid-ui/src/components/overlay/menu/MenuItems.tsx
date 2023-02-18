@@ -27,6 +27,7 @@ const variants: Variants = {
     }),
   }
 
+// The animation config that pass as props to a <motion.div />
 export const fadeConfig: HTMLMotionProps<"div"> = {
     initial: "exit",
     animate: "enter",
@@ -35,6 +36,7 @@ export const fadeConfig: HTMLMotionProps<"div"> = {
   }
 
 const MenuItems = ({ styles, children, ...rest }: MenuItemsProps) => {
+    // Simple default styles for the menu items
     const defaultStyles = 'bg-white transition transform origin-top-left border border-lightGrey mt-2 rounded-md shadow-lg absolute z-10 flex flex-col space-y-2 py-1';
 
     return (

@@ -12,7 +12,7 @@ pub struct New {}
 impl RapidCommand for  New {
     fn cmd() -> clap::Command {
         Command::new("new")
-        .about("Create a new rust-clap-cli  project at <path>")
+        .about("Create a new rust-clap-cli project at <path>")
         .arg(
             arg!(
                 -full --fullstack "Sets a custom config file"

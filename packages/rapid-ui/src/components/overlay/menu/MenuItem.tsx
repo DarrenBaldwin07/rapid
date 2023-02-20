@@ -15,7 +15,7 @@ const MenuItem = ({
 	styles,
 	...props
 }: ExtractProps<typeof HeadlessMenuTyped.Item>) => {
-	const defaultStyles = 'p-1 hover:disabled:cursor-not-allowed hover:';
+	const defaultStyles = 'p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer';
 	return (
 		<HeadlessMenu.Item
 			className={RapidStyles(styles, defaultStyles)}

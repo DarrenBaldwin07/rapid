@@ -10,6 +10,13 @@ import {
 	Menu,
 	Textarea
 } from '@rapid-web/ui';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faUser,
+	faGear,
+	faBook,
+	faPlus
+} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 function App() {
 	return (
@@ -32,28 +39,51 @@ function App() {
 				<MenuItems>
 					<MenuItem>
 						{({ active }: any) => (
-							<a
-								className={`${active && 'bg-blue-500'}`}
-								href='/account-settings'
-							>
-								Account settings
-							</a>
+							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2`}>
+								<FontAwesomeIcon icon={faUser} color='black' />
+								<a
+									href='/account-settings'
+								>
+									Profile
+								</a>
+							</div>
 						)}
 					</MenuItem>
 					<MenuItem>
 						{({ active }: any) => (
-							<a
-								className={`${active && 'bg-blue-500'}`}
-								href='/account-settings'
-							>
-								Documentation
-							</a>
+							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2` }>
+								<FontAwesomeIcon icon={faGear} color='black' />
+								<a
+									href='/account-settings'
+								>
+									Settings
+								</a>
+							</div>
 						)}
 					</MenuItem>
-					<MenuItem disabled>
-						<span className='opacity-75'>
-							Invite a friend (coming soon!)
-						</span>
+					<MenuItem>
+						{({ active }: any) => (
+							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2`}>
+								<FontAwesomeIcon icon={faBook} color='black' />
+								<a
+									href='/account-settings'
+								>
+									Documentation
+								</a>
+							</div>
+						)}
+					</MenuItem>
+					<MenuItem>
+						{({ active }: any) => (
+							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2`}>
+								<FontAwesomeIcon icon={faPlus} color='black' />
+								<a
+									href='/account-settings'
+								>
+									New Post
+								</a>
+							</div>
+						)}
 					</MenuItem>
 				</MenuItems>
 			</Menu>

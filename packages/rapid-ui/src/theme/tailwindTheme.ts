@@ -7,8 +7,8 @@ const rapidDefaultTailwindTheme = {
 		container: '100rem',
 	},
 	boxShadow: {
-		'button-focus': '0 0 0 5px #C5C5C590',
-		'button-focus2': '0 0 0 5px #99E7FF90',
+		'button-focus': '0 0 0 4px #C5C5C590',
+		'button-focus2': '0 0 0 4px #99E7FF90',
 	},
 	borderRadius: {
 		none: '0',

@@ -3,6 +3,7 @@ import {
 	VStack,
 	Spinner,
 	Input,
+	Heading,
 	MenuButton,
 	MenuItem,
 	MenuItems,
@@ -18,7 +19,7 @@ function App() {
 					<h1>Hello world</h1>
 					<h1>Hello world</h1>
 				</VStack>
-				<Button variant='outline'>Hello world</Button>
+				<Button variant='destructive' size='lg'>Hello world</Button>
 				<Spinner size='md' />
 				<Input />
 			</div>

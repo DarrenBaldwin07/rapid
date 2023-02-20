@@ -22,7 +22,7 @@ function App() {
 				</VStack>
 				<Button variant='destructive'>Hello world</Button>
 				<Spinner size='md' />
-				<Input />
+				<Input variant='invalid' />
 			</div>
 			<div className='mt-12'>
 				<Textarea variant='invalid' />

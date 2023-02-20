@@ -13,7 +13,8 @@ export const textAreaTheme = createVariant({
     baseStyle: 'rounded-lg transition-all ease-out duration-300 outline-none focus:outline-none focus:shadow-button-focus focus:border-main px-3 py-1 disabled:opacity-50 hover:disabled:cursor-not-allowed',
     variants: {
         default: 'border border-lightGrey',
-        invalid: 'focus:shadow-invalid focus:border-danger border border-danger',
+        shadow: 'bg-hoverWhite border-lightGrey focus:bg-white focus:border-main border',
+        invalid: 'focus:shadow-invalid focus:border-danger border border-danger border border-transparent',
         filled: 'bg-lightGrey focus:bg-white focus:border-main border border-transparent',
     },
     defaultProps: {

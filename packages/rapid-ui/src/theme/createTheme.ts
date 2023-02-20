@@ -50,6 +50,16 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 				);
 				classNames.push(...inputStyles);
 				break;
+			case 'textArea':
+				const typedTextAreaTheme = theme[
+					key
+				] as unknown as VariantOutput;
+				const textAreaStyles = generateVariants(
+					typedTextAreaTheme,
+					'.rapid-textarea',
+				);
+				classNames.push(...textAreaStyles);
+				break;
 			case 'menuButton':
 				const typedMenuButtonTheme = theme[
 					key

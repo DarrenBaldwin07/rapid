@@ -71,6 +71,9 @@ importers:
       vite-plugin-dts: ^1.2.1
       vite-tsconfig-paths: ^4.0.5
       vitest: ^0.18.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@rollup/plugin-typescript': 8.5.0_bhcmvni67fkldpaxrtldxbogce
       '@testing-library/jest-dom': 5.16.5
@@ -81,8 +84,6 @@ importers:
       '@vitejs/plugin-react': 3.0.1_vite@4.0.4
       happy-dom: 6.0.4
       prettier: 2.7.1
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
       rollup-plugin-typescript-paths: 1.4.0_typescript@4.9.5
       tslib: 2.5.0
       typescript: 4.9.5
@@ -11536,11 +11537,6 @@ packages:
 
   /require-directory/2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
-    engines: {node: '>=0.10.0'}
-    dev: true
-
-  /require-from-string/2.0.2:
-    resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
     dev: true
 

@@ -8,6 +8,7 @@ import {
 	MenuItem,
 	MenuItems,
 	Menu,
+	Textarea
 } from '@rapid-web/ui';
 import './index.css';
 function App() {
@@ -19,9 +20,12 @@ function App() {
 					<h1>Hello world</h1>
 					<h1>Hello world</h1>
 				</VStack>
-				<Button variant='destructive' size='lg'>Hello world</Button>
+				<Button variant='destructive'>Hello world</Button>
 				<Spinner size='md' />
 				<Input />
+			</div>
+			<div className='mt-12'>
+				<Textarea variant='invalid' />
 			</div>
 			<Menu>
 				<MenuButton variant='outline'>More</MenuButton>

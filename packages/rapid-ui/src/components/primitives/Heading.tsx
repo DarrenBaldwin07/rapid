@@ -19,7 +19,7 @@ const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
 				case 'md':
 					return 'text-lg';
 				case 'lg':
-					return 'text-xl';
+					return 'text-3xl';
 			}
 		};
 		const defaultStyles = getFontSize(size);

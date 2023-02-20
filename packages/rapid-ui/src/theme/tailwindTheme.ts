@@ -9,6 +9,7 @@ const rapidDefaultTailwindTheme = {
 	boxShadow: {
 		'button-focus': '0 0 0 4px #C5C5C590',
 		'button-focus2': '0 0 0 4px #99E7FF90',
+		'invalid': '0 0 0 4px #E1000060'
 	},
 	borderRadius: {
 		none: '0',
@@ -25,7 +26,8 @@ const rapidDefaultTailwindTheme = {
 		secondaryGrey: '#C5C5C5',
 		white: '#ffffff',
 		hoverWhite: '#F6F6F6',
-		danger: '#E10000',
+		danger: '#ef4444',
+		hoverDanger: '#dc2626',
 	},
 };
 

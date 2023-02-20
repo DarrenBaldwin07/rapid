@@ -12,11 +12,14 @@ export const buttomTheme = createVariant({
 	variants: {
 		default: 'bg-main hover:bg-hoverMain text-white',
 		outline: 'bg-white hover:bg-hoverWhite border border-lightGrey',
-		ghost: 'bg-transparent hover:bg-lightGrey',
+		destructive: 'bg-danger hover:bg-hoverDanger text-white',
+		ghost: 'bg-transparent hover:bg-hoverWhite',
 		link: 'bg-transparent active:text-secondaryGrey focus:shadow-none',
 	},
 	sizes: {
-		lg: 'h-20',
+        default: "p-3",
+        sm: "py-3 px-2",
+        lg: "px-8 py-3",
 	},
 	defaultProps: {
 		variant: 'default',

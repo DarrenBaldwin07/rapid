@@ -2,6 +2,10 @@
 name = "rapid-web"
 version = "0.1.0"
 edition = "2021"
+description = "A simple Rust server for the Rapid framework."
+repository = "https://github.com/DarrenBaldwin07/rapid"
+homepage = "https://cincinnati.ventures"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

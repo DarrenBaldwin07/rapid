@@ -43,7 +43,7 @@ const MenuItems = ({ styles, children, ...rest }: MenuItemsProps) => {
 			<motion.div
 				initial='closed'
 				animate='open'
-				className={RapidStyles(styles, defaultStyles)}
+				className={RapidStyles(styles || rest.className, defaultStyles)}
 				{...fadeConfig}
 			>
 				{children}

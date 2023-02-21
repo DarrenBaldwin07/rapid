@@ -57,7 +57,7 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 			<div
 				ref={ref}
 				{...rest}
-				className={RapidStyles(styles, getDirectionStyles(direction))}
+				className={RapidStyles(styles || rest.className, getDirectionStyles(direction))}
 			>
 				{sanitizedChildren}
 			</div>

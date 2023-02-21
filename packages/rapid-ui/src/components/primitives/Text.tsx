@@ -31,7 +31,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<p
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'span':
@@ -39,7 +39,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<span
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'i':
@@ -47,7 +47,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<i
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'b':
@@ -55,7 +55,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<b
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'u':
@@ -63,7 +63,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<u
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'abbr':
@@ -71,7 +71,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<abbr
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'cite':
@@ -79,7 +79,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<cite
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'kbd':
@@ -95,7 +95,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<mark
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 's':
@@ -103,7 +103,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<s
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'samp':
@@ -111,7 +111,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<samp
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 				case 'sup':
@@ -119,7 +119,7 @@ const Text = React.forwardRef<HTMLParagraphElement, HeadingProps>(
 						<sup
 							ref={ref}
 							{...rest}
-							className={RapidStyles(styles, THEME_CLASSNAME)}
+							className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
 						/>
 					);
 			}

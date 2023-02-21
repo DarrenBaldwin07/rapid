@@ -67,7 +67,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				{...rest}
 				className={RapidStyles(
-					styles,
+					styles || rest.className,
 					getVariantClassName(variant, size) || THEME_CLASSNAME,
 				)}
 				disabled={isLoading}

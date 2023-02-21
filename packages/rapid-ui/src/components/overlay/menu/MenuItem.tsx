@@ -13,13 +13,13 @@ interface MenuItemProps extends MenuItemType {
 
 const MenuItem = ({
 	styles,
-	...props
+	...rest
 }: ExtractProps<typeof HeadlessMenuTyped.Item>) => {
 	const defaultStyles = 'p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer';
 	return (
 		<HeadlessMenu.Item
-			className={RapidStyles(styles, defaultStyles)}
-			{...props}
+			className={RapidStyles(styles || rest.className, defaultStyles)}
+			{...rest}
 		/>
 	);
 };

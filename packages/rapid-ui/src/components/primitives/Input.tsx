@@ -40,7 +40,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 				{...rest}
 				placeholder={placeholder || 'Rapid Input'}
 				className={RapidStyles(
-					styles,
+					styles || rest.className,
 					getVariantClassName(variant) || THEME_CLASSNAME,
 				)}
 			/>

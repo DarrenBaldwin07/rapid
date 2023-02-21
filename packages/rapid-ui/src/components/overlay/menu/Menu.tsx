@@ -16,12 +16,12 @@ export const HeadlessMenuTyped = Object.assign(HeadlessMenu, {
 
 // For now, this is just a complete re-export of the Headless Menu component.
 // At some point we may come back and refactor into our own component -- for now it works as a wrapper so that we can apply themeing
-const Menu = ({ styles, ...props }: MenuProps) => {
+const Menu = ({ styles, ...rest }: MenuProps) => {
 	return (
 		<HeadlessMenu
-			className={RapidStyles(styles, THEME_CLASSNAME)}
+			className={RapidStyles(	styles || rest.className, THEME_CLASSNAME)}
 			as='div'
-			{...props}
+			{...rest}
 		/>
 	);
 };

@@ -60,7 +60,7 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 				{...rest}
 				ref={ref}
 				className={RapidStyles(
-					styles,
+					styles || rest.className,
 					sanitizeClassNames(
 						defaultStyles,
 						getSpinnerSpeed(speed),

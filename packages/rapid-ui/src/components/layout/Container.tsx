@@ -28,7 +28,7 @@ const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 			<div
 				ref={ref}
 				{...rest}
-				className={RapidStyles(styles, defaultStyles)}
+				className={RapidStyles(styles || rest.className, defaultStyles)}
 			/>
 		);
 	},

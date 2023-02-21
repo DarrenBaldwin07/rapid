@@ -46,7 +46,7 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
 				ref={ref}
 				{...rest}
 				className={RapidStyles(
-					styles,
+					styles || rest.className,
 					getVariantClassName(variant, size) || THEME_CLASSNAME,
 				)}
 			/>

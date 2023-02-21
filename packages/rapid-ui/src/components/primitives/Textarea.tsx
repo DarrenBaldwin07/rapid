@@ -34,7 +34,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({ styles, varia
         {...rest}
         ref={ref}
         placeholder={rest.placeholder || 'Rapid Textarea'}
-        className={RapidStyles(styles, getVariantClassName(variant) || THEME_CLASSNAME)}
+        className={RapidStyles(styles || rest.className, getVariantClassName(variant) || THEME_CLASSNAME)}
     />
   )
 })

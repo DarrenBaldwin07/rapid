@@ -33,13 +33,17 @@ export const fadeConfig: HTMLMotionProps<'div'> = {
 	variants: variants as Variants,
 };
 
-const MenuItems = ({ styles, children, ...rest }: MenuItemsProps) => {
+const MenuItems = React.forwardRef<HTMLDivElement, MenuItemsProps>(({ styles, children, ...rest }, ref) => {
 	// Simple default styles for the menu items
 	const defaultStyles =
 		'bg-white transition transform origin-top-left border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-48';
 
 	return (
-		<HeadlessMenu.Items {...rest} className={THEME_CLASSNAME}>
+		<HeadlessMenu.Items
+			{...rest}
+			className={THEME_CLASSNAME}
+			ref={ref}
+		>
 			<motion.div
 				initial='closed'
 				animate='open'
@@ -50,6 +54,6 @@ const MenuItems = ({ styles, children, ...rest }: MenuItemsProps) => {
 			</motion.div>
 		</HeadlessMenu.Items>
 	);
-};
+});
 
 export default MenuItems;

@@ -24,7 +24,6 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.12",
-		"@headlessui/react": "^1.7.7",
 		"@rollup/plugin-typescript": "^8.2.1",
 		"@storybook/addon-actions": "^6.5.16",
 		"@storybook/addon-essentials": "^6.5.16",
@@ -61,6 +60,7 @@
 	},
 	"dependencies": {
 		"framer-motion": "^9.0.4",
-		"tailwind-merge": "^1.9.0"
+		"tailwind-merge": "^1.9.0",
+		"@headlessui/react": "^1.7.7"
 	}
 }

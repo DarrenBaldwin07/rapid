@@ -1,9 +1,8 @@
 import { Menu as HeadlessMenu } from '@headlessui/react';
-import { ComponentType } from 'react';
 import { HeadlessMenuTyped } from './Menu';
 import { RapidStyles } from '../../../utils';
+import type { ExtractProps } from '../../../types';
 
-type ExtractProps<T> = T extends ComponentType<infer P> ? P : T;
 type MenuItemType = ExtractProps<typeof HeadlessMenuTyped.Item>;
 
 // @ts-ignore

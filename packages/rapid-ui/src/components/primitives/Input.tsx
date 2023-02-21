@@ -8,7 +8,7 @@ export interface InputProps
 	extends React.InputHTMLAttributes<HTMLInputElement> {
 	styles?: string;
 	variant?: string;
-};
+}
 
 export const inputTheme = createVariant({
 	baseStyle:
@@ -16,7 +16,8 @@ export const inputTheme = createVariant({
 	variants: {
 		default: 'border border-lightGrey',
 		filled: 'bg-lightGrey focus:bg-white focus:border-main border border-transparent',
-		invalid: 'focus:shadow-invalid focus:border-danger border border-danger',
+		invalid:
+			'focus:shadow-invalid focus:border-danger border border-danger',
 		flushed:
 			'px-0 rounded-none border-b border-t-0 border-l-0 border-r-0 focus:outline-none focus:shadow-none',
 		unstyled:

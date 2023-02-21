@@ -135,11 +135,11 @@ importers:
       vite-tsconfig-paths: ^4.0.5
       vitest: ^0.18.0
     dependencies:
+      '@headlessui/react': 1.7.8_biqbaboplfbrettd7655fr4n2y
       framer-motion: 9.0.4_biqbaboplfbrettd7655fr4n2y
       tailwind-merge: 1.9.0
     devDependencies:
       '@babel/core': 7.20.12
-      '@headlessui/react': 1.7.8_biqbaboplfbrettd7655fr4n2y
       '@rollup/plugin-typescript': 8.5.0_bhcmvni67fkldpaxrtldxbogce
       '@storybook/addon-actions': 6.5.16_biqbaboplfbrettd7655fr4n2y
       '@storybook/addon-essentials': 6.5.16_ph4osieeu4cb2ekcn64bvaiypa
@@ -2040,7 +2040,7 @@ packages:
       client-only: 0.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: true
+    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
@@ -5848,7 +5848,7 @@ packages:
 
   /client-only/0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
-    dev: true
+    dev: false
 
   /cliui/7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}

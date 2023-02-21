@@ -27,7 +27,11 @@ const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
 			<h2
 				ref={ref}
 				{...rest}
-				className={RapidStyles(styles || rest.className, defaultStyles, THEME_CLASSNAME)}
+				className={RapidStyles(
+					styles || rest.className,
+					defaultStyles,
+					THEME_CLASSNAME,
+				)}
 			/>
 		);
 	},

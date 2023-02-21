@@ -1,5 +1,4 @@
-import { ThemeSchema } from './../../dist/theme/types.d';
-import { RapidUiThemeConfig, RapidTheme } from './types';
+import { RapidUiThemeConfig, RapidTheme, ThemeSchema } from './types';
 import { ClassValue } from '../types';
 import { RapidStyles, sanitizeClassNames } from '../utils';
 import generateVariants from './generateVariants';

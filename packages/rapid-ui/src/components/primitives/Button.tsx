@@ -17,9 +17,9 @@ export const buttomTheme = createVariant({
 		link: 'bg-transparent active:text-secondaryGrey focus:shadow-none',
 	},
 	sizes: {
-        default: "p-3",
-        sm: "py-3 px-2",
-        lg: "px-8 py-3",
+		default: 'p-3',
+		sm: 'py-3 px-2',
+		lg: 'px-8 py-3',
 	},
 	defaultProps: {
 		variant: 'default',

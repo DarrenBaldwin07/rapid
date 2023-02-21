@@ -33,6 +33,10 @@ const tailwindUtilities = {
 			},
 		},
 	},
+	select: {
+		'-moz-appearance': 'none',
+		'-webkit-appearance': 'none',
+	},
 };
 
 export default tailwindUtilities;

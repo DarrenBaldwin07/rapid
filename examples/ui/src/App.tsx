@@ -8,14 +8,16 @@ import {
 	MenuItem,
 	MenuItems,
 	Menu,
-	Textarea
+	Textarea,
+	Select,
+	Option
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faUser,
 	faGear,
 	faBook,
-	faPlus
+	faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 function App() {
@@ -39,54 +41,57 @@ function App() {
 				<MenuItems>
 					<MenuItem>
 						{({ active }: any) => (
-							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2`}>
+							<div
+								className={`${
+									active && 'bg-gray-100'
+								} flex items-center space-x-2 px-4 py-2`}
+							>
 								<FontAwesomeIcon icon={faUser} color='black' />
-								<a
-									href='/account-settings'
-								>
-									Profile
-								</a>
+								<a href='/account-settings'>Profile</a>
 							</div>
 						)}
 					</MenuItem>
 					<MenuItem>
 						{({ active }: any) => (
-							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2` }>
+							<div
+								className={`${
+									active && 'bg-gray-100'
+								} flex items-center space-x-2 px-4 py-2`}
+							>
 								<FontAwesomeIcon icon={faGear} color='black' />
-								<a
-									href='/account-settings'
-								>
-									Settings
-								</a>
+								<a href='/account-settings'>Settings</a>
 							</div>
 						)}
 					</MenuItem>
 					<MenuItem>
 						{({ active }: any) => (
-							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2`}>
+							<div
+								className={`${
+									active && 'bg-gray-100'
+								} flex items-center space-x-2 px-4 py-2`}
+							>
 								<FontAwesomeIcon icon={faBook} color='black' />
-								<a
-									href='/account-settings'
-								>
-									Documentation
-								</a>
+								<a href='/account-settings'>Documentation</a>
 							</div>
 						)}
 					</MenuItem>
 					<MenuItem>
 						{({ active }: any) => (
-							<div className={`${active && 'bg-gray-100'} flex items-center space-x-2 px-4 py-2`}>
+							<div
+								className={`${
+									active && 'bg-gray-100'
+								} flex items-center space-x-2 px-4 py-2`}
+							>
 								<FontAwesomeIcon icon={faPlus} color='black' />
-								<a
-									href='/account-settings'
-								>
-									New Post
-								</a>
+								<a href='/account-settings'>New Post</a>
 							</div>
 						)}
 					</MenuItem>
 				</MenuItems>
 			</Menu>
+			<Select variant='filled'>
+				<Option value='Test'>Test</Option>
+			</Select>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-import { buttomTheme, inputTheme, menuButtonTheme, textAreaTheme } from '../components';
+import { buttomTheme, inputTheme, menuButtonTheme, textAreaTheme, selectTheme } from '../components';
 import { createTheme } from './createTheme';
 
 const theme = createTheme({
@@ -6,6 +6,7 @@ const theme = createTheme({
 	input: inputTheme,
 	textArea: textAreaTheme,
 	menuButton: menuButtonTheme,
+	select: selectTheme,
 });
 
 export default theme;

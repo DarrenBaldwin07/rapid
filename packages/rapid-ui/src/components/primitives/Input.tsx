@@ -8,7 +8,7 @@ export interface InputProps
 	extends React.InputHTMLAttributes<HTMLInputElement> {
 	styles?: string;
 	variant?: string;
-}
+};
 
 export const inputTheme = createVariant({
 	baseStyle:

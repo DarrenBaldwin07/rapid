@@ -5,6 +5,7 @@ import type { ExtractProps } from '../../../types';
 
 type MenuItemType = ExtractProps<typeof HeadlessMenuTyped.Item>;
 
+// TODO: fix this
 // @ts-ignore
 interface MenuItemProps extends MenuItemType {
 	styles?: string;

@@ -6,7 +6,7 @@ const THEME_CLASSNAME = 'rapid-menu';
 
 interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
 	styles?: string;
-}
+};
 
 export const HeadlessMenuTyped = Object.assign(HeadlessMenu, {
 	Item: HeadlessMenu.Item,

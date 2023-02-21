@@ -20,7 +20,7 @@ export interface VariantOutput {
  * A very simple RapidUI helper for structuring a rapid theme object
  *
  * @param config RapidUiThemeConfig
- * @returns A HTML valid className
+ * @returns A rapid theme function
  *
  * @beta
  */
@@ -69,6 +69,14 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 					'.rapid-menu-button',
 				);
 				classNames.push(...menuButtonStyles);
+				break;
+			case 'select':
+				const typedSelectTheme = theme[key] as unknown as VariantOutput;
+				const selectStyles = generateVariants(
+					typedSelectTheme,
+					'.rapid-select',
+				);
+				classNames.push(...selectStyles);
 				break;
 		}
 	}

@@ -89,7 +89,7 @@ function App() {
 					</MenuItem>
 				</MenuItems>
 			</Menu>
-			<Select variant='filled'>
+			<Select styles='w-56'>
 				<Option value='Test'>Test</Option>
 			</Select>
 		</div>

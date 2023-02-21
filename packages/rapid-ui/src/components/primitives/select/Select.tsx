@@ -23,7 +23,7 @@ export const selectTheme = createVariant({
 		default: 'border border-lightGrey',
 		filled: 'bg-lightGrey focus-within:bg-white focus-within:border-main border border-transparent',
 		invalid:
-			'focus:shadow-invalid focus-within:border-danger border border-danger',
+			'focus-within:shadow-invalid focus-within:border-danger border border-danger',
 		flushed:
 			'px-0 rounded-none border-b border-t-0 border-l-0 border-r-0 focus-within:outline-none focus-within:shadow-none',
 		unstyled:

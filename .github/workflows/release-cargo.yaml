@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Publish crates to crates.io
+
+jobs:
+  publish-rapid-web:
+    name: Publish Rapid-web crate to crates.io
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./crates/rapid-web
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - run: cargo publish --token ${CRATES_TOKEN}
+        env:
+          CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}

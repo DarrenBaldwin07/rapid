@@ -15,7 +15,15 @@ impl RapidCommand for  New {
         .about("Create a new rust-clap-cli project at <path>")
         .arg(
             arg!(
-                -full --fullstack "Sets a custom config file"
+                -full --fullstack "Scaffolds a fullstack rapid project!"
+            )
+            .required(false)
+            .action(ArgAction::SetTrue)
+            .value_parser(value_parser!(PathBuf)),
+        )
+        .arg(
+            arg!(
+                -server "Scaffolds a server-side only rapid project!"
             )
             .required(false)
             .action(ArgAction::SetTrue)

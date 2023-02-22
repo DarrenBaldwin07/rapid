@@ -6,7 +6,7 @@ description = "A simple Rust server for the Rapid framework."
 repository = "https://github.com/DarrenBaldwin07/rapid"
 homepage = "https://cincinnati.ventures"
 license = "MIT"
-
+keywords = ["server", "web-framework", "rapid"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

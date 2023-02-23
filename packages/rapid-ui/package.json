@@ -59,8 +59,8 @@
 		"react-dom": ">=18.2.0"
 	},
 	"dependencies": {
+		"@headlessui/react": "^1.7.11",
 		"framer-motion": "^9.0.4",
-		"tailwind-merge": "^1.9.0",
-		"@headlessui/react": "^1.7.11"
+		"tailwind-merge": "^1.9.0"
 	}
 }

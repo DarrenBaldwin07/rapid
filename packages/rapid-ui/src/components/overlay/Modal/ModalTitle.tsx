@@ -10,9 +10,10 @@ interface ModalTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 const ModalTitle = React.forwardRef<React.ElementRef<typeof HeadlessModalTyped.Title>, ModalTitleProps>(({ styles,...rest}, ref) => {
+  const defaultTitleStyles = 'text-lg font-bold';
   return (
     <HeadlessModalTyped.Title
-        className={RapidStyles(styles || rest.className, RAPID_CLASSNAME)}
+        className={RapidStyles(styles || rest.className, defaultTitleStyles, RAPID_CLASSNAME)}
         {...rest}
         ref={ref}
     />

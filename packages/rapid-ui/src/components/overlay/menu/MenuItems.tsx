@@ -3,10 +3,11 @@ import React from 'react';
 import { RapidStyles } from '../../../utils';
 import { motion, Variants, HTMLMotionProps } from 'framer-motion';
 
-const THEME_CLASSNAME = 'rapid-menu-items';
+const RAPID_CLASSNAME = 'rapid-menu-items';
 
 interface MenuItemsProps extends React.HTMLAttributes<HTMLDivElement> {
 	styles?: string;
+	wrapperStyles?: string;
 }
 
 // Framer-motion animation variants
@@ -33,14 +34,18 @@ export const fadeConfig: HTMLMotionProps<'div'> = {
 	variants: variants as Variants,
 };
 
-const MenuItems = React.forwardRef<HTMLDivElement, MenuItemsProps>(
-	({ styles, children, ...rest }, ref) => {
+const MenuItems = React.forwardRef<React.ElementRef<typeof HeadlessMenu.Items>, MenuItemsProps>(
+	({ styles, children, wrapperStyles, ...rest }, ref) => {
 		// Simple default styles for the menu items
 		const defaultStyles =
-			'bg-white transition transform origin-top-left border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-48';
+			'bg-white transition transform border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-56';
 
 		return (
-			<HeadlessMenu.Items {...rest} className={THEME_CLASSNAME} ref={ref}>
+			<HeadlessMenu.Items
+				{...rest}
+				className={RapidStyles(wrapperStyles, RAPID_CLASSNAME)}
+				ref={ref}
+			>
 				<motion.div
 					initial='closed'
 					animate='open'
@@ -49,6 +54,7 @@ const MenuItems = React.forwardRef<HTMLDivElement, MenuItemsProps>(
 						defaultStyles,
 					)}
 					{...fadeConfig}
+
 				>
 					{children}
 				</motion.div>

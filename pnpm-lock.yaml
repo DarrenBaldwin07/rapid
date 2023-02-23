@@ -102,7 +102,7 @@ importers:
   packages/rapid-ui:
     specifiers:
       '@babel/core': ^7.20.12
-      '@headlessui/react': ^1.7.7
+      '@headlessui/react': ^1.7.11
       '@rollup/plugin-typescript': ^8.2.1
       '@storybook/addon-actions': ^6.5.16
       '@storybook/addon-essentials': ^6.5.16
@@ -135,7 +135,7 @@ importers:
       vite-tsconfig-paths: ^4.0.5
       vitest: ^0.18.0
     dependencies:
-      '@headlessui/react': 1.7.8_biqbaboplfbrettd7655fr4n2y
+      '@headlessui/react': 1.7.11_biqbaboplfbrettd7655fr4n2y
       framer-motion: 9.0.4_biqbaboplfbrettd7655fr4n2y
       tailwind-merge: 1.9.0
     devDependencies:
@@ -2030,8 +2030,8 @@ packages:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
     dev: true
 
-  /@headlessui/react/1.7.8_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-zcwb0kd7L05hxmoAMIioEaOn235Dg0fUO+iGbLPgLVSjzl/l39V6DTpC2Df49PE5aG5/f5q0PZ9ZHZ78ENNV+A==}
+  /@headlessui/react/1.7.11_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-EaDbVgcyiylhtskZZf4Qb/JiiByY7cYbd0qgZ9xm2pm2X7hKojG0P4TaQYKgPOV3vojPhd/pZyQh3nmRkkcSyw==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16 || ^17 || ^18

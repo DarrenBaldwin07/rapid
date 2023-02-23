@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	Button,
 	VStack,
@@ -10,7 +11,13 @@ import {
 	Menu,
 	Textarea,
 	Select,
-	Option
+	Option,
+	Modal,
+	ModalDescription,
+	ModalOverlay,
+	ModalContent,
+	ModalTitle,
+	Text
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -21,6 +28,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 function App() {
+	const [isOpen, setIsOpen] = useState(false)
 	return (
 		<div className='flex flex-col align-center justify-center w-screen h-screen p-12'>
 			<div>
@@ -38,7 +46,7 @@ function App() {
 			</div>
 			<Menu>
 				<MenuButton variant='outline'>More</MenuButton>
-				<MenuItems>
+				<MenuItems wrapperStyles='origin-top-right'>
 					<MenuItem>
 						{({ active }: any) => (
 							<div
@@ -92,6 +100,21 @@ function App() {
 			<Select styles='w-56'>
 				<Option value='Test'>Test</Option>
 			</Select>
+			<Button styles='w-max' onClick={() => setIsOpen(true)}>Open Modal</Button>
+			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalTitle>Deactivate account</ModalTitle>
+
+					<Text styles='mt-2 text-secondaryGrey'>
+						Are you sure you want to deactivate your account? All of your data
+						will be permanently removed. This action cannot be undone.
+					</Text>
+
+					<Button styles='mt-4 mr-2' onClick={() => setIsOpen(false)}>Deactivate</Button>
+					<Button styles='mt-4' variant='outline' onClick={() => setIsOpen(false)}>Cancel</Button>
+				</ModalContent>
+			</Modal>
 		</div>
 	);
 }

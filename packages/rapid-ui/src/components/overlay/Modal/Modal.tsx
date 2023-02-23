@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import { RapidStyles } from '../../../utils';
 import { Dialog } from '@headlessui/react';
 
@@ -12,6 +12,9 @@ interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     styles?: string;
     open: boolean;
     onClose: () => void;
+    initialFocus?: React.MutableRefObject<HTMLElement>;
+    as?: ElementType<any>;
+    static?: boolean;
 };
 
 export const HeadlessModalTyped = Object.assign(Dialog, {
@@ -22,6 +25,7 @@ export const HeadlessModalTyped = Object.assign(Dialog, {
 
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(({ styles, ...rest }, ref) => {
+
     return (
         <Dialog
             className={RapidStyles(styles || rest.className, RAPID_CLASSNAME)}

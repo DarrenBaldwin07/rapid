@@ -21,4 +21,6 @@ const ModalTitle = React.forwardRef<React.ElementRef<typeof HeadlessModalTyped.T
   )
 })
 
+ModalTitle.displayName = 'ModalTitle';
+
 export default ModalTitle

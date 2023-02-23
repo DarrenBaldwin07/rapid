@@ -27,4 +27,6 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof HeadlessModalTyped
   )
 })
 
+ModalContent.displayName = 'ModalContent';
+
 export default ModalContent

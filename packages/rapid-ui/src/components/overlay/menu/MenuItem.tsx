@@ -27,4 +27,6 @@ const MenuItem = ({
 	);
 };
 
+MenuItem.displayName = 'MenuItem';
+
 export default MenuItem;

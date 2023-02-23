@@ -18,4 +18,6 @@ const ModalDescription = React.forwardRef<React.ElementRef<typeof HeadlessModalT
   )
 })
 
+ModalDescription.displayName = 'ModalDescription';
+
 export default ModalDescription

@@ -3,24 +3,21 @@ import { motion, Variants, HTMLMotionProps, MotionProps } from 'framer-motion';
 import { RapidStyles } from '../../utils';
 
 interface ScaleFadeProps extends MotionProps {
-    initialScale?: number;
     styles?: string;
 }
 
-const RAPID_CLASSNAME = 'rapid-scale-fade';
+const RAPID_CLASSNAME = 'rapid-fade';
 
-const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(({ styles,...rest }, ref) => {
+const Fade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(({ styles,...rest }, ref) => {
     // Framer-motion animation variants
     const variants: Variants = {
         enter: ({ transition, transitionEnd } = {}) => ({
             opacity: 1,
-            scale: 1,
             transition: transition?.enter,
             transitionEnd: transitionEnd?.enter,
         }),
         exit: ({ transition, transitionEnd } = {}) => ({
             opacity: 0,
-            scale: rest.initialScale || 0.95,
             transition: transition?.exit,
             transitionEnd: transitionEnd?.exit,
         }),
@@ -44,8 +41,8 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(({ styles,...
             className={RapidStyles(styles, RAPID_CLASSNAME)}
         />
     )
-});
+})
 
-ScaleFade.displayName = 'ScaleFade';
+Fade.displayName = 'Fade';
 
-export default ScaleFade
+export default Fade;

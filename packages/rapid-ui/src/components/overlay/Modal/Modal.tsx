@@ -36,5 +36,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(({ styles, ...rest },
 });
 
 
+Modal.displayName = 'Modal';
+
 
 export default Modal;

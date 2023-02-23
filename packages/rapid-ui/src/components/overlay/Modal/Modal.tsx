@@ -1,14 +1,12 @@
 import React from 'react';
 import { RapidStyles } from '../../../utils';
 import { Dialog } from '@headlessui/react';
-import { ExtractProps } from '../../../types';
 
-// TODO: HeadlessUI still does not export component prop types -- later on we want to clean this up!
+
+// TODO: HeadlessUI still does not export component prop types -- later on we want to clean this up once they do!
 // See this issue: https://github.com/tailwindlabs/headlessui/issues/1394
 
-const THEME_CLASSNAME = 'rapid-modal';
-
-type ModalPropsTest = ExtractProps<typeof HeadlessModalTyped>;
+const RAPID_CLASSNAME = 'rapid-modal';
 
 interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     styles?: string;
@@ -23,11 +21,10 @@ export const HeadlessModalTyped = Object.assign(Dialog, {
 });
 
 
-
-const Modal = React.forwardRef<HTMLDivElement, ModalPropsTest>(({ styles, ...rest }, ref) => {
+const Modal = React.forwardRef<HTMLDivElement, ModalProps>(({ styles, ...rest }, ref) => {
     return (
         <Dialog
-            className={RapidStyles(styles || rest.className, THEME_CLASSNAME)}
+            className={RapidStyles(styles || rest.className, RAPID_CLASSNAME)}
             {...rest}
             ref={ref}
         />

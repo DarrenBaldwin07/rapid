@@ -4,12 +4,13 @@ import { RapidStyles } from '../../utils';
 
 interface ScaleFadeProps extends MotionProps {
     initialScale?: number;
+    initialOpacity?: number;
     styles?: string;
 }
 
 const RAPID_CLASSNAME = 'rapid-scale-fade';
 
-const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(({ styles,...rest }, ref) => {
+const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(({ styles, initialOpacity,...rest }, ref) => {
     // Framer-motion animation variants
     const variants: Variants = {
         enter: ({ transition, transitionEnd } = {}) => ({
@@ -19,7 +20,7 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(({ styles,...
             transitionEnd: transitionEnd?.enter,
         }),
         exit: ({ transition, transitionEnd } = {}) => ({
-            opacity: 0,
+            opacity: initialOpacity || 0,
             scale: rest.initialScale || 0.95,
             transition: transition?.exit,
             transitionEnd: transitionEnd?.exit,

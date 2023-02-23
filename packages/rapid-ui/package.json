@@ -61,6 +61,6 @@
 	"dependencies": {
 		"framer-motion": "^9.0.4",
 		"tailwind-merge": "^1.9.0",
-		"@headlessui/react": "^1.7.7"
+		"@headlessui/react": "^1.7.11"
 	}
 }

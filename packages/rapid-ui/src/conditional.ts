@@ -3,6 +3,9 @@ interface ConditionalClassName {
 	classNames: string;
 }
 
+/**
+ * `classNames` is a Rapid helper for easily adding conditional TailwindCSS styles to your components (very similar to Clsx: https://github.com/lukeed/clsx)
+ */
 // Simple helper function for adding conditional styles with tailwindCSS
 function classNames(...classNames: Array<string | ConditionalClassName>) {
 	return classNames

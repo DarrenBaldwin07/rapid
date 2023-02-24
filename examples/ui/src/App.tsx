@@ -4,7 +4,6 @@ import {
 	VStack,
 	Spinner,
 	Input,
-	Heading,
 	MenuButton,
 	MenuItem,
 	MenuItems,
@@ -13,7 +12,6 @@ import {
 	Select,
 	Option,
 	Modal,
-	ModalDescription,
 	ModalOverlay,
 	ModalContent,
 	ModalTitle,
@@ -28,7 +26,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 function App() {
-	const [isOpen, setIsOpen] = useState(false)
+	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<div className='flex flex-col align-center justify-center w-screen h-screen p-12'>
 			<div>
@@ -39,7 +37,7 @@ function App() {
 				</VStack>
 				<Button variant='destructive'>Hello world</Button>
 				<Spinner size='md' />
-				<Input variant='filled' />
+				<Input />
 			</div>
 			<div className='mt-12'>
 				<Textarea />
@@ -48,52 +46,36 @@ function App() {
 				<MenuButton variant='outline'>More</MenuButton>
 				<MenuItems wrapperStyles='origin-top-right'>
 					<MenuItem>
-						{({ active }: any) => (
-							<div
-								className={`${
-									active && 'bg-gray-100'
-								} flex items-center space-x-2 px-4 py-2`}
-							>
-								<FontAwesomeIcon icon={faUser} color='black' />
-								<a href='/account-settings'>Profile</a>
-							</div>
-						)}
+						<div
+							className={'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'}
+						>
+							<FontAwesomeIcon icon={faUser} color='black' />
+							<a href='/account-settings'>Profile</a>
+						</div>
 					</MenuItem>
 					<MenuItem>
-						{({ active }: any) => (
-							<div
-								className={`${
-									active && 'bg-gray-100'
-								} flex items-center space-x-2 px-4 py-2`}
-							>
-								<FontAwesomeIcon icon={faGear} color='black' />
-								<a href='/account-settings'>Settings</a>
-							</div>
-						)}
+						<div
+							className={'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'}
+						>
+							<FontAwesomeIcon icon={faGear} color='black' />
+							<a href='/account-settings'>Settings</a>
+						</div>
 					</MenuItem>
 					<MenuItem>
-						{({ active }: any) => (
-							<div
-								className={`${
-									active && 'bg-gray-100'
-								} flex items-center space-x-2 px-4 py-2`}
-							>
-								<FontAwesomeIcon icon={faBook} color='black' />
-								<a href='/account-settings'>Documentation</a>
-							</div>
-						)}
+						<div
+							className={'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'}
+						>
+							<FontAwesomeIcon icon={faBook} color='black' />
+							<a href='/account-settings'>Documentation</a>
+						</div>
 					</MenuItem>
 					<MenuItem>
-						{({ active }: any) => (
-							<div
-								className={`${
-									active && 'bg-gray-100'
-								} flex items-center space-x-2 px-4 py-2`}
-							>
-								<FontAwesomeIcon icon={faPlus} color='black' />
-								<a href='/account-settings'>New Post</a>
-							</div>
-						)}
+						<div
+							className={'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'}
+						>
+							<FontAwesomeIcon icon={faPlus} color='black' />
+							<a href='/account-settings'>New Post</a>
+						</div>
 					</MenuItem>
 				</MenuItems>
 			</Menu>

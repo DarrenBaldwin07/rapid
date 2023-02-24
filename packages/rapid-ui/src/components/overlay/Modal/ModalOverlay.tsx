@@ -9,7 +9,7 @@ interface ModalOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
 };
 
 const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(({ styles, ...rest }, ref) => {
-  const defaultOverlayStyles = 'fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm';
+  const defaultOverlayStyles = 'fixed inset-0 bg-black bg-opacity-50';
   return (
     <Fade initialOpacity={0.75}>
       <div
@@ -20,8 +20,8 @@ const ModalOverlay = React.forwardRef<HTMLDivElement, ModalOverlayProps>(({ styl
       />
     </Fade>
   )
-})
+});
 
 ModalOverlay.displayName = 'ModalOverlay';
 
-export default ModalOverlay
+export default ModalOverlay;

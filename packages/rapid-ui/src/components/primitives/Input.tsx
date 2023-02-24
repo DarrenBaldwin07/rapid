@@ -16,6 +16,7 @@ export const inputTheme = createVariant({
 	variants: {
 		default: 'border border-lightGrey',
 		filled: 'bg-lightGrey focus:bg-white focus:border-main border border-transparent',
+		faded: 'bg-hoverWhite border-lightGrey focus:border-main border',
 		invalid:
 			'focus:shadow-invalid focus:border-danger border border-danger',
 		flushed:

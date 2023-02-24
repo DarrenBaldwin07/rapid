@@ -86,13 +86,11 @@ function App() {
 			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalTitle>Deactivate account</ModalTitle>
+					<ModalTitle>Delete Account</ModalTitle>
 
 					<Text styles='mt-2 text-secondaryGrey'>
-						Are you sure you want to deactivate your account? All of your data
-						will be permanently removed. This action cannot be undone.
+						Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.
 					</Text>
-
 					<Button styles='mt-4 mr-2' onClick={() => setIsOpen(false)}>Deactivate</Button>
 					<Button styles='mt-4' variant='outline' onClick={() => setIsOpen(false)}>Cancel</Button>
 				</ModalContent>

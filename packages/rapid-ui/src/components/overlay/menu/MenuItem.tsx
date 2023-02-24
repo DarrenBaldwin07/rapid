@@ -21,7 +21,11 @@ const MenuItem = ({
 		'p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer';
 	return (
 		<HeadlessMenu.Item
-			className={RapidStyles(styles || rest.className, defaultStyles, RAPID_CLASSNAME)}
+			className={RapidStyles(
+				styles || rest.className,
+				defaultStyles,
+				RAPID_CLASSNAME,
+			)}
 			{...rest}
 		/>
 	);

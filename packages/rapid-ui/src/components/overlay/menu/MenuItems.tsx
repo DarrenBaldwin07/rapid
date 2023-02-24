@@ -11,31 +11,28 @@ interface MenuItemsProps extends React.HTMLAttributes<HTMLDivElement> {
 	wrapperStyles?: string;
 }
 
+const MenuItems = React.forwardRef<
+	React.ElementRef<typeof HeadlessMenu.Items>,
+	MenuItemsProps
+>(({ styles, children, wrapperStyles, ...rest }, ref) => {
+	// Simple default styles for the menu items
+	const defaultStyles =
+		'bg-white transition transform border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-56';
 
-const MenuItems = React.forwardRef<React.ElementRef<typeof HeadlessMenu.Items>, MenuItemsProps>(
-	({ styles, children, wrapperStyles, ...rest }, ref) => {
-		// Simple default styles for the menu items
-		const defaultStyles =
-			'bg-white transition transform border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-56';
-
-		return (
-			<HeadlessMenu.Items
-				{...rest}
-				className={RapidStyles(wrapperStyles, RAPID_CLASSNAME)}
-				ref={ref}
+	return (
+		<HeadlessMenu.Items
+			{...rest}
+			className={RapidStyles(wrapperStyles, RAPID_CLASSNAME)}
+			ref={ref}
+		>
+			<ScaleFade
+				styles={RapidStyles(styles || rest.className, defaultStyles)}
 			>
-				<ScaleFade
-					styles={RapidStyles(
-						styles || rest.className,
-						defaultStyles,
-					)}
-				>
-					{children}
-				</ScaleFade>
-			</HeadlessMenu.Items>
-		);
-	},
-);
+				{children}
+			</ScaleFade>
+		</HeadlessMenu.Items>
+	);
+});
 
 MenuItems.displayName = 'MenuItems';
 

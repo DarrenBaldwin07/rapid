@@ -78,7 +78,10 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 				<select
 					ref={ref}
 					{...rest}
-					className={RapidStyles(selectStyles || defaultSelectStyles, 'rapid-select-child')}
+					className={RapidStyles(
+						selectStyles || defaultSelectStyles,
+						'rapid-select-child',
+					)}
 				>
 					{placeholder && <Option value=''>{placeholder}</Option>}
 					{children}

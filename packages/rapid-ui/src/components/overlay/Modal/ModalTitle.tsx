@@ -6,21 +6,27 @@ import { HeadlessModalTyped } from './Modal';
 const RAPID_CLASSNAME = 'rapid-modal-title';
 
 interface ModalTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-    styles?: string;
+	styles?: string;
 }
 
-const ModalTitle = React.forwardRef<React.ElementRef<typeof HeadlessModalTyped.Title>, ModalTitleProps>(({ styles,...rest}, ref) => {
-  const defaultTitleStyles = 'text-lg font-bold';
-  return (
-    <HeadlessModalTyped.Title
-        className={RapidStyles(styles || rest.className, defaultTitleStyles, RAPID_CLASSNAME)}
-        {...rest}
-        ref={ref}
-    />
-
-  )
-})
+const ModalTitle = React.forwardRef<
+	React.ElementRef<typeof HeadlessModalTyped.Title>,
+	ModalTitleProps
+>(({ styles, ...rest }, ref) => {
+	const defaultTitleStyles = 'text-lg font-bold';
+	return (
+		<HeadlessModalTyped.Title
+			className={RapidStyles(
+				styles || rest.className,
+				defaultTitleStyles,
+				RAPID_CLASSNAME,
+			)}
+			{...rest}
+			ref={ref}
+		/>
+	);
+});
 
 ModalTitle.displayName = 'ModalTitle';
 
-export default ModalTitle
+export default ModalTitle;

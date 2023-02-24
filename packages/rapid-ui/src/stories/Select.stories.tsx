@@ -10,9 +10,9 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Select> = (_: any) => (
-    <Select styles='w-56'>
-        <Option value='Test'>Test</Option>
-    </Select>
+	<Select styles='w-56'>
+		<Option value='Test'>Test</Option>
+	</Select>
 );
 
 export const Primary = Template.bind({});

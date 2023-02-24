@@ -19,7 +19,8 @@ export const textAreaTheme = createVariant({
 		faded: 'bg-hoverWhite border-lightGrey focus:border-main border',
 		invalid:
 			'focus:shadow-invalid focus:border-danger border border-danger border border-transparent',
-		unstyled: 'border-none rounded-none px-0 focus:outline-none focus:shadow-none',
+		unstyled:
+			'border-none rounded-none px-0 focus:outline-none focus:shadow-none',
 	},
 	defaultProps: {
 		variant: 'default',

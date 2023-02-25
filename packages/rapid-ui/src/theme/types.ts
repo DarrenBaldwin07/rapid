@@ -42,4 +42,5 @@ export interface RapidTheme {
 	textArea?: VariantOutput;
 	menuButton?: VariantOutput;
 	select: VariantOutput;
+	tooltip: VariantOutput;
 }

@@ -16,6 +16,7 @@ import {
 	ModalContent,
 	ModalTitle,
 	Text,
+	Tooltip,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -35,7 +36,9 @@ function App() {
 					<h1>Hello world</h1>
 					<h1>Hello world</h1>
 				</VStack>
-				<Button variant='destructive'>Hello world</Button>
+				<Tooltip label='Hello from tooltip'>
+					<Button variant='destructive'>Hello world</Button>
+				</Tooltip>
 				<Spinner size='md' />
 				<Input />
 			</div>
@@ -105,7 +108,7 @@ function App() {
 					</Text>
 					<div className='self-end'>
 						<Button
-							styles='mt-4'
+							styles='mt-4 mr-2'
 							variant='outline'
 							onClick={() => setIsOpen(false)}
 						>

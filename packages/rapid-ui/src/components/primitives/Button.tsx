@@ -23,6 +23,7 @@ export const buttomTheme = createVariant({
 	},
 	defaultProps: {
 		variant: 'default',
+		size: 'default',
 	},
 });
 

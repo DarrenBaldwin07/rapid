@@ -26,3 +26,19 @@ export function getValidReactChildren(children: React.ReactNode) {
 		isValidElement(child),
 	) as React.ReactElement[];
 }
+
+export const getVariantClassName = (
+	variant: string | undefined,
+	component: string,
+	size?: string,
+) => {
+	const classNames = [];
+	if (size) classNames.push(`rapid-${component}-${size}`);
+	if (variant) classNames.push(`rapid-${component}-${variant}`);
+
+	if (classNames.length > 0) {
+		return classNames.join(' ');
+	} else {
+		return undefined;
+	}
+};

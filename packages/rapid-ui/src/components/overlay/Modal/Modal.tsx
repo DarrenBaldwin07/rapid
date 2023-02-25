@@ -16,12 +16,6 @@ interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
 	static?: boolean;
 }
 
-export const HeadlessModalTyped = Object.assign(Dialog, {
-	Title: Dialog.Title,
-	Description: Dialog.Description,
-	Panel: Dialog.Panel,
-});
-
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
 	({ styles, ...rest }, ref) => {
 		return (

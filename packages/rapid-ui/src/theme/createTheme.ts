@@ -77,6 +77,16 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 				);
 				classNames.push(...selectStyles);
 				break;
+			case 'tooltip':
+				const typedTooltipTheme = theme[
+					key
+				] as unknown as VariantOutput;
+				const tooltipStyles = generateVariants(
+					typedTooltipTheme,
+					'.rapid-tooltip',
+				);
+				classNames.push(...tooltipStyles);
+				break;
 		}
 	}
 

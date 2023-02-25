@@ -4,6 +4,7 @@ import {
 	menuButtonTheme,
 	textAreaTheme,
 	selectTheme,
+	tooltipTheme,
 } from '../components';
 import { createTheme } from './createTheme';
 
@@ -13,6 +14,7 @@ const theme = createTheme({
 	textArea: textAreaTheme,
 	menuButton: menuButtonTheme,
 	select: selectTheme,
+	tooltip: tooltipTheme,
 });
 
 export default theme;

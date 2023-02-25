@@ -1,6 +1,6 @@
 import React from 'react';
 import { RapidStyles } from '../../../utils';
-import { HeadlessModalTyped } from './Modal';
+import { Dialog as HeadlessModal } from '@headlessui/react';
 import { ScaleFade } from '../../transition';
 
 const RAPID_CLASSNAME = 'rapid-modal-content';
@@ -11,7 +11,7 @@ interface ModalContentProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const ModalContent = React.forwardRef<
-	React.ElementRef<typeof HeadlessModalTyped.Panel>,
+	React.ElementRef<typeof HeadlessModal>,
 	ModalContentProps
 >(({ styles, containerStyles, ...rest }, ref) => {
 	const defaultPanelStyles =
@@ -26,7 +26,7 @@ const ModalContent = React.forwardRef<
 			)}
 		>
 			<ScaleFade>
-				<HeadlessModalTyped.Panel
+				<HeadlessModal.Panel
 					className={RapidStyles(
 						styles || rest.className,
 						defaultPanelStyles,

@@ -5,12 +5,13 @@ import { RapidStyles } from '../../utils';
 interface ScaleFadeProps extends MotionProps {
 	styles?: string;
 	initialOpacity?: number;
+	isEnabled?: boolean;
 }
 
 const RAPID_CLASSNAME = 'rapid-fade';
 
 const Fade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
-	({ styles, initialOpacity, ...rest }, ref) => {
+	({ styles, initialOpacity, isEnabled, ...rest }, ref) => {
 		// Framer-motion animation variants
 		const variants: Variants = {
 			enter: ({ transition, transitionEnd } = {}) => ({
@@ -33,10 +34,11 @@ const Fade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 			variants: variants as Variants,
 		};
 
+		// Return nothing if the consumer did not want to enable the animation
+		if (isEnabled === false) return null;
+
 		return (
 			<motion.div
-				initial='closed'
-				animate='open'
 				{...rest}
 				{...fadeConfig}
 				ref={ref}

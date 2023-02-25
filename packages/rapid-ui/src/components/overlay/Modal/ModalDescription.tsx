@@ -1,6 +1,6 @@
 import React from 'react';
 import { RapidStyles } from '../../../utils';
-import { HeadlessModalTyped } from './Modal';
+import { Dialog as HeadlessModal } from '@headlessui/react';
 
 const RAPID_CLASSNAME = 'rapid-modal-description';
 
@@ -9,11 +9,11 @@ interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const ModalDescription = React.forwardRef<
-	React.ElementRef<typeof HeadlessModalTyped.Description>,
+	React.ElementRef<typeof HeadlessModal.Description>,
 	ModalBodyProps
 >(({ styles, ...rest }, ref) => {
 	return (
-		<HeadlessModalTyped.Description
+		<HeadlessModal.Description
 			className={RapidStyles(styles || rest.className, RAPID_CLASSNAME)}
 			{...rest}
 			ref={ref}

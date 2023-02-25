@@ -6,12 +6,23 @@ interface ScaleFadeProps extends MotionProps {
 	initialScale?: number;
 	initialOpacity?: number;
 	styles?: string;
+	exitAnimation?: 'exit' | 'initial';
+	isEnabled?: boolean;
 }
 
 const RAPID_CLASSNAME = 'rapid-scale-fade';
 
 const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
-	({ styles, initialOpacity, ...rest }, ref) => {
+	(
+		{
+			styles,
+			initialOpacity,
+			exitAnimation = 'initial',
+			isEnabled,
+			...rest
+		},
+		ref,
+	) => {
 		// Framer-motion animation variants
 		const variants: Variants = {
 			enter: ({ transition, transitionEnd } = {}) => ({
@@ -20,8 +31,13 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 				transition: transition?.enter,
 				transitionEnd: transitionEnd?.enter,
 			}),
-			exit: ({ transition, transitionEnd } = {}) => ({
+			initial: ({ transition, transitionEnd } = {}) => ({
 				opacity: initialOpacity || 0,
+				scale: rest.initialScale || 0.95,
+				transition: transition?.exit,
+				transitionEnd: transitionEnd?.exit,
+			}),
+			exit: ({ transition, transitionEnd } = {}) => ({
 				scale: rest.initialScale || 0.95,
 				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,
@@ -30,16 +46,17 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 
 		// The animation config that pass as props to a <motion.div />
 		const fadeConfig: HTMLMotionProps<'div'> = {
-			initial: 'exit',
+			initial: 'initial',
 			animate: 'enter',
-			exit: 'exit',
+			exit: exitAnimation,
 			variants: variants as Variants,
 		};
 
+		// Return nothing if the consumer did not want to enable the animation
+		if (isEnabled === false) return null;
+
 		return (
 			<motion.div
-				initial='closed'
-				animate='open'
 				{...rest}
 				{...fadeConfig}
 				ref={ref}

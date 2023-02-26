@@ -169,7 +169,7 @@ const Tooltip = (props: TooltipProps) => {
 								className={RapidStyles(
 									styles || rest.className,
 									getVariantClassName(variant, 'tooltip') ||
-									THEME_CLASSNAME
+										THEME_CLASSNAME,
 								)}
 							>
 								<Text styles='text-sm'>{label}</Text>

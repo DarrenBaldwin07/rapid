@@ -10,10 +10,9 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Tooltip> = (_: any) => (
-    <Tooltip label='Hello from the tooltip!'>
-        <Button>Hello World!</Button>
-    </Tooltip>
-
+	<Tooltip label='Hello from the tooltip!' orientation='bottom'>
+		<Button>Hello World!</Button>
+	</Tooltip>
 );
 
 export const Primary = Template.bind({});

@@ -7,7 +7,7 @@ interface ConditionalClassName {
  * `classNames` is a Rapid helper for easily adding conditional TailwindCSS styles to your components (very similar to Clsx: https://github.com/lukeed/clsx)
  */
 // Simple helper function for adding conditional styles with tailwindCSS
-function classNames(...classNames: Array<string | ConditionalClassName>) {
+function styles(...classNames: Array<string | ConditionalClassName>) {
 	return classNames
 		.reduce<Array<string | ConditionalClassName>>(
 			(
@@ -35,4 +35,4 @@ function classNames(...classNames: Array<string | ConditionalClassName>) {
 		.join(' '); // sanitize all the classNames by adding a space between each one
 }
 
-export default classNames;
+export default styles;

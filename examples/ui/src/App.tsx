@@ -17,6 +17,7 @@ import {
 	ModalTitle,
 	Text,
 	Tooltip,
+	Switch
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -28,6 +29,7 @@ import {
 import './index.css';
 function App() {
 	const [isOpen, setIsOpen] = useState(false);
+	const [isEnabled, setIsEnabled] = useState(false);
 	return (
 		<div className='flex flex-col align-center justify-center w-screen h-screen p-12'>
 			<div>
@@ -37,9 +39,9 @@ function App() {
 					<h1>Hello world</h1>
 				</VStack>
 				<Tooltip label='Hello from tooltip'>
-					<Button variant='destructive'>Hello world</Button>
+					<Button>Hello world</Button>
 				</Tooltip>
-				<Spinner size='md' />
+				<Spinner size='sm' />
 				<Input />
 			</div>
 			<div className='mt-12'>
@@ -120,6 +122,7 @@ function App() {
 					</div>
 				</ModalContent>
 			</Modal>
+			<Switch enabled={isEnabled} onChange={(value) => setIsEnabled(value)} />
 		</div>
 	);
 }

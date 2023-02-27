@@ -1,11 +1,18 @@
 use clap::{Command, ArgMatches, command};
+use crate::constants::LOGO;
 use crate::{args::flag, commands::{self, RapidCommand}};
 use std::process::exit;
 use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 pub type App = Command;
 
+// Normal logo
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
     ">>> R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+}
+
+// Large Ascii printed logo
+pub fn logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
+    LOGO.gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
 /// TODO: config fields can be added here later on as needed

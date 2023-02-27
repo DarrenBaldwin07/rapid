@@ -1,5 +1,8 @@
 [workspace]
-
+exclude = [
+  "crates/rapid-cli/src/templates/server",
+  "crates/rapid-cli/src/templates/fullstack",
+]
 members = [
   "crates/*",
 ]

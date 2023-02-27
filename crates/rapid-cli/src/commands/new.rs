@@ -1,7 +1,6 @@
 use clap::{Command, ArgAction, ArgMatches, arg, value_parser};
 use std::path::PathBuf;
-use crate::cli::Config;
-use crate::cli::rapid_logo;
+use crate::cli::{Config, rapid_logo, logo};
 use super::RapidCommand;
 use colorful::Color;
 use colorful::Colorful;
@@ -31,7 +30,7 @@ impl RapidCommand for  New {
     }
 
     fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
-        println!("{}", rapid_logo());
+        println!("{}", logo());
         println!("> Creating new Rapid project in current working dir!");
         println!("{:?}", args.get_one::<PathBuf>("fullstack"));
         Ok(())

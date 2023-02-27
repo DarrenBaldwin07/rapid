@@ -33,8 +33,11 @@ export const getVariantClassName = (
 	size?: string,
 ) => {
 	const classNames = [];
-	if (size) classNames.push(`rapid-${component}-${size}`);
+	const componentClassName = `rapid-${component}`;
 	if (variant) classNames.push(`rapid-${component}-${variant}`);
+	else classNames.push(componentClassName);
+
+	if (size) classNames.push(`rapid-${component}-${size}`);
 
 	if (classNames.length > 0) {
 		return classNames.join(' ');

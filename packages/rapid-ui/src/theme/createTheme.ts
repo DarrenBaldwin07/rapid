@@ -87,6 +87,14 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 				);
 				classNames.push(...tooltipStyles);
 				break;
+			case 'switch':
+				const typedSwitchTheme = theme[key] as unknown as VariantOutput;
+				const switchStyles = generateVariants(
+					typedSwitchTheme,
+					'.rapid-switch',
+				);
+				classNames.push(...switchStyles);
+				break;
 		}
 	}
 

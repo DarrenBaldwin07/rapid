@@ -8,6 +8,7 @@ function generateVariants(theme: VariantOutput, baseClassName: string) {
 	const sizes = Object.keys(theme.themeObject.sizes || {}).filter((size) =>
 		isValidClassName(size),
 	);
+
 	const classNames = [];
 
 	if (variants.length > 0) {
@@ -15,21 +16,6 @@ function generateVariants(theme: VariantOutput, baseClassName: string) {
 		for (const variant of variants) {
 			const className = `${baseClassName}-${variant}`;
 			const styles = theme.variant(variant);
-			const styleKey = `@apply ${styles}`;
-			const styleObject: ThemeObject = {
-				[className]: {
-					[styleKey]: {},
-				},
-			};
-			classNames.push(styleObject);
-		}
-	}
-
-	if (sizes.length > 0) {
-		// Main sizes
-		for (const size of sizes) {
-			const className = `${baseClassName}-${size}`;
-			const styles = theme.variant(undefined, size);
 			const styleKey = `@apply ${styles}`;
 			const styleObject: ThemeObject = {
 				[className]: {
@@ -50,6 +36,23 @@ function generateVariants(theme: VariantOutput, baseClassName: string) {
 		},
 	};
 	classNames.push(styleObject);
+
+
+	// Sizes should be defined last in the final css bundle
+	if (sizes.length > 0) {
+		// Main sizes
+		for (const size of sizes) {
+			const className = `${baseClassName}-${size}`;
+			const styles = theme.variant(undefined, size);
+			const styleKey = `@apply ${styles}`;
+			const styleObject: ThemeObject = {
+				[className]: {
+					[styleKey]: {},
+				},
+			};
+			classNames.push(styleObject);
+		}
+	}
 
 	return classNames;
 }

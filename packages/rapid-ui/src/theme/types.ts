@@ -25,7 +25,7 @@ export type DefaultProps<T extends ThemeSchema, E extends ThemeSchema> = {
 
 // TODO: this type is yoinky (typescript does not support double conditionals in types for some odd reason)
 export type RapidUiThemeConfig<T extends ThemeSchema, E extends ThemeSchema> = {
-	baseStyle: ClassValue;
+	baseStyle?: ClassValue;
 	sizes?: E;
 	variants: T;
 	defaultProps: DefaultProps<T, E>;
@@ -41,6 +41,7 @@ export interface RapidTheme {
 	input?: VariantOutput;
 	textArea?: VariantOutput;
 	menuButton?: VariantOutput;
-	select: VariantOutput;
-	tooltip: VariantOutput;
+	select?: VariantOutput;
+	tooltip?: VariantOutput;
+	switch?: VariantOutput;
 }

@@ -122,7 +122,7 @@ function App() {
 					</div>
 				</ModalContent>
 			</Modal>
-			<Switch enabled={isEnabled} onChange={(value) => setIsEnabled(value)} />
+			<Switch enabled={isEnabled} onChange={(value) => setIsEnabled(value)} size='lg' />
 		</div>
 	);
 }

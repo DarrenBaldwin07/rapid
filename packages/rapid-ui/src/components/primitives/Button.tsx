@@ -1,6 +1,6 @@
 import React from 'react';
 import { createVariant } from '../../theme';
-import { RapidStyles } from '../../utils';
+import { RapidStyles, getVariantClassName } from '../../utils';
 import { default as AliasSpinner } from '../feedback/Spinner';
 
 // This is the class name that will be used to apply the global rapid theme from tailwindCSS
@@ -35,20 +35,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	size?: string;
 }
 
-const getVariantClassName = (
-	variant: string | undefined,
-	size: string | undefined,
-) => {
-	const classNames = [];
-	if (size) classNames.push(`rapid-button-${size}`);
-	if (variant) classNames.push(`rapid-button-${variant}`);
-
-	if (classNames.length > 0) {
-		return classNames.join(' ');
-	} else {
-		return undefined;
-	}
-};
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
@@ -69,7 +55,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				{...rest}
 				className={RapidStyles(
 					styles || rest.className,
-					getVariantClassName(variant, size) || THEME_CLASSNAME,
+					getVariantClassName(variant, 'button', size) || THEME_CLASSNAME,
 				)}
 				disabled={isLoading}
 			>

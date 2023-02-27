@@ -14,10 +14,18 @@ interface RapidPluginTheme {
 
 // Extended tailwind theme
 // Currently it only supports the safelist option
-// TODO: we may want to see if we can simply throw our Tailwind theme
+// TODO: we may want to see if we can simply throw our Tailwind theme into this
 const extendedTheme = {
 	safelist: [{ pattern: /rapid-/ }, { pattern: /spinner-/ }],
 };
+
+// This merges Rapid's default theme with the one passed in (aka the user specified theme)
+const mergeTheme = (theme: RapidTheme) => {
+	return {
+		...defaultTheme,
+		...theme,
+	};
+}
 
 // A Rapid tailwindCSS plugin
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
@@ -25,7 +33,7 @@ function rapidPlugin(styles: RapidPluginTheme) {
 	// Grab our global styles and theme
 	const globalStyles = styles.global;
 	const theme = !!styles.theme
-		? generateTailwindPluginTheme(styles.theme)
+		? generateTailwindPluginTheme(mergeTheme(styles.theme))
 		: generateTailwindPluginTheme(defaultTheme);
 	// Return back the plugin to tailwind...
 	return plugin(function ({ addBase, addUtilities, addComponents }) {

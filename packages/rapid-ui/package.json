@@ -1,7 +1,7 @@
 {
 	"name": "@rapid-web/ui",
 	"description": "User interface components for the Rapid framework. Made with 100% TailwindCSS and no runtime costs :)",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Cincinnati-Ventures/cv-framework",

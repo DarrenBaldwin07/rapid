@@ -7,6 +7,7 @@ importers:
 
   examples/fullstack:
     specifiers:
+      '@rapid-web/ui': ^0.0.8
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
       '@vitejs/plugin-react-swc': ^3.0.0
@@ -18,6 +19,7 @@ importers:
       typescript: ^4.9.3
       vite: ^4.1.0
     dependencies:
+      '@rapid-web/ui': link:../../packages/rapid-ui
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:

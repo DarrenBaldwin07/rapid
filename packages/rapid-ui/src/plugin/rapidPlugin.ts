@@ -6,7 +6,7 @@ import tailwindUtilities from './utilities';
 import type * as CSS from 'csstype';
 
 interface RapidPluginTheme {
-	global: {
+	global?: {
 		[key: string]: CSS.Properties | any;
 	};
 	theme?: RapidTheme;
@@ -31,7 +31,7 @@ const mergeTheme = (theme: RapidTheme) => {
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
 function rapidPlugin(styles: RapidPluginTheme) {
 	// Grab our global styles and theme
-	const globalStyles = styles.global;
+	const globalStyles = styles.global || {};
 	const theme = !!styles.theme
 		? generateTailwindPluginTheme(mergeTheme(styles.theme))
 		: generateTailwindPluginTheme(defaultTheme);

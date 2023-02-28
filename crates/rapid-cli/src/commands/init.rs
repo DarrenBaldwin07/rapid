@@ -100,3 +100,7 @@ pub fn init_vite_template(binary_dir: PathBuf, arg: &str) {
 
     println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your project!");
 }
+
+pub fn init_remix_template() {
+
+}

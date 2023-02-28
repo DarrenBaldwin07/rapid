@@ -16,7 +16,7 @@ interface MenuItemProps extends MenuItemType {
 const MenuItem = ({
 	styles,
 	...rest
-}: ExtractProps<typeof HeadlessMenuTyped.Item>) => {
+}: MenuItemProps) => {
 	const defaultStyles =
 		'p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer';
 	return (

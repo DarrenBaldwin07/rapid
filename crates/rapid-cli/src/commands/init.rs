@@ -14,6 +14,10 @@ use rust_embed::RustEmbed;
 #[folder = "src/templates/rapidUI/reactVite/"]
 struct Asset;
 
+#[derive(RustEmbed)]
+#[folder = "src/templates/rapidUI/remix/"]
+struct RemixAssets;
+
 pub struct Init {}
 
 impl RapidCommand for  Init {
@@ -62,8 +66,7 @@ fn parse_init_args(args: &ArgMatches) {
                             break;
                         }
                         "remix" => {
-                            println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
-                            println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your project!");
+                            init_remix_template(binary_dir, arg);
                             break;
                         }
                         _ => {
@@ -97,12 +100,26 @@ pub fn init_vite_template(binary_dir: PathBuf, arg: &str) {
     write("src/index.css", std::str::from_utf8(index_css_contents.data.as_ref()).unwrap()).expect("Could not write to index.css file!");
 
     // Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-    let ten_millis = time::Duration::from_millis(1000);
-    thread::sleep(ten_millis);
+    let timeout = time::Duration::from_millis(500);
+    thread::sleep(timeout);
 
-    println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your project!");
+    println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your Vite project!");
 }
 
-pub fn init_remix_template() {
+pub fn init_remix_template(binary_dir: PathBuf, arg: &str) {
+    println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+    let tailwind_config_contents = RemixAssets::get("tailwind.config.js").unwrap();
+    let index_css_contents = RemixAssets::get("index.css").unwrap();
+    // Make the two config files that we need
+    File::create(binary_dir.join("tailwind.config.js")).unwrap();
+    File::create(binary_dir.join("app/index.css")).unwrap();
+    // Write the contents of the config files
+    write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap()).expect("Could not write to tailwind config file!");
+    write("app/index.css", std::str::from_utf8(index_css_contents.data.as_ref()).unwrap()).expect("Could not write to index.css file!");
 
+    // Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
+    let timeout = time::Duration::from_millis(500);
+    thread::sleep(timeout);
+
+    println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your Remix project!");
 }

@@ -1,12 +1,19 @@
 use clap::{Command, ArgAction, ArgMatches, arg, value_parser};
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
+use std::fs::{write, File};
+use std::{thread, time};
+use std::io::Write;
 use std::env::{current_exe, current_dir};
 use crate::cli::{Config, rapid_logo, logo};
 use crate::constants::BOLT_EMOJI;
 use super::RapidCommand;
-use std::{collections::HashMap, process::Command as BashCommand, thread};
 use colorful::Color;
 use colorful::Colorful;
+use rust_embed::RustEmbed;
+
+#[derive(RustEmbed)]
+#[folder = "src/templates/rapidUI/reactVite/"]
+struct Asset;
 
 pub struct Init {}
 
@@ -43,6 +50,8 @@ impl RapidCommand for  Init {
 fn parse_init_args(args: &ArgMatches) {
     /// NOTE: We can add more args for templates here (ideally we add nextjs asap)
     const INIT_ARGS: [&str; 2] = ["vite", "remix"];
+    // Get the install directory of the rapid-cli
+    let binary_dir = current_dir().unwrap();
 
     for arg in INIT_ARGS {
         match args.get_one::<PathBuf>(arg) {
@@ -50,16 +59,7 @@ fn parse_init_args(args: &ArgMatches) {
                 if val == &PathBuf::from("true") {
                     match arg {
                         "vite" => {
-                            println!("Binary dir: {}", current_exe().unwrap().display());
-                            println!("Current dir: {}", current_dir().unwrap().display());
-                            println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
-                            BashCommand::new("sh")
-                            .arg("pwd")
-                            .spawn()
-                            .unwrap()
-                            .wait_with_output()
-                            .expect("Could not create template files. Please try again!");
-                            println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your project!");
+                            init_vite_template(binary_dir, arg);
                             break;
                         }
                         "remix" => {
@@ -83,3 +83,20 @@ fn parse_init_args(args: &ArgMatches) {
 }
 
 
+pub fn init_vite_template(binary_dir: PathBuf, arg: &str) {
+    println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+    let tailwind_config_contents = Asset::get("tailwind.config.js").unwrap();
+    let postcss_config_contents = Asset::get("postcss.config.js").unwrap();
+    // Make the two config files that we need
+    File::create(binary_dir.join("tailwind.config.js")).unwrap();
+    File::create(binary_dir.join("postcss.config.js")).unwrap();
+    // Write the contents of the config files
+    write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap()).expect("Could not write to tailwind config file!");
+    write("postcss.config.js", std::str::from_utf8(postcss_config_contents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
+
+    // Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
+    let ten_millis = time::Duration::from_millis(1000);
+    thread::sleep(ten_millis);
+
+    println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your project!");
+}

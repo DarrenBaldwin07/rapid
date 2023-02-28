@@ -1,8 +1,7 @@
 use clap::{Command, ArgAction, ArgMatches, arg, value_parser};
-use std::path::{PathBuf, Path};
+use std::path::PathBuf;
 use std::fs::{write, File};
 use std::{thread, time};
-use std::io::Write;
 use std::env::{current_exe, current_dir};
 use crate::cli::{Config, rapid_logo, logo};
 use crate::constants::BOLT_EMOJI;
@@ -90,6 +89,7 @@ pub fn init_vite_template(binary_dir: PathBuf, arg: &str) {
     // Make the two config files that we need
     File::create(binary_dir.join("tailwind.config.js")).unwrap();
     File::create(binary_dir.join("postcss.config.js")).unwrap();
+    File::create(binary_dir.join("src/index.css")).unwrap();
     // Write the contents of the config files
     write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap()).expect("Could not write to tailwind config file!");
     write("postcss.config.js", std::str::from_utf8(postcss_config_contents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");

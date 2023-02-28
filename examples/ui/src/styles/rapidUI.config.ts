@@ -1,12 +1,13 @@
-const { createVariant, createTheme } = require("@rapid-web/ui");
+import rapidUI from '@rapid-web/ui';
+const { createVariant, createTheme } = rapidUI;
 
-/** @type {import('@rapid-web/ui').Config} */
-const theme = createTheme({
+export const theme = createTheme({
     button: createVariant({
         baseStyle:
             'p-3 transition-all ease-out duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
         variants: {
             default: 'bg-main hover:bg-hoverMain text-white',
+            purple: 'bg-purple-500 hover:bg-purple-600 text-white',
         },
         sizes: {
             default: 'p-3',
@@ -21,4 +22,3 @@ const theme = createTheme({
 });
 
 
-module.exports = { theme };

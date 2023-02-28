@@ -1,7 +1,8 @@
-const { rapidStylesPath, rapidTailwindTheme, rapidPlugin } = require("@rapid-web/ui");
-const { theme } = require("./src/styles/rapidUI.config.mts");
+import rapidUi from "@rapid-web/ui";
+const { rapidStylesPath, rapidTailwindTheme, rapidPlugin } = rapidUi;
+import { theme } from "./src/styles/rapidUI.config.ts";
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './node_modules/@rapid-web/ui/src/components/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: rapidTailwindTheme({
@@ -14,7 +15,8 @@ module.exports = {
         'body': {
 
         }
-      }
+      },
+      theme
     }
   )],
 }

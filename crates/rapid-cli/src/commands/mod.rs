@@ -1,5 +1,6 @@
 
 pub mod new;
+pub mod init;
 use clap::Command;
 use crate::cli::CliError;
 use crate::cli::Config;

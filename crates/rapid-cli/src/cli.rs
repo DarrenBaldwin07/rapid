@@ -5,9 +5,13 @@ use std::process::exit;
 use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 pub type App = Command;
 
-// Normal logo
+// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
     ">>> R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+}
+
+pub fn rapid_logo_small<'a>() -> GradientDisplay<'a, [RGB; 4]> {
+    "R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
 // Large Ascii printed logo
@@ -43,13 +47,15 @@ impl RapidCLI {
 
     pub fn commands() -> Vec<Command> {
         vec![
-            commands::new::New::cmd()
+            commands::new::New::cmd(),
+            commands::init::Init::cmd()
         ]
     }
 
     pub fn execute_cammand(cmd: &str) ->  Option<fn(&Config, &ArgMatches) ->  Result<(), crate::cli::CliError<'static>>> {
         let command_resolver = match cmd {
             "new" => commands::new::New::execute,
+            "init" => commands::init::Init::execute,
             _ => return None,
         };
 

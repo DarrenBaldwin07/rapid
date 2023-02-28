@@ -21,7 +21,7 @@ impl RapidCommand for  New {
         )
         .arg(
             arg!(
-                -server "Scaffolds a server-side only rapid project!"
+                -server --server "Scaffolds a server-side only rapid project!"
             )
             .required(false)
             .action(ArgAction::SetTrue)

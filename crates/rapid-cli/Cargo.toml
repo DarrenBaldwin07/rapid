@@ -13,5 +13,6 @@ keywords = ["CLI", "web-framework", "rapid"]
 [dependencies]
 clap = { version = "4.1.4", features = ["derive", "cargo"] }
 colorful = "0.2.2"
+terminal-emoji = "0.4.1"
 tiny-gradient = "0.1.0"
 tui = "0.19.0"

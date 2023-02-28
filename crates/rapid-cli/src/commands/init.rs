@@ -94,7 +94,7 @@ pub fn init_vite_template(binary_dir: PathBuf, arg: &str) {
     // Write the contents of the config files
     write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap()).expect("Could not write to tailwind config file!");
     write("postcss.config.js", std::str::from_utf8(postcss_config_contents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
-    write("index.css", std::str::from_utf8(index_css_contents.data.as_ref()).unwrap()).expect("Could not write to index.css file!");
+    write("src/index.css", std::str::from_utf8(index_css_contents.data.as_ref()).unwrap()).expect("Could not write to index.css file!");
 
     // Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
     let ten_millis = time::Duration::from_millis(1000);

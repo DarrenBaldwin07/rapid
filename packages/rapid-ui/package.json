@@ -9,7 +9,7 @@
 	},
 	"main": "./dist/@rapid-web/ui.umd.js",
 	"module": "./dist/@rapid-web/ui.es.js",
-	"typings": "dist/@rapid-web/ui.es.d.ts",
+	"typings": "./dist/@rapid-web/ui.es.d.ts",
 	"files": [
 		"dist",
 		"README.md"

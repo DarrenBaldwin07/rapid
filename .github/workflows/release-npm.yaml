@@ -45,7 +45,7 @@ jobs:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies and build 🔧
-        run: npm install
+        run: npm ci
       - name: Build package via Vite
         run: npm run build
       - name: Publish package on NPM 📦

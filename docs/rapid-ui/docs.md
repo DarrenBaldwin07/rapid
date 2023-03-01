@@ -21,7 +21,7 @@ css: {
 }
 ```
 
-Finally be sure to import your css file inside the vite entrypoint: `import index.css`
+Finally, be sure to import your css file inside the vite entrypoint: `import `index.css'`
 
 ## Remix
 Begin by installing the tailwindCSS depedencies:

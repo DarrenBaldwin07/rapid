@@ -5,14 +5,18 @@ import { twMerge } from 'tailwind-merge';
 
 const RAPID_CLASSNAME = 'rapid-skeleton';
 
+type Speed = 'skeleton-pulse' | 'skeleton-pulse-medium' | 'skeleton-pulse-fast';
+
 // Note: we do not want the user to be able to pass in children to the Skeleton component
 interface SkeletonProps extends React.HTMLAttributes<Omit<HTMLDivElement, "children">> {
 	styles?: string;
 	isLoading?: boolean;
+	speed?: Speed;
 }
 
+
 const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
-	({ styles, isLoading = true, ...rest }, ref) => {
+	({ styles, isLoading = true, speed = 'skeleton-pulse', ...rest }, ref) => {
 		const defaultStyles = 'h-6 w-40 rounded-md';
 		return (
 			<div
@@ -24,9 +28,10 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 						defaultStyles,
 						RAPID_CLASSNAME,
 					),
+					// The pulse className is merged with all the others so that it cannot get overridden by the user
 					classNames({
 						condition: isLoading,
-						classNames: 'skeleton-pulse',
+						classNames: speed || 'skeleton-pulse',
 					}),
 				)}
 			/>

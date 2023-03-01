@@ -48,10 +48,10 @@ const tailwindUtilities = {
 	'.skeleton-pulse': {
 		animation: 'skeleton-loading 1s linear infinite alternate',
 	},
-	'skeleton-pulse-2': {
+	'.skeleton-pulse-medium': {
 		animation: 'skeleton-loading 0.5s linear infinite alternate',
 	},
-	'skeleton-pulse-3': {
+	'.skeleton-pulse-fast': {
 		animation: 'skeleton-loading 0.25s linear infinite alternate',
 	}
 };

@@ -9,8 +9,7 @@ module.exports = {
       },
       boxShadow: {
         'button-focus': '0 0 0 4px #C5C5C590',
-        'button-focus2': '0 0 0 4px #99E7FF90',
-        'invalid': '0 0 0 4px #E1000060'
+        invalid: '0 0 0 4px #E1000060',
       },
       borderRadius: {
         none: '0',
@@ -23,13 +22,16 @@ module.exports = {
       colors: {
         main: '#000000',
         hoverMain: '#323232',
+        activeMain: '#646464',
         lightGrey: '#E0E0E0',
         secondaryGrey: '#C5C5C5',
+        activeWhite: '#ebebeb',
         white: '#ffffff',
-        hoverWhite: '#F6F6F6',
+        hoverWhite: '#fafafa',
         danger: '#ef4444',
         hoverDanger: '#dc2626',
-      }
+        activeDanger: '#c72323',
+      },
     }
   },
   plugins: [

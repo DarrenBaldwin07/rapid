@@ -10,13 +10,12 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Switch> = (_: any) => {
-    const [enabled, setEnabled] = useState(false);
-    return (
-        <div>
-            <Switch enabled={enabled} onChange={(value) => setEnabled(value)}/>
-        </div>
-    )
-
+	const [enabled, setEnabled] = useState(false);
+	return (
+		<div>
+			<Switch enabled={enabled} onChange={(value) => setEnabled(value)} />
+		</div>
+	);
 };
 
 export const Primary = Template.bind({});

@@ -13,10 +13,7 @@ interface MenuItemProps extends MenuItemType {
 	styles?: string;
 }
 
-const MenuItem = ({
-	styles,
-	...rest
-}: MenuItemProps) => {
+const MenuItem = ({ styles, ...rest }: MenuItemProps) => {
 	const defaultStyles =
 		'p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer';
 	return (

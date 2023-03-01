@@ -1,4 +1,4 @@
-{
+module.exports = {
 	"arrowParens": "always",
 	"bracketSpacing": true,
 	"endOfLine": "lf",
@@ -20,5 +20,6 @@
 				"printWidth": 200
 			}
 		}
-	]
+	],
+	plugins: [require('prettier-plugin-tailwindcss')],
 }

@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"pretty": "prettier --write \"./**/*.{ts,tsx,json}\" --config ./.prettierrc.json"
+		"pretty": "prettier --write \"./**/*.{ts,tsx,json}\" --config ./prettier.config.js"
 	},
 	"homepage": "https://rapid.cincinnati.ventures",
 	"keywords": [
@@ -16,5 +16,9 @@
 		"fullstack"
 	],
 	"author": "Darren Baldwin",
-	"license": "MIT"
+	"license": "MIT",
+	"devDependencies": {
+		"prettier": "^2.8.4",
+		"prettier-plugin-tailwindcss": "^0.2.2"
+	}
 }

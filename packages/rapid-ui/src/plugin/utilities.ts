@@ -37,6 +37,23 @@ const tailwindUtilities = {
 		'-moz-appearance': 'none',
 		'-webkit-appearance': 'none',
 	},
+	'@keyframes skeleton-loading': {
+		'0%': {
+			'background-color': '#EDF2F7',
+		},
+		'100%': {
+			'background-color': '#A0AEC0',
+		},
+	},
+	'.skeleton-pulse': {
+		animation: 'skeleton-loading 1s linear infinite alternate',
+	},
+	'skeleton-pulse-2': {
+		animation: 'skeleton-loading 0.5s linear infinite alternate',
+	},
+	'skeleton-pulse-3': {
+		animation: 'skeleton-loading 0.25s linear infinite alternate',
+	}
 };
 
 export default tailwindUtilities;

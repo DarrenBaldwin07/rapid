@@ -25,7 +25,7 @@ const mergeTheme = (theme: RapidTheme) => {
 		...defaultTheme,
 		...theme,
 	};
-}
+};
 
 // A Rapid tailwindCSS plugin
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)

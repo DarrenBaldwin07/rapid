@@ -1,7 +1,7 @@
 import React from 'react';
 import Stack from './Stack';
+import type { Spacing } from '../../types';
 
-type Spacing = 'sm' | 'md' | 'lg';
 
 interface VStackProps
 	extends React.DetailedHTMLProps<

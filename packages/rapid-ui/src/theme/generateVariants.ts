@@ -37,7 +37,6 @@ function generateVariants(theme: VariantOutput, baseClassName: string) {
 	};
 	classNames.push(styleObject);
 
-
 	// Sizes should be defined last in the final css bundle
 	if (sizes.length > 0) {
 		// Main sizes

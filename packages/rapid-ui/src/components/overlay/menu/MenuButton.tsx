@@ -10,7 +10,8 @@ export const menuButtonTheme = createVariant({
 		'p-3 transition-all ease-out duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
 	variants: {
 		default: 'bg-main hover:bg-hoverMain text-white active:bg-activeMain',
-		outline: 'bg-white hover:bg-hoverWhite border border-lightGrey active:bg-activeWhite',
+		outline:
+			'bg-white hover:bg-hoverWhite border border-lightGrey active:bg-activeWhite',
 	},
 	sizes: {
 		default: 'p-3',
@@ -22,8 +23,6 @@ export const menuButtonTheme = createVariant({
 		size: 'default',
 	},
 });
-
-
 
 interface MenuButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,4 +1,3 @@
-
 import {
 	buttomTheme,
 	inputTheme,
@@ -17,7 +16,7 @@ const theme = createTheme({
 	menuButton: menuButtonTheme,
 	select: selectTheme,
 	tooltip: tooltipTheme,
-	switch: switchTheme
+	switch: switchTheme,
 });
 
 export default theme;

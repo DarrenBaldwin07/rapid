@@ -4,7 +4,7 @@ interface SelectIconProps extends React.SVGProps<SVGSVGElement> {}
 
 const SelectIcon = (props: SelectIconProps) => {
 	return (
-		<div className='mr-3 absolute top-1/2 inline-flex items-center justify-center pointer-events-none -translate-y-1/2 right-0'>
+		<div className='pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center'>
 			<svg
 				pointerEvents='box-none'
 				{...props}

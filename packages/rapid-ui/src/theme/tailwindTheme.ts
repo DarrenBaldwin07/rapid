@@ -29,7 +29,7 @@ const rapidDefaultTailwindTheme = {
 		hoverWhite: '#fafafa',
 		danger: '#ef4444',
 		hoverDanger: '#dc2626',
-		activeDanger: '#c72323'
+		activeDanger: '#c72323',
 	},
 };
 

@@ -17,7 +17,9 @@ import {
 	ModalTitle,
 	Text,
 	Tooltip,
-	Switch
+	Switch,
+	Skeleton,
+	SkeletonText
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -31,8 +33,9 @@ function App() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isEnabled, setIsEnabled] = useState(false);
 	return (
-		<div className='flex flex-col align-center justify-center w-screen h-screen p-12'>
-			<div />
+		<div className='align-center flex h-screen w-screen flex-col justify-center p-12'>
+			<Skeleton />
+			<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			<div>
 				<VStack spacing='lg'>
 					<h1 className='theme-test'>Hello world</h1>
@@ -54,7 +57,7 @@ function App() {
 					<MenuItem>
 						<div
 							className={
-								'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'
+								'flex items-center space-x-2 px-4 py-2 hover:bg-gray-100'
 							}
 						>
 							<FontAwesomeIcon icon={faUser} color='black' />
@@ -64,7 +67,7 @@ function App() {
 					<MenuItem>
 						<div
 							className={
-								'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'
+								'flex items-center space-x-2 px-4 py-2 hover:bg-gray-100'
 							}
 						>
 							<FontAwesomeIcon icon={faGear} color='black' />
@@ -74,7 +77,7 @@ function App() {
 					<MenuItem>
 						<div
 							className={
-								'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'
+								'flex items-center space-x-2 px-4 py-2 hover:bg-gray-100'
 							}
 						>
 							<FontAwesomeIcon icon={faBook} color='black' />
@@ -84,7 +87,7 @@ function App() {
 					<MenuItem>
 						<div
 							className={
-								'hover:bg-gray-100 flex items-center space-x-2 px-4 py-2'
+								'flex items-center space-x-2 px-4 py-2 hover:bg-gray-100'
 							}
 						>
 							<FontAwesomeIcon icon={faPlus} color='black' />
@@ -123,7 +126,11 @@ function App() {
 					</div>
 				</ModalContent>
 			</Modal>
-			<Switch enabled={isEnabled} onChange={(value) => setIsEnabled(value)} size='md' />
+			<Switch
+				enabled={isEnabled}
+				onChange={(value) => setIsEnabled(value)}
+				size='md'
+			/>
 		</div>
 	);
 }

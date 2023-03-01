@@ -70,7 +70,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 			<div
 				className={RapidStyles(
 					styles || rest.className,
-					'flex items-center relative',
+					'relative flex items-center',
 					getVariantClassName(variant, variantSize) ||
 						THEME_CLASSNAME,
 				)}

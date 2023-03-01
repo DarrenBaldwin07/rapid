@@ -11,8 +11,10 @@ export const buttomTheme = createVariant({
 		'p-3 transition-all ease-out duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
 	variants: {
 		default: 'bg-main hover:bg-hoverMain text-white active:bg-activeMain',
-		outline: 'bg-white hover:bg-hoverWhite border border-lightGrey active:bg-activeWhite',
-		destructive: 'bg-danger hover:bg-hoverDanger text-white active:bg-activeDanger',
+		outline:
+			'bg-white hover:bg-hoverWhite border border-lightGrey active:bg-activeWhite',
+		destructive:
+			'bg-danger hover:bg-hoverDanger text-white active:bg-activeDanger',
 		ghost: 'bg-transparent hover:bg-hoverWhite active:bg-activeWhite',
 		link: 'bg-transparent active:text-activeMain focus:shadow-none',
 	},
@@ -35,7 +37,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	size?: string;
 }
 
-
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
@@ -55,7 +56,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				{...rest}
 				className={RapidStyles(
 					styles || rest.className,
-					getVariantClassName(variant, 'button', size) || THEME_CLASSNAME,
+					getVariantClassName(variant, 'button', size) ||
+						THEME_CLASSNAME,
 				)}
 				disabled={isLoading}
 			>

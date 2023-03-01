@@ -2,10 +2,9 @@ import React from 'react';
 import { RapidStyles } from '../../../utils';
 import classNames from '../../../conditional';
 import { twMerge } from 'tailwind-merge';
+import type { Speed } from './';
 
 const RAPID_CLASSNAME = 'rapid-skeleton';
-
-type Speed = 'skeleton-pulse' | 'skeleton-pulse-medium' | 'skeleton-pulse-fast';
 
 // Note: we do not want the user to be able to pass in children to the Skeleton component
 interface SkeletonProps extends React.HTMLAttributes<Omit<HTMLDivElement, "children">> {

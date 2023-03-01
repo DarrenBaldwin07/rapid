@@ -34,7 +34,7 @@ function App() {
 	const [isEnabled, setIsEnabled] = useState(false);
 	return (
 		<div className='align-center flex h-screen w-screen flex-col justify-center p-12'>
-			<Skeleton />
+			<Skeleton speed='skeleton-pulse-fast' />
 			<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			<div>
 				<VStack spacing='lg'>

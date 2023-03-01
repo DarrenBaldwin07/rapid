@@ -4,6 +4,7 @@ import classNames from '../../../conditional';
 import { twMerge } from 'tailwind-merge';
 import { VStack } from '../../layout';
 import type { Spacing } from '../../../types';
+import type { Speed } from './';
 
 const RAPID_CLASSNAME = 'rapid-skeleton';
 
@@ -13,10 +14,11 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
     containerStyles?: string;
     lineSpacing?: Spacing;
     numberOfLines?: number;
+    speed?: Speed;
 }
 
 const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonProps>(
-	({ styles, containerStyles, lineSpacing, isLoading = true, numberOfLines = 4 }, ref) => {
+	({ styles, containerStyles, lineSpacing, isLoading = true, numberOfLines = 4, speed }, ref) => {
 		const defaultStyles = 'h-6 w-40 rounded-md';
 		return (
             <VStack styles={containerStyles} spacing={lineSpacing}>
@@ -33,7 +35,7 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonProps>(
                                 ),
                                 classNames({
                                     condition: isLoading,
-                                    classNames: 'skeleton-pulse',
+                                    classNames: speed || 'skeleton-pulse',
                                 }),
                             )}
                         />

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ReactDOM from 'react-dom';
 import {
 	Button,
 	VStack,
@@ -29,6 +30,7 @@ import {
 	faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
+
 function App() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isEnabled, setIsEnabled] = useState(false);

@@ -3,7 +3,7 @@ import { motion, Variants, HTMLMotionProps, MotionProps } from 'framer-motion';
 import { RapidStyles } from '../../utils';
 
 interface ScaleFadeProps extends MotionProps {
-	initialScale?: number;
+	initialscale?: number;
 	initialOpacity?: number;
 	styles?: string;
 	exitAnimation?: 'exit' | 'initial';
@@ -33,12 +33,12 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 			}),
 			initial: ({ transition, transitionEnd } = {}) => ({
 				opacity: initialOpacity || 0,
-				scale: rest.initialScale || 0.95,
+				scale: rest.initialscale || 0.95,
 				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,
 			}),
 			exit: ({ transition, transitionEnd } = {}) => ({
-				scale: rest.initialScale || 0.95,
+				scale: rest.initialscale || 0.95,
 				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,
 			}),

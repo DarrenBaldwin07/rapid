@@ -12,6 +12,7 @@ import useDisclosure from '../../hooks/useDisclosure';
 import { RapidStyles, getVariantClassName } from '../../utils';
 import { Text } from '../primitives';
 import { createVariant } from '../../theme';
+import Portal from '../util/Portal';
 
 const THEME_CLASSNAME = 'rapid-tooltip';
 
@@ -90,7 +91,7 @@ const Tooltip = (props: TooltipProps) => {
 		},
 		onClick: () => {
 			onClose();
-			child.props.onClick();
+			if (child?.props?.onClick) child.props.onClick();
 		},
 		onBlur: () => onClose(),
 		onFocus: () => onOpen(),
@@ -149,34 +150,36 @@ const Tooltip = (props: TooltipProps) => {
 		<>
 			{trigger}
 			<AnimatePresence>
-				{isOpen && (
-					<div
-						ref={refs.setFloating}
-						style={{
-							position: strategy,
-							top: y ?? 0,
-							left: x ?? 0,
-						}}
-					>
-						<ScaleFade
-							isEnabled={isAnimated}
-							initialScale={0.85}
-							exitAnimation='exit'
-						>
+					{isOpen && (
+						<Portal>
 							<div
-								id={tooltipId}
-								role='tooltip'
-								className={RapidStyles(
-									styles || rest.className,
-									getVariantClassName(variant, 'tooltip') ||
-										THEME_CLASSNAME,
-								)}
+								ref={refs.setFloating}
+								style={{
+									position: strategy,
+									top: y ?? 0,
+									left: x ?? 0,
+								}}
 							>
-								<Text styles='text-sm'>{label}</Text>
+								<ScaleFade
+									isEnabled={isAnimated}
+									initialscale={0.85}
+									exitAnimation='exit'
+								>
+									<div
+										id={tooltipId}
+										role='tooltip'
+										className={RapidStyles(
+											styles || rest.className,
+											getVariantClassName(variant, 'tooltip') ||
+												THEME_CLASSNAME,
+										)}
+									>
+										<Text styles='text-sm'>{label}</Text>
+									</div>
+								</ScaleFade>
 							</div>
-						</ScaleFade>
-					</div>
-				)}
+							</Portal>
+					)}
 			</AnimatePresence>
 		</>
 	);

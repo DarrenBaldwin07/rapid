@@ -17,7 +17,7 @@ const MenuItems = React.forwardRef<
 >(({ styles, children, wrapperStyles, ...rest }, ref) => {
 	// Simple default styles for the menu items
 	const defaultStyles =
-		'bg-white transition transform border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-56';
+		'bg-white border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-56';
 
 	return (
 		<HeadlessMenu.Items

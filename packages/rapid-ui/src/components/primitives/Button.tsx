@@ -10,11 +10,11 @@ export const buttomTheme = createVariant({
 	baseStyle:
 		'p-3 transition-all ease-out duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
 	variants: {
-		default: 'bg-main hover:bg-hoverMain text-white',
-		outline: 'bg-white hover:bg-hoverWhite border border-lightGrey',
-		destructive: 'bg-danger hover:bg-hoverDanger text-white',
-		ghost: 'bg-transparent hover:bg-hoverWhite',
-		link: 'bg-transparent active:text-secondaryGrey focus:shadow-none',
+		default: 'bg-main hover:bg-hoverMain text-white active:bg-activeMain',
+		outline: 'bg-white hover:bg-hoverWhite border border-lightGrey active:bg-activeWhite',
+		destructive: 'bg-danger hover:bg-hoverDanger text-white active:bg-activeDanger',
+		ghost: 'bg-transparent hover:bg-hoverWhite active:bg-activeWhite',
+		link: 'bg-transparent active:text-activeMain focus:shadow-none',
 	},
 	sizes: {
 		default: 'p-3',

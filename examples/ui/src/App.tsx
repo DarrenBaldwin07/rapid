@@ -32,6 +32,7 @@ function App() {
 	const [isEnabled, setIsEnabled] = useState(false);
 	return (
 		<div className='flex flex-col align-center justify-center w-screen h-screen p-12'>
+			<div />
 			<div>
 				<VStack spacing='lg'>
 					<h1 className='theme-test'>Hello world</h1>
@@ -39,9 +40,9 @@ function App() {
 					<h1>Hello world</h1>
 				</VStack>
 				<Tooltip label='Hello from tooltip'>
-					<Button>Hello world</Button>
+					<Button variant='ghost'>Hello world</Button>
 				</Tooltip>
-				<Spinner size='sm' />
+				<Spinner size='md' />
 				<Input />
 			</div>
 			<div className='mt-12'>

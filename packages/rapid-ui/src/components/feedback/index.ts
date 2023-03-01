@@ -1,1 +1,2 @@
-export { default as Spinner } from '../feedback/Spinner';
+export { default as Spinner } from './Spinner';
+export { default as Skeleton } from './Skeleton';

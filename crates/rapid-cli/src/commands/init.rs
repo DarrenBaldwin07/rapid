@@ -2,7 +2,7 @@ use clap::{Command, ArgAction, ArgMatches, arg, value_parser};
 use std::path::PathBuf;
 use std::fs::{write, File};
 use std::{thread, time};
-use std::env::{current_exe, current_dir};
+use std::env::current_dir;
 use crate::cli::{Config, rapid_logo, logo};
 use crate::constants::BOLT_EMOJI;
 use super::RapidCommand;

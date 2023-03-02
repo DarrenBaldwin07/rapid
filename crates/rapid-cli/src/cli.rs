@@ -10,6 +10,7 @@ pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
     ">>> R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
+// Normal Logo
 pub fn rapid_logo_small<'a>() -> GradientDisplay<'a, [RGB; 4]> {
     "R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
@@ -64,11 +65,12 @@ impl RapidCLI {
 
     pub fn run(&self, args: ArgMatches) -> Result<(), CliError<'static>> {
         if let Some((cmd, args)) = args.subcommand() {
-            // Since we did find a sub-command match, lets
+            // Since we did find a sub-command match, lets exeute the command
             if let Some(cm) = RapidCLI::execute_cammand(cmd) {
                 let _ = cm(&self.config, args);
             }
         } else {
+            // Show the help template if there was no command match found
             println!("{}", get_help_template());
             exit(64);
         }

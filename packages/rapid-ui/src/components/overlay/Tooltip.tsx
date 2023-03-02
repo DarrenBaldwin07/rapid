@@ -91,6 +91,7 @@ const Tooltip = (props: TooltipProps) => {
 		},
 		onClick: () => {
 			onClose();
+			// If the user also specified an onClick handler, then we want to call that as well
 			if (child?.props?.onClick) child.props.onClick();
 		},
 		onBlur: () => onClose(),

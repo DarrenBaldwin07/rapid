@@ -1,3 +1,9 @@
+pub mod v8;
+pub mod polyfills;
+
+#[macro_use]
+extern crate lazy_static;
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }

@@ -15,12 +15,14 @@ interface StackProps
 }
 
 // ------------------- TAILWINDCSS CLASSES TO FORCE JIT TO COMPILE -------------------
-// space-y-6
-// space-y-3
-// space-y-1.5
-// space-x-6
-// space-x-3
-// space-x-1.5
+export const stackSafeList = [
+	'space-y-6',
+	'space-y-3',
+	'space-y-1.5',
+	'space-x-6',
+	'space-x-3',
+	'space-x-1.5',
+];
 
 const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 	(

@@ -13,12 +13,10 @@ interface SpinnerProps
 	label?: string;
 	speed?: Speed;
 	size?: Size;
-}
+};
 
 // ------------------- TAILWINDCSS CLASSES TO FORCE JIT TO COMPILE -------------------
-// spinner-slow
-// spinner-medium
-// spinner-fast
+export const spinnerSafeList = ['spinner-slow', 'spinner-medium', 'spinner-fast'];
 
 const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 	(

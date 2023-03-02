@@ -20,7 +20,8 @@ import {
 	Tooltip,
 	Switch,
 	Skeleton,
-	SkeletonText
+	SkeletonText,
+	HStack,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -39,11 +40,11 @@ function App() {
 			<Skeleton speed='skeleton-pulse-fast' />
 			<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			<div>
-				<VStack spacing='lg'>
+				<HStack>
 					<h1 className='theme-test'>Hello world</h1>
 					<h1>Hello world</h1>
 					<h1>Hello world</h1>
-				</VStack>
+				</HStack>
 				<Tooltip label='Hello from tooltip'>
 					<Button variant='ghost'>Hello world</Button>
 				</Tooltip>

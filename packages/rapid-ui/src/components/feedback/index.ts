@@ -1,2 +1,2 @@
-export { default as Spinner } from './Spinner';
+export { default as Spinner, spinnerSafeList } from './Spinner';
 export * from './skeleton';

@@ -3,6 +3,7 @@ import { generateTailwindPluginTheme } from '../theme';
 import { RapidTheme } from '../theme';
 import defaultTheme from '../theme/defaultTheme';
 import tailwindUtilities from './utilities';
+import { stackSafeList, spinnerSafeList } from '../components';
 import type * as CSS from 'csstype';
 
 interface RapidPluginTheme {
@@ -16,7 +17,11 @@ interface RapidPluginTheme {
 // Currently, it only supports the safelist option
 // TODO: we may want to see if we can simply throw our Tailwind theme into this
 const extendedTheme = {
-	safelist: [{ pattern: /rapid-/ }, { pattern: /spinner-/ }],
+	safelist: [
+		{ pattern: /rapid-/ },
+		{ pattern: /spinner-.+/ },
+		{ pattern : /spacing-x-.+/ },
+	],
 };
 
 // This merges Rapid's default theme with the one passed in (aka the user specified theme)

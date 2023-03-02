@@ -3,7 +3,6 @@ import { generateTailwindPluginTheme } from '../theme';
 import { RapidTheme } from '../theme';
 import defaultTheme from '../theme/defaultTheme';
 import tailwindUtilities from './utilities';
-import { stackSafeList, spinnerSafeList } from '../components';
 import type * as CSS from 'csstype';
 
 interface RapidPluginTheme {
@@ -18,7 +17,7 @@ interface RapidPluginTheme {
 // TODO: we may want to see if we can simply throw our Tailwind theme into this
 const extendedTheme = {
 	safelist: [
-		{ pattern: /rapid-/ },
+		{ pattern: /rapid-.+/ },
 		{ pattern: /spinner-.+/ },
 		{ pattern : /spacing-x-.+/ },
 	],

@@ -1,6 +1,4 @@
-interface TailwindTheme {
-	[key: string]: any;
-}
+import type { Config } from 'tailwindcss';
 
 const rapidDefaultTailwindTheme = {
 	maxWidth: {
@@ -34,7 +32,7 @@ const rapidDefaultTailwindTheme = {
 };
 
 // TODO: make this function return something that allows consumers to use different themes instead of just the default (like MVP, etc)
-const rapidTailwindTheme = (consumerTheme: TailwindTheme) => {
+const rapidTailwindTheme = (consumerTheme: Config['theme']) => {
 	return {
 		maxWidth: {
 			...rapidDefaultTailwindTheme.maxWidth,

@@ -4,6 +4,8 @@ import { RapidStyles, getValidReactChildren } from '../../utils';
 type Spacing = 'sm' | 'md' | 'lg';
 type Direction = 'row' | 'column';
 
+const RAPID_CLASSNAME = 'rapid-stack';
+
 interface StackProps
 	extends React.DetailedHTMLProps<
 		React.HTMLAttributes<HTMLDivElement>,
@@ -52,6 +54,7 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 				className={RapidStyles(
 					styles || rest.className,
 					getDirectionStyles(direction),
+					RAPID_CLASSNAME
 				)}
 			>
 				{sanitizedChildren}

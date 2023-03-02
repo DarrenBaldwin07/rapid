@@ -22,7 +22,7 @@ const MenuItems = React.forwardRef<
 	return (
 		<HeadlessMenu.Items
 			{...rest}
-			className={RapidStyles(wrapperStyles, RAPID_CLASSNAME)}
+			className={RapidStyles(wrapperStyles, '', RAPID_CLASSNAME)}
 			ref={ref}
 		>
 			<ScaleFade

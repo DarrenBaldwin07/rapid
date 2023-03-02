@@ -19,7 +19,7 @@ const extendedTheme = {
 	safelist: [
 		{ pattern: /rapid-.+/ },
 		{ pattern: /spinner-.+/ },
-		{ pattern : /spacing-x-.+/ },
+		{ pattern : /space-x-.+/ },
 	],
 };
 

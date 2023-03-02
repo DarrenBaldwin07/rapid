@@ -40,7 +40,7 @@ function App() {
 			<Skeleton speed='skeleton-pulse-fast' />
 			<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			<div>
-				<HStack>
+				<HStack spacing='lg'>
 					<h1 className='theme-test'>Hello world</h1>
 					<h1>Hello world</h1>
 					<h1>Hello world</h1>

@@ -17,6 +17,7 @@ interface RapidPluginTheme {
 // TODO: we may want to see if we can simply throw our Tailwind theme into this
 const extendedTheme = {
 	safelist: [
+		// Leaving this here for now -- we may need to safelist rapid theme classes later
 		{ pattern: /rapid-.+/ },
 		{ pattern: /spinner-.+/ },
 		// SafeList styles for the Stack component to work

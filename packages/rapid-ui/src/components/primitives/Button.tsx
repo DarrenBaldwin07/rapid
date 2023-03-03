@@ -8,7 +8,7 @@ const THEME_CLASSNAME = 'rapid-button';
 
 export const buttomTheme = createVariant({
 	baseStyle:
-		'p-3 transition-all ease-out duration-300 outline-none inline-flex items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
+		'p-3 transition-all ease-out duration-300 outline-none inline-flex justify-center items-center rounded-xl text-sm font-medium focus:shadow-button-focus focus:outline-none disabled:opacity-50 hover:disabled:cursor-not-allowed',
 	variants: {
 		default: 'bg-main hover:bg-hoverMain text-white active:bg-activeMain',
 		outline:

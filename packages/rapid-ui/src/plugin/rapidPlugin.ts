@@ -19,7 +19,9 @@ const extendedTheme = {
 	safelist: [
 		{ pattern: /rapid-.+/ },
 		{ pattern: /spinner-.+/ },
+		// SafeList styles for the Stack component to work
 		{ pattern : /space-x-.+/ },
+		{ pattern : /space-y-.+/ },
 	],
 };
 

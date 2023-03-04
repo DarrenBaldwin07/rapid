@@ -5,7 +5,7 @@ import { createVariant } from '../../theme';
 const THEME_CLASSNAME = 'rapid-textarea';
 
 export interface TextareaProps
-	extends React.HTMLAttributes<HTMLTextAreaElement> {
+	extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 	variant?: string;
 	styles?: string;
 }

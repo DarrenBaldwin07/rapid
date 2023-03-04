@@ -7,7 +7,7 @@
 </div>
 
 # What is Rapid?
-Rapid is a opinionated set of tools to enabled developers to create fullstack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing DX.
+Rapid is an opinionated set of tools to enable developers to create fullstack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing DX.
 
 # Why Rapid?
 Developers have been building entire fullstack applications with ONE single language since the beginning of software and technology (C, C++, Ruby, PHP, nodejs, etc). As time has progressed, programming languages have began to specialize and become more directed towards solving hyper specific problems. However, developers have still preferred the single language stack -- hence the popularity of things like Nodejs. Developing applications with one language front-to-back means that engineers have the ability to share buisiness logic across their entire development process, allowing them to iterate very quickly (additionally, things like hiring a development team are much easier and usually cheaper with a simplier tech stack). The downsides of this approach is that many languages (such as Javascript, etc) were never meant to do absolutely everything -- this results in a situation where tools are used to solve problems they were never meant to solve. Because of this, companies are often forced to move off of tooling as applications grow in scale. But what if we could use technologies at the beginning of the product development process that offers the great DX and simplicity of NodeJS without sacrificing scalability and performance? Enter, Rapid :)

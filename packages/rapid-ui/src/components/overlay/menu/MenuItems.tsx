@@ -1,7 +1,6 @@
-import { Menu as HeadlessMenu } from '@headlessui/react';
-import React from 'react';
+import { Menu as HeadlessMenu, Transition } from '@headlessui/react';
+import React, { Fragment } from 'react';
 import { RapidStyles } from '../../../utils';
-
 import { ScaleFade } from '../../transition';
 
 const RAPID_CLASSNAME = 'rapid-menu-items';
@@ -20,17 +19,25 @@ const MenuItems = React.forwardRef<
 		'bg-white border border-lightGrey mt-2 rounded-lg shadow-lg absolute z-10 flex flex-col space-y-2 py-1 w-56';
 
 	return (
-		<HeadlessMenu.Items
-			{...rest}
-			className={RapidStyles(wrapperStyles, '', RAPID_CLASSNAME)}
-			ref={ref}
+		<Transition
+			as={Fragment}
+			leave="transition ease-in duration-100"
+			leaveFrom="opacity-100 scale-100"
+			leaveTo="opacity-0 scale-95"
 		>
-			<ScaleFade
-				styles={RapidStyles(styles || rest.className, defaultStyles)}
+			<HeadlessMenu.Items
+				{...rest}
+				className={RapidStyles(wrapperStyles, '', RAPID_CLASSNAME)}
+				ref={ref}
 			>
-				{children}
-			</ScaleFade>
-		</HeadlessMenu.Items>
+				<ScaleFade
+					styles={RapidStyles(styles || rest.className, defaultStyles)}
+					exitAnimation='exit'
+				>
+					{children}
+				</ScaleFade>
+			</HeadlessMenu.Items>
+		</Transition>
 	);
 });
 

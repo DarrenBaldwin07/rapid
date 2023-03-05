@@ -151,36 +151,36 @@ const Tooltip = (props: TooltipProps) => {
 		<>
 			{trigger}
 			<AnimatePresence>
-					{isOpen && (
-						<Portal>
-							<div
-								ref={refs.setFloating}
-								style={{
-									position: strategy,
-									top: y ?? 0,
-									left: x ?? 0,
-								}}
+				{isOpen && (
+					<Portal>
+						<div
+							ref={refs.setFloating}
+							style={{
+								position: strategy,
+								top: y ?? 0,
+								left: x ?? 0,
+							}}
+						>
+							<ScaleFade
+								isEnabled={isAnimated}
+								initialscale={0.85}
+								exitAnimation='exit'
 							>
-								<ScaleFade
-									isEnabled={isAnimated}
-									initialscale={0.85}
-									exitAnimation='exit'
+								<div
+									id={tooltipId}
+									role='tooltip'
+									className={RapidStyles(
+										styles || rest.className,
+										getVariantClassName(variant, 'tooltip') ||
+											THEME_CLASSNAME,
+									)}
 								>
-									<div
-										id={tooltipId}
-										role='tooltip'
-										className={RapidStyles(
-											styles || rest.className,
-											getVariantClassName(variant, 'tooltip') ||
-												THEME_CLASSNAME,
-										)}
-									>
-										<Text styles='text-sm'>{label}</Text>
-									</div>
-								</ScaleFade>
-							</div>
-							</Portal>
-					)}
+									<Text styles='text-sm'>{label}</Text>
+								</div>
+							</ScaleFade>
+						</div>
+						</Portal>
+				)}
 			</AnimatePresence>
 		</>
 	);

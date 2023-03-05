@@ -2,6 +2,7 @@ pub mod cli;
 pub mod args;
 pub mod commands;
 pub mod constants;
+pub mod rapid_config;
 use cli::{CliError, RapidCLI, Config};
 
 fn main() -> Result<(), CliError<'static>> {

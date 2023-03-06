@@ -2,23 +2,37 @@ use clap::{Command, ArgMatches, command};
 use crate::constants::LOGO;
 use crate::{args::flag, commands::{self, RapidCommand}};
 use std::process::exit;
+use std::path::PathBuf;
 use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 pub type App = Command;
+use std::env::{current_dir, current_exe};
 
-// Logo with signs
+/// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
     ">>> R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
-// Normal Logo
+/// Normal Logo
 pub fn rapid_logo_small<'a>() -> GradientDisplay<'a, [RGB; 4]> {
     "R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
-// Large Ascii printed logo
+/// Large Ascii printed logo
 pub fn logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
     LOGO.gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
+
+
+/// Returns what the current working directory of the user is
+pub fn current_directory() -> PathBuf {
+    current_dir().expect("Error: Could not determine the current wrking directory")
+}
+
+/// Returns where the installed binary is on the users machine
+pub fn binary_dir() -> PathBuf {
+    current_exe().expect("Error: Could not determine binary dir.")
+}
+
 
 /// TODO: config fields can be added here later on as needed
 pub struct Config {}

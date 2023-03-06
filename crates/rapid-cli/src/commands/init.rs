@@ -2,8 +2,7 @@ use clap::{Command, ArgAction, ArgMatches, arg, value_parser};
 use std::path::PathBuf;
 use std::fs::{write, File};
 use std::{thread, time};
-use std::env::current_dir;
-use crate::cli::{Config, rapid_logo, logo};
+use crate::cli::{Config, rapid_logo, logo, current_directory};
 use crate::constants::BOLT_EMOJI;
 use super::RapidCommand;
 use colorful::Color;
@@ -53,8 +52,8 @@ impl RapidCommand for  Init {
 fn parse_init_args(args: &ArgMatches) {
     /// NOTE: We can add more args for templates here (ideally we add nextjs asap)
     const INIT_ARGS: [&str; 2] = ["vite", "remix"];
-    // Get the install directory of the rapid-cli
-    let binary_dir = current_dir().unwrap();
+    // Get the current working directory of the user
+    let current_working_directory = current_directory();
 
     for arg in INIT_ARGS {
         match args.get_one::<PathBuf>(arg) {
@@ -62,11 +61,11 @@ fn parse_init_args(args: &ArgMatches) {
                 if val == &PathBuf::from("true") {
                     match arg {
                         "vite" => {
-                            init_vite_template(binary_dir, arg);
+                            init_vite_template(current_working_directory, arg);
                             break;
                         }
                         "remix" => {
-                            init_remix_template(binary_dir, arg);
+                            init_remix_template(current_working_directory, arg);
                             break;
                         }
                         _ => {
@@ -85,15 +84,15 @@ fn parse_init_args(args: &ArgMatches) {
 }
 
 
-pub fn init_vite_template(binary_dir: PathBuf, arg: &str) {
+pub fn init_vite_template(current_working_directory: PathBuf, arg: &str) {
     println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
     let tailwind_config_contents = Asset::get("tailwind.config.js").unwrap();
     let postcss_config_contents = Asset::get("postcss.config.js").unwrap();
     let index_css_contents = Asset::get("index.css").unwrap();
     // Make the two config files that we need
-    File::create(binary_dir.join("tailwind.config.js")).unwrap();
-    File::create(binary_dir.join("postcss.config.js")).unwrap();
-    File::create(binary_dir.join("src/index.css")).unwrap();
+    File::create(current_working_directory.join("tailwind.config.js")).unwrap();
+    File::create(current_working_directory.join("postcss.config.js")).unwrap();
+    File::create(current_working_directory.join("src/index.css")).unwrap();
     // Write the contents of the config files
     write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap()).expect("Could not write to tailwind config file!");
     write("postcss.config.js", std::str::from_utf8(postcss_config_contents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
@@ -106,13 +105,13 @@ pub fn init_vite_template(binary_dir: PathBuf, arg: &str) {
     println!("{} {} {} {}", format!("{}", rapid_logo()).bold(), "Success".bg_blue().color(Color::White).bold(), BOLT_EMOJI, "Rapid-ui has been initialized in your Vite project!");
 }
 
-pub fn init_remix_template(binary_dir: PathBuf, arg: &str) {
+pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
     println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
     let tailwind_config_contents = RemixAssets::get("tailwind.config.js").unwrap();
     let index_css_contents = RemixAssets::get("index.css").unwrap();
     // Make the two config files that we need
-    File::create(binary_dir.join("tailwind.config.js")).unwrap();
-    File::create(binary_dir.join("app/index.css")).unwrap();
+    File::create(current_working_directory.join("tailwind.config.js")).unwrap();
+    File::create(current_working_directory.join("app/index.css")).unwrap();
     // Write the contents of the config files
     write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap()).expect("Could not write to tailwind config file!");
     write("app/index.css", std::str::from_utf8(index_css_contents.data.as_ref()).unwrap()).expect("Could not write to index.css file!");

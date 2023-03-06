@@ -67,6 +67,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 							spinner
 						) : (
 							<AliasSpinner
+								data-testid="button-spinner"
 								size='sm'
 								styles='border-white border-t-transparent border-r-transparent'
 							/>

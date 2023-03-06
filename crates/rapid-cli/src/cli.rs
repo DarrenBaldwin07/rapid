@@ -82,7 +82,12 @@ impl RapidCLI {
             // Since we did find a sub-command match, lets exeute the command
             if let Some(cm) = RapidCLI::execute_cammand(cmd) {
                 let _ = cm(&self.config, args);
+            } else {
+                // Show the help command if the user inputted a invalid command
+                println!("{}", get_help_template());
+                exit(64); // exit 64 is a standard usage error with clis
             }
+
         } else {
             // Show the help template if there was no command match found
             println!("{}", get_help_template());

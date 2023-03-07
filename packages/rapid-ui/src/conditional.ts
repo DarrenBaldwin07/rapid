@@ -4,16 +4,21 @@ interface ConditionalClassName {
 }
 
 /**
- * `classNames` is a Rapid helper for easily adding conditional TailwindCSS styles to your components (very similar to Clsx: https://github.com/lukeed/clsx)
+ * `styles` is a Rapid helper for easily adding conditional TailwindCSS styles to your components (very similar to Clsx: https://github.com/lukeed/clsx)
  */
 // Simple helper function for adding conditional styles with tailwindCSS
-function styles(...classNames: Array<string | ConditionalClassName>) {
+function styles(...classNames: Array<string | ConditionalClassName | boolean>) {
 	return classNames
-		.reduce<Array<string | ConditionalClassName>>(
+		.reduce<Array<string | ConditionalClassName | boolean>>(
 			(
-				result: (string | ConditionalClassName)[],
-				className: string | ConditionalClassName,
+				result: (string | ConditionalClassName | boolean)[],
+				className: string | ConditionalClassName | boolean,
 			) => {
+				// Check if we got a boolean in the array
+				if (typeof className === 'boolean') {
+					// If we did, move on to the next iteration
+					return result;
+				}
 				// Force-cast our className
 				const typedCondition = className as ConditionalClassName;
 				// Check to see if we got a conditional object in the array

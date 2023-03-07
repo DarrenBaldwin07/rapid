@@ -1,5 +1,5 @@
-import { expect, test, it, describe } from 'vitest';
-import {render, screen} from '@testing-library/react'
+import { expect, it, describe } from 'vitest';
+import { render } from '@testing-library/react'
 import { Button } from '../../../src/components/primitives';
 import React from 'react';
 

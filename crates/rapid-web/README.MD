@@ -2,7 +2,7 @@
 
 ## Initial features
 - Simplified router + middleware
-- Custom error pages and better extractor error logging
+- Good defaults (CORS, logging middleware, custom error pages and better extractor error logging)
 - Scaffolded orm, connection pooling, mailer, server state
 - Generators for request -> service -> controller architecture
 - Codegen for typescript clients with extractor type safety

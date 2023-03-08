@@ -50,14 +50,17 @@ impl RapidServer {
 		B
 	>(
 		server: HttpServer<F, I, S, B>,
-	) where
+	) -> std::io::Result<()> where
 		F: Fn() -> I + Send + Clone + 'static,
 		I: IntoServiceFactory<S, Request>,
-		S: ServiceFactory<Request, Config = AppConfig>,
+		S: ServiceFactory<Request, Config = AppConfig> + 'static,
 		S::Error: Into<Error>,
 		S::InitError: std::fmt::Debug,
 		S::Response: Into<Response<B>>,
-		B: MessageBody,
+		B: MessageBody + 'static,
 	{
+        server.bind(("", 3000))?
+        .run()
+        .await
 	}
 }

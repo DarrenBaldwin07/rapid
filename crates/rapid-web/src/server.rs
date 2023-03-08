@@ -1,4 +1,6 @@
-use super::actix::{App, HttpServer, web::ServiceConfig};
+use super::actix::{App, HttpServer, web::ServiceConfig, dev::{ServiceRequest, ServiceResponse}, web, Error};
+use actix_http::body::MessageBody;
+use actix_service::{ServiceFactory};
 use super::cors::Cors;
 
 #[derive(Clone)]
@@ -57,3 +59,19 @@ impl RapidServer {
     }
 }
 
+fn can_be_returned_from_fn() {
+    /// compile-only test for returning app type from function
+    pub fn my_app() -> App<
+        impl ServiceFactory<
+            ServiceRequest,
+            Response = ServiceResponse<impl MessageBody>,
+            Config = (),
+            InitError = (),
+            Error = Error,
+        >,
+    > {
+        App::new()
+            .route("/", web::to(|| async { "hello" }))
+    }
+
+}

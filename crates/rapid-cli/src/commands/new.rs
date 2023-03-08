@@ -1,7 +1,6 @@
 use super::RapidCommand;
-use crate::cli::{logo, rapid_logo, Config};
+use crate::cli::{logo, Config};
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
-use colorful::{Color, Colorful};
 use std::path::PathBuf;
 
 pub struct New {}

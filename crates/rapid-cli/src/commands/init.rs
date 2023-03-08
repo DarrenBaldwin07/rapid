@@ -90,9 +90,9 @@ pub fn init_vite_template(current_working_directory: PathBuf, arg: &str) {
 	let postcss_config_contents = Asset::get("postcss.config.js").unwrap();
 	let index_css_contents = Asset::get("index.css").unwrap();
 	// Make the two config files that we need
-	File::create(current_working_directory.join("tailwind.config.js")).unwrap();
-	File::create(current_working_directory.join("postcss.config.js")).unwrap();
-	File::create(current_working_directory.join("src/index.css")).unwrap();
+	File::create(current_working_directory.join("tailwind.config.js")).expect("Failed to create a tailwind config file. Please try again!");
+	File::create(current_working_directory.join("postcss.config.js")).expect("Failed to create a postcss config file. Please try again!");
+	File::create(current_working_directory.join("src/index.css")).expect("Failed to create the css entrypoint file. Please try again!");
 	// Write the contents of the config files
 	write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap())
 		.expect("Could not write to tailwind config file!");
@@ -117,8 +117,8 @@ pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
 	let tailwind_config_contents = RemixAssets::get("tailwind.config.js").unwrap();
 	let index_css_contents = RemixAssets::get("index.css").unwrap();
 	// Make the two config files that we need
-	File::create(current_working_directory.join("tailwind.config.js")).unwrap();
-	File::create(current_working_directory.join("app/index.css")).unwrap();
+	File::create(current_working_directory.join("tailwind.config.js")).expect("Failed to create a tailwind config file. Please try again!");
+	File::create(current_working_directory.join("app/index.css")).expect("Failed to create the css entrypoint file. Please try again!");
 	// Write the contents of the config files
 	write("tailwind.config.js", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap())
 		.expect("Could not write to tailwind config file!");

@@ -21,6 +21,7 @@ import {
 	Switch,
 	Skeleton,
 	SkeletonText,
+	SelectIcon
 	HStack,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -58,7 +59,10 @@ function App() {
 
 			<Select styles='w-56'>
 				<Option value='Test'>Test</Option>
+				<Option value='Test'>Test</Option>
+				<SelectIcon />
 			</Select>
+
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
 				Open Modal
 			</Button>

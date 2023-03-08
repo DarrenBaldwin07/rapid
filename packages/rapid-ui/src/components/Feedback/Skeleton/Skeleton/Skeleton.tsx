@@ -16,7 +16,7 @@ interface SkeletonProps
 
 const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 	({ styles, isLoading = true, speed = 'skeleton-pulse', ...rest }, ref) => {
-		const defaultStyles = 'h-6 w-40 rounded-md';
+		const defaultStyles = 'h-6 w-full rounded-md';
 		return (
 			<div
 				{...rest}

@@ -8,8 +8,8 @@ interface VStackProps
 		React.HTMLAttributes<HTMLDivElement>,
 		HTMLDivElement
 	> {
-	spacing?: Spacing;
 	styles?: string;
+	spacing?: Spacing;
 }
 
 const HStack = React.forwardRef<HTMLDivElement, VStackProps>(
@@ -19,9 +19,9 @@ const HStack = React.forwardRef<HTMLDivElement, VStackProps>(
 			<Stack
 				{...rest}
 				ref={ref}
+				styles={styles}
 				spacing={spacing}
 				direction='row'
-				styles={styles}
 			>
 				{children}
 			</Stack>

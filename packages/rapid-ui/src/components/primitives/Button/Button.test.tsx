@@ -1,6 +1,7 @@
 import { expect, it, describe } from 'vitest';
 import { render } from '@testing-library/react';
 import { Button } from '..';
+import React from 'react';
 
 describe('Button', () => {
 	it('renders correctly without crashing', () => {

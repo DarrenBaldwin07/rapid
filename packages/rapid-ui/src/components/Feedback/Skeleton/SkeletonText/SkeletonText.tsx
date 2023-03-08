@@ -29,7 +29,7 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonProps>(
 		},
 		ref,
 	) => {
-		const defaultStyles = 'h-3 w-40 rounded-md';
+		const defaultStyles = 'h-3 w-full rounded-md';
 		return (
 			<VStack styles={containerStyles} spacing={lineSpacing}>
 				{Array.from(Array(numberOfLines).keys()).map(

@@ -1,8 +1,6 @@
 use super::{
 	actix::{
 		dev::{ServiceRequest, ServiceResponse},
-		web,
-		web::ServiceConfig,
 		App, Error, HttpServer,
 	},
 	cors::Cors,
@@ -23,6 +21,7 @@ pub struct RapidServer {
 /// # Examples
 /// ```
 /// let app = RapidServer.create();
+/// let router = app.router();
 /// app.listen();
 /// ```
 impl RapidServer {
@@ -43,12 +42,14 @@ impl RapidServer {
 		App::new().wrap(cors.unwrap())
 	}
 
+    /// Takes in a pre-configured HttpServer and listens on the specified port(s)
 	pub async fn listen<
 		F,
 		I,
 		S,
 		B
 	>(
+        self,
 		server: HttpServer<F, I, S, B>,
 	) -> std::io::Result<()> where
 		F: Fn() -> I + Send + Clone + 'static,
@@ -59,8 +60,12 @@ impl RapidServer {
 		S::Response: Into<Response<B>>,
 		B: MessageBody + 'static,
 	{
-        server.bind(("", 3000))?
+        server.bind((self.hostname.unwrap(), self.port.unwrap()))?
         .run()
         .await
 	}
+}
+
+fn get_default_bind_config() -> (String, u32) {
+    (String::from("localhost"), 8080)
 }

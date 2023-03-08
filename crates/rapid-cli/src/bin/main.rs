@@ -1,9 +1,4 @@
-pub mod args;
-pub mod cli;
-pub mod commands;
-pub mod constants;
-pub mod rapid_config;
-use cli::{CliError, Config, RapidCLI};
+use rapid_cli::cli::{CliError, Config, RapidCLI};
 
 fn main() -> Result<(), CliError<'static>> {
 	// TODO: eventually, the user will be able to persist settings via a global config file

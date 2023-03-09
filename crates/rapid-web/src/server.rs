@@ -5,11 +5,16 @@ use super::{
 		middleware::NormalizePath
 	},
 	cors::Cors,
+	logger::RapidLogger,
+	tui::{server_init}
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
+use rapid_cli::cli::rapid_logo;
+use colorful::{Color, Colorful};
+
 
 #[derive(Clone)]
 pub struct RapidServer {
@@ -22,9 +27,13 @@ pub struct RapidServer {
 /// A custom actix-web server implementation for the Rapid Framework
 /// # Examples
 /// ```
-/// let app = RapidServer.create();
-/// let router = app.router();
-/// app.listen();
+///
+/// let app = RapidServer::create(None, None, None, None);
+///
+/// app.listen(HttpServer::new(move || {
+///		RapidServer::router(None).route("/", web::get().to(router))
+/// })).await
+///
 /// ```
 impl RapidServer {
 	pub fn create(port: Option<u16>, is_logging: Option<bool>, base_route: Option<String>, hostname: Option<String>) -> Self {
@@ -41,8 +50,9 @@ impl RapidServer {
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// We can declare our customing logging and error pages here:
 		App::new()
-			.wrap(cors.unwrap())
+			.wrap(cors.unwrap_or(Cors::default()))
 			.wrap(NormalizePath::trim())
+			.wrap(RapidLogger)
 	}
 
     /// Takes in a pre-configured HttpServer and listens on the specified port(s)
@@ -52,7 +62,7 @@ impl RapidServer {
 		S,
 		B
 	>(
-        &self,
+        self,
 		server: HttpServer<F, I, S, B>,
 	) -> std::io::Result<()> where
 		F: Fn() -> I + Send + Clone + 'static,
@@ -68,7 +78,10 @@ impl RapidServer {
 
 		// Grab the users configured server binding values from either the RapidServer object
 		// or the actualy rapid config file in the project root
-		let bind_config = get_default_bind_config(rapid_server_config, &self.hostname, &self.port);
+		let bind_config = get_default_bind_config(rapid_server_config, self.hostname, self.port);
+
+		// Show the init message
+		server_init(bind_config.clone());
 
         server.bind(bind_config)?
         .run()
@@ -76,28 +89,28 @@ impl RapidServer {
 	}
 }
 
-fn get_default_bind_config(config: RapidConfig, host_name: &Option<String>, port: &Option<u16>) -> (String, u16) {
+fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port: Option<u16>) -> (String, u16) {
 	// Get the hostname from the server object initialized by the consumer
 	// We need to check if they passed one in
 	let server_hostname = match host_name {
-		Some(value) => &value,
-		None => "localhost"
+		Some(value) => value,
+		None => String::from("localhost")
 	};
 
-	// Grab a fallback port if the user did not specify on inside of the root rapid config file
+	// Grab a fallback port if the user did not specify one inside of the root rapid config file
 	let fallback_port = match port {
 		Some(value) => value,
-		None => &8080
+		None => 8080
 	};
 
 	// Grab the port from either the server config or the rapid config file
 	let port = match config.server {
 		Some(value) => match value.port {
 			Some(port) => port,
-			None => 1
+			None => fallback_port
 		},
-		None => 1
+		None => fallback_port
 	};
 
-    (String::from(""), 2)
+    (server_hostname, port)
 }

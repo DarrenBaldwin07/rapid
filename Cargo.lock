@@ -1097,6 +1097,7 @@ dependencies = [
  "actix-service",
  "actix-web",
  "actix-web-httpauth",
+ "colorful",
  "futures-util",
  "rapid-cli",
 ]

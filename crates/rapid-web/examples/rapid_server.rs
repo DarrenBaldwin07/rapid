@@ -8,13 +8,11 @@ async fn manual_hello() -> HttpResponse {
 
 #[main]
 async fn main() -> std::io::Result<()> {
-    println!("Hello world!");
     let app = RapidServer::create(None, None, None, None);
 
     app.listen(HttpServer::new(move || {
         RapidServer::router(None).route("/", web::get().to(manual_hello))
     })).await
-
 }
 
 

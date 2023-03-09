@@ -12,8 +12,6 @@ use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
-use rapid_cli::cli::rapid_logo;
-use colorful::{Color, Colorful};
 
 
 #[derive(Clone)]
@@ -31,7 +29,7 @@ pub struct RapidServer {
 /// let app = RapidServer::create(None, None, None, None);
 ///
 /// app.listen(HttpServer::new(move || {
-///		RapidServer::router(None).route("/", web::get().to(router))
+///		RapidServer::router(None).route("/", web::get().to(route))
 /// })).await
 ///
 /// ```

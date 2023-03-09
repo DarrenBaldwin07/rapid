@@ -1,3 +1,3 @@
-export * from './Menu';
-export * from './modal';
-export { default as Tooltip, tooltipTheme } from './Tooltip/Tooltip';
+export * from './menu';
+export * from './Modal';
+export * from './Tooltip';

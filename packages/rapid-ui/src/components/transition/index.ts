@@ -1,2 +1,2 @@
-export { ScaleFade } from './ScaleFade';
-export { Fade } from './Fade';
+export * from './ScaleFade';
+export * from './Fade';

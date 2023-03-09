@@ -1,1 +1,1 @@
-export { Switch, switchTheme } from './Switch';
+export * from './Switch';

@@ -1,5 +1,5 @@
-export { default as Skeleton } from './Skeleton/Skeleton';
-export { default as SkeletonText } from './SkeletonText/SkeletonText';
+export { Skeleton } from './Skeleton';
+export { SkeletonText } from './SkeletonText';
 
 export type Speed =
 	| 'skeleton-pulse'

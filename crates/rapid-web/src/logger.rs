@@ -8,9 +8,7 @@ use log::info;
 use std::env;
 use std::io::Write;
 
-
 pub fn init_logger() {
-
     // Configure our logger
     env::set_var("RUST_LOG", "info");
 

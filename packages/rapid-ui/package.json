@@ -17,7 +17,6 @@
 	"scripts": {
 		"build": "vite build",
 		"test": "vitest",
-		"coverage": "vitest run --coverage",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
 		"watch:css": "npx tailwindcss -i ./src/styles/index.css -o ./src/styles/tailwind-dev.css --watch"

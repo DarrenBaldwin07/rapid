@@ -1,2 +1,2 @@
-export * from './ScaleFade';
-export * from './Fade';
+export * from './scaleFade';
+export * from './fade';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { expect, it, describe } from 'vitest';
-import { Select, Option, SelectIcon } from '../';
+import { Select, Option, SelectIcon } from '..';
 
 describe('Select', () => {
 	it('should render default correctly', () => {

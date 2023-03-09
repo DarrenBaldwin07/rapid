@@ -1,3 +1,3 @@
 export * from './menu';
-export * from './Modal';
-export * from './Tooltip';
+export * from './modal';
+export * from './tooltip';

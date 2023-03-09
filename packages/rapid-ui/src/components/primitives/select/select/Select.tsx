@@ -1,7 +1,7 @@
 import React from 'react';
 import { createVariant } from '../../../../theme';
 import { RapidStyles } from '../../../../utils';
-import SelectIcon from '../SelectIcon/SelectIcon';
+import SelectIcon from '../selectIcon/selectIcon';
 import Option from '../Option/Option';
 
 const THEME_CLASSNAME = 'rapid-select';

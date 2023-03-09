@@ -1,4 +1,4 @@
-export { Menu } from './Menu';
-export { MenuItem } from './MenuItem';
-export { MenuItems } from './MenuItems';
-export { MenuButton, menuButtonTheme } from './MenuButton';
+export { Menu } from './menu';
+export { MenuItem } from './menuItem';
+export { MenuItems } from './menuItems';
+export { MenuButton, menuButtonTheme } from './menuButton';

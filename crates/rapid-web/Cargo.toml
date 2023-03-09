@@ -9,7 +9,20 @@ license = "MIT"
 keywords = ["server", "web-framework", "rapid"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+# Example showing a rapid server in action
+[[example]]
+name = "rapid_server"
+path = "examples/rapid_server.rs"
+
 [dependencies]
 actix-web = "4.3.0"
 actix-files = "0.6.2"
 actix-cors = "0.6.4"
+actix-web-httpauth = "0.8.0"
+actix-service = "2.0.2"
+actix-http = "3.3.1"
+rapid-cli = { version = "0.0.8", path = "../rapid-cli" }
+futures-util = "0.3.26"
+colorful = "0.2.2"
+log = "0.4.17"
+env_logger = "0.10.0"

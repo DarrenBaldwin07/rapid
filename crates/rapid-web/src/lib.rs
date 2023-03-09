@@ -1,17 +1,7 @@
-pub use actix_web as server;
+pub use actix_cors as cors;
 pub use actix_files as files;
-
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub use actix_web as actix;
+pub use actix_web_httpauth as auth;
+pub mod logger;
+pub mod server;
+pub (crate) mod tui;

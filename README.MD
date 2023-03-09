@@ -33,21 +33,6 @@ Rapid uses React and Rust as the foundation for its fullstack tooling. Do your h
 -   @rapid-web/react
 -   @rapid-web/ui
 
-# Getting Started
-
-To setup your dev environment on your local machine follow these steps:
-
--   node v16 or higher is required
--   pnpm
-
-1. Navigate to the UI package and build the package:
-   `cd rapid/packages/rapid-ui && npm run build`
-
-2. Navigate to the example app to install the dependencies and start the app
-   `cd rapid/examples/ui && pnpm install && pnpm dev`
-
-View the Rapid UI components at http://localhost:5173. If making changes, be sure to rebuild the rapid-ui package and reinstall the example project so that it uses the updated package.
-
 # Roadmap
 
 ### MVP
@@ -64,3 +49,18 @@ View the Rapid UI components at http://localhost:5173. If making changes, be sur
 -   Icon library integrated into the @Rapid/ui
 -   Remix.run?
 -   Wasm powered server functions?!
+
+# Getting Started
+
+To setup your dev environment on your local machine follow these steps:
+
+-   node v16 or higher is required
+-   pnpm
+
+1. Navigate to the UI package and build the package:
+   `cd rapid/packages/rapid-ui && npm run build`
+
+2. Navigate to the example app to install the dependencies and start the app
+   `cd rapid/examples/ui && pnpm install && pnpm dev`
+
+View the Rapid UI components at http://localhost:5173. If making changes, be sure to rebuild the rapid-ui package and reinstall the example project so that it uses the updated package.

@@ -12,7 +12,7 @@ import useDisclosure from '../../../hooks/useDisclosure';
 import { RapidStyles, getVariantClassName } from '../../../utils';
 import { Text } from '../../Primitives';
 import { createVariant } from '../../../theme';
-import Portal from '../../Utilities/Portal/Portal';
+import { Portal } from '../../utilties/Portal';
 
 const THEME_CLASSNAME = 'rapid-tooltip';
 

@@ -1,5 +1,5 @@
 import {
-	buttomTheme,
+	buttonTheme,
 	inputTheme,
 	menuButtonTheme,
 	textAreaTheme,
@@ -10,7 +10,7 @@ import {
 import { createTheme } from './createTheme';
 
 const theme = createTheme({
-	button: buttomTheme,
+	button: buttonTheme,
 	input: inputTheme,
 	textArea: textAreaTheme,
 	menuButton: menuButtonTheme,

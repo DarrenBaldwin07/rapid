@@ -1,0 +1,10 @@
+// Vitest Snapshot v1
+
+exports[`TextArea > should render default correctly 1`] = `
+<div>
+  <textarea
+    class="rapid-textarea"
+    placeholder="Rapid Textarea"
+  />
+</div>
+`;

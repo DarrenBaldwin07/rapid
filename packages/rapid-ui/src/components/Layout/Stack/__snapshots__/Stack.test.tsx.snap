@@ -1,0 +1,46 @@
+// Vitest Snapshot v1
+
+exports[`Stack > should render correctly with children 1`] = `
+<div>
+  <div
+    class="flex flex-col space-y-3 bg-red-500 rapid-stack"
+  >
+    <div>
+      <p>
+        Hello world!
+      </p>
+    </div>
+    <div>
+      <p>
+        Hello world!
+      </p>
+    </div>
+    <div>
+      <p>
+        Hello world!
+      </p>
+    </div>
+    <div>
+      <p>
+        Hello world!
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Stack > should render correctly with non default props 1`] = `
+<div>
+  <div
+    class="flex space-x-3 bg-blue-500 rapid-stack"
+  />
+</div>
+`;
+
+exports[`Stack > should render default correctly 1`] = `
+<div>
+  <div
+    class="flex flex-col space-y-6 rapid-stack"
+  />
+</div>
+`;

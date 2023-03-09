@@ -1,0 +1,37 @@
+// Vitest Snapshot v1
+
+exports[`Menu > should render correctly with non default props 1`] = `
+<div>
+  <div
+    class="relative inline-block text-left bg-blue-500 rapid-menu"
+    data-headlessui-state=""
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="menu"
+      class="rapid-menu-button bg-blue-500"
+      data-headlessui-state=""
+      id="headlessui-menu-button-:r1:"
+      type="button"
+    />
+  </div>
+</div>
+`;
+
+exports[`Menu > should render default correctly 1`] = `
+<div>
+  <div
+    class="relative inline-block text-left rapid-menu"
+    data-headlessui-state=""
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="menu"
+      class="rapid-menu-button"
+      data-headlessui-state=""
+      id="headlessui-menu-button-:r0:"
+      type="button"
+    />
+  </div>
+</div>
+`;

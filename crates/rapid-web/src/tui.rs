@@ -1,6 +1,5 @@
 use colorful::{Color, Colorful};
 use rapid_cli::cli::rapid_logo;
-
 pub fn started_server_message() -> colorful::core::color_string::CString {
     "Started".bg_blue().color(Color::White).bold()
 }

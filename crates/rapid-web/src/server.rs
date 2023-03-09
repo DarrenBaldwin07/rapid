@@ -5,8 +5,8 @@ use super::{
 		middleware::NormalizePath
 	},
 	cors::Cors,
-	logger::RapidLogger,
-	tui::{server_init}
+	logger::{RapidLogger, init_logger},
+	tui::{server_init},
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
@@ -48,9 +48,9 @@ impl RapidServer {
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// We can declare our customing logging and error pages here:
 		App::new()
+			.wrap(RapidLogger)
 			.wrap(cors.unwrap_or(Cors::default()))
 			.wrap(NormalizePath::trim())
-			.wrap(RapidLogger)
 	}
 
     /// Takes in a pre-configured HttpServer and listens on the specified port(s)
@@ -71,6 +71,9 @@ impl RapidServer {
 		S::Response: Into<Response<B>>,
 		B: MessageBody + 'static,
 	{
+		// Initialize the env_logger for rapid server logs
+		init_logger();
+
 		// Grab the rapid config file inside of the project root
 		let rapid_server_config = find_rapid_config();
 

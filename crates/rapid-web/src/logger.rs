@@ -4,6 +4,34 @@ use actix_web::{
     Error,
 };
 use futures_util::future::LocalBoxFuture;
+use log::info;
+use std::env;
+use std::io::Write;
+
+
+pub fn init_logger() {
+
+    // Configure our logger
+    env::set_var("RUST_LOG", "info");
+
+    env_logger::builder()
+    .format(|buf, record| {
+        // All the targets that actix-web logs from by default
+        const TARGETS: [&'static str; 4] = ["actix_server::builder", "actix_server::server", "actix_server::worker", "actix_server::accept"];
+        // We want to hide the actix web default logs
+        // Check for a specific target from actix and write nothing to the console instead
+        if TARGETS.contains(&record.metadata().target()) {
+            return write!(buf, "");
+        }
+        writeln!(buf, "{}: {}", record.level(), record.args())
+    })
+    .init();
+}
+
+// Function that takes in a ServiceRequest and creates a formatted
+fn format_logs() {
+
+}
 
 pub struct RapidLogger;
 
@@ -41,7 +69,7 @@ where
     forward_ready!(service);
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
-        println!("{:?}", req.method());
+        info!("{:?}", req.method());
         println!("Hi from start. You requested: {}", req.path());
         let fut = self.service.call(req);
 
@@ -52,3 +80,4 @@ where
         })
     }
 }
+

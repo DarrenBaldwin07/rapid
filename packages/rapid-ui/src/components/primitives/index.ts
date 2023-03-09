@@ -1,6 +1,6 @@
-export { Button, buttonTheme } from './Button';
-export { Text } from './Text';
-export { Heading } from './Heading';
-export { Input, inputTheme } from './Input';
-export { Textarea, textAreaTheme } from './Textarea';
+export * from './Button';
+export * from './Text';
+export * from './Heading';
+export * from './Input';
+export * from './Textarea';
 export * from './select';

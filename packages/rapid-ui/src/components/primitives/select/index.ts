@@ -1,3 +1,3 @@
-export { Select, selectTheme } from './Select';
-export { Option } from './Option';
-export { SelectIcon } from './SelectIcon';
+export * from './Select';
+export * from './Option';
+export * from './SelectIcon';

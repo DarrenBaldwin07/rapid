@@ -1,0 +1,50 @@
+// Vitest Snapshot v1
+
+exports[`Switch > should render correctly with non default props 1`] = `
+<div>
+  <button
+    aria-checked="false"
+    class="p-4 bg-blue-500 inline-flex ring-0 focus:ring-0 justify-start rapid-switch-this is an undeclared variant name rapid-switch-sm"
+    data-headlessui-state=""
+    id="headlessui-switch-:r1:"
+    role="switch"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="sr-only"
+    >
+      Some label
+    </span>
+    <span
+      aria-hidden="true"
+      class="pointer-events-none inline-block aspect-square h-[100%] transform rounded-full bg-white shadow-lg ring-0 focus:ring-0"
+      data-projection-id="1"
+    />
+  </button>
+</div>
+`;
+
+exports[`Switch > should render default correctly 1`] = `
+<div>
+  <button
+    aria-checked="true"
+    class="bg-black inline-flex ring-0 focus:ring-0 justify-end rapid-switch"
+    data-headlessui-state="checked"
+    id="headlessui-switch-:r0:"
+    role="switch"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="sr-only"
+    >
+      toggle
+    </span>
+    <span
+      aria-hidden="true"
+      class="pointer-events-none inline-block aspect-square h-[100%] transform rounded-full bg-white shadow-lg ring-0 focus:ring-0"
+    />
+  </button>
+</div>
+`;

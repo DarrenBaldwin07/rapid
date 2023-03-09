@@ -1,0 +1,25 @@
+// Vitest Snapshot v1
+
+exports[`Container > should render correctly with non default props 1`] = `
+<div>
+  <div
+    class="container max-w-5xl mx-auto p-4"
+  />
+</div>
+`;
+
+exports[`Container > should render correctly with non default props 2`] = `
+<div>
+  <div
+    class="container max-w-7xl mx-auto p-4"
+  />
+</div>
+`;
+
+exports[`Container > should render default correctly 1`] = `
+<div>
+  <div
+    class="container max-w-container mx-auto px-4"
+  />
+</div>
+`;

@@ -1,0 +1,49 @@
+// Vitest Snapshot v1
+
+exports[`Spinner > should render correctly with a couple props 1`] = `
+<div>
+  <div
+    class="spinner-fast rounded-full border border-solid border-black border-t-transparent border-r-transparent spinner-fast h-8 w-8"
+  >
+    <span
+      aria-busy="true"
+      class="sr-only"
+      role="alert"
+    >
+      Loading...
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Spinner > should render correctly with non default props 1`] = `
+<div>
+  <div
+    class="spinner-fast rounded-full border border-solid border-black border-t-transparent border-r-transparent spinner-slow h-4 w-4 custom-class"
+  >
+    <span
+      aria-busy="true"
+      class="sr-only"
+      role="alert"
+    >
+      Some label
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Spinner > should render default correctly 1`] = `
+<div>
+  <div
+    class="spinner-fast rounded-full border border-solid border-black border-t-transparent border-r-transparent spinner-fast h-6 w-6"
+  >
+    <span
+      aria-busy="true"
+      class="sr-only"
+      role="alert"
+    >
+      Loading...
+    </span>
+  </div>
+</div>
+`;

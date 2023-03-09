@@ -1,0 +1,9 @@
+// Vitest Snapshot v1
+
+exports[`Text > should render default correctly 1`] = `
+<div>
+  <p
+    class="rapid-text"
+  />
+</div>
+`;

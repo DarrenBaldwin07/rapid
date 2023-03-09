@@ -1,0 +1,120 @@
+// Vitest Snapshot v1
+
+exports[`Select > should render correctly with variant 1`] = `
+<div>
+  <div
+    class="relative flex items-center rapid-select-flushed"
+  >
+    <select
+      class="rapid-select-child w-full focus:outline-none focus:shadow-none px-3 bg-transparent"
+    />
+    <div
+      class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+    >
+      <svg
+        height="16px"
+        pointer-events="box-none"
+        role="presentation"
+        viewBox="0 0 448 512"
+        width="16px"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+          fill="black"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select > should render correctly with variant and children 1`] = `
+<div>
+  <div
+    class="relative flex items-center rapid-select-flushed"
+  >
+    <select
+      class="rapid-select-child w-full focus:outline-none focus:shadow-none px-3 bg-transparent"
+    >
+      <option>
+        Some text
+      </option>
+    </select>
+    <div
+      class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+    >
+      <svg
+        height="16px"
+        pointer-events="box-none"
+        role="presentation"
+        viewBox="0 0 448 512"
+        width="16px"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+          fill="black"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select > should render default correctly 1`] = `
+<div>
+  <div
+    class="relative flex items-center w-56 rapid-select"
+  >
+    <select
+      class="rapid-select-child w-full focus:outline-none focus:shadow-none px-3 bg-transparent"
+    >
+      <option
+        value="Test"
+      >
+        Test
+      </option>
+      <option
+        value="Test"
+      >
+        Test
+      </option>
+      <div
+        class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+      >
+        <svg
+          height="16px"
+          pointer-events="box-none"
+          role="presentation"
+          viewBox="0 0 448 512"
+          width="16px"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+            fill="black"
+          />
+        </svg>
+      </div>
+    </select>
+    <div
+      class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+    >
+      <svg
+        height="16px"
+        pointer-events="box-none"
+        role="presentation"
+        viewBox="0 0 448 512"
+        width="16px"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+          fill="black"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+`;

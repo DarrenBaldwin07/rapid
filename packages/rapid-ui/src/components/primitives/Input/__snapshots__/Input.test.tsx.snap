@@ -1,0 +1,37 @@
+// Vitest Snapshot v1
+
+exports[`Input > should render correctly with variant 1`] = `
+<div>
+  <input
+    class="rapid-input-faded"
+    placeholder="Rapid Input"
+  />
+</div>
+`;
+
+exports[`Input > should render correctly with variant and custom styles 1`] = `
+<div>
+  <input
+    class="rapid-input-flushed bg-green-200"
+    placeholder="Rapid Input"
+  />
+</div>
+`;
+
+exports[`Input > should render correctly with variant, custom styles, and placeholder 1`] = `
+<div>
+  <input
+    class="rapid-input-invalid bg-red-100"
+    placeholder="Placeholder text"
+  />
+</div>
+`;
+
+exports[`Input > should render default correctly 1`] = `
+<div>
+  <input
+    class="rapid-input"
+    placeholder="Rapid Input"
+  />
+</div>
+`;

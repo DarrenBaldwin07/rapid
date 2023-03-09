@@ -1,0 +1,25 @@
+// Vitest Snapshot v1
+
+exports[`Skeleton > should render correctly 1`] = `
+<div>
+  <div
+    class="h-6 w-full rounded-md rapid-skeleton skeleton-pulse"
+  />
+</div>
+`;
+
+exports[`Skeleton > should render correctly with props 1`] = `
+<div>
+  <div
+    class="h-6 w-full rounded-md custom-class rapid-skeleton skeleton-pulse-fast"
+  />
+</div>
+`;
+
+exports[`Skeleton > should render correctly with props 2`] = `
+<div>
+  <div
+    class="h-6 w-full rounded-md rapid-skeleton"
+  />
+</div>
+`;

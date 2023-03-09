@@ -1,0 +1,7 @@
+// Vitest Snapshot v1
+
+exports[`Option > should render correctly 1`] = `
+<div>
+  <option />
+</div>
+`;

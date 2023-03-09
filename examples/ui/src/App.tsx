@@ -21,7 +21,10 @@ import {
 	Switch,
 	Skeleton,
 	SkeletonText,
+	SelectIcon,
 	HStack,
+	Container,
+	Heading,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -37,28 +40,62 @@ function App() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isEnabled, setIsEnabled] = useState(false);
 	return (
-		<div className='align-center flex h-screen w-screen flex-col justify-center p-12'>
-			<Skeleton speed='skeleton-pulse-fast' />
-			<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
-			<div>
-				<HStack spacing='lg'>
-					<h1 className='theme-test'>Hello world</h1>
-					<h1 data-testid='testid'>Hello world</h1>
-					<h1>Hello world</h1>
-				</HStack>
-				<Tooltip label='Hello from tooltip'>
-					<Button variant='ghost'>Hello world</Button>
-				</Tooltip>
-				<Spinner size='md' />
-				<Input />
+		<Container>
+			<Heading styles='text-center'>Rapid Components</Heading>
+
+			<br />
+
+			<Text>Skeleton & SkeletonText</Text>
+			<div className='w-56'>
+				<Skeleton speed='skeleton-pulse-fast' />
+				<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			</div>
+
+			<br />
+
+			<Text>HStack</Text>
+			<HStack spacing='lg'>
+				<div>Element 1</div>
+				<div>Element 2</div>
+				<div>Element 3</div>
+			</HStack>
+
+			<br />
+
+			<Text>Tooltip</Text>
+			<Tooltip label='Hi, I am a tooltip!'>
+				<Button variant='ghost'>Hover over me 🙂</Button>
+			</Tooltip>
+
+			<br />
+
+			<Text>Spinner</Text>
+			<Spinner size='md' />
+
+			<br />
+
+			<Text>Input</Text>
+			<Input />
+
+			<br />
+
+			<Text>Textarea</Text>
 			<div className='mt-12'>
 				<Textarea />
 			</div>
 
+			<br />
+
+			<Text>Select</Text>
 			<Select styles='w-56'>
 				<Option value='Test'>Test</Option>
+				<Option value='Test'>Test</Option>
+				<SelectIcon />
 			</Select>
+
+			<br />
+
+			<Text>Modal</Text>
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
 				Open Modal
 			</Button>
@@ -86,12 +123,18 @@ function App() {
 					</div>
 				</ModalContent>
 			</Modal>
+
+			<br />
+
+			<Text>Switch</Text>
 			<Switch
 				enabled={isEnabled}
 				onChange={(value) => setIsEnabled(value)}
 				size='md'
 			/>
-		</div>
+
+			<br />
+		</Container>
 	);
 }
 

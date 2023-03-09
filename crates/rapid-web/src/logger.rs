@@ -69,7 +69,7 @@ where
     forward_ready!(service);
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
-        info!("{:?}", req.method());
+        info!("{:?}", req);
         println!("Hi from start. You requested: {}", req.path());
         let fut = self.service.call(req);
 

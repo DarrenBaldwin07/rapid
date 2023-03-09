@@ -8,6 +8,8 @@ interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 	maxWidth?: MaxWidth;
 }
 
+const RAPID_CLASSNAME = 'rapid-container';
+
 const parseMaxWidth = (maxWidth: MaxWidth) => {
 	switch (maxWidth) {
 		case 'sm':
@@ -28,7 +30,7 @@ const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 			<div
 				ref={ref}
 				{...rest}
-				className={RapidStyles(styles || rest.className, defaultStyles)}
+				className={RapidStyles(styles || rest.className, defaultStyles, RAPID_CLASSNAME)}
 			/>
 		);
 	},

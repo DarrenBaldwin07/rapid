@@ -1,5 +1,6 @@
 import { forwardRef, DetailedHTMLProps, HTMLAttributes } from 'react';
-import { RapidStyles, getValidReactChildren } from '../../../utils';
+import { RapidStyles } from '../../../utils';
+import React from 'react';
 
 const RAPID_CLASSNAME = 'rapid-flex';
 

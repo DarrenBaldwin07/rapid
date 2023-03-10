@@ -1,0 +1,27 @@
+// Vitest Snapshot v1
+
+exports[`Flex > should render correctly with custom styles and children 1`] = `
+<div>
+  <div
+    class="flex justify-center items-center space-x-2 rapid-flex"
+  >
+    <div>
+      Flex 1
+    </div>
+    <div>
+      Flex 2
+    </div>
+    <div>
+      Flex 3
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Flex > should render default correctly 1`] = `
+<div>
+  <div
+    class="flex rapid-flex"
+  />
+</div>
+`;

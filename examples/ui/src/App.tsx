@@ -24,6 +24,7 @@ import {
 	HStack,
 	Container,
 	Heading,
+	Divider,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -42,7 +43,14 @@ function App() {
 		<Container>
 			<Heading styles='text-center'>Rapid Components</Heading>
 
-			<br />
+			<Text>Divider non default</Text>
+			<Divider variant='dashed' size='lg' />
+			<Text>Divider vertical</Text>
+			<Divider />
+			<Text>Divider horizantal</Text>
+			<div className='h-100 text-center'>
+				<Divider orientation='vertical' />
+			</div>
 
 			<Text>Skeleton & SkeletonText</Text>
 			<div className='w-56'>
@@ -50,7 +58,7 @@ function App() {
 				<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			</div>
 
-			<br />
+			<Divider />
 
 			<Text>HStack</Text>
 			<HStack spacing='lg'>
@@ -59,31 +67,31 @@ function App() {
 				<div>Element 3</div>
 			</HStack>
 
-			<br />
+			<Divider />
 
 			<Text>Tooltip</Text>
 			<Tooltip label='Hi, I am a tooltip!'>
 				<Button variant='ghost'>Hover over me 🙂</Button>
 			</Tooltip>
 
-			<br />
+			<Divider />
 
 			<Text>Spinner</Text>
 			<Spinner size='md' />
 
-			<br />
+			<Divider />
 
 			<Text>Input</Text>
 			<Input />
 
-			<br />
+			<Divider />
 
 			<Text>Textarea</Text>
 			<div className='mt-12'>
 				<Textarea />
 			</div>
 
-			<br />
+			<Divider />
 
 			<Text>Select</Text>
 			<Select styles='w-56'>
@@ -92,7 +100,7 @@ function App() {
 				<SelectIcon />
 			</Select>
 
-			<br />
+			<Divider />
 
 			<Text>Modal</Text>
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
@@ -123,7 +131,7 @@ function App() {
 				</ModalContent>
 			</Modal>
 
-			<br />
+			<Divider />
 
 			<Text>Switch</Text>
 			<Switch
@@ -132,7 +140,7 @@ function App() {
 				size='md'
 			/>
 
-			<br />
+			<Divider />
 		</Container>
 	);
 }

@@ -10,7 +10,7 @@ interface RapidPluginTheme {
 		[key: string]: CSS.Properties | any;
 	};
 	theme?: RapidTheme;
-};
+}
 
 // Extended tailwind theme
 // Currently, it only supports the safelist option
@@ -21,8 +21,8 @@ const extendedTheme = {
 		{ pattern: /rapid-.+/ },
 		{ pattern: /spinner-.+/ },
 		// SafeList styles for the Stack component to work
-		{ pattern : /space-x-.+/ },
-		{ pattern : /space-y-.+/ },
+		{ pattern: /space-x-.+/ },
+		{ pattern: /space-y-.+/ },
 	],
 };
 
@@ -36,7 +36,7 @@ const mergeTheme = (theme: RapidTheme) => {
 
 // A Rapid tailwindCSS plugin
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
-function rapidPlugin(styles: RapidPluginTheme) {
+function rapidPlugin(styles: RapidPluginTheme): ReturnType<typeof plugin> {
 	// Grab our global styles and theme
 	const globalStyles = styles?.global || {};
 	const theme = !!styles?.theme

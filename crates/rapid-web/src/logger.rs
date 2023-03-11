@@ -1,12 +1,14 @@
+use super::tui::rapid_log_target;
 use std::future::{ready, Ready};
 use actix_web::{
     dev::{forward_ready, Service, ServiceRequest, ServiceResponse, Transform},
-    Error,
+    Error
 };
 use futures_util::future::LocalBoxFuture;
 use log::info;
 use std::env;
 use std::io::Write;
+use colorful::{Color, Colorful};
 
 pub fn init_logger() {
     // Configure our logger
@@ -26,9 +28,23 @@ pub fn init_logger() {
     .init();
 }
 
-// Function that takes in a ServiceRequest and creates a formatted
-fn format_logs() {
+// Function that takes in a ServiceRequest and creates a formatted log to the console via the env_logger crate
+fn format_logs(req: &ServiceRequest) -> String  {
+    let request_method = req.method().to_string().color(Color::LightBlue);
+    let request_path = req.path();
+    let request_http = req.version();
 
+    format!("{} {} {} {} {:?}", rapid_log_target(), "request", request_method, request_path, request_http)
+}
+
+fn request_logs(req: &ServiceRequest) {
+    info!("{}", format_logs(req));
+}
+
+fn response_logs<B>(res: &ServiceResponse<B>) {
+    let response_status = res.status().to_string().color(Color::LightCyan);
+
+    info!("{} {} {}", rapid_log_target(), "response", response_status);
 }
 
 pub struct RapidLogger;
@@ -67,13 +83,14 @@ where
     forward_ready!(service);
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
-        info!("{:?}", req);
-        println!("Hi from start. You requested: {}", req.path());
+        // We want spacing between each log
+        println!("\n");
+        request_logs(&req);
         let fut = self.service.call(req);
 
         Box::pin(async move {
             let res = fut.await?;
-
+            response_logs(&res);
             Ok(res)
         })
     }

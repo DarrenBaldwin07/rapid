@@ -1121,6 +1121,7 @@ dependencies = [
  "futures-util",
  "log",
  "rapid-cli",
+ "tiny-gradient",
 ]
 
 [[package]]

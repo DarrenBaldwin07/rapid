@@ -43,15 +43,26 @@ function App() {
 		<Container>
 			<Heading styles='text-center'>Rapid Components</Heading>
 
-			<Text>Divider non default</Text>
-			<Divider variant='dashed' />
 			<Text>Divider vertical</Text>
-			<Divider size='lg' />
-			<br />
-			<Text>Divider horizantal</Text>
 			<div className='align-center flex h-10  flex-row justify-center'>
 				<Divider orientation='vertical' />
 			</div>
+
+			<Text>Divider vertical lg</Text>
+			<div className='align-center flex h-10  flex-row justify-center'>
+				<Divider size='lg' orientation='vertical' />
+			</div>
+
+			<Text>Divider sm variant dashed</Text>
+			<div className='align-center flex h-10  flex-row justify-center'>
+				<Divider size='sm' orientation='vertical' variant='dashed' />
+			</div>
+
+			<Text>Divider variant dashed</Text>
+			<Divider variant='dashed' />
+			<Text>Divider horizontel</Text>
+			<Divider size='lg' />
+			<br />
 
 			<Text>Skeleton & SkeletonText</Text>
 			<div className='w-56'>

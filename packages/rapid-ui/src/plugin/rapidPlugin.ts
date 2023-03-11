@@ -36,7 +36,7 @@ const mergeTheme = (theme: RapidTheme) => {
 
 // A Rapid tailwindCSS plugin
 // TODO: at some point this could support multiple default themes like: MVP, etc (currently the default one is MVP)
-function rapidPlugin(styles: RapidPluginTheme): ReturnType<typeof plugin> {
+function rapidPlugin(styles: RapidPluginTheme) {
 	// Grab our global styles and theme
 	const globalStyles = styles?.global || {};
 	const theme = !!styles?.theme

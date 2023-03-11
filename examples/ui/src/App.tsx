@@ -44,11 +44,12 @@ function App() {
 			<Heading styles='text-center'>Rapid Components</Heading>
 
 			<Text>Divider non default</Text>
-			<Divider variant='dashed' size='lg' />
+			<Divider variant='dashed' />
 			<Text>Divider vertical</Text>
-			<Divider />
+			<Divider size='lg' />
+			<br />
 			<Text>Divider horizantal</Text>
-			<div className='h-100 text-center'>
+			<div className='align-center flex h-10  flex-row justify-center'>
 				<Divider orientation='vertical' />
 			</div>
 

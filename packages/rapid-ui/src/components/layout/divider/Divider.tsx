@@ -2,21 +2,15 @@ import { forwardRef, HTMLAttributes } from 'react';
 import { RapidStyles, getVariantClassName } from '../../../utils';
 import { createVariant } from '../../../theme';
 
-const RAPID_CLASSNAME = 'rapid-divider';
+const THEME_CLASSNAME = 'rapid-divider';
 
 export const dividerTheme = createVariant({
 	variants: {
 		dashed: 'border-dashed',
 		solid: 'border-solid',
 	},
-	sizes: {
-		sm: 'border-t-1',
-		md: 'border-t-2',
-		lg: 'border-t-3',
-	},
 	defaultProps: {
 		variant: 'solid',
-		size: 'md',
 	},
 });
 
@@ -26,17 +20,32 @@ interface DividerProps extends HTMLAttributes<HTMLHRElement> {
 	styles?: string;
 	size?: 'sm' | 'md' | 'lg';
 	orientation?: orientation;
-	variant?: string;
+	variant?: 'dashed' | 'solid';
 }
 
 const Divider = forwardRef<HTMLHRElement, DividerProps>(
-	({ styles, size, orientation = 'horizontal', variant, ...rest }, ref) => {
+	(
+		{ styles, size = 'sm', orientation = 'horizontal', variant, ...rest },
+		ref,
+	) => {
 		const getDividerStyles = () => {
+			const sizeToPx = {
+				sm: '',
+				md: '-2',
+				lg: '-3',
+				xl: '-4',
+			};
+
 			const commonStyles = 'border-current border-opacity-60';
 			if (orientation === 'vertical') {
-				return `${commonStyles}  h-full border-l`;
+				return `${commonStyles}  h-full border-t-0 border-l${
+					size && sizeToPx[size]
+				}`;
 			} else {
-				return `${commonStyles} w-full border-b`; // horizantel
+				// horizantel
+				return `${commonStyles} w-full border-b${
+					size && sizeToPx[size]
+				}`;
 			}
 		};
 
@@ -47,12 +56,13 @@ const Divider = forwardRef<HTMLHRElement, DividerProps>(
 				className={RapidStyles(
 					styles || rest.className,
 					getDividerStyles(),
-					getVariantClassName(variant, 'divider', size) ||
-						RAPID_CLASSNAME,
+					getVariantClassName(variant, 'divider') || THEME_CLASSNAME,
 				)}
 			/>
 		);
 	},
 );
+
+Divider.displayName = 'Divider';
 
 export default Divider;

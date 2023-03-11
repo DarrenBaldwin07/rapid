@@ -95,6 +95,16 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
 				);
 				classNames.push(...switchStyles);
 				break;
+			case 'divider':
+				const typedDividerTheme = theme[
+					key
+				] as unknown as VariantOutput;
+				const dividerStyles = generateVariants(
+					typedDividerTheme,
+					'.rapid-divider',
+				);
+				classNames.push(...dividerStyles);
+				break;
 		}
 	}
 

@@ -24,6 +24,7 @@ import {
 	HStack,
 	Container,
 	Heading,
+	Flex,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -65,6 +66,15 @@ function App() {
 			<Tooltip label='Hi, I am a tooltip!'>
 				<Button variant='ghost'>Hover over me 🙂</Button>
 			</Tooltip>
+
+			<br />
+
+			<Text>Flex</Text>
+			<Flex styles='justify-center items-center space-x-2'>
+				<div>Flex 1</div>
+				<div>Flex 2</div>
+				<div>Flex 3</div>
+			</Flex>
 
 			<br />
 

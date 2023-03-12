@@ -2,7 +2,8 @@ use super::tui::rapid_log_target;
 use std::future::{ready, Ready};
 use actix_web::{
     dev::{forward_ready, Service, ServiceRequest, ServiceResponse, Transform},
-    Error
+    Error,
+    http::header::HeaderValue,
 };
 use futures_util::future::LocalBoxFuture;
 use log::info;
@@ -28,24 +29,6 @@ pub fn init_logger() {
     .init();
 }
 
-// Function that takes in a ServiceRequest and creates a formatted log to the console via the env_logger crate
-fn format_logs(req: &ServiceRequest) -> String  {
-    let request_method = req.method().to_string().color(Color::LightBlue);
-    let request_path = req.path();
-    let request_http = req.version();
-
-    format!("{} {} {} {} {:?}", rapid_log_target(), "request", request_method, request_path, request_http)
-}
-
-fn request_logs(req: &ServiceRequest) {
-    info!("{}", format_logs(req));
-}
-
-fn response_logs<B>(res: &ServiceResponse<B>) {
-    let response_status = res.status().to_string().color(Color::LightCyan);
-
-    info!("{} {} {}", rapid_log_target(), "response", response_status);
-}
 
 #[derive(Copy, Clone)]
 enum LoggerType {
@@ -76,6 +59,83 @@ impl RapidLogger {
             logger_type: LoggerType::Verbose,
         }
     }
+
+    fn minimal_request_logs(req: &ServiceRequest)  {
+        let request_method = req.method().to_string().color(Color::LightBlue);
+        let request_path = req.path();
+        let request_http = req.version();
+
+        let logs = format!("{} {} {} {} {:?}", rapid_log_target(), "request", request_method, request_path, request_http);
+        info!("{}", logs);
+    }
+
+
+    fn minimal_response_logs<B>(res: &ServiceResponse<B>) {
+        let response_status = res.status().to_string().color(Color::LightCyan);
+
+        info!("{} {} {}", rapid_log_target(), "response", response_status);
+    }
+
+    fn detailed_request_logs(req: &ServiceRequest) {
+        let request_method = req.method().to_string().color(Color::LightBlue);
+        let request_path = req.path();
+        let request_http = req.version();
+        let request_headers = req.headers().keys().map(|key| (key.to_string(), req.headers().get(key.to_string()).unwrap())).collect::<Vec<(String, &HeaderValue)>>();
+        let is_secure = req.app_config().secure();
+        let agent = match req.headers().get("user-agent") {
+            Some(agent) => agent.to_str().unwrap(),
+            None => "Not Found",
+        };
+
+        let logs = format!("{} {} {} {} {:?} {} {} {}", rapid_log_target(), "request", request_method, request_path, request_http, format!("{}{:?}", "headers=".color(Color::LightBlue), request_headers), format!("{}{}", "is_secure=".color(Color::LightBlue), is_secure), format!("{}{}", "agent=".color(Color::LightBlue), agent));
+        info!("{}", logs);
+    }
+
+    fn detailed_response_logs<B>(res: &ServiceResponse<B>) {
+        let response_status = res.status().to_string().color(Color::LightCyan);
+        let response_headers = {
+            let headers = res.headers().keys().map(|key| (key.to_string(), res.headers().get(key.to_string()).unwrap())).collect::<Vec<(String, &HeaderValue)>>();
+
+            if headers.len() == 0 {
+                "No Headers".to_string()
+            } else {
+                headers.iter().map(|(key, value)| format!("{}: {}", key, value.to_str().unwrap())).collect::<Vec<String>>().join(", ")
+            }
+        };
+
+        let logs = format!("{} {} {} {:?}", rapid_log_target(), "response", response_status, response_headers);
+        info!("{}", logs);
+
+    }
+
+    fn verbose_request_logs(req: &ServiceRequest) {
+        let is_secure = req.app_config().secure();
+        info!("{} {:?} is_secure={}", rapid_log_target(), req.request(), is_secure);
+    }
+
+    fn verbose_response_logs<B>(res: &ServiceResponse<B>) {
+        let response_status = res.status().to_string().color(Color::LightCyan);
+        let response_headers = res.headers();
+
+
+        info!("{}", rapid_log_target());
+    }
+
+    fn get_request_logs(req: &ServiceRequest, logger_type: LoggerType) {
+        match logger_type {
+            LoggerType::Minimal => Self::minimal_request_logs(req),
+            LoggerType::Detailed => Self::detailed_request_logs(req),
+            LoggerType::Verbose => Self::verbose_request_logs(req),
+        }
+    }
+
+    fn get_response_logs<B>(res: &ServiceResponse<B>, logger_type: LoggerType) {
+        match logger_type {
+            LoggerType::Minimal => Self::minimal_response_logs(res),
+            LoggerType::Detailed => Self::detailed_response_logs(res),
+            LoggerType::Verbose => Self::verbose_response_logs(res),
+        }
+    }
 }
 
 impl<S, B> Transform<S, ServiceRequest> for RapidLogger
@@ -100,6 +160,7 @@ pub struct RapidLoggerMiddleware<S> {
     log_type: LoggerType
 }
 
+
 impl<S, B> Service<ServiceRequest> for RapidLoggerMiddleware<S>
 where
     S: Service<ServiceRequest, Response = ServiceResponse<B>, Error = Error>,
@@ -113,14 +174,16 @@ where
     forward_ready!(service);
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
+        let cloned_log_type = self.log_type.clone();
+
         // We want spacing between each log
         println!("\n");
-        request_logs(&req);
+        RapidLogger::get_request_logs(&req, cloned_log_type);
         let fut = self.service.call(req);
 
         Box::pin(async move {
             let res = fut.await?;
-            response_logs(&res);
+            RapidLogger::get_response_logs(&res, cloned_log_type);
             Ok(res)
         })
     }

@@ -48,7 +48,7 @@ impl RapidServer {
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// We can declare our customing logging and error pages here:
 		App::new()
-			.wrap(RapidLogger::minimal())
+			.wrap(RapidLogger::detailed())
 			.wrap(cors.unwrap_or(Cors::default()))
 			.wrap(NormalizePath::trim())
 	}
@@ -92,7 +92,7 @@ impl RapidServer {
 
 fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port: Option<u16>) -> (String, u16) {
 	// Get the hostname from the server object initialized by the consumer
-	// We need to check if they passed one in
+	// We need to check if they passed one in -- if they didn't, we'll use localhost
 	let server_hostname = match host_name {
 		Some(value) => value,
 		None => String::from("localhost")

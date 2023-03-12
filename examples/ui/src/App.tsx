@@ -24,6 +24,7 @@ import {
 	HStack,
 	Container,
 	Heading,
+	Divider,
 	Flex,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -43,6 +44,25 @@ function App() {
 		<Container>
 			<Heading styles='text-center'>Rapid Components</Heading>
 
+			<Text>Divider vertical</Text>
+			<div className='align-center flex h-10  flex-row justify-center'>
+				<Divider orientation='vertical' />
+			</div>
+
+			<Text>Divider vertical lg</Text>
+			<div className='align-center flex h-10  flex-row justify-center'>
+				<Divider size='lg' orientation='vertical' />
+			</div>
+
+			<Text>Divider sm variant dashed</Text>
+			<div className='align-center flex h-10  flex-row justify-center'>
+				<Divider size='sm' orientation='vertical' variant='dashed' />
+			</div>
+
+			<Text>Divider variant dashed</Text>
+			<Divider variant='dashed' />
+			<Text>Divider horizontel</Text>
+			<Divider size='lg' />
 			<br />
 
 			<Text>Skeleton & SkeletonText</Text>
@@ -51,7 +71,7 @@ function App() {
 				<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			</div>
 
-			<br />
+			<Divider />
 
 			<Text>HStack</Text>
 			<HStack spacing='lg'>
@@ -60,14 +80,14 @@ function App() {
 				<div>Element 3</div>
 			</HStack>
 
-			<br />
+			<Divider />
 
 			<Text>Tooltip</Text>
 			<Tooltip label='Hi, I am a tooltip!'>
 				<Button variant='ghost'>Hover over me 🙂</Button>
 			</Tooltip>
 
-			<br />
+			<Divider />
 
 			<Text>Flex</Text>
 			<Flex styles='justify-center items-center space-x-2'>
@@ -81,19 +101,19 @@ function App() {
 			<Text>Spinner</Text>
 			<Spinner size='md' />
 
-			<br />
+			<Divider />
 
 			<Text>Input</Text>
 			<Input />
 
-			<br />
+			<Divider />
 
 			<Text>Textarea</Text>
 			<div className='mt-12'>
 				<Textarea />
 			</div>
 
-			<br />
+			<Divider />
 
 			<Text>Select</Text>
 			<Select styles='w-56'>
@@ -102,7 +122,7 @@ function App() {
 				<SelectIcon />
 			</Select>
 
-			<br />
+			<Divider />
 
 			<Text>Modal</Text>
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
@@ -133,7 +153,7 @@ function App() {
 				</ModalContent>
 			</Modal>
 
-			<br />
+			<Divider />
 
 			<Text>Switch</Text>
 			<Switch
@@ -142,7 +162,7 @@ function App() {
 				size='md'
 			/>
 
-			<br />
+			<Divider />
 		</Container>
 	);
 }

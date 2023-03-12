@@ -10,7 +10,7 @@ interface RapidPluginTheme {
 		[key: string]: CSS.Properties | any;
 	};
 	theme?: RapidTheme;
-};
+}
 
 // Extended tailwind theme
 // Currently, it only supports the safelist option
@@ -21,8 +21,8 @@ const extendedTheme = {
 		{ pattern: /rapid-.+/ },
 		{ pattern: /spinner-.+/ },
 		// SafeList styles for the Stack component to work
-		{ pattern : /space-x-.+/ },
-		{ pattern : /space-y-.+/ },
+		{ pattern: /space-x-.+/ },
+		{ pattern: /space-y-.+/ },
 	],
 };
 

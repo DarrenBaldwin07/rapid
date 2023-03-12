@@ -44,4 +44,5 @@ export interface RapidTheme {
 	select?: VariantOutput;
 	tooltip?: VariantOutput;
 	switch?: VariantOutput;
+	divider?: VariantOutput;
 }

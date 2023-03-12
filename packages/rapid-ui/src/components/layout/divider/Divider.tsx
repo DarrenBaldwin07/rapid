@@ -21,12 +21,12 @@ export const dividerTheme = createVariant({
 	},
 });
 
-type orientation = 'horizontal' | 'vertical';
+type Orientation = 'horizontal' | 'vertical';
 
 interface DividerProps extends HTMLAttributes<HTMLHRElement> {
 	styles?: string;
 	size?: 'sm' | 'md' | 'lg' | 'xl';
-	orientation?: orientation;
+	orientation?: Orientation;
 	variant?: 'dashed' | 'solid';
 }
 
@@ -57,7 +57,5 @@ const Divider = forwardRef<HTMLHRElement, DividerProps>(
 		);
 	},
 );
-
-Divider.displayName = 'Divider';
 
 export default Divider;

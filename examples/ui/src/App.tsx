@@ -25,6 +25,7 @@ import {
 	Container,
 	Heading,
 	Divider,
+	Flex,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -87,6 +88,15 @@ function App() {
 			</Tooltip>
 
 			<Divider />
+
+			<Text>Flex</Text>
+			<Flex styles='justify-center items-center space-x-2'>
+				<div>Flex 1</div>
+				<div>Flex 2</div>
+				<div>Flex 3</div>
+			</Flex>
+
+			<br />
 
 			<Text>Spinner</Text>
 			<Spinner size='md' />

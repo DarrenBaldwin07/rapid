@@ -47,7 +47,36 @@ fn response_logs<B>(res: &ServiceResponse<B>) {
     info!("{} {} {}", rapid_log_target(), "response", response_status);
 }
 
-pub struct RapidLogger;
+#[derive(Copy, Clone)]
+enum LoggerType {
+    Minimal,
+    Detailed,
+    Verbose,
+}
+
+pub struct RapidLogger {
+    logger_type: LoggerType,
+}
+
+impl RapidLogger {
+    pub fn minimal() -> Self {
+        Self {
+            logger_type: LoggerType::Minimal,
+        }
+    }
+
+    pub fn detailed() -> Self {
+        Self {
+            logger_type: LoggerType::Detailed,
+        }
+    }
+
+    pub fn verbose() -> Self {
+        Self {
+            logger_type: LoggerType::Verbose,
+        }
+    }
+}
 
 impl<S, B> Transform<S, ServiceRequest> for RapidLogger
 where
@@ -62,12 +91,13 @@ where
     type Future = Ready<Result<Self::Transform, Self::InitError>>;
 
     fn new_transform(&self, service: S) -> Self::Future {
-        ready(Ok(RapidLoggerMiddleware { service }))
+        ready(Ok(RapidLoggerMiddleware { service, log_type: self.logger_type }))
     }
 }
 
 pub struct RapidLoggerMiddleware<S> {
     service: S,
+    log_type: LoggerType
 }
 
 impl<S, B> Service<ServiceRequest> for RapidLoggerMiddleware<S>

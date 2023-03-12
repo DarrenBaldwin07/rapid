@@ -48,7 +48,7 @@ impl RapidServer {
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// We can declare our customing logging and error pages here:
 		App::new()
-			.wrap(RapidLogger)
+			.wrap(RapidLogger::minimal())
 			.wrap(cors.unwrap_or(Cors::default()))
 			.wrap(NormalizePath::trim())
 	}

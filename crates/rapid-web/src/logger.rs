@@ -11,6 +11,7 @@ use std::env;
 use std::io::Write;
 use colorful::{Color, Colorful};
 
+
 pub fn init_logger() {
     // Configure our logger
     env::set_var("RUST_LOG", "info");
@@ -30,8 +31,19 @@ pub fn init_logger() {
 }
 
 
+/// An enum for selecting a RapidLogger output type
+///
+/// # The RapidLogger has 3 different logging formats/variants
+/// 1. `RapidLogger::minimal`
+/// 2. `RapidLogger::detailed`
+/// 3. `RapidLogger::verbose`
+///
+/// # Example output
+/// [rapid-web::logger] REQUEST GET /get-todos HTTP/1.1
+///
+///
 #[derive(Copy, Clone)]
-enum LoggerType {
+pub enum LoggerType {
     Minimal,
     Detailed,
     Verbose,
@@ -41,6 +53,19 @@ pub struct RapidLogger {
     logger_type: LoggerType,
 }
 
+/// Simple Middleware for logging request and response summaries to the console/terminal.
+///
+/// This middleware uses the `log` crate to output its logs and is enabled by default but can optionally be turned off as needed
+///
+/// # The RapidLogger has 3 different logging formats/variants
+/// 1. `RapidLogger::minimal`
+/// 2. `RapidLogger::detailed`
+/// 3. `RapidLogger::verbose`
+///
+/// # Example output
+/// [rapid-web::logger] REQUEST GET /get-todos HTTP/1.1
+///
+///
 impl RapidLogger {
     pub fn minimal() -> Self {
         Self {
@@ -65,7 +90,7 @@ impl RapidLogger {
         let request_path = req.path();
         let request_http = req.version();
 
-        let logs = format!("{} {} {} {} {:?}", rapid_log_target(), "request", request_method, request_path, request_http);
+        let logs = format!("{} {} {} {} {:?}", rapid_log_target(), "REQUEST", request_method, request_path, request_http);
         info!("{}", logs);
     }
 
@@ -73,7 +98,7 @@ impl RapidLogger {
     fn minimal_response_logs<B>(res: &ServiceResponse<B>) {
         let response_status = res.status().to_string().color(Color::LightCyan);
 
-        info!("{} {} {}", rapid_log_target(), "response", response_status);
+        info!("{} {} {}", rapid_log_target(), "RESPONSE", response_status);
     }
 
     fn detailed_request_logs(req: &ServiceRequest) {
@@ -82,12 +107,14 @@ impl RapidLogger {
         let request_http = req.version();
         let request_headers = req.headers().keys().map(|key| (key.to_string(), req.headers().get(key.to_string()).unwrap())).collect::<Vec<(String, &HeaderValue)>>();
         let is_secure = req.app_config().secure();
+        let request_connection_info = req.connection_info();
+        let request_uri = format!("{}{}", request_connection_info.host(), request_path);
         let agent = match req.headers().get("user-agent") {
             Some(agent) => agent.to_str().unwrap(),
             None => "Not Found",
         };
 
-        let logs = format!("{} {} {} {} {:?} {} {} {}", rapid_log_target(), "request", request_method, request_path, request_http, format!("{}{:?}", "headers=".color(Color::LightBlue), request_headers), format!("{}{}", "is_secure=".color(Color::LightBlue), is_secure), format!("{}{}", "agent=".color(Color::LightBlue), agent));
+        let logs = format!("{} {} {} {} {} {:?} {} {} {}", rapid_log_target(), "REQUEST", request_method, request_path, request_uri, request_http, format!("{}{:?}", "headers=".color(Color::LightBlue), request_headers), format!("{}{}", "is_secure=".color(Color::LightBlue), is_secure), format!("{}{}", "agent=".color(Color::LightBlue), agent));
         info!("{}", logs);
     }
 
@@ -103,22 +130,23 @@ impl RapidLogger {
             }
         };
 
-        let logs = format!("{} {} {} {:?}", rapid_log_target(), "response", response_status, response_headers);
+        let logs = format!("{} {} {} {}", rapid_log_target(), "RESPONSE", response_status, format!("{}{:?}", "headers=".color(Color::LightCyan), response_headers));
         info!("{}", logs);
-
     }
 
+    // TODO: verbose will likely not be used becuase it is basically the same as detailed logs
+    // Currently, it exists for users that don't want formatted logs with the default rapid gradient colors (and for us to experiment with other logging techniques)
     fn verbose_request_logs(req: &ServiceRequest) {
         let is_secure = req.app_config().secure();
-        info!("{} {:?} is_secure={}", rapid_log_target(), req.request(), is_secure);
+        info!("{} {} {:?} is_secure={}", "[rapid-web::logger]", "REQUEST", req.request(), is_secure);
     }
 
     fn verbose_response_logs<B>(res: &ServiceResponse<B>) {
-        let response_status = res.status().to_string().color(Color::LightCyan);
+        let response_status = res.status();
         let response_headers = res.headers();
 
-
-        info!("{}", rapid_log_target());
+        // TODO: eventually it would be nice to log response logs here as well (currently actix-web does not support this very well)
+        info!("{} {} {:?} {:?}", "[rapid-web::logger]", "RESPONSE", response_status, response_headers);
     }
 
     fn get_request_logs(req: &ServiceRequest, logger_type: LoggerType) {

@@ -3,7 +3,7 @@ use serde::Deserialize;
 use std::fs::read_to_string;
 use toml;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct AppConfig {
 	// TODO: Add app options here as needed
 	// host port
@@ -11,21 +11,23 @@ pub struct AppConfig {
 	// include_environment_variables
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct ServerConfig {
 	pub port: Option<u16>,
-	pub is_logging: bool,
-	pub show_error_pages: bool,
+	pub is_logging: Option<bool>,
+	pub show_error_pages: Option<bool>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 /// Eventually rapid will have something called plugins -- for now "features" are simply optional internal functionality
 /// that can be toggled by adding the desired feature to this "features" object inside of the rapid.toml config file
 pub struct Features {
 	// TODO: Add features here as needed
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
+/// The RapidConfig file schemea
+/// # Example:
 pub struct RapidConfig {
 	pub app_type: String,
 	pub app_config: Option<AppConfig>,

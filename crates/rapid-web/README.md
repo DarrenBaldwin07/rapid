@@ -4,11 +4,15 @@
 - Simplified router + middleware
 - Good defaults (CORS, logging middleware, custom error pages and better extractor error logging)
 - Built-in actix crates (files, auth, etc)
+- Easy JWT validation and middleware
 - Scaffolded diesel orm, connection pooling, mailer, server state
 - Generators for request -> service -> controller architecture
 - Codegen for typescript clients with extractor type safety
 - Typescript type generation from Diesel schema
+- Hot reload dev server
 - Better request/response logging in console for easy debugging
+- Auto-serve all static assets from the /public folder
+- A one line SpaRouter for serving single page applications from a rapid-web server
 
 ## Maybe features
 - File based routing

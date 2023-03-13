@@ -8,6 +8,7 @@
 - Scaffolded diesel orm, connection pooling, mailer, server state
 - Generators for request -> service -> controller architecture
 - Codegen for typescript clients with extractor type safety
+- `rapid extract` command for extracting-out a rust backend from its frontend when scaling
 - Typescript type generation from Diesel schema
 - Hot reload dev server
 - Better request/response logging in console for easy debugging

@@ -13,7 +13,6 @@ async fn main() -> std::io::Result<()> {
     app.listen(HttpServer::new(move || {
         RapidServer::router(None, None).route("/", web::get().to(index))
     })).await
-
 }
 
 

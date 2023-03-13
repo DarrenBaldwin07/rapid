@@ -8,12 +8,11 @@ async fn index() -> HttpResponse {
 
 #[main]
 async fn main() -> std::io::Result<()> {
-    let app = RapidServer::create(None, None, None, None);
+    let app = RapidServer::create(None, None, None);
 
     app.listen(HttpServer::new(move || {
-        RapidServer::router(None).route("/", web::get().to(index))
+        RapidServer::router(None, None).route("/", web::get().to(index))
     })).await
-
 }
 
 

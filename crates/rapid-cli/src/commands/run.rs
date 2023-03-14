@@ -2,8 +2,6 @@ use super::RapidCommand;
 use crate::cli::{current_directory, logo, Config};
 use crate::rapid_config::config::{is_rapid, find_rapid_config, AppType};
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
-use std::thread::sleep;
-use std::time::Duration;
 use std::str::FromStr;
 use std::{path::PathBuf, process::Command as StdCommand};
 use spinach::Spinach;
@@ -139,6 +137,4 @@ fn handle_run_server() {
 	.unwrap()
 	.wait()
 	.expect("Error: Could not run development server. Please try again!");
-
-
 }

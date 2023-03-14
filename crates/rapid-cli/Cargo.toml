@@ -1,6 +1,6 @@
 [package]
 name = "rapid-cli"
-version = "0.0.8"
+version = "0.0.9"
 edition = "2021"
 description = "The CLI tool for the Rapid framework"
 repository = "https://github.com/DarrenBaldwin07/rapid"
@@ -22,6 +22,7 @@ path = "src/bin/main.rs"
 [dependencies]
 clap = { version = "4.1.4", features = ["derive", "cargo"] }
 colorful = "0.2.2"
+ctrlc = "3.2.5"
 rust-embed = "6.4.2"
 serde = { version = "1.0", features = ["derive"] }
 terminal-emoji = "0.4.1"

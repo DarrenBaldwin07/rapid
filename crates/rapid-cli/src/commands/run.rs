@@ -2,10 +2,11 @@ use super::RapidCommand;
 use crate::cli::{current_directory, logo, Config};
 use crate::rapid_config::config::{is_rapid, find_rapid_config, AppType};
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
+use std::thread::sleep;
+use std::time::Duration;
 use std::str::FromStr;
 use std::{path::PathBuf, process::Command as StdCommand};
 use spinach::Spinach;
-
 pub struct Run {}
 
 impl RapidCommand for Run {
@@ -26,6 +27,12 @@ impl RapidCommand for Run {
 	}
 
 	fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
+		// We need to register a handler here to quit the running process
+		ctrlc::set_handler(move || {
+			std::process::exit(0);
+		})
+		.expect("Error: Could not stop process");
+
 		println!("{}", logo());
 		parse_run_args(args).unwrap();
 		// The above code never errors out...
@@ -127,15 +134,11 @@ fn handle_run_server() {
 	StdCommand::new("sh")
 	.current_dir(current_directory())
 	.arg("-c")
-	.arg("systemfd --no-pid -s http::8080 -- cargo watch -x run")
+	.arg("systemfd --pipe --no-pid -s http::8080 -- cargo watch -x run")
 	.spawn()
 	.unwrap()
-	.wait_with_output()
-	.expect("command failed to start");
+	.wait()
+	.expect("Error: Could not run development server. Please try again!");
 
-	// We need to register a handler here to quite the running process
-	ctrlc::set_handler(move || {
-		std::process::exit(64);
-	})
-	.expect("Error: Could not stop process");
+
 }

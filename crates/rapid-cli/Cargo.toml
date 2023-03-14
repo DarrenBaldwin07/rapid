@@ -16,7 +16,6 @@ path = "src/lib.rs"
 name = "rapid"
 path = "src/bin/main.rs"
 
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

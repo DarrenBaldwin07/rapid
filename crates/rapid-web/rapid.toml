@@ -1,4 +1,0 @@
-app_type = 'server'
-
-[server]
-is_logging = true

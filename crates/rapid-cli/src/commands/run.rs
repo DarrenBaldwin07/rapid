@@ -16,8 +16,13 @@ impl RapidCommand for Run {
 			)
 			.required(false)
 			.action(ArgAction::SetTrue)
-			.value_parser(value_parser!(PathBuf)),
-		)
+			.value_parser(value_parser!(PathBuf)))
+			.arg(arg!(
+				-app --app "Runs a rapid fullstack application"
+			)
+			.required(false)
+			.action(ArgAction::SetTrue)
+			.value_parser(value_parser!(PathBuf)))
 	}
 
 	fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
@@ -29,7 +34,6 @@ impl RapidCommand for Run {
 }
 
 
-
 fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 	// // We want to early exit before do anything at all if we are not inside of a rapid application
 	if !is_rapid() {
@@ -39,8 +43,7 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 	}
 
 	// As we add support for more apps this array can grow
-	const RUN_ARGS: [&str; 1] = ["server"];
-
+	const RUN_ARGS: [&str; 2] = ["server", "app"];
 
 	for arg in RUN_ARGS {
 		match args.get_one::<PathBuf>(arg) {
@@ -49,6 +52,10 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 					match arg {
 						"server" => {
 							handle_run_server();
+							return Ok(());
+						}
+						"app" => {
+							println!("Coming soon!");
 							return Ok(());
 						}
 						// Eventually, "rapid run" should default to running in application mode, not server mode
@@ -66,6 +73,7 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 		}
 	}
 
+	// If no valid args were inputted then we want to fallback to the rapid config file
 	let rapid_config = find_rapid_config();
 	let application_type = AppType::from_str(&rapid_config.app_type).expect("Error: invalid rapid application type!");
 	match application_type {

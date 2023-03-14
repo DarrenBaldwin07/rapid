@@ -40,7 +40,18 @@ impl RapidCommand for Run {
 
 
 fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
-	// // We want to early exit before do anything at all if we are not inside of a rapid application
+	// Grab the rapid config file early on because we will need it to for most of the below logic
+	let rapid_config = find_rapid_config();
+
+	let server_port = match rapid_config.server {
+		Some(server) => match server.port {
+			Some(val) => val,
+			None => 8080
+		},
+		None => 8080
+ 	};
+
+	// We want to early exit before do anything at all if we are not inside of a rapid application
 	if !is_rapid() {
 		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a official rapid project before running this command.");
 		// Exit 64 is a standard error code..
@@ -56,7 +67,7 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 				if val == &PathBuf::from("true") {
 					match arg {
 						"server" => {
-							handle_run_server();
+							handle_run_server(server_port);
 							return Ok(());
 						}
 						"app" => {
@@ -79,7 +90,6 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 	}
 
 	// If no valid args were inputted then we want to fallback to the rapid config file
-	let rapid_config = find_rapid_config();
 	let application_type = AppType::from_str(&rapid_config.app_type).expect("Error: invalid rapid application type!");
 	match application_type {
 		AppType::App => {
@@ -87,7 +97,7 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 			println!("Coming soon...");
 		},
 		AppType::Server => {
-			handle_run_server();
+			handle_run_server(server_port);
 			return Ok(());
 		}
 		_ => {
@@ -99,7 +109,7 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 }
 
 
-fn handle_run_server() {
+fn handle_run_server(server_port: u16) {
 
 	// Before running this script we need to check if the user has cargo-watch and systemfd on their machine
 	// If they do, we want to continue -- however, if they dont, we need to trigger an isntall of the binaries
@@ -129,10 +139,12 @@ fn handle_run_server() {
 		s.succeed("Rapid build scripts installed!");
 	}
 
+	let hot_reload_command = format!("systemfd --no-pid -s http::{} -- cargo watch -x run -q", server_port);
+
 	StdCommand::new("sh")
 	.current_dir(current_directory())
 	.arg("-c")
-	.arg("systemfd > /dev/null --no-pid -s http::8080 -- cargo watch -x run")
+	.arg(hot_reload_command)
 	.spawn()
 	.unwrap()
 	.wait()

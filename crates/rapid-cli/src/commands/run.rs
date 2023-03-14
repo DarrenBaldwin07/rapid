@@ -132,7 +132,7 @@ fn handle_run_server() {
 	StdCommand::new("sh")
 	.current_dir(current_directory())
 	.arg("-c")
-	.arg("systemfd --pipe --no-pid -s http::8080 -- cargo watch -x run")
+	.arg("systemfd > /dev/null --no-pid -s http::8080 -- cargo watch -x run")
 	.spawn()
 	.unwrap()
 	.wait()

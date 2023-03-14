@@ -2,6 +2,15 @@ use crate::cli::current_directory;
 use serde::Deserialize;
 use std::fs::read_to_string;
 use toml;
+use strum_macros::EnumString;
+
+#[derive(Debug, PartialEq, EnumString)]
+#[strum(ascii_case_insensitive)]
+#[derive(Deserialize, Clone)]
+pub enum AppType {
+	App,
+	Server
+}
 
 #[derive(Deserialize, Clone)]
 pub struct AppConfig {
@@ -51,4 +60,19 @@ pub fn find_rapid_config() -> RapidConfig {
 	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
 
 	rapid_config
+}
+
+// A helper function to check if the current running process is inside of a rapid application
+// aka does it have a rapid.toml
+pub fn is_rapid() -> bool {
+	let dir = current_directory();
+
+	let config_file_contents = read_to_string(dir.join("rapid.toml"));
+
+	// Check to make sure that the config file did not throw an error
+	if let Err(_) = config_file_contents {
+		return false;
+	}
+
+	return true;
 }

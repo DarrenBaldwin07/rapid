@@ -135,7 +135,7 @@ fn handle_run_server() {
 
 	// We need to register a handler here to quite the running process
 	ctrlc::set_handler(move || {
-		std::process::exit(0);
+		std::process::exit(64);
 	})
 	.expect("Error: Could not stop process");
 }

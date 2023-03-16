@@ -1,4 +1,3 @@
-
 use crate::files::Files;
 
 /// A simple route for serving static files from the `public directory by default`

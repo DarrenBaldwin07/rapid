@@ -15,7 +15,6 @@
 - Auto-serve all static assets from the /public folder
 - A one line SpaRouter for serving single page applications from a rapid-web server
     - Semi SSR for applying meta tags an OG-images
--
 
 ## Maybe features
 - File based routing

@@ -90,6 +90,7 @@ impl RapidServer {
 			}
 		};
 
+		// Depending on what is inside of the config file lets attempt to serve static files..
 		match is_serving_static_files {
 			true => config_logging_server.service(static_files::static_files()),
 			false => config_logging_server

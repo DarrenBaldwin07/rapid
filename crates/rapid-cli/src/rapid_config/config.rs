@@ -25,6 +25,7 @@ pub struct ServerConfig {
 	pub port: Option<u16>,
 	pub is_logging: Option<bool>,
 	pub show_error_pages: Option<bool>,
+	pub serve_static_files: Option<bool>
 }
 
 #[derive(Deserialize, Clone)]

@@ -7,6 +7,7 @@ use super::{
 	cors::Cors,
 	logger::{RapidLogger, init_logger},
 	tui::server_init,
+	default_routes::static_files
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
@@ -60,23 +61,38 @@ impl RapidServer {
 			},
 			None => true
 		};
+		// Check if we should also be serving static files
+		let is_serving_static_files = match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(value) => match value.serve_static_files {
+				Some(static_value) => static_value,
+				None => true
+			},
+			None => true
+		};
 
-		if is_logging {
-			match log_type {
-				Some(logging_type) => App::new()
-				.wrap(cors.unwrap_or(Cors::default()))
-				.wrap(Condition::new(true, logging_type))
-				.wrap(NormalizePath::trim()),
-				None => App::new()
-				.wrap(cors.unwrap_or(Cors::default()))
-				.wrap(Condition::new(true, RapidLogger::minimal()))
-				.wrap(NormalizePath::trim())
+		let config_logging_server = {
+			if is_logging {
+				match log_type {
+					Some(logging_type) => App::new()
+					.wrap(cors.unwrap_or(Cors::default()))
+					.wrap(Condition::new(true, logging_type))
+					.wrap(NormalizePath::trim()),
+					None => App::new()
+					.wrap(cors.unwrap_or(Cors::default()))
+					.wrap(Condition::new(true, RapidLogger::minimal()))
+					.wrap(NormalizePath::trim())
+				}
+			} else {
+				App::new()
+					.wrap(cors.unwrap_or(Cors::default()))
+					.wrap(Condition::new(false, RapidLogger::minimal()))
+					.wrap(NormalizePath::trim())
 			}
-		} else {
-			App::new()
-				.wrap(cors.unwrap_or(Cors::default()))
-				.wrap(Condition::new(false, RapidLogger::minimal()))
-				.wrap(NormalizePath::trim())
+		};
+
+		match is_serving_static_files {
+			true => config_logging_server.service(static_files::static_files()),
+			false => config_logging_server
 		}
 	}
 
@@ -113,7 +129,6 @@ impl RapidServer {
         .await
 	}
 }
-
 
 
 fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port: Option<u16>) -> (String, u16) {

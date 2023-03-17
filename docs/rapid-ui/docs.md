@@ -75,3 +75,5 @@ Import and declare you css in the Remix root:
     );
     }
 ```
+
+> Note: Next.js will be supported very soon :)

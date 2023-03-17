@@ -41,14 +41,13 @@ Rapid uses React and Rust as the foundation for its fullstack tooling. Do your h
 -   Rapid Ui -- a fully featured UI and CSS framework
 -   React frontend lib for data fetching, auth, etc
 -   Fullstack solution with SSR (rapid new)
--   Fullstack solution with only CSR (rapid new --csr)
+-   Fullstack solution with only remix.run (rapid new --remix)
 
 ### Next
 
 -   Documentation
 -   Easy deployments with `rapid deploy` (GCP, cloudflare workers, Netlify)
 -   Icon library integrated into @Rapid/ui
--   Remix.run?
 -   Wasm powered server functions?!
 
 # Getting Started

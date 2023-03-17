@@ -1134,7 +1134,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "actix-cors",
  "actix-files",
@@ -1148,13 +1148,23 @@ dependencies = [
  "lazy_static",
  "log",
  "rapid-cli",
+ "rapid-web-codegen 0.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "tiny-gradient",
 ]
 
 [[package]]
 name = "rapid-web-codegen"
-version = "0.1.0"
+version = "0.0.1"
+dependencies = [
+ "quote",
+]
+
+[[package]]
+name = "rapid-web-codegen"
+version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0327c2499a40cd892c323fc19437033f48fb5b3541907394ad42d7540efb34f1"
 dependencies = [
  "quote",
 ]

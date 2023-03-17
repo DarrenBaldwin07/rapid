@@ -1,6 +1,7 @@
 extern crate rapid_web;
 use rapid_web::server::RapidServer;
-use rapid_web::actix::{HttpResponse, web, HttpServer, main};
+use rapid_web::actix::{HttpResponse, web, HttpServer};
+use rapid_web_codegen::main;
 
 async fn index() -> HttpResponse {
     HttpResponse::Ok().body("Hey there!")

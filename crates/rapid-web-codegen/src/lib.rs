@@ -1,15 +1,12 @@
 use proc_macro::TokenStream;
 use quote::quote;
 
-/// Marks async main function as the Actix Web system entry-point.
-///
-/// Note that Actix Web also works under `#[tokio::main]` since version 4.0. However, this macro is
-/// still necessary for actor support (since actors use a `System`). Read more in the
-/// [`actix_web::rt`](https://docs.rs/actix-web/4/actix_web/rt) module docs.
+/// Inits a traditional actix-web server entrypoint
+/// Note: this is only being done because we need to re-route the macro to point at rapid_web
 ///
 /// # Examples
 /// ```
-/// #[actix_web::main]
+/// #[rapid_web::main]
 /// async fn main() {
 ///     async { println!("Hello world"); }.await
 /// }

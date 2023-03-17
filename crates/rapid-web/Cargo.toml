@@ -1,6 +1,6 @@
 [package]
 name = "rapid-web"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "A simple Rust server for the Rapid framework."
 repository = "https://github.com/DarrenBaldwin07/rapid"
@@ -29,4 +29,4 @@ env_logger = "0.10.0"
 tiny-gradient = "0.1.0"
 serde = "1.0.155"
 lazy_static = "1.4.0"
-
+rapid-web-codegen = "0.0.1"

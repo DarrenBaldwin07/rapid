@@ -100,9 +100,6 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 			handle_run_server(server_port);
 			return Ok(());
 		}
-		_ => {
-			eprintln!("Error: invalid rapid application type!")
-		}
 	}
 
 	Ok(())

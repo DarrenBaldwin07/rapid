@@ -17,7 +17,7 @@ use quote::quote;
 #[proc_macro_attribute]
 pub fn main(_: TokenStream, item: TokenStream) -> TokenStream {
     let mut output: TokenStream = (quote! {
-        #[::rapid_web::rt::main(system = "::rapid_web::rt::System")]
+        #[::rapid_web::actix::rt::main(system = "::rapid_web::actix::rt::System")]
     })
     .into();
 

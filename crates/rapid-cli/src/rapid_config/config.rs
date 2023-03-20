@@ -1,15 +1,15 @@
 use crate::cli::current_directory;
 use serde::Deserialize;
 use std::fs::read_to_string;
-use toml;
 use strum_macros::EnumString;
+use toml;
 
 #[derive(Debug, PartialEq, EnumString)]
 #[strum(ascii_case_insensitive)]
 #[derive(Deserialize, Clone)]
 pub enum AppType {
 	App,
-	Server
+	Server,
 }
 
 #[derive(Deserialize, Clone)]
@@ -25,7 +25,7 @@ pub struct ServerConfig {
 	pub port: Option<u16>,
 	pub is_logging: Option<bool>,
 	pub show_error_pages: Option<bool>,
-	pub serve_static_files: Option<bool>
+	pub serve_static_files: Option<bool>,
 }
 
 #[derive(Deserialize, Clone)]

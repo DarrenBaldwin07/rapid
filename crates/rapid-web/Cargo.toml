@@ -29,4 +29,4 @@ env_logger = "0.10.0"
 tiny-gradient = "0.1.0"
 serde = "1.0.155"
 lazy_static = "1.4.0"
-rapid-web-codegen = "0.0.1"
+rapid-web-codegen = { version = "0.1.4", path = "../rapid-web-codegen" }

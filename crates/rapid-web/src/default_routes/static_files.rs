@@ -5,5 +5,5 @@ use crate::files::Files;
 /// Eventually, RAPID will use this to serve error pages, etc
 /// Note: this functionality can be turned off in the rapid config file in the root directory of your application
 pub fn static_files() -> Files {
-    Files::new("/public", "./public").show_files_listing()
+	Files::new("/public", "./public").show_files_listing()
 }

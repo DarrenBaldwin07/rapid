@@ -785,6 +785,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "include_dir"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18762faeff7122e89e0857b02f7ce6fcc0d101d5e9ad2ad7846cc01d61b7f19e"
+dependencies = [
+ "include_dir_macros",
+]
+
+[[package]]
+name = "include_dir_macros"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b139284b5cf57ecfa712bcc66950bb635b31aff41c188e8a4cfc758eca374a3f"
+dependencies = [
+ "proc-macro2",
+ "quote",
+]
+
+[[package]]
 name = "indexmap"
 version = "1.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1148,24 +1167,17 @@ dependencies = [
  "lazy_static",
  "log",
  "rapid-cli",
- "rapid-web-codegen 0.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rapid-web-codegen",
  "serde",
  "tiny-gradient",
 ]
 
 [[package]]
 name = "rapid-web-codegen"
-version = "0.0.1"
+version = "0.1.4"
 dependencies = [
- "quote",
-]
-
-[[package]]
-name = "rapid-web-codegen"
-version = "0.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0327c2499a40cd892c323fc19437033f48fb5b3541907394ad42d7540efb34f1"
-dependencies = [
+ "include_dir",
+ "proc-macro2",
  "quote",
 ]
 

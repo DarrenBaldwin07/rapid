@@ -7,7 +7,7 @@
 - Built-in actix crates (files, auth, etc)
 - Easy JWT validation (authorization) and middleware
 - Scaffolded diesel orm, connection pooling, mailer, server state
-- Generators for request -> service -> controller architecture
+- Generators for request -> service -> controller architecture (not mvc)
 - Codegen for typescript clients with extractor type safety
 - `rapid extract` command for extracting-out a rust backend from its frontend when scaling
 - Typescript type generation from Diesel schema

@@ -25,3 +25,4 @@ pub fn base_file_name(path: &Path, base_path: &str) -> String {
 
     formatted_path
 }
+

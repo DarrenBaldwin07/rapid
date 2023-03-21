@@ -2,7 +2,7 @@
 mod utils;
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2};
-use quote::{quote, format_ident};
+use quote::quote;
 use std::{
 	fs::{read_dir, File},
 	io::prelude::*,
@@ -51,9 +51,9 @@ enum RouteHandler {
 /// Macro for generated rapid route handlers based on the file system
 ///
 /// This macro will through the specified path and codegen route handlers for each one
-/// Currently, this only supports GET, POST, DELETE, and PUT requests (it does not yet support middleware but will soon)
+/// Currently, there is only logic inplace to support GET, POST, DELETE, and PUT requests (it does not yet support middleware but will soon)
 ///
-/// * `item` - A string slice that holds the path to the file system routes root directory
+/// * `item` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
 /// # Examples
 /// ```
 /// routes!("src/routes")
@@ -98,7 +98,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		// Open the route file
 		let mut file = File::open(&file_path).unwrap();
 		// Get the name of the file (this drives the route path)
-		// Index.rs will generate a '/' route and anything else
+		// Index.rs will generate a '/' route and anything else simply is generated based on the file name (stem)
 		let file_name = file_path.file_stem().unwrap().to_string_lossy().to_string();
 		// Save the file contents to a variable
 		let mut file_contents = String::new();
@@ -178,44 +178,60 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		.map(|it| match it {
 			RouteHandler::Get(route_handler) => {
 				let handler = Ident::new(&route_handler.name, Span::call_site());
+				let name = match route_handler.name.as_str() {
+					"index" => String::from(""),
+					_ => route_handler.name
+				};
 				let path = {
 					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, route_handler.name)
+						format!("{}/{}", route_handler.path, name)
 					} else {
-						format!("{}{}", route_handler.path, route_handler.name)
+						format!("{}{}", route_handler.path, name)
 					}
 				};
 				quote!(.route(#path, web::get().to(#handler::get)))
 			}
 			RouteHandler::Post(route_handler) => {
 				let handler = Ident::new(&route_handler.name, Span::call_site());
+				let name = match route_handler.name.as_str() {
+					"index" => String::from(""),
+					_ => route_handler.name
+				};
 				let path = {
 					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, route_handler.name)
+						format!("{}/{}", route_handler.path, name)
 					} else {
-						format!("{}{}", route_handler.path, route_handler.name)
+						format!("{}{}", route_handler.path, name)
 					}
 				};
 				quote!(.route(#path, web::post().to(#handler::post)))
 			}
 			RouteHandler::Delete(route_handler) => {
 				let handler = Ident::new(&route_handler.name, Span::call_site());
+				let name = match route_handler.name.as_str() {
+					"index" => String::from(""),
+					_ => route_handler.name
+				};
 				let path = {
 					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, route_handler.name)
+						format!("{}/{}", route_handler.path, name)
 					} else {
-						format!("{}{}", route_handler.path, route_handler.name)
+						format!("{}{}", route_handler.path, name)
 					}
 				};
 				quote!(.route(#path, web::delete().to(#handler::delete)))
 			}
 			RouteHandler::Put(route_handler) => {
 				let handler = Ident::new(&route_handler.name, Span::call_site());
+				let name = match route_handler.name.as_str() {
+					"index" => String::from(""),
+					_ => route_handler.name
+				};
 				let path = {
 					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, route_handler.name)
+						format!("{}/{}", route_handler.path, name)
 					} else {
-						format!("{}{}", route_handler.path, route_handler.name)
+						format!("{}{}", route_handler.path, name)
 					}
 				};
 				quote!(.route(#path, web::put().to(#handler::put)))
@@ -264,7 +280,9 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 			let name = path.file_stem().unwrap().to_string_lossy();
 			Ident::new(&name, Span::call_site())
 		})
-		.filter(|it| it.to_string() != "mod")
+		.filter(|it| {
+			it.to_string() != "mod"
+		})
 		.collect::<Vec<_>>();
 
 
@@ -285,6 +303,6 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 			#(#base_idents,)*
 		};
 		#(#nested_idents)*
-		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effec to the config macro
+		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
 	))
 }

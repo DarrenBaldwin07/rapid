@@ -1,4 +1,3 @@
-#![feature(proc_macro_quote)]
 mod utils;
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2};

@@ -10,7 +10,7 @@ use std::{
 use utils::{get_all_dirs, base_file_name};
 
 /// Inits a traditional actix-web server entrypoint
-/// Note: this is only being done because we need to re-route the macro to point at rapid_web
+/// Note: this is only being done because we need to re-route the macro to point at rapid_web instead of actix
 ///
 /// # Examples
 /// ```
@@ -34,18 +34,16 @@ struct Handler {
 	path: String,
 	name: String,
 	is_nested: bool,
+	has_relative_middleware: bool,
 }
 
-// Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats
+// Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats (we could support patch if needed)
 enum RouteHandler {
 	Get(Handler),
 	Post(Handler),
 	Delete(Handler),
 	Put(Handler),
 }
-
-// TODO: Support index.rs in every path so that it resolves to "/"
-// TODO: Support file based middleware files with a _middleware.rs file
 
 /// Macro for generated rapid route handlers based on the file system
 ///
@@ -69,12 +67,16 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	// Remove string quotes on start and end of path
 	let parsed_path = &routes_path[1..routes_path.len() - 1];
 
+	// Directories with routes in them
 	let mut route_dirs: Vec<PathBuf> = vec![];
-
+	// Base handlers
 	let mut route_handlers: Vec<RouteHandler> = vec![];
+	// Check if there is base middleware
+	let mut has_root_middleware = false;
 
 	// Get every nested dir and append them to the route_dirs aray
 	get_all_dirs(parsed_path, &mut route_dirs);
+
 
 	// Get all the files from the base specified path
 	let route_files = read_dir(parsed_path)
@@ -87,7 +89,14 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			if item.is_dir() {
 				return false;
 			}
-			item.file_name().unwrap() != "mod"
+
+			let file_name = item.file_name().unwrap();
+
+			if file_name == "_middleware.rs" {
+				has_root_middleware = true;
+			}
+
+			file_name != "mod"
 		})
 		.collect::<Vec<_>>();
 
@@ -107,7 +116,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		let handler = Handler {
 			name: file_name,
 			path: String::from("/"),
-			is_nested: false
+			is_nested: false,
+			has_relative_middleware: false // any file in the base dir does not have relative middleware
 		};
 
 		// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
@@ -123,6 +133,9 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	}
 
 	for nested_file_path in route_dirs {
+		// This tells us if the current route hase middleware
+		let mut has_middleware = false;
+
 		// Get all the files from the base specified path
 		let route_files = read_dir(&nested_file_path)
 			.unwrap()
@@ -134,10 +147,18 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 				if item.is_dir() {
 					return false;
 				}
-				item.file_name().unwrap() != "mod"
+
+				let file_name = item.file_name().unwrap();
+
+				if file_name == "_middleware.rs" {
+					has_middleware = true;
+				}
+
+				file_name != "mod"
 			})
 			.collect::<Vec<_>>();
 
+		// Get the base file path from the long "src/routes/etc/etc" path
 		let cleaned_route_path = base_file_name(&nested_file_path, parsed_path);
 
 		for file_path in route_files {
@@ -146,6 +167,15 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			// Get the name of the file (this drives the route path)
 			// Index.rs will generate a '/' route and anything else
 			let file_name = file_path.file_stem().unwrap().to_string_lossy().to_string();
+
+			// Check if there is middleware in the current path (this is done via checking for a "_middleware" filename)
+			// We do not want to register any middleware handlers so trigger an early exit
+			if file_name == String::from("_middleware") {
+				continue;
+			}
+
+			// TODO: we need to check for middleware in all parent dirs...
+
 			// Save the file contents to a variable
 			let mut file_contents = String::new();
 			// Get the files contents...
@@ -155,7 +185,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			let handler = Handler {
 				name: file_name,
 				path: cleaned_route_path.clone(),
-				is_nested: true
+				is_nested: true,
+				has_relative_middleware: has_middleware
 			};
 
 			// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
@@ -188,6 +219,12 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 						format!("{}{}", route_handler.path, name)
 					}
 				};
+
+				// If there is a valid middleware file in the root dir we want to apply it to every route
+				if has_root_middleware {
+					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
+				}
+
 				quote!(.route(#path, web::get().to(#handler::get)))
 			}
 			RouteHandler::Post(route_handler) => {
@@ -203,7 +240,13 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 						format!("{}{}", route_handler.path, name)
 					}
 				};
-				quote!(.route(#path, web::post().to(#handler::post)))
+
+				// If there is a valid middleware file in the root dir we want to apply it to every route
+				if has_root_middleware {
+					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
+				};
+
+				quote!(.route(#path, web::get().to(#handler::get)))
 			}
 			RouteHandler::Delete(route_handler) => {
 				let handler = Ident::new(&route_handler.name, Span::call_site());
@@ -218,7 +261,13 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 						format!("{}{}", route_handler.path, name)
 					}
 				};
-				quote!(.route(#path, web::delete().to(#handler::delete)))
+
+				// If there is a valid middleware file in the root dir we want to apply it to every route
+				if has_root_middleware {
+					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
+				};
+
+				quote!(.route(#path, web::get().to(#handler::get)))
 			}
 			RouteHandler::Put(route_handler) => {
 				let handler = Ident::new(&route_handler.name, Span::call_site());
@@ -233,7 +282,13 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 						format!("{}{}", route_handler.path, name)
 					}
 				};
-				quote!(.route(#path, web::put().to(#handler::put)))
+
+				// If there is a valid middleware file in the root dir we want to apply it to every route
+				if has_root_middleware {
+					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
+				};
+
+				quote!(.route(#path, web::get().to(#handler::get)))
 			}
 		})
 		.collect::<Vec<_>>();

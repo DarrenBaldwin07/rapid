@@ -20,6 +20,7 @@ pub fn get_all_dirs(path: &str, path_array: &mut Vec<PathBuf>) {
 	}
 }
 
+
 pub fn base_file_name(path: &Path, base_path: &str) -> String {
     let formatted_path = path.to_str().unwrap().replace(base_path, "");
 

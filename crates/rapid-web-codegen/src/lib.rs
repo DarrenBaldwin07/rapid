@@ -7,7 +7,7 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
-use utils::{get_all_dirs, base_file_name};
+use utils::{get_all_dirs, base_file_name, get_all_middleware};
 
 /// Inits a traditional actix-web server entrypoint
 /// Note: this is only being done because we need to re-route the macro to point at rapid_web instead of actix
@@ -32,9 +32,9 @@ pub fn main(_: TokenStream, item: TokenStream) -> TokenStream {
 
 struct Handler {
 	path: String,
+	absolute_path: String,
 	name: String,
 	is_nested: bool,
-	has_relative_middleware: bool,
 }
 
 // Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats (we could support patch if needed)
@@ -116,8 +116,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		let handler = Handler {
 			name: file_name,
 			path: String::from("/"),
+			absolute_path: parsed_path.to_string(),
 			is_nested: false,
-			has_relative_middleware: false // any file in the base dir does not have relative middleware
 		};
 
 		// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
@@ -133,9 +133,6 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	}
 
 	for nested_file_path in route_dirs {
-		// This tells us if the current route hase middleware
-		let mut has_middleware = false;
-
 		// Get all the files from the base specified path
 		let route_files = read_dir(&nested_file_path)
 			.unwrap()
@@ -149,10 +146,6 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 				}
 
 				let file_name = item.file_name().unwrap();
-
-				if file_name == "_middleware.rs" {
-					has_middleware = true;
-				}
 
 				file_name != "mod"
 			})
@@ -174,8 +167,6 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 				continue;
 			}
 
-			// TODO: we need to check for middleware in all parent dirs...
-
 			// Save the file contents to a variable
 			let mut file_contents = String::new();
 			// Get the files contents...
@@ -185,8 +176,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			let handler = Handler {
 				name: file_name,
 				path: cleaned_route_path.clone(),
+				absolute_path: nested_file_path.as_os_str().to_str().unwrap().to_string(),
 				is_nested: true,
-				has_relative_middleware: has_middleware
 			};
 
 			// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
@@ -206,90 +197,10 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	let idents = route_handlers
 		.into_iter()
 		.map(|it| match it {
-			RouteHandler::Get(route_handler) => {
-				let handler = Ident::new(&route_handler.name, Span::call_site());
-				let name = match route_handler.name.as_str() {
-					"index" => String::from(""),
-					_ => route_handler.name
-				};
-				let path = {
-					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, name)
-					} else {
-						format!("{}{}", route_handler.path, name)
-					}
-				};
-
-				// If there is a valid middleware file in the root dir we want to apply it to every route
-				if has_root_middleware {
-					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
-				}
-
-				quote!(.route(#path, web::get().to(#handler::get)))
-			}
-			RouteHandler::Post(route_handler) => {
-				let handler = Ident::new(&route_handler.name, Span::call_site());
-				let name = match route_handler.name.as_str() {
-					"index" => String::from(""),
-					_ => route_handler.name
-				};
-				let path = {
-					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, name)
-					} else {
-						format!("{}{}", route_handler.path, name)
-					}
-				};
-
-				// If there is a valid middleware file in the root dir we want to apply it to every route
-				if has_root_middleware {
-					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
-				};
-
-				quote!(.route(#path, web::get().to(#handler::get)))
-			}
-			RouteHandler::Delete(route_handler) => {
-				let handler = Ident::new(&route_handler.name, Span::call_site());
-				let name = match route_handler.name.as_str() {
-					"index" => String::from(""),
-					_ => route_handler.name
-				};
-				let path = {
-					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, name)
-					} else {
-						format!("{}{}", route_handler.path, name)
-					}
-				};
-
-				// If there is a valid middleware file in the root dir we want to apply it to every route
-				if has_root_middleware {
-					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
-				};
-
-				quote!(.route(#path, web::get().to(#handler::get)))
-			}
-			RouteHandler::Put(route_handler) => {
-				let handler = Ident::new(&route_handler.name, Span::call_site());
-				let name = match route_handler.name.as_str() {
-					"index" => String::from(""),
-					_ => route_handler.name
-				};
-				let path = {
-					if route_handler.is_nested {
-						format!("{}/{}", route_handler.path, name)
-					} else {
-						format!("{}{}", route_handler.path, name)
-					}
-				};
-
-				// If there is a valid middleware file in the root dir we want to apply it to every route
-				if has_root_middleware {
-					return quote!(.route(#path, web::get().to(#handler::get).wrap(_middleware::Middleware)));
-				};
-
-				quote!(.route(#path, web::get().to(#handler::get)))
-			}
+			RouteHandler::Get(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "get"),
+			RouteHandler::Post(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "post"),
+			RouteHandler::Delete(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "delete"),
+			RouteHandler::Put(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "put")
 		})
 		.collect::<Vec<_>>();
 
@@ -319,7 +230,6 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 	};
 	let path = &path_string[1..path_string.len() - 1];
 	let module_name = Ident::new(&path[path.find("/").map(|it| it + 1).unwrap_or(0)..], Span::call_site());
-
 
 	let mut route_dirs: Vec<PathBuf> = vec![];
 
@@ -359,4 +269,45 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 		#(#nested_idents)*
 		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
 	))
+}
+
+/// Function that generates handler tokens from a Handler type
+/// Note: this currently depends on the assumption that each dir only has 1 _middleware.rs file
+fn genrate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_type: &str) -> proc_macro2::TokenStream {
+	let parsed_handler_type: proc_macro2::TokenStream = handler_type.parse().unwrap();
+
+	let mut middleware_paths: Vec<PathBuf> = Vec::new();
+	get_all_middleware(&route_handler.absolute_path, parsed_path, &mut middleware_paths);
+
+	let middleware_idents = middleware_paths.into_iter().map(|middleware| {
+		let base = base_file_name(&middleware.as_path(), parsed_path);
+
+		// Trigger an early exit here if we find that we were in the base dir anyway
+		if base == "" {
+			return quote!(.wrap(_middleware::Middleware));
+		}
+		// Parse the module name string and remove all the slashes (ex: "/job" endpoint)
+		let mod_name = format!("{}", base.replacen("/", "", 1)).replace("/", "::");
+
+		let parsed_mod: proc_macro2::TokenStream = mod_name.parse().unwrap();
+
+		quote!(.wrap(#parsed_mod::_middleware::Middleware))
+	}).collect::<Vec<_>>();
+
+	let handler = Ident::new(&route_handler.name, Span::call_site());
+
+	// We want all "index.rs" files to auto map to "/"
+	let name = match route_handler.name.as_str() {
+		"index" => String::from(""),
+		_ => route_handler.name
+	};
+	let path = {
+		if route_handler.is_nested {
+			format!("{}/{}", route_handler.path, name)
+		} else {
+			format!("{}{}", route_handler.path, name)
+		}
+	};
+
+	quote!(.route(#path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
 }

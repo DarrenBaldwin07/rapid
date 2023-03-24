@@ -1,4 +1,4 @@
-# A simplified re-export of Actix-web for the Rapid framework.
+# A blazingly fast Rust server framework enabling end-to-end typesafety for Typescript frontends
 
 ## Initial features
 - Simplified router + middleware

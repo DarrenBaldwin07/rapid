@@ -3,17 +3,19 @@ use super::{
 		dev::{ServiceRequest, ServiceResponse},
 		middleware::{Condition, NormalizePath},
 		App, Error, HttpServer,
+		Scope
 	},
 	cors::Cors,
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
-	tui::server_init,
+	tui::server_init
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
 use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
+extern crate proc_macro;
 
 #[derive(Clone)]
 pub struct RapidServer {
@@ -44,6 +46,8 @@ impl RapidServer {
 		Self { port, base_route, hostname }
 	}
 
+	/// A stock re-export of the actix-web "App::new()" router with a few extras
+	/// Note: to experience the full capabilities of rapid-web, use the RapidServer::fs_router function
 	pub fn router(
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,
@@ -90,6 +94,15 @@ impl RapidServer {
 			true => config_logging_server.service(static_files::static_files()),
 			false => config_logging_server,
 		}
+	}
+
+	/// A file-system based router for the rapid-web
+	///
+	/// Build your api with a simple file based technique (ex: _middleware.rs, index.rs)
+	///
+	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
+	pub fn fs_router(cors: Option<Cors>, log_type: Option<RapidLogger>, routes: Scope) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
+		RapidServer::router(cors, log_type).service(routes)
 	}
 
 	/// Takes in a pre-configured HttpServer and listens on the specified port(s)

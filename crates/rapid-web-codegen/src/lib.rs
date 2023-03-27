@@ -30,6 +30,14 @@ pub fn main(_: TokenStream, item: TokenStream) -> TokenStream {
 	output
 }
 
+
+// A macro for flagging functions as route handlers for type generation
+// Note: this macro does nothing other than serving as a flag for the rapid compiler/file-parser
+#[proc_macro_attribute]
+pub fn rapid_handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    item
+}
+
 struct Handler {
 	path: String,
 	absolute_path: String,
@@ -47,8 +55,8 @@ enum RouteHandler {
 
 /// Macro for generated rapid route handlers based on the file system
 ///
-/// This macro will through the specified path and codegen route handlers for each one
-/// Currently, there is only logic inplace to support GET, POST, DELETE, and PUT requests (it does not yet support middleware but will soon)
+/// This macro will look through the specified path and codegen route handlers for each one
+/// Currently, there is only logic inplace to support GET, POST, DELETE, and PUT requests as well as middleware via a "_middleware.rs" file
 ///
 /// * `item` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
 /// # Examples
@@ -233,7 +241,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 
 	let mut route_dirs: Vec<PathBuf> = vec![];
 
-	// Get every nested dir and append them to the route_dirs aray
+	// Get every nested dir and append them to the route_dirs array
 	get_all_dirs(path, &mut route_dirs);
 
 	// Grab all of the base idents that we need to power the base "/" handler
@@ -311,3 +319,5 @@ fn genrate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_typ
 
 	quote!(.route(#path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
 }
+
+

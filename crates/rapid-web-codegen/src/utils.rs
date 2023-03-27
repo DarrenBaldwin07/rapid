@@ -1,4 +1,6 @@
 use std::{fs, path::{PathBuf, Path}};
+use std::fs::File;
+use std::io::Read;
 
 pub fn get_all_dirs(path: &str, path_array: &mut Vec<PathBuf>) {
 	let dir = fs::read_dir(path);
@@ -31,7 +33,16 @@ pub fn get_all_middleware(current_path: &str, route_root: &str, path_array: &mut
 					let file_name = path.file_name().unwrap();
 
 					if file_name == "_middleware.rs" {
-						path_array.push(path.parent().unwrap().to_path_buf());
+						let mut file = File::open(&path).unwrap();
+						let mut file_contents = String::new();
+						file.read_to_string(&mut file_contents).unwrap();
+
+						// We only want to add a middleware path if it is valid
+						// TODO: when we implement support for "wrap_fn()" this will need tweaked (we will likely do)
+						if file_contents.contains("pub struct Middleware") {
+							path_array.push(path.parent().unwrap().to_path_buf());
+						}
+
                         let parent = path.parent();
                         // Make sure there is actually a valid parent dir before proceeding
                         if let Some(par) = parent {

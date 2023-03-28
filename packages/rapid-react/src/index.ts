@@ -1,1 +1,1 @@
-export { default as RapidFetcher } from './rapidFetcher';
+export { default as rapidFetcher } from './rapidFetcher';

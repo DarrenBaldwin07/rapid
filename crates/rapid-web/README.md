@@ -1,4 +1,4 @@
-# A blazingly fast Rust server framework enabling end-to-end typesafety for Typescript frontends
+# A blazingly fast, modern, and simple Rust server framework enabling end-to-end typesafety for Typescript frontends
 
 ## Initial features
 - Simplified router + middleware
@@ -19,6 +19,7 @@
 
 ## Maybe features
 - Custom async-first ORM (opinionated and only works with rapid)
+- React query integration
 - Clerk sdk?
 - Plugins?
 

@@ -104,6 +104,7 @@ impl RapidServer {
 	///
 	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
 	pub fn fs_router(cors: Option<Cors>, log_type: Option<RapidLogger>, routes: Scope) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
+		// TODO: once this is working we should turn it back on:
 		create_typescript_types(std::env::current_dir().unwrap(), std::env::current_dir().unwrap());
 		RapidServer::router(cors, log_type).service(routes)
 	}

@@ -33,5 +33,6 @@ rapid-web-codegen = { version = "0.1.5", path = "../rapid-web-codegen" }
 proc-macro2 = "1.0.53"
 syn = { version = "2.0.10", features = ["full", "extra-traits"] }
 walkdir = "2.3.3"
+regex = "1.7.3"
 
 

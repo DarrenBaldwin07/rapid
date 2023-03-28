@@ -12,7 +12,7 @@ interface TypedMutationHandler {
     type: 'post' | 'get' | 'put' | 'delete',
     query_params?: any,
     path?: any,
-    body_type?: any
+    body?: any
 }
 
 interface TypedQueryHandler {

@@ -53,7 +53,13 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
 		file.read_to_string(&mut route_file_contents).unwrap();
 
         let handler_types = match extract_handler_types(&route_file_contents) {
-            Some(val) => val,
+            Some(val) => {
+                if val.len() > 0 {
+                    val
+                } else {
+                    continue
+                }
+            },
             None => continue
         };
 
@@ -104,6 +110,11 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
 
 pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
     let handlers = generate_handler_types(route_dir);
+
+    // Early exit without doing anything if we did not detect any handlers
+    if handlers.len() < 1 {
+        return;
+    }
 
     let mut file = OpenOptions::new().write(true).create(true).truncate(true).open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap())).unwrap();
     let mut queries_ts = String::from("{");

@@ -140,7 +140,8 @@ fn handle_run_server(server_port: u16) {
 		s.succeed("Rapid build scripts installed!");
 	}
 
-	let hot_reload_command = format!("systemfd --no-pid -s http::{} -- cargo watch -x run -q", server_port);
+
+	let hot_reload_command = format!("systemfd --no-pid -s http::{} -- cargo watch -x run -q --ignore 'bindings.ts'", server_port);
 
 	StdCommand::new("sh")
 		.current_dir(current_directory())

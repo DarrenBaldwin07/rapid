@@ -1,5 +1,5 @@
 [package]
-name = "rapid-server"
+name = "server"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,5 +10,7 @@ path = "src/main.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rapid-web = "0.1.6"
+futures-util = "0.3.27"
+include_dir = "0.7.3"
+rapid-web = "0.2.5"
 rapid-web-codegen = "0.1.5"

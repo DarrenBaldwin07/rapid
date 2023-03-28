@@ -1127,7 +1127,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-cli"
-version = "0.1.9"
+version = "0.2.6"
 dependencies = [
  "clap",
  "colorful",
@@ -1142,6 +1142,7 @@ dependencies = [
  "tiny-gradient",
  "toml",
  "tui",
+ "walkdir",
 ]
 
 [[package]]
@@ -1154,7 +1155,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.1.7"
+version = "0.2.5"
 dependencies = [
  "actix-cors",
  "actix-files",

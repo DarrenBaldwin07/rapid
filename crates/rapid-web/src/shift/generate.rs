@@ -2,7 +2,7 @@ use super::{util::{extract_handler_types, HandlerRequestType, TypeClass, space},
 use walkdir::WalkDir;
 use std::{
 	fs::{File, OpenOptions},
-	io::prelude::*
+	io::prelude::*, path::PathBuf
 };
 
 #[derive(Debug)]
@@ -29,10 +29,12 @@ pub struct TypedMutationHandler {
 }
 
 /// Function for generating typescript types from a rapid routes directory
-pub fn generate_handler_types(routes_path: &str) -> Vec<Handler> {
+pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
     let mut handlers: Vec<Handler> = Vec::new();
 
-    for route_file in WalkDir::new(routes_path) {
+    let routes_dir = routes_path.join("src/routes");
+
+    for route_file in WalkDir::new(routes_dir) {
         let entry = match route_file {
             Ok(val) => val,
             Err(e) => panic!("An error occurred what attempting to parse directory: {}", e)
@@ -101,10 +103,10 @@ pub fn generate_handler_types(routes_path: &str) -> Vec<Handler> {
 }
 
 
-pub fn create_typescript_types(out_dir: &str, route_dir: &str) {
+pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
     let handlers = generate_handler_types(route_dir);
 
-    let mut file = OpenOptions::new().write(true).create(true).truncate(true).open(format!("{}/bindings.ts", out_dir)).unwrap();
+    let mut file = OpenOptions::new().write(true).create(true).truncate(true).open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap())).unwrap();
     let mut queries_ts = String::from("{");
     let mut mutations_ts = String::from("{");
 

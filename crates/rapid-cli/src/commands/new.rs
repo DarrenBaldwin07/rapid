@@ -6,12 +6,15 @@ use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
 use std::{
 	path::PathBuf,
+	fs::{write, File},
 	thread, time,
 };
+use walkdir::WalkDir;
 use include_dir::{include_dir, Dir};
 
+
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
-static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/server");
+const PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/server");
 
 pub struct New {}
 
@@ -84,7 +87,15 @@ pub fn init_fullstack_template(current_working_directory: PathBuf, arg: &str) {
 }
 
 pub fn init_server_template(current_working_directory: PathBuf, arg: &str) {
-	PROJECT_DIR.extract(current_working_directory).unwrap();
+	PROJECT_DIR.extract(current_working_directory.clone()).unwrap();
+
+	for entry in WalkDir::new(current_working_directory) {
+        let entry = entry.unwrap();
+        if entry.file_name().to_str() == Some("Cargo__toml") {
+            std::fs::rename(entry.path(), entry.path().with_file_name("Cargo.toml")).expect("Error: could not complete post scaffold scripts. Please try again.");
+        }
+    }
+
 	println!("{} {:?}...", "Initializing a new rapid-web server application".color(Color::Green), arg);
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)

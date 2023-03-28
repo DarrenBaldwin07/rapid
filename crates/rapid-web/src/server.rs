@@ -8,8 +8,10 @@ use super::{
 	cors::Cors,
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
-	tui::server_init
+	tui::server_init,
+	shift::generate::create_typescript_types
 };
+use std::env::current_dir;
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
@@ -102,6 +104,7 @@ impl RapidServer {
 	///
 	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
 	pub fn fs_router(cors: Option<Cors>, log_type: Option<RapidLogger>, routes: Scope) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
+		create_typescript_types(std::env::current_dir().unwrap(), std::env::current_dir().unwrap());
 		RapidServer::router(cors, log_type).service(routes)
 	}
 

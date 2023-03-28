@@ -1,7 +1,7 @@
 use super::{util::{extract_handler_types, HandlerRequestType, TypeClass, space}, convert::{convert_primitive, TypescriptType}};
 use walkdir::WalkDir;
 use std::{
-	fs::File,
+	fs::{File, OpenOptions},
 	io::prelude::*
 };
 
@@ -25,10 +25,8 @@ pub struct TypedMutationHandler {
     pub request_type: HandlerRequestType,
     pub query_params: Option<TypescriptType>,
     pub path: Option<TypescriptType>,
-    pub body_type: TypescriptType
+    pub body_type:  Option<TypescriptType>
 }
-
-
 
 /// Function for generating typescript types from a rapid routes directory
 pub fn generate_handler_types(routes_path: &str) -> Vec<Handler> {
@@ -93,7 +91,7 @@ pub fn generate_handler_types(routes_path: &str) -> Vec<Handler> {
                     request_type,
                     query_params,
                     path,
-                    body_type: body_type.unwrap()
+                    body_type
                 }));
             }
         }
@@ -106,50 +104,84 @@ pub fn generate_handler_types(routes_path: &str) -> Vec<Handler> {
 pub fn create_typescript_types(out_dir: &str, route_dir: &str) {
     let handlers = generate_handler_types(route_dir);
 
-    let mut file = File::create(format!("{}/bindings.ts", out_dir)).unwrap();
+    let mut file = OpenOptions::new().write(true).create(true).truncate(true).open(format!("{}/bindings.ts", out_dir)).unwrap();
+    let mut queries_ts = String::from("{");
+    let mut mutations_ts = String::from("{");
 
     for handler in handlers {
         match handler {
             Handler::Query(query) => {
-                let mut ts_type = format!("export interface {} {{\n", query.key);
+                let mut ts_type = format!("\n\t\t{}: {{\n", query.key);
                 let spacing = space();
+                let request_type = match query.request_type {
+                    HandlerRequestType::Post => "post",
+                    HandlerRequestType::Put => "put",
+                    HandlerRequestType::Delete => "delete",
+                    HandlerRequestType::Get => "get",
+                };
 
                 if let Some(query_params_type) = query.query_params {
-                   let query_params = format!("query_params: {}", query_params_type.typescript_type);
+                   let query_params = format!("\t\t\tquery_params: {}", query_params_type.typescript_type);
                     ts_type.push_str(&format!("{}{}\n", spacing, query_params));
                 }
 
                 if let Some(path_type) = query.path {
-                    let path = format!("path: {}", path_type.typescript_type);
+                    let path = format!("\t\t\tpath: {}", path_type.typescript_type);
                     ts_type.push_str(&format!("{}{}\n", spacing, path));
                 }
 
-                ts_type.push_str(&format!("}}"));
+                let request_type = format!("\t\t\ttype: '{}'", request_type);
+                ts_type.push_str(&format!("{}{}\n", spacing, request_type));
 
-                file.write_all(ts_type.as_bytes()).unwrap();
+                ts_type.push_str(&format!("\t\t}},\n"));
+
+                queries_ts.push_str(&ts_type);
             },
             Handler::Mutation(mutation) => {
-                let mut query_params = String::new();
-                let mut path = String::new();
+                let mut ts_type = format!("\n\t\t{}: {{\n", mutation.key);
+                let spacing = space();
+                let request_type = match mutation.request_type {
+                    HandlerRequestType::Post => "post",
+                    HandlerRequestType::Put => "put",
+                    HandlerRequestType::Delete => "delete",
+                    HandlerRequestType::Get => "get",
+                };
 
                 if let Some(query_params_type) = mutation.query_params {
-                    query_params = format!("query_params: {}", query_params_type.typescript_type);
+                   let query_params = format!("\t\t\tquery_params: {}", query_params_type.typescript_type);
+                    ts_type.push_str(&format!("{}{}\n", spacing, query_params));
                 }
 
                 if let Some(path_type) = mutation.path {
-                    path = format!("path: {}", path_type.typescript_type);
+                    let path = format!("\t\t\tpath: {}", path_type.typescript_type);
+                    ts_type.push_str(&format!("{}{}\n", spacing, path));
                 }
 
-                let mutation_type = format!("
-                    export interface {} {{
-                        {}
-                        {}
-                        body: {}
-                    }}
-                ", mutation.key, query_params, path, mutation.body_type.typescript_type);
+                if let Some(body_type) = mutation.body_type {
+                    let body = format!("\t\t\tbody: {}", body_type.typescript_type);
+                    ts_type.push_str(&format!("{}{}\n", spacing, body));
+                }
 
-                file.write_all(mutation_type.as_bytes()).unwrap();
+                let request_type = format!("\t\t\ttype: '{}'", request_type);
+                ts_type.push_str(&format!("{}{}\n", spacing, request_type));
+
+                ts_type.push_str(&format!("\t\t}}\n"));
+
+                mutations_ts.push_str(&ts_type);
             }
         }
+
     }
+
+    queries_ts.push_str("\t},");
+    mutations_ts.push_str("\t},");
+
+    let mut handlers_interface = format!("\n\nexport interface Handlers {{\n");
+
+    handlers_interface.push_str(&format!("\tqueries: {}\n", queries_ts));
+    handlers_interface.push_str(&format!("\tmutations: {}\n", mutations_ts));
+    handlers_interface.push_str("}");
+
+    file.write_all(handlers_interface.as_bytes()).unwrap();
+
 }

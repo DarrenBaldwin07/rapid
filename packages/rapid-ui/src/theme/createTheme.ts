@@ -115,7 +115,7 @@ export const generateTailwindPluginTheme = (theme: RapidTheme) => {
  * A RapidUI helper for easily creating component variants with Tailwind (similar to CVA: https://github.com/joe-bell/cva)
  *
  * @param config RapidUiThemeConfig
- * @returns A HTML valid className
+ * @returns A HTML valid className string
  *
  * @beta
  */
@@ -124,7 +124,7 @@ function createVariant<T extends ThemeSchema, E extends ThemeSchema>(
 ): VariantOutput {
 	const { variants, defaultProps, sizes, baseStyle } = config;
 
-	// Cast sizes as a non-undefind type
+	// Cast sizes as a non-undefined type
 	const typedSizes = sizes as E;
 
 	// Generate our strict typings to only allow existing classNames

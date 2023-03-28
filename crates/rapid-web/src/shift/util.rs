@@ -92,6 +92,7 @@ pub fn is_valid_handler(macro_name: &str, attributes: Vec<syn::Attribute> ) -> b
     })
 }
 
+/// Method for creating spacing for the generated typescript file by rapid
 pub fn space() -> String {
     let mut space_string = "".to_string();
     for _ in 0..2 {

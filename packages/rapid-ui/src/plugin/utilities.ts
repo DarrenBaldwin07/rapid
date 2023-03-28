@@ -53,7 +53,7 @@ const tailwindUtilities = {
 	},
 	'.skeleton-pulse-fast': {
 		animation: 'skeleton-loading 0.25s linear infinite alternate',
-	}
+	},
 };
 
 export default tailwindUtilities;

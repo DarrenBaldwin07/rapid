@@ -4,9 +4,14 @@ use super::RapidCommand;use crate::{
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
-use toml::ser;
-use std::path::PathBuf;
+use std::{
+	path::PathBuf,
+	thread, time,
+};
 use include_dir::{include_dir, Dir};
+
+// We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
+static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/server");
 
 pub struct New {}
 
@@ -79,6 +84,18 @@ pub fn init_fullstack_template(current_working_directory: PathBuf, arg: &str) {
 }
 
 pub fn init_server_template(current_working_directory: PathBuf, arg: &str) {
-	include_dir!("crates/rapid-cli/src/templates/server").extract(current_working_directory).unwrap();
+	PROJECT_DIR.extract(current_working_directory).unwrap();
 	println!("{} {:?}...", "Initializing a new rapid-web server application".color(Color::Green), arg);
+
+	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
+	let timeout = time::Duration::from_millis(500);
+	thread::sleep(timeout);
+
+	println!(
+		"{} {} {} {}",
+		format!("{}", rapid_logo()).bold(),
+		"Success".bg_blue().color(Color::White).bold(),
+		BOLT_EMOJI,
+		"Welcome to your new rapid-web server application!"
+	);
 }

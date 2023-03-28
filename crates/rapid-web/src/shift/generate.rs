@@ -102,7 +102,6 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
     handlers
 }
 
-
 pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
     let handlers = generate_handler_types(route_dir);
 

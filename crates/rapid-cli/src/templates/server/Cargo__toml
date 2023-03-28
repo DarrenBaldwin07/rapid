@@ -12,5 +12,5 @@ path = "src/main.rs"
 [dependencies]
 futures-util = "0.3.27"
 include_dir = "0.7.3"
-rapid-web = "0.2.5"
+rapid-web = "0.2.4"
 rapid-web-codegen = "0.1.5"

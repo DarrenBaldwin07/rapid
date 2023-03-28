@@ -2,8 +2,8 @@ name: Publish crates to crates.io
 
 on:
   push:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+' # Prod build should deploy only on tag
+    branches:
+      - type-safety # Prod build should deploy only on tag
 
 jobs:
   publish-rapid-web:

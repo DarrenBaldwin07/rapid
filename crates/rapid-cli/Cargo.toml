@@ -22,6 +22,7 @@ path = "src/bin/main.rs"
 clap = { version = "4.1.4", features = ["derive", "cargo"] }
 colorful = "0.2.2"
 ctrlc = "3.2.5"
+include_dir = "0.7.3"
 rust-embed = "6.4.2"
 serde = { version = "1.0", features = ["derive"] }
 spinach = "2.1.0"

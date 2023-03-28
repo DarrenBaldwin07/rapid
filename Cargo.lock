@@ -1132,6 +1132,7 @@ dependencies = [
  "clap",
  "colorful",
  "ctrlc",
+ "include_dir",
  "rust-embed",
  "serde",
  "spinach",
@@ -1153,7 +1154,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "actix-cors",
  "actix-files",
@@ -1177,7 +1178,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web-codegen"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "include_dir",
  "proc-macro2",

@@ -105,6 +105,7 @@ impl RapidServer {
 	///
 	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
 	pub fn fs_router(cors: Option<Cors>, log_type: Option<RapidLogger>, routes: Scope) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
+		// Grab the routes directory from the rapid config file (this powers how we export types)
 		let routes_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
 			Some(server) => match server.routes_directory.clone() {
 				Some(dir) => match dir == "/" {
@@ -116,6 +117,8 @@ impl RapidServer {
 			None => panic!("You must have a valid rapid config file in the base project directory!")
 		};
 
+		// Grab the bindings directory from the rapid config file
+		// We want to make sure that it is valid and is actually defined (it defaults to an Option<String>)
 		let bindings_out_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
 			Some(server) => match server.bindings_export_path.clone() {
 				Some(dir) => match dir == "/" {

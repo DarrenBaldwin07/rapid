@@ -107,3 +107,23 @@ pub fn parse_route_path(route_path: String) -> String {
 
 	new_route_path
 }
+
+pub fn reverse_route_path(route_path: String) -> String {
+	let dynamic_route_path_regex = Regex::new(r"\{[^\{\}]*\}").unwrap();
+
+	let mut captures: Vec<String> = Vec::new();
+
+	let mut new_route_path = route_path;
+
+	for pattern_match in dynamic_route_path_regex.captures_iter(&new_route_path) {
+		let capture = pattern_match[0].to_string();
+		captures.push(capture);
+	}
+
+	for path_string in captures {
+		let parsed_path_string = path_string.replacen("{", "_", 1).replacen("}", "_", 1);
+		new_route_path = new_route_path.replace(&path_string, &parsed_path_string);
+	}
+
+	new_route_path
+}

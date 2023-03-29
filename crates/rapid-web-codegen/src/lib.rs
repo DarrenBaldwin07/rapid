@@ -8,7 +8,7 @@ use std::{
 	path::PathBuf,
 };
 use regex::Regex;
-use utils::{get_all_dirs, base_file_name, get_all_middleware, parse_handler_path, parse_route_path};
+use utils::{get_all_dirs, base_file_name, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path};
 
 /// Inits a traditional actix-web server entrypoint
 /// Note: this is only being done because we need to re-route the macro to point at rapid_web instead of actix
@@ -336,7 +336,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 	};
 
 	// Parse the module name string and remove all the slashes (ex: "/job" endpoint)
-	let handler_mod_name = format!("{}", parse_handler_path(&format!("{}/{}", parsed_path, route_handler.name)).replacen("/", "", 1)).replace("/", "::");
+	let handler_mod_name = format!("{}", parse_handler_path(&format!("{}/{}", reverse_route_path(parsed_path.to_string()), route_handler.name)).replacen("/", "", 1)).replace("/", "::");
 	let handler: proc_macro2::TokenStream = handler_mod_name.parse().unwrap();
 
 	// This is the path string that gets passed to the ".route(path)" function

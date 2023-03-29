@@ -32,7 +32,7 @@ pub struct TypedMutationHandler {
 pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
     let mut handlers: Vec<Handler> = Vec::new();
 
-    let routes_dir = routes_path.join("src/routes");
+    let routes_dir = routes_path;
 
     for route_file in WalkDir::new(routes_dir) {
         let entry = match route_file {

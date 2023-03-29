@@ -66,12 +66,17 @@ enum RouteHandler {
 /// ```
 #[proc_macro]
 pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
-	// Parse the inputted routes path param
+	// Get the rapid server config file and check for the routes path (we want to panic otherwise)
 	let routes_path = if let proc_macro::TokenTree::Literal(literal) = item.into_iter().next().unwrap() {
 		literal.to_string()
 	} else {
 		panic!("Error: Invalid routes path!")
 	};
+
+	// If the users routes path is not nested we want to panic
+	if routes_path == "/" {
+		panic!("The 'routes_directory' variable cannot be set to a base path. Please use something nested!");
+	}
 
 	// Remove string quotes on start and end of path
 	let parsed_path = &routes_path[1..routes_path.len() - 1];

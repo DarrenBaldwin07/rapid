@@ -1,4 +1,4 @@
-use crate::cli::current_directory;
+use crate::cli::{current_directory, binary_dir};
 use serde::Deserialize;
 use std::fs::read_to_string;
 use strum_macros::EnumString;
@@ -26,6 +26,8 @@ pub struct ServerConfig {
 	pub is_logging: Option<bool>,
 	pub show_error_pages: Option<bool>,
 	pub serve_static_files: Option<bool>,
+	pub bindings_export_path: Option<String>,
+	pub routes_directory: Option<String>
 }
 
 #[derive(Deserialize, Clone)]
@@ -47,6 +49,24 @@ pub struct RapidConfig {
 
 pub fn find_rapid_config() -> RapidConfig {
 	let dir = current_directory();
+	// Look for the Rapid config file inside of the current working directory
+	let config_file_contents = read_to_string(dir.join("rapid.toml"));
+
+	// Check to make sure that the config file did not throw an error
+	if let Err(_) = config_file_contents {
+		// TODO: We should improve error log styling later (just uses standard exit 200 best practices for now)
+		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a project scaffolded with the Rapid CLI.");
+		std::process::exit(200);
+	}
+
+	// Parse/deserialize the rapid config file from the .toml format
+	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
+
+	rapid_config
+}
+
+pub fn find_rapid_config_from_binary() -> RapidConfig {
+	let dir = binary_dir();
 	// Look for the Rapid config file inside of the current working directory
 	let config_file_contents = read_to_string(dir.join("rapid.toml"));
 

@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLAttributes } from 'react';
+import React,{ forwardRef, HTMLAttributes } from 'react';
 import { RapidStyles, getVariantClassName } from '../../../utils';
 import { createVariant } from '../../../theme';
 
@@ -36,7 +36,7 @@ const Divider = forwardRef<HTMLHRElement, DividerProps>(
 		ref,
 	) => {
 		const getDividerStyles = () => {
-			const commonStyles = 'border-current border-opacity-60';
+			const commonStyles = 'border-current border-opacity-60 ';
 
 			return orientation === 'vertical'
 				? `${commonStyles} h-full border-t-0 border-l` // vertical

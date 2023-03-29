@@ -1,3 +1,5 @@
+use std::{path::PathBuf, env::current_dir};
+
 use super::{
 	actix::{
 		dev::{ServiceRequest, ServiceResponse},
@@ -11,7 +13,6 @@ use super::{
 	tui::server_init,
 	shift::generate::create_typescript_types
 };
-use std::env::current_dir;
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
@@ -104,8 +105,30 @@ impl RapidServer {
 	///
 	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
 	pub fn fs_router(cors: Option<Cors>, log_type: Option<RapidLogger>, routes: Scope) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
-		// TODO: once this is working we should turn it back on:
-		create_typescript_types(std::env::current_dir().unwrap(), std::env::current_dir().unwrap());
+		let routes_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(server) => match server.routes_directory.clone() {
+				Some(dir) => match dir == "/" {
+					true => panic!("The 'routes_directory' variable cannot be set to a base path. Please use something nested!"),
+					false => dir
+				},
+				None => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!")
+			},
+			None => panic!("You must have a valid rapid config file in the base project directory!")
+		};
+
+		let bindings_out_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(server) => match server.bindings_export_path.clone() {
+				Some(dir) => match dir == "/" {
+					true => current_dir().unwrap(),
+					false => PathBuf::from(dir)
+				},
+				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!")
+			},
+			None => panic!("You must have a valid rapid config file in the base project directory!")
+		};
+
+		// TODO: we should turn this off until it is officially working:
+		create_typescript_types(bindings_out_dir, current_dir().unwrap().join(PathBuf::from(routes_dir)));
 		RapidServer::router(cors, log_type).service(routes)
 	}
 

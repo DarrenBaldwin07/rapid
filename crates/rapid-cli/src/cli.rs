@@ -9,6 +9,7 @@ use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 pub type App = Command;
 use std::env::{current_dir, current_exe};
 
+// This should 100% pull from a GCP storage bucket or something
 const RAPID_VERSION_MESSAGE: &str = "v0.0.1";
 
 /// Logo with signs

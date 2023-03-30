@@ -21,8 +21,6 @@ const AccordionIcon = forwardRef<SVGSVGElement, AccordionIconProps>(
 		const index = useAccordionItemIndex(svgRef);
 		const isOpen = useAccordionIsOpen(index, activeItems);
 
-		console.log('isOpen:', isOpen, index, activeItems);
-
 		const iconStyles = `transition-transform duration-300 ${
 			isOpen ? 'rotate-180 transform' : ''
 		}`;

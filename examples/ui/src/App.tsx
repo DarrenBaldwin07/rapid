@@ -26,6 +26,11 @@ import {
 	Heading,
 	Divider,
 	Flex,
+	Accordion,
+	AccordionItem,
+	AccordionContent,
+	AccordionHeader,
+	AccordionIcon,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -43,87 +48,66 @@ function App() {
 	return (
 		<Container>
 			<Heading styles='text-center'>Rapid Components</Heading>
-
 			<Text>Divider vertical</Text>
 			<div className='align-center flex h-10  flex-row justify-center'>
 				<Divider orientation='vertical' />
 			</div>
-
 			<Text>Divider vertical lg</Text>
 			<div className='align-center flex h-10  flex-row justify-center'>
 				<Divider size='lg' orientation='vertical' />
 			</div>
-
 			<Text>Divider sm variant dashed</Text>
 			<div className='align-center flex h-10  flex-row justify-center'>
 				<Divider size='sm' orientation='vertical' variant='dashed' />
 			</div>
-
 			<Text>Divider variant dashed</Text>
 			<Divider variant='dashed' />
 			<Text>Divider horizontel</Text>
 			<Divider size='lg' />
 			<br />
-
 			<Text>Skeleton & SkeletonText</Text>
 			<div className='w-56'>
 				<Skeleton speed='skeleton-pulse-fast' />
 				<SkeletonText lineSpacing='md' styles='rounded-sm mt-12' />
 			</div>
-
 			<Divider />
-
 			<Text>HStack</Text>
 			<HStack spacing='lg'>
 				<div>Element 1</div>
 				<div>Element 2</div>
 				<div>Element 3</div>
 			</HStack>
-
 			<Divider />
-
 			<Text>Tooltip</Text>
 			<Tooltip label='Hi, I am a tooltip!'>
 				<Button variant='ghost'>Hover over me 🙂</Button>
 			</Tooltip>
-
 			<Divider />
-
 			<Text>Flex</Text>
 			<Flex styles='justify-center items-center space-x-2'>
 				<div>Flex 1</div>
 				<div>Flex 2</div>
 				<div>Flex 3</div>
 			</Flex>
-
 			<br />
-
 			<Text>Spinner</Text>
 			<Spinner size='md' />
-
 			<Divider />
-
 			<Text>Input</Text>
 			<Input />
-
 			<Divider />
-
 			<Text>Textarea</Text>
 			<div className='mt-12'>
 				<Textarea />
 			</div>
-
 			<Divider />
-
 			<Text>Select</Text>
 			<Select styles='w-56'>
 				<Option value='Test'>Test</Option>
 				<Option value='Test'>Test</Option>
 				<SelectIcon />
 			</Select>
-
 			<Divider />
-
 			<Text>Modal</Text>
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
 				Open Modal
@@ -152,17 +136,31 @@ function App() {
 					</div>
 				</ModalContent>
 			</Modal>
-
 			<Divider />
-
 			<Text>Switch</Text>
 			<Switch
 				enabled={isEnabled}
 				onChange={(value) => setIsEnabled(value)}
 				size='md'
 			/>
-
 			<Divider />
+			Accordion
+			<div className='container mx-auto p-4'>
+				<Accordion allowMultiple allowToggle>
+					<AccordionItem>
+						<AccordionHeader>Item 1</AccordionHeader>
+						<AccordionContent>Content for item 1</AccordionContent>
+					</AccordionItem>
+					<AccordionItem>
+						<AccordionHeader>Item 2</AccordionHeader>
+						<AccordionContent>Content for item 2</AccordionContent>
+					</AccordionItem>
+					<AccordionItem>
+						<AccordionHeader>Item 3</AccordionHeader>
+						<AccordionContent>Content for item 3</AccordionContent>
+					</AccordionItem>
+				</Accordion>
+			</div>
 		</Container>
 	);
 }

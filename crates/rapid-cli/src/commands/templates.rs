@@ -6,8 +6,7 @@ pub struct Templates {}
 
 impl RapidCommand for Templates {
 	fn cmd() -> clap::Command {
-		Command::new("templates")
-			.about("SaaS templates for the rapid framework.")
+		Command::new("templates").about("SaaS templates for the rapid framework.")
 	}
 
 	fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {

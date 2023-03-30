@@ -62,7 +62,12 @@ impl RapidCLI {
 	}
 
 	pub fn commands() -> Vec<Command> {
-		vec![commands::new::New::cmd(), commands::init::Init::cmd(), commands::run::Run::cmd(), commands::templates::Templates::cmd()]
+		vec![
+			commands::new::New::cmd(),
+			commands::init::Init::cmd(),
+			commands::run::Run::cmd(),
+			commands::templates::Templates::cmd(),
+		]
 	}
 
 	pub fn execute_cammand(cmd: &str) -> Option<fn(&Config, &ArgMatches) -> Result<(), crate::cli::CliError<'static>>> {
@@ -99,7 +104,8 @@ impl RapidCLI {
 }
 
 // TODO: update this to actually be a legit health template
-pub fn get_help_template() -> &'static str {"The cammand line tool for the RAPID framework.
+pub fn get_help_template() -> &'static str {
+	"The cammand line tool for the RAPID framework.
 
 Options:
   -V --version	  Print version info and exit

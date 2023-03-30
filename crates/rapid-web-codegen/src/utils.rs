@@ -1,7 +1,11 @@
-use std::{fs, path::{PathBuf, Path}};
-use std::fs::File;
-use std::io::Read;
 use regex::Regex;
+use std::{
+	fs,
+	fs::File,
+	io::Read,
+	path::{Path, PathBuf},
+};
+use syn::{parse_str, File as SynFile, Item};
 
 pub fn get_all_dirs(path: &str, path_array: &mut Vec<PathBuf>) {
 	let dir = fs::read_dir(path);
@@ -44,16 +48,16 @@ pub fn get_all_middleware(current_path: &str, route_root: &str, path_array: &mut
 							path_array.push(path.parent().unwrap().to_path_buf());
 						}
 
-                        let parent = path.parent();
-                        // Make sure there is actually a valid parent dir before proceeding
-                        if let Some(par) = parent {
-                            // Check to make sure that we have not reached the parent max (make sure to trigger an exit if we have)
-                            if par.to_str().unwrap() == route_root {
-                                break;
-                            }
-                            // Recursively call this function until we reach the max parent
-                            get_all_middleware(par.parent().unwrap().to_str().unwrap(), route_root, path_array);
-                        }
+						let parent = path.parent();
+						// Make sure there is actually a valid parent dir before proceeding
+						if let Some(par) = parent {
+							// Check to make sure that we have not reached the parent max (make sure to trigger an exit if we have)
+							if par.to_str().unwrap() == route_root {
+								break;
+							}
+							// Recursively call this function until we reach the max parent
+							get_all_middleware(par.parent().unwrap().to_str().unwrap(), route_root, path_array);
+						}
 					}
 				}
 			}
@@ -64,13 +68,11 @@ pub fn get_all_middleware(current_path: &str, route_root: &str, path_array: &mut
 	}
 }
 
-
 pub fn base_file_name(path: &Path, base_path: &str) -> String {
-    let formatted_path = path.to_str().unwrap().replace(base_path, "");
+	let formatted_path = path.to_str().unwrap().replace(base_path, "");
 
-    formatted_path
+	formatted_path
 }
-
 
 pub fn parse_handler_path(file_name: &str) -> String {
 	let dynamic_route_regex = Regex::new(r"\{[^\{\}]*\}").unwrap();
@@ -78,9 +80,7 @@ pub fn parse_handler_path(file_name: &str) -> String {
 	let is_dynamic_route = dynamic_route_regex.is_match(&file_name);
 
 	let parsed_name = match is_dynamic_route {
-		true => {
-			file_name.replacen("{", "_", 1).replacen("}", "_", 1)
-		},
+		true => file_name.replacen("{", "_", 1).replacen("}", "_", 1),
 		false => file_name.to_string(),
 	};
 
@@ -98,7 +98,6 @@ pub fn parse_route_path(route_path: String) -> String {
 		let capture = pattern_match[0].to_string();
 		captures.push(capture);
 	}
-
 
 	for path_string in captures {
 		let parsed_path_string = path_string.replacen("_", "{", 1).replacen("_", "}", 1);
@@ -126,4 +125,37 @@ pub fn reverse_route_path(route_path: String) -> String {
 	}
 
 	new_route_path
+}
+
+// TODO: this is a clone from the rapid-web crate utils (at some point we need a rapid-utils crate)
+/// Method for checking if a handler function is valid
+/// Handlers are only valid if they have a "#[rapid_handler]" macro on them
+pub fn is_valid_handler(macro_name: &str, attributes: Vec<syn::Attribute>) -> bool {
+	attributes
+		.iter()
+		.any(|attr| attr.path().segments.iter().any(|segment| segment.ident == macro_name))
+}
+
+/// Helper function for checking if a rapid route file is valid
+/// We need this so that we can generate actix-web routes for only valid route files
+pub fn validate_route_handler(handler_source: &String) -> bool {
+	let parsed_file: SynFile =
+		parse_str(handler_source.as_str()).expect("An error occurred when attempting to parse a rapid route handler with the 'syn' rust crate ()");
+
+	// We define a valid route as having a rapid handler macro and it only containing one handler function
+	// Rapid will ignore all files that have more than one handler
+	let mut has_rapid_handler = false;
+	let mut handler_count = 0;
+
+	for item in parsed_file.items {
+		if let Item::Fn(function) = item {
+			let is_valid = is_valid_handler("rapid_handler", function.attrs);
+			has_rapid_handler = is_valid;
+			if is_valid {
+				handler_count += 1;
+			}
+		}
+	}
+
+	has_rapid_handler && handler_count == 1
 }

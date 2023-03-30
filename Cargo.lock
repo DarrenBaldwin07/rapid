@@ -1148,7 +1148,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-cli"
-version = "0.2.7"
+version = "0.2.8"
 dependencies = [
  "clap",
  "colorful",
@@ -1177,7 +1177,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.2.7"
+version = "0.2.9"
 dependencies = [
  "actix-cors",
  "actix-files",
@@ -1195,20 +1195,21 @@ dependencies = [
  "rapid-web-codegen",
  "regex",
  "serde",
- "syn 2.0.10",
+ "syn 2.0.11",
  "tiny-gradient",
  "walkdir",
 ]
 
 [[package]]
 name = "rapid-web-codegen"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "include_dir",
  "proc-macro2",
  "quote",
  "rapid-cli",
  "regex",
+ "syn 2.0.11",
 ]
 
 [[package]]
@@ -1544,9 +1545,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.10"
+version = "2.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5aad1363ed6d37b84299588d62d3a7d95b5a5c2d9aad5c85609fda12afaa1f40"
+checksum = "21e3787bb71465627110e7d87ed4faaa36c1f61042ee67badb9e2ef173accc40"
 dependencies = [
  "proc-macro2",
  "quote",

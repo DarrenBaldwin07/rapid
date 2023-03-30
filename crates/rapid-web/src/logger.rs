@@ -11,6 +11,7 @@ use std::{
 	env,
 	future::{ready, Ready},
 	io::Write,
+	str,
 };
 
 pub fn init_logger() {
@@ -210,7 +211,7 @@ impl<S, B> Transform<S, ServiceRequest> for RapidLogger
 where
 	S: Service<ServiceRequest, Response = ServiceResponse<B>, Error = Error>,
 	S::Future: 'static,
-	B: 'static,
+	B: 'static + actix_web::body::MessageBody,
 {
 	type Response = ServiceResponse<B>;
 	type Error = Error;
@@ -235,7 +236,7 @@ impl<S, B> Service<ServiceRequest> for RapidLoggerMiddleware<S>
 where
 	S: Service<ServiceRequest, Response = ServiceResponse<B>, Error = Error>,
 	S::Future: 'static,
-	B: 'static,
+	B: 'static + actix_web::body::MessageBody,
 {
 	type Response = ServiceResponse<B>;
 	type Error = Error;
@@ -248,11 +249,13 @@ where
 
 		// We want spacing between each log
 		println!("\n");
+		// Log all of the request logs to the users console
 		RapidLogger::get_request_logs(&req, cloned_log_type);
 		let fut = self.service.call(req);
 
 		Box::pin(async move {
 			let res = fut.await?;
+			// Log all of the response logs to the users console
 			RapidLogger::get_response_logs(&res, cloned_log_type);
 			Ok(res)
 		})

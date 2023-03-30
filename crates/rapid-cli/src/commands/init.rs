@@ -26,29 +26,26 @@ impl RapidCommand for Init {
 	fn cmd() -> clap::Command {
 		Command::new("init")
 			.about("A command for initializing Rapid libraries in your projects!")
-			.subcommand(
-				Command::new("fullstack")
-				.about("A command for initializing a fullstack rapid application in your react projects!")
-			)
+			.subcommand(Command::new("fullstack").about("A command for initializing a fullstack rapid application in your react projects!"))
 			.subcommand(
 				Command::new("ui")
-				.about("A command for initializing Rapid-UI in your react projects!")
-				.arg(
-					arg!(
-						-vite --vite "initializes rapid-ui in your React + Vitejs project!"
+					.about("A command for initializing Rapid-UI in your react projects!")
+					.arg(
+						arg!(
+							-vite --vite "initializes rapid-ui in your React + Vitejs project!"
+						)
+						.required(false)
+						.action(ArgAction::SetTrue)
+						.value_parser(value_parser!(PathBuf)),
 					)
-					.required(false)
-					.action(ArgAction::SetTrue)
-					.value_parser(value_parser!(PathBuf)),
-				)
-				.arg(
-					arg!(
-						-remix --remix "initializes rapid-ui in your Remix.run application!"
-					)
-					.required(false)
-					.action(ArgAction::SetTrue)
-					.value_parser(value_parser!(PathBuf)),
-				)
+					.arg(
+						arg!(
+							-remix --remix "initializes rapid-ui in your Remix.run application!"
+						)
+						.required(false)
+						.action(ArgAction::SetTrue)
+						.value_parser(value_parser!(PathBuf)),
+					),
 			)
 	}
 

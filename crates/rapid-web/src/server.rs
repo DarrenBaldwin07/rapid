@@ -1,17 +1,16 @@
-use std::{path::PathBuf, env::current_dir};
+use std::{env::current_dir, path::PathBuf};
 
 use super::{
 	actix::{
 		dev::{ServiceRequest, ServiceResponse},
 		middleware::{Condition, NormalizePath},
-		App, Error, HttpServer,
-		Scope
+		App, Error, HttpServer, Scope,
 	},
 	cors::Cors,
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
+	shift::generate::create_typescript_types,
 	tui::server_init,
-	shift::generate::create_typescript_types
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
@@ -104,17 +103,21 @@ impl RapidServer {
 	/// Build your api with a simple file based technique (ex: _middleware.rs, index.rs)
 	///
 	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
-	pub fn fs_router(cors: Option<Cors>, log_type: Option<RapidLogger>, routes: Scope) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
+	pub fn fs_router(
+		cors: Option<Cors>,
+		log_type: Option<RapidLogger>,
+		routes: Scope,
+	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// Grab the routes directory from the rapid config file (this powers how we export types)
 		let routes_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
 			Some(server) => match server.routes_directory.clone() {
 				Some(dir) => match dir == "/" {
 					true => panic!("The 'routes_directory' variable cannot be set to a base path. Please use something nested!"),
-					false => dir
+					false => dir,
 				},
-				None => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!")
+				None => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!"),
 			},
-			None => panic!("You must have a valid rapid config file in the base project directory!")
+			None => panic!("You must have a valid rapid config file in the base project directory!"),
 		};
 
 		// Grab the bindings directory from the rapid config file
@@ -123,11 +126,11 @@ impl RapidServer {
 			Some(server) => match server.bindings_export_path.clone() {
 				Some(dir) => match dir == "/" {
 					true => current_dir().unwrap(),
-					false => PathBuf::from(dir)
+					false => PathBuf::from(dir),
 				},
-				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!")
+				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
 			},
-			None => panic!("You must have a valid rapid config file in the base project directory!")
+			None => panic!("You must have a valid rapid config file in the base project directory!"),
 		};
 
 		// TODO: we should turn this off until it is officially working:

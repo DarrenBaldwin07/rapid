@@ -1,20 +1,19 @@
-use super::RapidCommand;use crate::{
+use super::RapidCommand;
+use crate::{
 	cli::{current_directory, logo, rapid_logo, Config},
 	constants::BOLT_EMOJI,
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
+use include_dir::{include_dir, Dir};
+use requestty::{prompt_one, Question};
 use std::{
-	path::PathBuf,
 	fs::remove_dir_all,
+	path::PathBuf,
+	process::{exit, Command as StdCommand},
 	thread, time,
-	process::exit
 };
 use walkdir::WalkDir;
-use include_dir::{include_dir, Dir};
-use std::{process::Command as StdCommand};
-use requestty::{prompt_one, Question};
-
 
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
 const PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/server");
@@ -50,7 +49,6 @@ impl RapidCommand for New {
 	}
 }
 
-
 pub fn parse_new_args(args: &ArgMatches) {
 	/// NOTE: We can add more args for templates here (ideally we add nextjs asap)
 	const NEW_ARGS: [&str; 2] = ["fullstack", "server"];
@@ -85,6 +83,7 @@ pub fn parse_new_args(args: &ArgMatches) {
 	}
 }
 
+// TODO: scaffold a new remix + rapid app as the default fullstack app (we will then support nextjs, etc)
 pub fn init_fullstack_template(current_working_directory: PathBuf, arg: &str) {
 	println!("Coming soon...");
 }
@@ -92,11 +91,12 @@ pub fn init_fullstack_template(current_working_directory: PathBuf, arg: &str) {
 pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	// Ask the user what they want to name their project
 	let project_name = prompt_one(
-        Question::input("project_name")
-            .message("What will your project be called?")
-            .default("my-app")
-            .build(),
-    ).expect("Error: Could not scaffold project. Please try again!");
+		Question::input("project_name")
+			.message("What will your project be called?")
+			.default("my-app")
+			.build(),
+	)
+	.expect("Error: Could not scaffold project. Please try again!");
 
 	let project_name = project_name.as_string().unwrap();
 
@@ -110,42 +110,42 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 
 	// Check if the path already exists (if it does we want to ask the user if they want to delete it)
 	if path.exists() {
-        let force = prompt_one(
-            Question::confirm("force_delete")
-                .message("Your specified directory is not empty and has files currently in it, do you want to overwrite?")
-                .default(false)
-                .build(),
-        ).expect("Error: Could not scaffold project. Please try again!");
+		let force = prompt_one(
+			Question::confirm("force_delete")
+				.message("Your specified directory is not empty and has files currently in it, do you want to overwrite?")
+				.default(false)
+				.build(),
+		)
+		.expect("Error: Could not scaffold project. Please try again!");
 
-        match !force.as_bool().unwrap() {
-            true => {
-                exit(64);
-            }
-            false => {
-                remove_dir_all(&path).expect("Error: Could not scaffold project. The specified directory must be empty. Please try again!");
-            }
-        }
-    }
-
+		match !force.as_bool().unwrap() {
+			true => {
+				exit(64);
+			}
+			false => {
+				remove_dir_all(&path).expect("Error: Could not scaffold project. The specified directory must be empty. Please try again!");
+			}
+		}
+	}
 
 	// Run the cargo commands
 	StdCommand::new("sh")
-	.current_dir(current_directory())
-	.arg("-c")
-	.arg(format!("cargo new {} --quiet", project_name))
-	.spawn()
-	.unwrap()
-	.wait()
-	.expect("Error: Could not scaffold project. Please try again!");
+		.current_dir(current_directory())
+		.arg("-c")
+		.arg(format!("cargo new {} --quiet", project_name))
+		.spawn()
+		.unwrap()
+		.wait()
+		.expect("Error: Could not scaffold project. Please try again!");
 
 	StdCommand::new("sh")
-	.current_dir(current_directory().join(project_name))
-	.arg("-c")
-	.arg("cargo add rapid-web rapid-web-codegen futures-util include_dir --quiet")
-	.spawn()
-	.unwrap()
-	.wait()
-	.expect("Error: Could not scaffold project. Please try again!");
+		.current_dir(current_directory().join(project_name))
+		.arg("-c")
+		.arg("cargo add rapid-web rapid-web-codegen futures-util include_dir --quiet")
+		.spawn()
+		.unwrap()
+		.wait()
+		.expect("Error: Could not scaffold project. Please try again!");
 
 	// Remove the default src directory
 	remove_dir_all(current_working_directory.join(format!("{}/src", project_name))).unwrap();
@@ -154,13 +154,14 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	PROJECT_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
 
 	for entry in WalkDir::new(current_working_directory) {
-        let entry = entry.unwrap();
-        if entry.file_name().to_str() == Some("Cargo__toml") {
-            std::fs::rename(entry.path(), entry.path().with_file_name("Cargo.toml")).expect("Error: could not complete post scaffold scripts. Please try again.");
-        }
-    }
+		let entry = entry.unwrap();
+		if entry.file_name().to_str() == Some("Cargo__toml") {
+			std::fs::rename(entry.path(), entry.path().with_file_name("Cargo.toml"))
+				.expect("Error: could not complete post scaffold scripts. Please try again.");
+		}
+	}
 
-	println!("{}...", "Initializing a new rapid-web server application".color(Color::Green));
+	println!("{}", "Initializing a new rapid-web server application...".color(Color::Green));
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
 	let timeout = time::Duration::from_millis(500);

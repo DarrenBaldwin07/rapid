@@ -1,4 +1,4 @@
-use crate::cli::{current_directory, binary_dir};
+use crate::cli::{binary_dir, current_directory};
 use serde::Deserialize;
 use std::fs::read_to_string;
 use strum_macros::EnumString;
@@ -27,7 +27,7 @@ pub struct ServerConfig {
 	pub show_error_pages: Option<bool>,
 	pub serve_static_files: Option<bool>,
 	pub bindings_export_path: Option<String>,
-	pub routes_directory: Option<String>
+	pub routes_directory: Option<String>,
 }
 
 #[derive(Deserialize, Clone)]

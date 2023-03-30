@@ -27,7 +27,7 @@ impl From<String> for TypescriptType {
 fn convert_generic(generic_type: &syn::GenericArgument) -> TypescriptType {
 	match generic_type {
 		syn::GenericArgument::Type(rust_type) => convert_primitive(rust_type),
-		_ => "unknown".to_string().into(),
+		_ => "any".to_string().into(),
 	}
 }
 

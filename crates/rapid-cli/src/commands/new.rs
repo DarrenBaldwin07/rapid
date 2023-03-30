@@ -13,7 +13,6 @@ use std::{
 	process::{exit, Command as StdCommand},
 	thread, time,
 };
-use walkdir::WalkDir;
 
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
 const PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/server");
@@ -69,10 +68,16 @@ pub fn parse_new_args(args: &ArgMatches) {
 							break;
 						}
 						_ => {
-							println!("> Invalid argument passed to new command!");
+							// If we got valid args but none of them actually matched on one of
+							// our support application types, we want to show the user an error message
+							println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
 							break;
 						}
 					}
+				} else {
+					// If we got valid args but none of them actually matched on one of
+					// our support application types, we want to show the user an error message
+					println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
 				}
 			}
 			None => {
@@ -152,14 +157,6 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 
 	// Replace the default source dir with our own template files
 	PROJECT_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
-
-	for entry in WalkDir::new(current_working_directory) {
-		let entry = entry.unwrap();
-		if entry.file_name().to_str() == Some("Cargo__toml") {
-			std::fs::rename(entry.path(), entry.path().with_file_name("Cargo.toml"))
-				.expect("Error: could not complete post scaffold scripts. Please try again.");
-		}
-	}
 
 	println!("{}", "Initializing a new rapid-web server application...".color(Color::Green));
 

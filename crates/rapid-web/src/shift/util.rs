@@ -15,6 +15,7 @@ pub enum HandlerRequestType {
 	Post,
 	Delete,
 	Put,
+	Patch
 }
 
 #[derive(Debug)]
@@ -48,6 +49,7 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 								"post" => HandlerRequestType::Post,
 								"delete" => HandlerRequestType::Delete,
 								"put" => HandlerRequestType::Put,
+								"patch" => HandlerRequestType::Patch,
 								_ => HandlerRequestType::Get,
 							},
 						}));

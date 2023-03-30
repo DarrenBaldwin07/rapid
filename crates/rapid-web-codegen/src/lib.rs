@@ -51,6 +51,7 @@ enum RouteHandler {
 	Post(Handler),
 	Delete(Handler),
 	Put(Handler),
+	Patch(Handler)
 }
 
 /// Macro for generated rapid route handlers based on the file system
@@ -117,12 +118,13 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		// Open the route file
 		let mut file = File::open(&file_path).unwrap();
 		// Get the name of the file (this drives the route path)
-		// Index.rs will generate a '/' route and anything else simply is generated based on the file name (stem)
+		// Index.rs will generate a '/' route and anything else simply is generated based on the file name (stem without ".rs")
 		let file_name = file_path.file_stem().unwrap().to_string_lossy().to_string();
 		// Save the file contents to a variable
 		let mut file_contents = String::new();
 		file.read_to_string(&mut file_contents).unwrap();
 
+		// Check for dynamic routes
 		let dynamic_route_regex = Regex::new(r"_.*?_").unwrap();
 
 		let is_dynamic_route = dynamic_route_regex.is_match(&file_name);
@@ -141,6 +143,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		};
 
 		// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
+		// TODO: we should support PATCH requests here as well
 		if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Get(handler))
 		} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
@@ -149,6 +152,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			route_handlers.push(RouteHandler::Delete(handler))
 		} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Put(handler))
+		} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+			route_handlers.push(RouteHandler::Patch(handler))
 		}
 	}
 
@@ -210,6 +215,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			};
 
 			// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
+			// TODO: we should support PATCH requests here as well
 			if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Get(handler))
 			} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
@@ -218,6 +224,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 				route_handlers.push(RouteHandler::Delete(handler))
 			} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Put(handler))
+			} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+				route_handlers.push(RouteHandler::Patch(handler))
 			}
 		}
 	}
@@ -230,6 +238,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			RouteHandler::Post(route_handler) => generate_handler_tokens(route_handler, parsed_path, "post"),
 			RouteHandler::Delete(route_handler) => generate_handler_tokens(route_handler, parsed_path, "delete"),
 			RouteHandler::Put(route_handler) => generate_handler_tokens(route_handler, parsed_path, "put"),
+			RouteHandler::Patch(route_handler) => generate_handler_tokens(route_handler, parsed_path, "patch"),
 		})
 		.collect::<Vec<_>>();
 

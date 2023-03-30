@@ -10,7 +10,7 @@ use super::{
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
 	shift::generate::create_typescript_types,
-	tui::server_init,
+	tui::server_init
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
@@ -110,6 +110,7 @@ impl RapidServer {
 		routes: Scope,
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// Grab the routes directory from the rapid config file (this powers how we export types)
+		// Note: make sure we panic if we are not able to detect it
 		let routes_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
 			Some(server) => match server.routes_directory.clone() {
 				Some(dir) => match dir == "/" {
@@ -134,8 +135,9 @@ impl RapidServer {
 			None => panic!("You must have a valid rapid config file in the base project directory!"),
 		};
 
-		// TODO: we should turn this off until it is officially working:
+		// TODO: we should turn this off until it is officially working
 		create_typescript_types(bindings_out_dir, current_dir().unwrap().join(PathBuf::from(routes_dir)));
+
 		RapidServer::router(cors, log_type).service(routes)
 	}
 
@@ -157,7 +159,7 @@ impl RapidServer {
 		// or the actualy rapid config file in the project root
 		let bind_config = get_default_bind_config(RAPID_SERVER_CONFIG.clone(), self.hostname, self.port);
 
-		// Show the init message
+		// Show the server initialization message
 		server_init(bind_config.clone());
 
 		server.bind(bind_config)?.run().await

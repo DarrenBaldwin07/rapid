@@ -54,6 +54,10 @@ pub fn parse_new_args(args: &ArgMatches) {
 	// Get the current working directory of the user
 	let current_working_directory = current_directory();
 
+	// We want to check if the user did in fact input a valid application type ("fullstack" or "server")
+	// This handles the case when "rapid new" is ran with no inputs
+	let mut did_find_match = false;
+
 	for arg in NEW_ARGS {
 		match args.get_one::<PathBuf>(arg) {
 			Some(val) => {
@@ -61,10 +65,12 @@ pub fn parse_new_args(args: &ArgMatches) {
 					match arg {
 						"fullstack" => {
 							init_fullstack_template(current_working_directory, arg);
+							did_find_match = true;
 							break;
 						}
 						"server" => {
 							init_server_template(current_working_directory, arg);
+							did_find_match = true;
 							break;
 						}
 						_ => {
@@ -74,17 +80,19 @@ pub fn parse_new_args(args: &ArgMatches) {
 							break;
 						}
 					}
-				} else {
-					// If we got valid args but none of them actually matched on one of
-					// our support application types, we want to show the user an error message
-					println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
 				}
 			}
 			None => {
-				println!("> No argument passed to new command!");
+				println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
 				break;
 			}
 		}
+	}
+
+	// Check if we found a app type match
+	// If we did not than we want to show a log to the user
+	if !did_find_match {
+		println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
 	}
 }
 
@@ -158,7 +166,7 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	// Replace the default source dir with our own template files
 	PROJECT_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
 
-	println!("{}", "Initializing a new rapid-web server application...".color(Color::Green));
+	println!("{}", "\nInitializing a new rapid-web server application...".color(Color::LightCyan));
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
 	let timeout = time::Duration::from_millis(500);

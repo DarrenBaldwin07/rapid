@@ -4,7 +4,8 @@ pub use actix_web as actix;
 pub use actix_web_httpauth as auth;
 pub use rapid_web_codegen;
 pub(crate) mod default_routes;
+pub(crate) mod tui;
 pub mod logger;
 pub mod server;
 pub mod shift;
-pub(crate) mod tui;
+

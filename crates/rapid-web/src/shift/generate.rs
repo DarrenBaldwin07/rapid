@@ -139,6 +139,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 					HandlerRequestType::Put => "put",
 					HandlerRequestType::Delete => "delete",
 					HandlerRequestType::Get => "get",
+					HandlerRequestType::Patch => "patch",
 				};
 
 				if let Some(query_params_type) = query.query_params {
@@ -166,6 +167,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 					HandlerRequestType::Put => "put",
 					HandlerRequestType::Delete => "delete",
 					HandlerRequestType::Get => "get",
+					HandlerRequestType::Patch => "patch",
 				};
 
 				if let Some(query_params_type) = mutation.query_params {

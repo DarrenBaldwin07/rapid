@@ -1,21 +1,35 @@
 import React, { forwardRef } from 'react';
+import { useCombinedRefs } from '../../../../hooks';
 import { RapidStyles } from '../../../../utils';
+import {
+	useAccordionItemIndex,
+	useAccordionIsOpen,
+	useAccordionContext,
+} from '../useAccordionHooks';
 
 const RAPID_CLASSNAME = 'rapid-accordion-icon';
+
 interface AccordionIconProps extends React.SVGProps<SVGSVGElement> {
-	isOpen: boolean;
 	styles?: string;
 }
 
 const AccordionIcon = forwardRef<SVGSVGElement, AccordionIconProps>(
-	({ isOpen, styles, ...rest }, ref) => {
+	({ styles, ...rest }, ref) => {
+		const svgRef = React.useRef<SVGSVGElement>(null);
+		const combinedRef = useCombinedRefs(ref, svgRef);
+		const { activeItems } = useAccordionContext();
+		const index = useAccordionItemIndex(svgRef);
+		const isOpen = useAccordionIsOpen(index, activeItems);
+
+		console.log('isOpen:', isOpen, index, activeItems);
+
 		const iconStyles = `transition-transform duration-300 ${
 			isOpen ? 'rotate-180 transform' : ''
 		}`;
 
 		return (
 			<svg
-				ref={ref}
+				ref={combinedRef}
 				className={RapidStyles(
 					styles || rest.className,
 					iconStyles,
@@ -37,5 +51,4 @@ const AccordionIcon = forwardRef<SVGSVGElement, AccordionIconProps>(
 		);
 	},
 );
-
 export default AccordionIcon;

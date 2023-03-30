@@ -1,74 +1,58 @@
 import React, {
 	forwardRef,
-	useContext,
-	useState,
-	useEffect,
 	useRef,
 	DetailedHTMLProps,
 	HTMLAttributes,
 } from 'react';
 import { RapidStyles } from '../../../../utils';
-import { AccordionContext } from '../';
+import { motion } from 'framer-motion';
+import {
+	useAccordionContext,
+	useAccordionItemIndex,
+	useAccordionIsOpen,
+} from '../useAccordionHooks';
 
 const RAPID_CLASSNAME = 'rapid-accordion-content';
-
 interface AccordionContentProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-	styles?: string;
 	children: React.ReactNode;
+	styles?: string;
 }
 
 const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
-	({ styles, children, ...rest }, ref) => {
-		const accordionCtx = useContext(AccordionContext);
-
-		if (!accordionCtx) {
-			throw new Error(
-				'AccordionContent must be used within an Accordion component',
-			);
-		}
-
-		const { activeItems } = accordionCtx;
+	({ children, styles, ...rest }, ref) => {
 		const contentRef = useRef<HTMLDivElement>(null);
-		const [isOpen, setIsOpen] = useState(false);
-		const [index, setIndex] = useState<number | null>(null);
+		const { activeItems } = useAccordionContext();
+		const index = useAccordionItemIndex(contentRef);
+		const isOpen = useAccordionIsOpen(index, activeItems);
 
-		// @todo this is a bit of a hack, should consider use a query selector
-		useEffect(() => {
-			if (contentRef.current) {
-				setIndex(
-					Array.from(
-						contentRef.current.parentElement?.parentElement
-							?.parentElement?.children || [],
-					).indexOf(
-						contentRef.current.parentElement
-							?.parentElement as Element,
-					),
-				);
-			}
-		}, []);
+		const variants = {
+			open: { opacity: 1, height: 'auto' },
+			closed: { opacity: 0, height: 0 },
+		};
 
-		useEffect(() => {
-			setIsOpen(index !== null && activeItems.includes(index));
-		}, [activeItems, index]);
-
-		const accordionContentStyles = `transition-max-height overflow-hidden duration-300 ${
-			isOpen ? 'max-h-96' : 'max-h-0'
-		}`;
+		const transition = {
+			opacity: { duration: 0.3, ease: 'easeInOut' },
+			height: { duration: isOpen ? 0.3 : 0.2, ease: 'easeInOut' },
+		};
 
 		return (
-			<div
+			<motion.div
 				ref={ref}
+				initial='closed'
+				animate={isOpen ? 'open' : 'closed'}
+				variants={variants}
+				transition={transition}
+				style={{ overflow: 'hidden' }}
 				className={RapidStyles(
 					styles || rest.className,
-					accordionContentStyles,
 					RAPID_CLASSNAME,
 				)}
 			>
-				<div ref={contentRef} className='p-2'>
+				<div ref={contentRef} className='p-2 text-gray-500'>
 					{children}
 				</div>
-			</div>
+			</motion.div>
 		);
 	},
 );

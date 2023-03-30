@@ -24,6 +24,7 @@ interface AccordionProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 	allowMultiple?: boolean;
 	allowToggle?: boolean;
+	defaultIndexes?: number[];
 	children: React.ReactNode;
 	styles?: string;
 }
@@ -33,17 +34,17 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 		{
 			allowMultiple = false,
 			allowToggle = false,
+			defaultIndexes = [],
 			children,
 			styles,
 			...rest
 		},
 		ref,
 	) => {
-		const [activeItems, setActiveItems] = useState<number[]>([]);
+		const [activeItems, setActiveItems] =
+			useState<number[]>(defaultIndexes);
 		const accordionStyles =
 			'flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto';
-
-		console.log(activeItems, 'these are active');
 
 		return (
 			<AccordionContext.Provider
@@ -62,6 +63,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 						accordionStyles,
 						RAPID_CLASSNAME,
 					)}
+					role='accordion'
 				>
 					{children}
 				</div>

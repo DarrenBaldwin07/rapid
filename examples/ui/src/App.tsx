@@ -105,7 +105,6 @@ function App() {
 			<Select styles='w-56'>
 				<Option value='Test'>Test</Option>
 				<Option value='Test'>Test</Option>
-				<SelectIcon />
 			</Select>
 			<Divider />
 			<Text>Modal</Text>
@@ -146,7 +145,48 @@ function App() {
 			<Divider />
 			Accordion
 			<div className='container mx-auto p-4'>
-				<Accordion allowMultiple allowToggle>
+				<Accordion allowMultiple allowToggle defaultIndexes={[0, 2]}>
+					<AccordionItem>
+						<AccordionHeader>
+							Item 1<AccordionIcon />
+						</AccordionHeader>
+						<AccordionContent>
+							Lorem ipsum dolor sit amet, consectetur adipiscing
+							elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim veniam, quis
+							nostrud exercitation ullamco laboris nisi ut aliquip
+							ex ea commodo consequat.
+						</AccordionContent>
+					</AccordionItem>
+					<AccordionItem>
+						<AccordionHeader>
+							Item 2<AccordionIcon />
+						</AccordionHeader>
+						<AccordionContent>
+							Lorem ipsum dolor sit amet, consectetur adipiscing
+							elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim veniam, quis
+							nostrud exercitation ullamco laboris nisi ut aliquip
+							ex ea commodo consequat.
+						</AccordionContent>
+					</AccordionItem>
+					<AccordionItem>
+						<AccordionHeader>
+							Item 3<AccordionIcon />
+						</AccordionHeader>
+						<AccordionContent>
+							Lorem ipsum dolor sit amet, consectetur adipiscing
+							elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim veniam, quis
+							nostrud exercitation ullamco laboris nisi ut aliquip
+							ex ea commodo consequat.
+						</AccordionContent>
+					</AccordionItem>
+				</Accordion>
+			</div>
+			Accordion default
+			<div className='container mx-auto p-4'>
+				<Accordion>
 					<AccordionItem>
 						<AccordionHeader>Item 1</AccordionHeader>
 						<AccordionContent>Content for item 1</AccordionContent>

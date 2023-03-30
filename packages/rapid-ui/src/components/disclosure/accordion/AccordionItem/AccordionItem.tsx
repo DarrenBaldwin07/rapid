@@ -1,7 +1,7 @@
 import React, { forwardRef, DetailedHTMLProps, HTMLAttributes } from 'react';
 import { RapidStyles } from '../../../../utils';
 
-const RAPID_CLASSNAME = 'rapid-accordion-item';
+export const RAPID_CLASSNAME = 'rapid-accordion-item';
 
 interface AccordionItemProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

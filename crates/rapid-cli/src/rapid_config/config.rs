@@ -77,7 +77,7 @@ pub fn find_rapid_config_from_binary() -> RapidConfig {
 		std::process::exit(200);
 	}
 
-	// Parse/deserialize the rapid config file from the .toml format
+	// Parse/deserialize the rapid config file from the .toml file format
 	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
 
 	rapid_config

@@ -1,1 +1,2 @@
-> A rendering engine for the Rapid Framework
+> A SSR engine for the experimental version of the Rapid Framework
+> More coming soon...

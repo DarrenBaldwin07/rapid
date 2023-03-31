@@ -307,7 +307,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 }
 
 /// Function that generates handler tokens from a Handler type
-/// Note: this currently depends on the assumption that each dir only has 1 _middleware.rs file
+/// Note: this currently depends on the assumption that each dir only has 1 _middleware.rs file which we always be the case since dupe file names is not allowed
 fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_type: &str) -> proc_macro2::TokenStream {
 	let parsed_handler_type: proc_macro2::TokenStream = handler_type.parse().unwrap();
 

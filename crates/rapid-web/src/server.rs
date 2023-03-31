@@ -22,7 +22,6 @@ extern crate proc_macro;
 #[derive(Clone)]
 pub struct RapidServer {
 	pub port: Option<u16>,
-	pub base_route: Option<String>,
 	pub hostname: Option<String>,
 }
 
@@ -44,10 +43,9 @@ lazy_static! {
 ///
 /// ```
 impl RapidServer {
-	pub fn create(port: Option<u16>, base_route: Option<String>, hostname: Option<String>) -> Self {
-		Self { port, base_route, hostname }
+	pub fn create(port: Option<u16>, hostname: Option<String>) -> Self {
+		Self { port, hostname }
 	}
-
 	/// A stock re-export of the actix-web "App::new()" router with a few extras
 	/// This router does not support typesafey file based routing
 	/// Note: to experience the full capabilities of rapid-web, use the RapidServer::fs_router function
@@ -99,11 +97,13 @@ impl RapidServer {
 		}
 	}
 
-	/// A file-system based router for the rapid-web
+	/// A file-system based router for rapid-web
 	///
 	/// Build your api with a simple file based technique (ex: _middleware.rs, index.rs)
 	///
 	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
+	/// * `cors` - An optional cors middleware that can be used to configure the cors middleware
+	/// * `log_type` - An optional logger middleware that can be used to configure the logger middleware
 	pub fn fs_router(
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,

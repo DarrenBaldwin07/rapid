@@ -10,7 +10,8 @@ use super::{
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
 	shift::generate::create_typescript_types,
-	tui::server_init
+	tui::server_init,
+	util::{check_for_invalid_handlers, get_routes_dir},
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
@@ -111,16 +112,7 @@ impl RapidServer {
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// Grab the routes directory from the rapid config file (this powers how we export types)
 		// Note: make sure we panic if we are not able to detect it
-		let routes_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
-			Some(server) => match server.routes_directory.clone() {
-				Some(dir) => match dir == "/" {
-					true => panic!("The 'routes_directory' variable cannot be set to a base path. Please use something nested!"),
-					false => dir,
-				},
-				None => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!"),
-			},
-			None => panic!("You must have a valid rapid config file in the base project directory!"),
-		};
+		let routes_dir = get_routes_dir(RAPID_SERVER_CONFIG.server.as_ref());
 
 		// Grab the bindings directory from the rapid config file
 		// We want to make sure that it is valid and is actually defined (it defaults to an Option<String>)
@@ -161,6 +153,12 @@ impl RapidServer {
 
 		// Show the server initialization message
 		server_init(bind_config.clone());
+
+		// Grab the routes directory from the rapid config file
+		let routes_dir = get_routes_dir(RAPID_SERVER_CONFIG.server.as_ref());
+
+		// Check for any invalid routes and log them to the console
+		check_for_invalid_handlers(&routes_dir);
 
 		server.bind(bind_config)?.run().await
 	}

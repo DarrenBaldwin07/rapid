@@ -15,7 +15,7 @@ pub enum HandlerRequestType {
 	Post,
 	Delete,
 	Put,
-	Patch
+	Patch,
 }
 
 #[derive(Debug)]

@@ -76,14 +76,20 @@ pub fn parse_new_args(args: &ArgMatches) {
 						_ => {
 							// If we got valid args but none of them actually matched on one of
 							// our support application types, we want to show the user an error message
-							println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
+							println!(
+								"{}",
+								"No application type detected. Please use either --server or --fullstack".color(Color::Red)
+							);
 							break;
 						}
 					}
 				}
 			}
 			None => {
-				println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
+				println!(
+					"{}",
+					"No application type detected. Please use either --server or --fullstack".color(Color::Red)
+				);
 				break;
 			}
 		}
@@ -92,7 +98,10 @@ pub fn parse_new_args(args: &ArgMatches) {
 	// Check if we found a app type match
 	// If we did not than we want to show a log to the user
 	if !did_find_match {
-		println!("{}", "No application type detected. Please use either --server or --fullstack".color(Color::Red));
+		println!(
+			"{}",
+			"No application type detected. Please use either --server or --fullstack".color(Color::Red)
+		);
 	}
 }
 

@@ -51,7 +51,7 @@ enum RouteHandler {
 	Post(Handler),
 	Delete(Handler),
 	Put(Handler),
-	Patch(Handler)
+	Patch(Handler),
 }
 
 /// Macro for generated rapid route handlers based on the file system
@@ -143,7 +143,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		};
 
 		// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
-		// TODO: we should support PATCH requests here as well
+		// Routes are determined valid if they contain a function that starts with "async fn" and contains the "rapid_handler" attribute macro
 		if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Get(handler))
 		} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {

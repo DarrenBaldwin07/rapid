@@ -5,7 +5,7 @@ use std::{
 	io::Read,
 	path::{Path, PathBuf},
 };
-use syn::{parse_str, parse_file, File as SynFile, Item};
+use syn::{parse_file, parse_str, File as SynFile, Item};
 
 pub fn get_all_dirs(path: &str, path_array: &mut Vec<PathBuf>) {
 	let dir = fs::read_dir(path);
@@ -53,7 +53,6 @@ pub fn get_all_middleware(current_path: &str, route_root: &str, path_array: &mut
 							path_array.push(path.parent().expect("Error: could not parse parent route directory!").to_path_buf());
 						}
 					}
-
 				}
 			}
 			// Get the parent directory of the current path
@@ -150,8 +149,7 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	// Parse the file into a syn file
 	// Its possible that this could fail if the file is not valid rust code (ex: a user has a txt file in the routes folder)
 	// -- however, it wont happen because this case is caught in the if-satement above
-	let parsed_file: SynFile =
-		parse_str(handler_source.as_str()).expect("An error occurred when attempting to parse a rapid route handler file.");
+	let parsed_file: SynFile = parse_str(handler_source.as_str()).expect("An error occurred when attempting to parse a rapid route handler file.");
 
 	// We define a valid route as having a rapid handler macro and it only containing one handler function
 	// Rapid will ignore all files that have more than one handler
@@ -168,5 +166,6 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 		}
 	}
 
+	// Route files are only considered valid for route generation if they have a single handler function
 	has_rapid_handler && handler_count == 1
 }

@@ -9,3 +9,4 @@ pub mod shift;
 pub use default_routes::templates::WELCOME_TEMPLATE as welcome_view;
 pub(crate) mod default_routes;
 pub(crate) mod tui;
+pub(crate) mod util;

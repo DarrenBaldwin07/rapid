@@ -1,6 +1,6 @@
 use super::RapidCommand;
 use crate::{
-	cli::{current_directory, logo, Config, rapid_logo},
+	cli::{current_directory, logo, rapid_logo, Config},
 	rapid_config::config::{find_rapid_config, is_rapid, AppType},
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
@@ -151,7 +151,6 @@ fn handle_run_server(server_port: u16) {
 		"systemfd --no-pid --quiet -s http::{} -- cargo watch -x run -q --ignore 'bindings.ts'",
 		server_port
 	);
-
 
 	// Trigger the shell command to actually run + watch the rapid server
 	StdCommand::new("sh")

@@ -7,7 +7,7 @@ rapid_configure!("src/routes");
 
 #[main]
 async fn main() -> std::io::Result<()> {
-    let app = RapidServer::create(None, None, None);
+    let app = RapidServer::create(None, None);
 
 
     app.listen(HttpServer::new(move || {

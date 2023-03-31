@@ -1,9 +1,18 @@
 use crate::cli::current_directory;
 use serde::Deserialize;
 use std::fs::read_to_string;
+use strum_macros::EnumString;
 use toml;
 
-#[derive(Deserialize)]
+#[derive(Debug, PartialEq, EnumString)]
+#[strum(ascii_case_insensitive)]
+#[derive(Deserialize, Clone)]
+pub enum AppType {
+	App,
+	Server,
+}
+
+#[derive(Deserialize, Clone)]
 pub struct AppConfig {
 	// TODO: Add app options here as needed
 	// host port
@@ -11,21 +20,24 @@ pub struct AppConfig {
 	// include_environment_variables
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct ServerConfig {
 	pub port: Option<u16>,
-	pub is_logging: bool,
-	pub show_error_pages: bool,
+	pub is_logging: Option<bool>,
+	pub show_error_pages: Option<bool>,
+	pub serve_static_files: Option<bool>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 /// Eventually rapid will have something called plugins -- for now "features" are simply optional internal functionality
 /// that can be toggled by adding the desired feature to this "features" object inside of the rapid.toml config file
 pub struct Features {
 	// TODO: Add features here as needed
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
+/// The RapidConfig file schemea
+/// # Example:
 pub struct RapidConfig {
 	pub app_type: String,
 	pub app_config: Option<AppConfig>,
@@ -49,4 +61,19 @@ pub fn find_rapid_config() -> RapidConfig {
 	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
 
 	rapid_config
+}
+
+// A helper function to check if the current running process is inside of a rapid application
+// aka does it have a rapid.toml
+pub fn is_rapid() -> bool {
+	let dir = current_directory();
+
+	let config_file_contents = read_to_string(dir.join("rapid.toml"));
+
+	// Check to make sure that the config file did not throw an error
+	if let Err(_) = config_file_contents {
+		return false;
+	}
+
+	return true;
 }

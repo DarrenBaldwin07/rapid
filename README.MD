@@ -1,14 +1,14 @@
 ![banner (7)](https://user-images.githubusercontent.com/68653294/218370294-a4bcaef6-087c-489e-8748-0b2eea0fcb90.jpg)
 
 <h1 align='center'>Rapid</h1>
-<h4 align='center'>The opinionated fullstack toolkit for building advanced, scallable, and highly efficient software.</h4>
+<h4 align='center'>The complete fullstack toolkit for building advanced, scallable, and highly efficient software.</h4>
 <div align='center'>
 <a href='https://rapid.cincinnati.ventures/' target='_blank'>rapid.cincinnati.ventures</a>
 </div>
 
 # What is Rapid?
 
-Rapid is an opinionated set of tools to enable developers to create fullstack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing DX.
+Rapid is not a framework but an opinionated set of tools to enable developers to create full-stack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing DX.
 
 # Why Rapid?
 
@@ -38,21 +38,21 @@ Rapid uses React and Rust as the foundation for its fullstack tooling. Do your h
 ### MVP
 
 -   Web server (backend) rust lib (rapid new --server)
--   React frontend lib for auth
+-   Rapid Ui -- a fully featured UI and CSS framework
+-   React frontend lib for data fetching, auth, etc
 -   Fullstack solution with SSR (rapid new)
--   Fullstack solution with only CSR (rapid new --csr)
+-   Fullstack solution with only remix.run (rapid new --remix)
 
 ### Next
 
 -   Documentation
--   Easy deployments with rapid deploy (GCP, cloudflare workers, Netlify)
--   Icon library integrated into the @Rapid/ui
--   Remix.run?
+-   Easy deployments with `rapid deploy` (GCP, Docker, Cloudflare, Netlify)
+-   Icon library integrated into @Rapid/ui
 -   Wasm powered server functions?!
 
 # Getting Started
 
-To setup your dev environment on your local machine follow these steps:
+To setup your dev environment for `Rapid-UI` on your local machine follow these steps:
 
 -   node v16 or higher is required
 -   pnpm

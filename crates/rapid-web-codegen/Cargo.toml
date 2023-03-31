@@ -1,0 +1,19 @@
+[package]
+name = "rapid-web-codegen"
+version = "0.1.4"
+edition = "2021"
+description = "Codegen utilities for the rapid framework."
+repository = "https://github.com/DarrenBaldwin07/rapid"
+homepage = "https://cincinnati.ventures"
+license = "MIT"
+keywords = ["server", "web-framework", "rapid"]
+
+[lib]
+proc-macro = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+quote = "1.0.26"
+proc-macro2 = "1.0.49"
+include_dir = "0.7.3"

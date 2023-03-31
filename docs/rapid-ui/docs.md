@@ -21,7 +21,7 @@ css: {
 }
 ```
 
-Finally, be sure to import your css file inside the vite entrypoint: `import `index.css'`
+Finally, be sure to import your css file inside the vite entrypoint: `import index.css`
 
 ## Remix
 Begin by installing the tailwindCSS depedencies:
@@ -75,3 +75,5 @@ Import and declare you css in the Remix root:
     );
     }
 ```
+
+> Note: Next.js will be supported very soon :)

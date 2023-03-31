@@ -9,6 +9,8 @@ use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 pub type App = Command;
 use std::env::{current_dir, current_exe};
 
+const RAPID_VERSION_MESSAGE: &str = "v0.0.1";
+
 /// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
 	">>> R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
@@ -52,20 +54,21 @@ impl RapidCLI {
 			.allow_external_subcommands(true)
 			.disable_colored_help(false)
 			.override_usage(usage)
+			.long_version(RAPID_VERSION_MESSAGE)
 			.help_template(get_help_template())
-			.arg(flag("version", "Print version info and exit").short('V'))
 			.arg(flag("help", "List command(s)"))
 			.subcommands(RapidCLI::commands())
 	}
 
 	pub fn commands() -> Vec<Command> {
-		vec![commands::new::New::cmd(), commands::init::Init::cmd()]
+		vec![commands::new::New::cmd(), commands::init::Init::cmd(), commands::run::Run::cmd()]
 	}
 
 	pub fn execute_cammand(cmd: &str) -> Option<fn(&Config, &ArgMatches) -> Result<(), crate::cli::CliError<'static>>> {
 		let command_resolver = match cmd {
 			"new" => commands::new::New::execute,
 			"init" => commands::init::Init::execute,
+			"run" => commands::run::Run::execute,
 			_ => return None,
 		};
 

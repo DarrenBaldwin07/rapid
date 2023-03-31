@@ -1,6 +1,6 @@
 [package]
 name = "rapid-cli"
-version = "0.0.8"
+version = "0.1.5"
 edition = "2021"
 description = "The CLI tool for the Rapid framework"
 repository = "https://github.com/DarrenBaldwin07/rapid"
@@ -16,14 +16,17 @@ path = "src/lib.rs"
 name = "rapid"
 path = "src/bin/main.rs"
 
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 clap = { version = "4.1.4", features = ["derive", "cargo"] }
 colorful = "0.2.2"
+ctrlc = "3.2.5"
 rust-embed = "6.4.2"
 serde = { version = "1.0", features = ["derive"] }
+spinach = "2.1.0"
+strum = "0.24.1"
+strum_macros = "0.24.3"
 terminal-emoji = "0.4.1"
 tiny-gradient = "0.1.0"
 toml = "0.7.2"

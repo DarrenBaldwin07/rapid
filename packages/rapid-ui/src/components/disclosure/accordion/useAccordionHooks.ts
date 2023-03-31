@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, RefObject } from 'react';
 import {
 	AccordionContext,
 	AccordionContextType,
@@ -18,7 +18,7 @@ export const useAccordionContext = (): AccordionContextType => {
 };
 
 export const useAccordionItemIndex = (
-	divRef: React.RefObject<HTMLDivElement | SVGSVGElement>,
+	divRef: RefObject<HTMLDivElement | SVGSVGElement>,
 ): number | null => {
 	const [index, setIndex] = useState<number | null>(null);
 

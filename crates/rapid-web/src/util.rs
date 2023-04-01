@@ -27,11 +27,7 @@ pub fn check_for_invalid_handlers(dir: &str) {
 				info!(
 					"{} Found invalid route handler file at {}",
 					rapid_log_target(),
-					entry
-						.path()
-						.to_str()
-						.expect("Error: could not parse invalid route handler")
-						.color(Color::LightCyan)
+					format!("`{}`", entry.path().to_str().expect("Error: could not parse invalid route handler")).color(Color::LightCyan)
 				);
 			}
 		}
@@ -44,12 +40,13 @@ pub fn check_for_invalid_handlers(dir: &str) {
 pub fn validate_route_handler(handler_source: &String) -> bool {
 	// Check if the file is actually valid rust code
 	// If not, we want to output a invalid route rusult (false)
+    // This covers any cases where the user could have a non-rust file in the routes directory
 	if parse_file(handler_source).is_err() {
 		return false;
 	}
 	// Parse the file into a syn file
 	// Its possible that this could fail if the file is not valid rust code (ex: a user has a txt file in the routes folder)
-	// -- however, it wont happen because this case is caught in the if-satement above
+	// -- however, it wont happen because this case is caught in the if-statement above
 	let parsed_file: SynFile = parse_str(handler_source.as_str()).expect("An error occurred when attempting to parse a rapid route handler file.");
 
 	// We define a valid route as having a rapid handler macro and it only containing one handler function
@@ -70,6 +67,7 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	has_rapid_handler && handler_count == 1
 }
 
+/// Make sure there is a valid function with the correct HTTP method
 pub fn is_valid_route_function(file_contents: &str) -> bool {
 	if file_contents.contains("async fn get") {
 		return true;
@@ -86,6 +84,7 @@ pub fn is_valid_route_function(file_contents: &str) -> bool {
 	false
 }
 
+/// Function for getting the routes directory from the rapid config file
 pub fn get_routes_dir(rapid_server_config: Option<&ServerConfig>) -> String {
 	match rapid_server_config {
 		Some(server) => match server.routes_directory.clone() {

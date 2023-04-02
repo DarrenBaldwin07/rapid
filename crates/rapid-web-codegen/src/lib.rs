@@ -215,7 +215,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			};
 
 			// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
-			// TODO: we should support PATCH requests here as well
+			// TODO: we should consider supporting HEAD requests here as well (currently, we require that this be done through a traditional .route() call on the route builder function)
 			if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Get(handler))
 			} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {

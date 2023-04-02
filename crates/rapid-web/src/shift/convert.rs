@@ -24,7 +24,7 @@ impl From<String> for TypescriptType {
 	}
 }
 
-fn convert_generic(generic_type: &syn::GenericArgument) -> TypescriptType {
+fn convert_generic_type(generic_type: &syn::GenericArgument) -> TypescriptType {
 	match generic_type {
 		syn::GenericArgument::Type(rust_type) => convert_primitive(rust_type),
 		_ => "any".to_string().into(),
@@ -40,7 +40,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 			let tokens = &segment.ident;
 			let arguments = &segment.arguments;
 			let parsed_type = tokens.to_string();
-			// TODO: Add in cases for chrono dates as well
+			// TODO: Add cases here for chrono dates as well
 			match parsed_type.as_str() {
 				"u8" => "number".to_string().into(),
 				"u16" => "number".to_string().into(),
@@ -62,26 +62,26 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 				"String" => "string".to_string().into(),
 				"NaiveDateTime" => "Date".to_string().into(),
 				"DateTime" => "Date".to_string().into(),
-				"Path" => TypescriptType {
+				"RapidPath" => TypescriptType {
 					is_optional: false,
 					typescript_type: match arguments {
 						syn::PathArguments::Parenthesized(parenthesized_argument) => {
 							format!("{:?}", parenthesized_argument)
 						}
 						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
-							convert_generic(anglebracketed_argument.args.first().unwrap()).typescript_type
+							convert_generic_type(anglebracketed_argument.args.first().unwrap()).typescript_type
 						}
 						_ => "unknown".to_string(),
 					},
 				},
-				"Json" => TypescriptType {
+				"RapidJson" => TypescriptType {
 					is_optional: false,
 					typescript_type: match arguments {
 						syn::PathArguments::Parenthesized(parenthesized_argument) => {
 							format!("{:?}", parenthesized_argument)
 						}
 						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
-							convert_generic(anglebracketed_argument.args.first().unwrap()).typescript_type
+							convert_generic_type(anglebracketed_argument.args.first().unwrap()).typescript_type
 						}
 						_ => "unknown".to_string(),
 					},
@@ -93,7 +93,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 							format!("{:?}", parenthesized_argument)
 						}
 						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
-							convert_generic(anglebracketed_argument.args.first().unwrap()).typescript_type
+							convert_generic_type(anglebracketed_argument.args.first().unwrap()).typescript_type
 						}
 						_ => "unknown".to_string(),
 					},
@@ -104,7 +104,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 					}
 					syn::PathArguments::AngleBracketed(anglebracketed_argument) => format!(
 						"Array<{}>",
-						match convert_generic(anglebracketed_argument.args.first().unwrap()) {
+						match convert_generic_type(anglebracketed_argument.args.first().unwrap()) {
 							TypescriptType {
 								is_optional: true,
 								typescript_type,
@@ -127,7 +127,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 						anglebracketed_argument
 							.args
 							.iter()
-							.map(|arg| match convert_generic(arg) {
+							.map(|arg| match convert_generic_type(arg) {
 								TypescriptType {
 									is_optional: true,
 									typescript_type,

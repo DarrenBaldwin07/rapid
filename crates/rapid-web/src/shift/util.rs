@@ -72,9 +72,9 @@ pub fn get_type_class(rust_type: Type) -> Option<TypeClass> {
 			let tokens = &segment.ident;
 
 			Some(match tokens.to_string().as_str() {
-				"Path" => TypeClass::Path,
-				"Query" => TypeClass::QueryParam,
-				"Json" => TypeClass::InputBody, // TODO: support return statements here as well (right now we are defaulting to invalid until implemented)
+				"RapidPath" => TypeClass::Path,
+				"RapidQuery" => TypeClass::QueryParam,
+				"RapidJson" => TypeClass::InputBody, // TODO: support return statements here as well (right now we are defaulting to invalid until implemented)
 				_ => TypeClass::Invalid,
 			})
 		}

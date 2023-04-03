@@ -1,7 +1,7 @@
 import React from 'react';
 import { createVariant } from '../../../theme';
 import { RapidStyles, getVariantClassName } from '../../../utils';
-import { default as AliasSpinner } from '../../Feedback/Spinner/Spinner';
+import { default as AliasSpinner } from '../../feedback/spinner/Spinner';
 
 // This is the class name that will be used to apply the global rapid theme from tailwindCSS
 const THEME_CLASSNAME = 'rapid-button';

@@ -6,7 +6,7 @@ import {
 	shift,
 	autoUpdate,
 } from '@floating-ui/react-dom';
-import { ScaleFade } from '../../Transition';
+import { ScaleFade } from '../../transition';
 import { AnimatePresence } from 'framer-motion';
 import useDisclosure from '../../../hooks/useDisclosure';
 import { RapidStyles, getVariantClassName } from '../../../utils';

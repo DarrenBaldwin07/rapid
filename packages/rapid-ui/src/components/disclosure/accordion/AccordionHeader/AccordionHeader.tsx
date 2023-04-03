@@ -16,6 +16,8 @@ const RAPID_CLASSNAME = 'rapid-accordion-header';
 
 const ACDN_HEADER_STYLES = `cursor-pointer p-2 hover:bg-lightGrey`;
 
+const ACDN_HEADER_DIV_STYLES = `flex justify-between items-center`;
+
 interface AccordionHeaderProps
 	extends DetailedHTMLProps<
 		HTMLAttributes<HTMLHeadingElement>,
@@ -67,7 +69,7 @@ export const AccordionHeader = forwardRef<
 			role='button'
 			tabIndex={0}
 		>
-			<div ref={divRef} className='flex items-center justify-between '>
+			<div ref={divRef} className={ACDN_HEADER_DIV_STYLES}>
 				{children}
 			</div>
 		</h2>

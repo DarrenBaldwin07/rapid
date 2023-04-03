@@ -1,4 +1,4 @@
-use syn::{Type, ItemStruct};
+use syn::{Type, ItemStruct, ItemType};
 use super::util::{indent, space, get_struct_generics};
 
 #[derive(Debug)]
@@ -65,6 +65,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 				"String" => TypescriptType::new("string".to_string(), false),
 				"NaiveDateTime" => TypescriptType::new("Date".to_string(), false),
 				"DateTime" => TypescriptType::new("Date".to_string(), false),
+				"Uuid" => TypescriptType::new("string".to_string(), false),
 				"RapidPath" => TypescriptType {
 					is_optional: false,
 					typescript_type: match arguments {
@@ -183,6 +184,7 @@ impl TypescriptConverter {
 		}
 	}
 
+	/// Function that converts a syn struct to a typescript interface and pushes it to the `store` field
 	pub fn convert_struct(mut self, rust_struct: ItemStruct) {
 		let export_str = if self.should_export { "export " } else { "" };
 
@@ -216,19 +218,36 @@ impl TypescriptConverter {
 		convert_primitive(&primitive)
 	}
 
-	fn convert_const() {
+	pub fn convert_const() {
 
 	}
 
-	fn convert_enum() {
+	pub fn convert_enum() {
 
 	}
 
-	fn convert_function() {
+	pub fn convert_function() {
 
 	}
 
-	fn convert_type_alias() {
+	pub fn convert_type_alias(mut self, rust_type_alias: ItemType) {
+		let export_str = if self.should_export { "export " } else { "" };
 
+		let keyword = "type";
+
+		let spacing = space(self.indentation);
+
+		// Push an indent to the typescript file
+		self.store.push_str(&indent(1));
+
+		// Get the name of the type alias
+		let alias_name = rust_type_alias.ident.to_string();
+
+		let converted_type = convert_primitive(&rust_type_alias.ty);
+
+		let type_scaffold = format!("{space} {export} {key} {name} = {type_value};", space = spacing, key = keyword, export = export_str, name = alias_name, type_value = converted_type.typescript_type);
+
+		// After constructing the new type lets push it onto the store string
+		self.store.push_str(&type_scaffold);
 	}
 }

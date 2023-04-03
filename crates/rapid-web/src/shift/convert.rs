@@ -174,11 +174,16 @@ pub struct TypescriptConverter {
 }
 
 impl TypescriptConverter {
-	pub fn convert(self, conversion_type: ConversionType) -> String {
-		String::from("")
+	pub fn new(is_interface: bool, initial_store_value: String, should_export: bool, indentation: u32) -> Self {
+		Self {
+			is_interface,
+			store: initial_store_value,
+			should_export,
+			indentation
+		}
 	}
 
-	fn convert_struct(mut self, rust_struct: ItemStruct) {
+	pub fn convert_struct(mut self, rust_struct: ItemStruct) {
 		let export_str = if self.should_export { "export " } else { "" };
 
 		let keyword = if self.is_interface { "interface" } else { "type" };
@@ -188,7 +193,10 @@ impl TypescriptConverter {
 		// Push an indent to the typescript file
 		self.store.push_str(&indent(1));
 
-		let mut type_scaffold = format!("{export} {key} {name}{generics} {{\n", export = export_str, key = keyword, name = rust_struct.ident, generics = get_struct_generics(rust_struct.generics.clone()));
+		let type_scaffold = format!("{export} {key} {name}{generics} {{\n", export = export_str, key = keyword, name = rust_struct.ident, generics = get_struct_generics(rust_struct.generics.clone()));
+
+		// Push our type scaffold to the store string (this string will eventually be pushed to a file once formed fully)
+		self.store.push_str(&type_scaffold);
 
 		// Parse all of the structs fields
 		for field in rust_struct.fields {
@@ -204,11 +212,23 @@ impl TypescriptConverter {
 		self.store.push_str("}");
 	}
 
+	pub fn convert_primitive(primitive: Type) -> TypescriptType {
+		convert_primitive(&primitive)
+	}
+
 	fn convert_const() {
 
 	}
 
 	fn convert_enum() {
+
+	}
+
+	fn convert_function() {
+
+	}
+
+	fn convert_type_alias() {
 
 	}
 }

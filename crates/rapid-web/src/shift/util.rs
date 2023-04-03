@@ -1,5 +1,7 @@
 use syn::{File as SynFile, Item, Type, Generics};
 
+const GENERATED_TS_FILE_MESSAGE: &str = "@generated automatically by Rapid-web (https://rapid.cincinnati.ventures). DO NOT CHANGE";
+
 #[derive(Debug)]
 pub enum TypeClass {
 	InputBody,

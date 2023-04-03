@@ -26,6 +26,11 @@ import {
 	Heading,
 	Divider,
 	Flex,
+	Drawer,
+	DrawerHeader,
+	DrawerBody,
+	DrawerFooter,
+	DrawerCloseButton,
 } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -40,6 +45,20 @@ import './index.css';
 function App() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isEnabled, setIsEnabled] = useState(false);
+	const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+	const [placement, setPlacement] = useState<
+		'left' | 'right' | 'top' | 'bottom'
+	>('left');
+
+	const openDrawer = (position: 'left' | 'right' | 'top' | 'bottom') => {
+		setPlacement(position);
+		setIsOpenDrawer(true);
+	};
+
+	const closeDrawer = () => {
+		setIsOpen(false);
+	};
+
 	return (
 		<Container>
 			<Heading styles='text-center'>Rapid Components</Heading>
@@ -163,6 +182,45 @@ function App() {
 			/>
 
 			<Divider />
+
+			<div>
+				<h1>Drawer Component Example</h1>
+				<Button onClick={() => openDrawer('left')}>
+					Open Left Drawer
+				</Button>
+				<Button onClick={() => openDrawer('right')}>
+					Open Right Drawer
+				</Button>
+				<Button onClick={() => openDrawer('top')}>
+					Open Top Drawer
+				</Button>
+				<Button onClick={() => openDrawer('bottom')}>
+					Open Bottom Drawer
+				</Button>
+
+				<Drawer
+					isOpen={isOpenDrawer}
+					placement={placement}
+					onClose={closeDrawer}
+				>
+					<DrawerHeader>Drawer Title</DrawerHeader>
+					<DrawerBody>
+						<p>
+							This is the drawer content. You can add any elements
+							here to display inside the drawer.
+						</p>
+					</DrawerBody>
+					<DrawerFooter>
+						{/* <button
+							className='btn btn-primary'
+							onClick={closeDrawer}
+						>
+							Close Drawer
+						</button> */}
+						<DrawerCloseButton />
+					</DrawerFooter>
+				</Drawer>
+			</div>
 		</Container>
 	);
 }

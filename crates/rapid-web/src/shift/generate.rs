@@ -1,5 +1,5 @@
 use super::{
-	convert::{convert_primitive, TypescriptType},
+	convert::{convert_primitive, TypescriptType, TypescriptConverter},
 	util::{extract_handler_types, space, HandlerRequestType, TypeClass},
 };
 use std::{
@@ -205,4 +205,8 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	handlers_interface.push_str("}");
 
 	file.write_all(handlers_interface.as_bytes()).unwrap();
+}
+
+pub fn generate_routes() {
+
 }

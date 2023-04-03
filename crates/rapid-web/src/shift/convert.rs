@@ -214,22 +214,28 @@ impl TypescriptConverter {
 		self.store.push_str("}");
 	}
 
+	/// Converts rust primitives to typescript types
 	pub fn convert_primitive(primitive: Type) -> TypescriptType {
 		convert_primitive(&primitive)
 	}
 
+	// TODO
 	pub fn convert_const() {
 
 	}
 
+	// TODO
 	pub fn convert_enum() {
 
 	}
 
+	// TODO
 	pub fn convert_function() {
 
 	}
 
+
+	/// Converts rust type aliases to typescript types or interfaces
 	pub fn convert_type_alias(mut self, rust_type_alias: ItemType) {
 		let export_str = if self.should_export { "export " } else { "" };
 

@@ -1,4 +1,4 @@
-use syn::{File as SynFile, Item, Type, Generics};
+use syn::{File as SynFile, Item, Type, Generics, Lit, parse_file};
 
 const GENERATED_TS_FILE_MESSAGE: &str = "@generated automatically by Rapid-web (https://rapid.cincinnati.ventures). DO NOT CHANGE";
 
@@ -126,4 +126,21 @@ pub fn get_struct_generics(type_generics: Generics) -> String {
     } else {
         format!("<{}>", generic_params.join(", "))
     }
+}
+
+pub fn get_route_key(handler_source: &str) {
+	// Parse the file into a rust syntax tree
+	let file = parse_file(handler_source).expect("Error: Syn could not parse handler source file!");
+
+	for item in file.items {
+        match item {
+            Item::Const(item_const) => {
+                if item_const.ident.to_string() == "ROUTE_KEY" {
+                    println!("Found ROUTE_KEY with value: {:?}", item_const.expr);
+                }
+            }
+            _ => {}
+        }
+    }
+
 }

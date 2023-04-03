@@ -243,7 +243,7 @@ impl TypescriptConverter {
 
 		let spacing = space(self.indentation);
 
-		// Push an indent to the typescript file
+		// Push an indentation to the typescript file
 		self.store.push_str(&indent(1));
 
 		// Get the name of the type alias

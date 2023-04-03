@@ -210,3 +210,4 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 pub fn generate_routes() {
 
 }
+

@@ -29,7 +29,7 @@ interface AccordionProps
 	styles?: string;
 }
 
-const accordionStyles =
+const ACDN_STYLES =
 	'flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto';
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
@@ -61,7 +61,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 					{...rest}
 					className={RapidStyles(
 						styles || rest.className,
-						accordionStyles,
+						ACDN_STYLES,
 						RAPID_CLASSNAME,
 					)}
 					role='accordion'

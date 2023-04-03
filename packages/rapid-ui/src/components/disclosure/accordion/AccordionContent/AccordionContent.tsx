@@ -11,8 +11,11 @@ import {
 	useAccordionItemIndex,
 	useAccordionIsOpen,
 } from '../useAccordionHooks';
+import { useCombinedRefs } from '../../../../hooks';
 
 const RAPID_CLASSNAME = 'rapid-accordion-content';
+
+const ACDN_CONTENT_STYLES = 'p-2 text-gray-500';
 interface AccordionContentProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 	children: React.ReactNode;
@@ -22,6 +25,7 @@ interface AccordionContentProps
 const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
 	({ children, styles, ...rest }, ref) => {
 		const contentRef = useRef<HTMLDivElement>(null);
+		const combinedRef = useCombinedRefs(ref, contentRef);
 		const { activeItems } = useAccordionContext();
 		const index = useAccordionItemIndex(contentRef);
 		const isOpen = useAccordionIsOpen(index, activeItems);
@@ -38,18 +42,21 @@ const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
 
 		return (
 			<motion.div
-				ref={ref}
 				initial='closed'
 				animate={isOpen ? 'open' : 'closed'}
 				variants={variants}
 				transition={transition}
 				style={{ overflow: 'hidden' }}
-				className={RapidStyles(
-					styles || rest.className,
-					RAPID_CLASSNAME,
-				)}
 			>
-				<div ref={contentRef} className='p-2 text-gray-500'>
+				<div
+					ref={combinedRef}
+					{...rest}
+					className={RapidStyles(
+						styles || rest.className,
+						ACDN_CONTENT_STYLES,
+						RAPID_CLASSNAME,
+					)}
+				>
 					{children}
 				</div>
 			</motion.div>

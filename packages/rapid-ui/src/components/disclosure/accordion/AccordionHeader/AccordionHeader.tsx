@@ -4,6 +4,7 @@ import React, {
 	DetailedHTMLProps,
 	HTMLAttributes,
 	KeyboardEvent,
+	useCallback,
 } from 'react';
 import { RapidStyles } from '../../../../utils';
 import {
@@ -37,7 +38,7 @@ export const AccordionHeader = forwardRef<
 	const index = useAccordionItemIndex(divRef);
 	const isOpen = useAccordionIsOpen(index, activeItems);
 
-	const handleToggle = () => {
+	const handleToggle = useCallback(() => {
 		if (index === null) return;
 
 		if (allowToggle) {
@@ -47,13 +48,16 @@ export const AccordionHeader = forwardRef<
 		} else {
 			setActiveItems((prev) => (isOpen ? prev : [index]));
 		}
-	};
+	}, [index, isOpen, allowToggle, setActiveItems]);
 
-	const handleKeyDown = (e: KeyboardEvent<HTMLHeadingElement>) => {
-		if (e.key === 'Enter' || e.key === ' ') {
-			handleToggle();
-		}
-	};
+	const handleKeyDown = useCallback(
+		(e: KeyboardEvent<HTMLHeadingElement>) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				handleToggle();
+			}
+		},
+		[handleToggle],
+	);
 
 	return (
 		<h2

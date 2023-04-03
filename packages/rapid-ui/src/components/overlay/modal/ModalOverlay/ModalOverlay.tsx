@@ -1,6 +1,6 @@
 import React from 'react';
 import { RapidStyles } from '../../../../utils';
-import { Fade } from '../../../Transition';
+import { Fade } from '../../../transition';
 
 const RAPID_CLASSNAME = 'rapid-modal-overlay';
 

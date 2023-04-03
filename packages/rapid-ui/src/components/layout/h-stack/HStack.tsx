@@ -1,5 +1,5 @@
 import React from 'react';
-import Stack from '../Stack/Stack';
+import Stack from '../stack/Stack';
 
 type Spacing = 'sm' | 'md' | 'lg';
 

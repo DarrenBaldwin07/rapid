@@ -1,7 +1,7 @@
 import React from 'react';
 import { RapidStyles } from '../../../../utils';
 import { Dialog as HeadlessModal } from '@headlessui/react';
-import { ScaleFade } from '../../../Transition';
+import { ScaleFade } from '../../../transition';
 
 const RAPID_CLASSNAME = 'rapid-modal-content';
 

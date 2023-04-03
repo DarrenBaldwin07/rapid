@@ -1,5 +1,5 @@
 import { Menu as HeadlessMenu } from '@headlessui/react';
-import { HeadlessMenuTyped } from '../Menu/Menu';
+import { HeadlessMenuTyped } from '../menu/Menu';
 import { RapidStyles } from '../../../../utils';
 import type { ExtractProps } from '../../../../types';
 

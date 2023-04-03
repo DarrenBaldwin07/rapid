@@ -28,13 +28,13 @@ const AccordionIcon = forwardRef<SVGSVGElement, AccordionIconProps>(
 		return (
 			<svg
 				ref={combinedRef}
+				{...rest}
 				className={RapidStyles(
 					styles || rest.className,
 					iconStyles,
 					RAPID_CLASSNAME,
 				)}
 				pointerEvents='box-none'
-				{...rest}
 				role='presentation'
 				width='16px'
 				height='16px'

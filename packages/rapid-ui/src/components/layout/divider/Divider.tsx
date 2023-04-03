@@ -10,10 +10,10 @@ export const dividerTheme = createVariant({
 		solid: 'border-solid',
 	},
 	sizes: {
-		sm: 'border',
-		md: 'border-2',
-		lg: 'border-4',
-		xl: 'border-8',
+		sm: 'border-[.5px]',
+		md: 'border',
+		lg: 'border-2',
+		xl: 'border-4',
 	},
 	defaultProps: {
 		variant: 'solid',

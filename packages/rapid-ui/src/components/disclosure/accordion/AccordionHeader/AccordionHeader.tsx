@@ -14,6 +14,8 @@ import {
 
 const RAPID_CLASSNAME = 'rapid-accordion-header';
 
+const ACDN_HEADER_STYLES = `cursor-pointer p-2 hover:bg-lightGrey`;
+
 interface AccordionHeaderProps
 	extends DetailedHTMLProps<
 		HTMLAttributes<HTMLHeadingElement>,
@@ -30,13 +32,8 @@ export const AccordionHeader = forwardRef<
 >(({ children, styles, ...rest }, ref) => {
 	const { allowToggle, activeItems, setActiveItems } = useAccordionContext();
 	const divRef = useRef<HTMLDivElement>(null);
-	const [isHovering, setIsHovering] = React.useState(false);
 	const index = useAccordionItemIndex(divRef);
 	const isOpen = useAccordionIsOpen(index, activeItems);
-
-	const accordionHeaderStyles = `cursor-pointer p-2 ${
-		isHovering && 'bg-gray-100'
-	}`;
 
 	const handleToggle = () => {
 		if (index === null) return;
@@ -59,14 +56,13 @@ export const AccordionHeader = forwardRef<
 	return (
 		<h2
 			ref={ref}
+			{...rest}
 			className={RapidStyles(
 				styles || rest.className,
-				accordionHeaderStyles,
+				ACDN_HEADER_STYLES,
 				RAPID_CLASSNAME,
 			)}
 			onClick={handleToggle}
-			onMouseEnter={() => setIsHovering(true)}
-			onMouseLeave={() => setIsHovering(false)}
 			onKeyDown={handleKeyDown}
 			role='button'
 			tabIndex={0}

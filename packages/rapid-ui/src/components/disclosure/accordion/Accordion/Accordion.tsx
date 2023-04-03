@@ -29,6 +29,9 @@ interface AccordionProps
 	styles?: string;
 }
 
+const accordionStyles =
+	'flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto';
+
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 	(
 		{
@@ -43,8 +46,6 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 	) => {
 		const [activeItems, setActiveItems] =
 			useState<number[]>(defaultIndexes);
-		const accordionStyles =
-			'flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto';
 
 		return (
 			<AccordionContext.Provider

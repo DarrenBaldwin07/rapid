@@ -188,15 +188,21 @@ function App() {
 			<div className='container mx-auto p-4'>
 				<Accordion>
 					<AccordionItem>
-						<AccordionHeader>Item 1</AccordionHeader>
+						<AccordionHeader>
+							Item 1<AccordionIcon />
+						</AccordionHeader>
 						<AccordionContent>Content for item 1</AccordionContent>
 					</AccordionItem>
 					<AccordionItem>
-						<AccordionHeader>Item 2</AccordionHeader>
+						<AccordionHeader>
+							Item 2<AccordionIcon />
+						</AccordionHeader>
 						<AccordionContent>Content for item 2</AccordionContent>
 					</AccordionItem>
 					<AccordionItem>
-						<AccordionHeader>Item 3</AccordionHeader>
+						<AccordionHeader>
+							Item 3<AccordionIcon />
+						</AccordionHeader>
 						<AccordionContent>Content for item 3</AccordionContent>
 					</AccordionItem>
 				</Accordion>

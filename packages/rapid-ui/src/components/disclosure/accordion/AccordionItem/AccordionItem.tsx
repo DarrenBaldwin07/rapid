@@ -9,17 +9,17 @@ interface AccordionItemProps
 	styles?: string;
 }
 
+const ACDN_ITEM_STYLES = 'border-b';
+
 const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
 	({ children, styles, ...rest }, ref) => {
-		const accordionItemStyles = 'border-b';
-
 		return (
 			<div
 				ref={ref}
 				{...rest}
 				className={RapidStyles(
 					styles || rest.className,
-					accordionItemStyles,
+					ACDN_ITEM_STYLES,
 					RAPID_CLASSNAME,
 				)}
 			>

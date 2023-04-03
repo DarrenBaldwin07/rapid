@@ -133,7 +133,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 		match handler {
 			Handler::Query(query) => {
 				let mut ts_type = format!("\n\t\t{}: {{\n", query.key);
-				let spacing = space();
+				let spacing = space(2);
 				let request_type = match query.request_type {
 					HandlerRequestType::Post => "post",
 					HandlerRequestType::Put => "put",
@@ -161,7 +161,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 			}
 			Handler::Mutation(mutation) => {
 				let mut ts_type = format!("\n\t\t{}: {{\n", mutation.key);
-				let spacing = space();
+				let spacing = space(2);
 				let request_type = match mutation.request_type {
 					HandlerRequestType::Post => "post",
 					HandlerRequestType::Put => "put",

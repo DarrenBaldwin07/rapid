@@ -1,4 +1,5 @@
-use syn::Type;
+use syn::{Type, ItemStruct};
+use super::util::{indent, space, get_struct_generics};
 
 #[derive(Debug)]
 pub struct TypescriptType {
@@ -24,16 +25,18 @@ impl From<String> for TypescriptType {
 	}
 }
 
+/// Function for checking if a type is generic and converting the generic type to a typescript type
 fn convert_generic_type(generic_type: &syn::GenericArgument) -> TypescriptType {
 	match generic_type {
 		syn::GenericArgument::Type(rust_type) => convert_primitive(rust_type),
-		_ => "any".to_string().into(),
+		_ => "any".to_string().into(), // We could use "unknown" here but "any" is fine for now
 	}
 }
 
 /// Function for converting basic rust primitive types to typescript types and interfaces
 pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 	match rust_primitive {
+		// If we find a reference type we want to extract it and re-call type conversion
 		Type::Reference(path) => convert_primitive(&path.elem),
 		Type::Path(path) => {
 			let segment = path.path.segments.last().unwrap();
@@ -42,26 +45,26 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 			let parsed_type = tokens.to_string();
 			// TODO: Add cases here for chrono dates as well
 			match parsed_type.as_str() {
-				"u8" => "number".to_string().into(),
-				"u16" => "number".to_string().into(),
-				"i64" => "number".to_string().into(),
-				"u64" => "number".to_string().into(),
-				"u128" => "number".to_string().into(),
-				"i8" => "number".to_string().into(),
-				"i16" => "number".to_string().into(),
-				"i32" => "number".to_string().into(),
-				"u32" => "number".to_string().into(),
-				"i128" => "number".to_string().into(),
-				"isize" => "number".to_string().into(),
-				"usize" => "number".to_string().into(),
-				"f32" => "number".to_string().into(),
-				"f64" => "number".to_string().into(),
-				"bool" => "boolean".to_string().into(),
-				"char" => "string".to_string().into(),
-				"str" => "string".to_string().into(),
-				"String" => "string".to_string().into(),
-				"NaiveDateTime" => "Date".to_string().into(),
-				"DateTime" => "Date".to_string().into(),
+				"u8" => TypescriptType::new("number".to_string(), false),
+				"u16" => TypescriptType::new("number".to_string(), false),
+				"i64" => TypescriptType::new("number".to_string(), false),
+				"u64" => TypescriptType::new("number".to_string(), false),
+				"u128" => TypescriptType::new("number".to_string(), false),
+				"i8" => TypescriptType::new("number".to_string(), false),
+				"i16" => TypescriptType::new("number".to_string(), false),
+				"i32" => TypescriptType::new("number".to_string(), false),
+				"u32" => TypescriptType::new("number".to_string(), false),
+				"i128" => TypescriptType::new("number".to_string(), false),
+				"f32" => TypescriptType::new("number".to_string(), false),
+				"f64" => TypescriptType::new("number".to_string(), false),
+				"isize" => TypescriptType::new("number".to_string(), false),
+				"usize" => TypescriptType::new("number".to_string(), false),
+				"bool" => TypescriptType::new("boolean".to_string(), false),
+				"char" => TypescriptType::new("string".to_string(), false),
+				"str" => TypescriptType::new("string".to_string(), false),
+				"String" => TypescriptType::new("string".to_string(), false),
+				"NaiveDateTime" => TypescriptType::new("Date".to_string(), false),
+				"DateTime" => TypescriptType::new("Date".to_string(), false),
 				"RapidPath" => TypescriptType {
 					is_optional: false,
 					typescript_type: match arguments {
@@ -143,9 +146,69 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 					_ => "any".to_string(),
 				}
 				.into(),
+				// By default just convert the
 				_ => parsed_type.to_string().into(),
 			}
 		}
 		_ => "any".to_string().into(),
+	}
+}
+
+
+// TODO: support `Function` and `TypeAlias`
+pub enum ConversionType {
+	Primitive,
+	Struct,
+	Const,
+	Enum,
+	Function, // Coming soon
+	TypeAlias // Coming soon
+}
+
+/// Provides ability to convert syn (https://crates.io/crates/syn) parser types to typescript types with ease
+pub struct TypescriptConverter {
+	pub is_interface: bool,
+	pub store: String,
+	pub should_export: bool,
+	pub indentation: u32,
+}
+
+impl TypescriptConverter {
+	pub fn convert(self, conversion_type: ConversionType) -> String {
+		String::from("")
+	}
+
+	fn convert_struct(mut self, rust_struct: ItemStruct) {
+		let export_str = if self.should_export { "export " } else { "" };
+
+		let keyword = if self.is_interface { "interface" } else { "type" };
+
+		let spacing = space(self.indentation);
+
+		// Push an indent to the typescript file
+		self.store.push_str(&indent(1));
+
+		let mut type_scaffold = format!("{export} {key} {name}{generics} {{\n", export = export_str, key = keyword, name = rust_struct.ident, generics = get_struct_generics(rust_struct.generics.clone()));
+
+		// Parse all of the structs fields
+		for field in rust_struct.fields {
+			let field_name = field.ident.unwrap().to_string();
+			let field_type = convert_primitive(&field.ty);
+			let optional_marking = if field_type.is_optional { "?" } else { "" };
+
+			// For each rust struct field we want to form a valid typescript field and add that field to the typescript type/interface
+			self.store.push_str(&format!("{space}{name}{optional}: {ts_type};", space = spacing, name = field_name, ts_type = field_type.typescript_type, optional = optional_marking));
+		}
+
+
+		self.store.push_str("}");
+	}
+
+	fn convert_const() {
+
+	}
+
+	fn convert_enum() {
+
 	}
 }

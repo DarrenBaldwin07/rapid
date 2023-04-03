@@ -1,4 +1,4 @@
-# A blazingly fast, modern, and simple Rust server framework enabling end-to-end typesafety for Typescript frontends
+# A blazingly fast, modern, and simple Rust server framework enabling end-to-end typesafety for Typescript-based frontends
 
 ## Initial features
 - Simplified router + middleware
@@ -9,7 +9,7 @@
 - Built-in actix crates (files, auth, etc)
 - Easy JWT validation (authorization via clerk.dev) and middleware
 - Scaffolded diesel orm, connection pooling, mailer, server state
-- `rapid extract` command for extracting-out a rust backend from its frontend when scaling (with support for route typesafet via A types lib with a git path)
+- `rapid extract` command for extracting-out a rust backend from its frontend when scaling (with support for route typesafety via A types lib with a git path)
 - Typescript and rust type generation from Diesel schema
 - Better request/response logging in console for easy debugging
 - Generators for route genration (`rapid generate`)

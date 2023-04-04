@@ -1,5 +1,5 @@
 use super::{
-	convert::{convert_primitive, TypescriptType, TypescriptConverter},
+	convert::{convert_primitive, TypescriptType, TypescriptConverter, convert_all_types_in_path},
 	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE},
 };
 use crate::util::validate_route_handler;
@@ -9,6 +9,7 @@ use std::{
 	path::PathBuf,
 };
 use walkdir::WalkDir;
+use std::env::current_dir;
 
 #[derive(Debug, Clone)]
 pub enum Handler {
@@ -145,6 +146,7 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
 pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	let handlers = generate_handler_types(route_dir.clone());
 
+
 	// Early exit without doing anything if we did not detect any handlers
 	if handlers.len() < 1 {
 		return;
@@ -152,12 +154,13 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 
 	let routes = generate_routes(route_dir.to_str().unwrap());
 
-	let mut file = OpenOptions::new()
+	let file = OpenOptions::new()
 		.write(true)
 		.create(true)
 		.truncate(true)
 		.open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap()))
 		.unwrap();
+	let mut converter = TypescriptConverter::new(true, "".to_string(), true, 4, file);
 	let mut queries_ts = String::from("{");
 	let mut mutations_ts = String::from("{");
 
@@ -249,9 +252,15 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	handlers_interface.push_str(&format!("\tmutations: {}\n", mutations_ts));
 	handlers_interface.push_str("}");
 
-	file.write_all(GENERATED_TS_FILE_MESSAGE.as_bytes()).unwrap();
-	file.write_all(handlers_interface.as_bytes()).expect("An error occurred while attempting to");
-	file.write_all(routes.as_bytes()).unwrap();
+	// Add all the route handler types for mutations and queries
+	converter.generate(Some(GENERATED_TS_FILE_MESSAGE));
+	converter.generate(Some(&handlers_interface));
+	converter.generate(Some(&routes));
+
+	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
+	convert_all_types_in_path(current_dir().unwrap().as_os_str().to_str().unwrap(), &mut converter);
+	// Write the new types to the bindings file
+	converter.generate(None);
 }
 
 pub fn generate_routes(routes_dir: &str) -> String {

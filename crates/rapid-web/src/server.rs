@@ -10,7 +10,7 @@ use super::{
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
 	shift::generate::create_typescript_types,
-	tui::server_init,
+	tui::{server_init, clean_console},
 	util::{check_for_invalid_handlers, get_routes_dir},
 };
 use actix_http::{body::MessageBody, Request, Response};
@@ -18,6 +18,8 @@ use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
 use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
+use rapid_cli::cli::rapid_logo;
+use spinach::Spinach;
 extern crate proc_macro;
 
 #[derive(Clone)]
@@ -150,11 +152,20 @@ impl RapidServer {
 			None => panic!("You must have a valid rapid config file in the base project directory!"),
 		};
 
+		// Clean the console before proceeding...
+		clean_console();
+
+
+		// Show a loading spinner as needed
+		let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
+
 		// TODO: we should turn this off until it is officially working
 		create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
 
 		// Check for any invalid routes and log them to the console
 		check_for_invalid_handlers(&routes_dir);
+
+		loading.succeed("Finished!");
 
 		// Show the server initialization message
 		server_init(bind_config.clone());

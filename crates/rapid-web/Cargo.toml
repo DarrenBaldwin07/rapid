@@ -34,5 +34,6 @@ proc-macro2 = "1.0.53"
 syn = { version = "2.0.10", features = ["full", "extra-traits"] }
 walkdir = "2.3.3"
 regex = "1.7.3"
+spinach = "2.1.0"
 
 

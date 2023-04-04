@@ -32,6 +32,8 @@ pub fn check_for_invalid_handlers(dir: &str) {
 			}
 		}
 	}
+
+
 }
 
 /// Note: this is a dupe of a function in the rapid-web-codegen crate (ideally we create a rapid-web-utils crate at some point)

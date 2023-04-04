@@ -1,6 +1,8 @@
-use syn::{Type, ItemStruct, ItemType, parse_file};
-use std::{env::current_dir, path::PathBuf};
+use actix_http::body::MessageBody;
+use syn::{Type, ItemStruct, ItemType, parse_file, Item};
+use std::env::current_dir;
 use walkdir::WalkDir;
+use std::ffi::OsStr;
 use super::util::{indent, space, get_struct_generics};
 use std::{
 	fs::File,
@@ -178,30 +180,33 @@ pub struct TypescriptConverter {
 	pub store: String,
 	pub should_export: bool,
 	pub indentation: u32,
+	pub file: File
 }
 
 impl TypescriptConverter {
-	pub fn new(is_interface: bool, initial_store_value: String, should_export: bool, indentation: u32) -> Self {
+	pub fn new(is_interface: bool, initial_store_value: String, should_export: bool, indentation: u32, file: File) -> Self {
 		Self {
 			is_interface,
 			store: initial_store_value,
 			should_export,
-			indentation
+			indentation,
+			file
 		}
 	}
 
 	/// Function that converts a syn struct to a typescript interface and pushes it to the `store` field
-	pub fn convert_struct(mut self, rust_struct: ItemStruct) {
+	pub fn convert_struct(&mut self, rust_struct: ItemStruct) {
 		let export_str = if self.should_export { "export " } else { "" };
 
 		let keyword = if self.is_interface { "interface" } else { "type" };
 
 		let spacing = space(self.indentation);
 
-		// Push an indent to the typescript file
-		self.store.push_str(&indent(1));
 
-		let type_scaffold = format!("{export} {key} {name}{generics} {{\n", export = export_str, key = keyword, name = rust_struct.ident, generics = get_struct_generics(rust_struct.generics.clone()));
+		// Push an indentation to the typescript file
+		self.store.push_str(&indent(2));
+
+		let type_scaffold = format!("{export}{key} {name}{generics} {{\n", export = export_str, key = keyword, name = rust_struct.ident, generics = get_struct_generics(rust_struct.generics.clone()));
 
 		// Push our type scaffold to the store string (this string will eventually be pushed to a file once formed fully)
 		self.store.push_str(&type_scaffold);
@@ -216,8 +221,8 @@ impl TypescriptConverter {
 			self.store.push_str(&format!("{space}{name}{optional}: {ts_type};", space = spacing, name = field_name, ts_type = field_type.typescript_type, optional = optional_marking));
 		}
 
-
-		self.store.push_str("}");
+		// Close out our newly generated interface/type
+		self.store.push_str("\n}");
 	}
 
 	/// Converts rust primitives to typescript types
@@ -239,7 +244,6 @@ impl TypescriptConverter {
 	pub fn convert_function() {
 
 	}
-
 
 	/// Converts rust type aliases to typescript types or interfaces
 	pub fn convert_type_alias(mut self, rust_type_alias: ItemType) {
@@ -263,45 +267,65 @@ impl TypescriptConverter {
 		self.store.push_str(&type_scaffold);
 	}
 
-	/// Function for generating typescript bindings for every rust type in every file in a given rapid project
-	pub fn convert_all_types_in_path(directory: &str) {
-		// Get the directory that we will be parsing
-		let parsing_directory = current_dir().unwrap().join(directory);
+	pub fn generate(&mut self, value: Option<&str>) {
+		match value {
+			Some(val) => {
+				self.file.write_all(val.as_bytes()).unwrap();
+			},
+			None => {
+				self.file.write_all(self.store.as_bytes()).unwrap();
+			}
+ 		}
 
-		for entry in WalkDir::new(&parsing_directory).sort_by_file_name() {
-			match entry {
-				Ok(dir_entry) => {
-					let path = dir_entry.path();
+	}
+}
 
-					// We want to break out if we found a directory
-					if path.is_dir() {
-						continue
-					}
+/// Function for generating typescript bindings for every rust type in every file in a given rapid project
+pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut TypescriptConverter) {
+	// Get the directory that we will be parsing
+	let parsing_directory = current_dir().unwrap().join(directory);
 
-					// Create a reference to the current route file and grab its contents as a string
-					let mut file = File::open(&path).unwrap();
-					let mut file_contents = String::new();
-					file.read_to_string(&mut file_contents).unwrap();
+	for entry in WalkDir::new(&parsing_directory).sort_by_file_name() {
+		match entry {
+			Ok(dir_entry) => {
+				let path = dir_entry.path();
 
-					// Parse the file into a rust syntax tree
-					let file = parse_file(&file_contents).expect("Error: Syn could not parse handler source file!");
-
-					// Go through the newly parsed file and look for types that we want to convert
-					for item in file.items {
-
-					}
-				}
-				Err(_) => {
-					// if we were not able to parse the file lets error out
-					println!("An error occurred when attempting to parse directory with path: {:?}", parsing_directory);
+				// We want to break out if we found a directory
+				if path.is_dir() {
 					continue
 				}
- 			}
 
+				// We are only interested in rust files (break out if we do not find one)
+				if !(path.extension().unwrap_or(OsStr::new("")).to_str().unwrap_or("") == "rs")  {
+					continue
+				}
 
+				// Create a reference to the current route file and grab its contents as a string
+				let mut file = File::open(&path).expect("Could not open file while attempting to generate Typescript types!");
+				let mut file_contents = String::new();
+				file.read_to_string(&mut file_contents).expect("Could not open file while attempting to generate Typescript types!");
+
+				// Parse the file into a rust syntax tree
+				let file = parse_file(&file_contents).expect("Error: Syn could not parse handler source file!");
+
+				// Go through the newly parsed file and look for types that we want to convert
+				for item in file.items {
+					match item {
+						Item::Struct(val) => {
+							converter_instance.convert_struct(val);
+						}
+						_ => {
+							// If we found a rust item that we do not care about lets just continue
+							continue
+						}
+					}
+				}
+			}
+			Err(_) => {
+				// if we were not able to parse the file lets error out
+				println!("An error occurred when attempting to parse directory with path: {:?}", parsing_directory);
+				continue
+			}
 		}
-
-
-
 	}
 }

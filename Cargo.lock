@@ -1195,6 +1195,7 @@ dependencies = [
  "rapid-web-codegen",
  "regex",
  "serde",
+ "spinach",
  "syn 2.0.11",
  "tiny-gradient",
  "walkdir",

@@ -3,7 +3,6 @@ use super::{
 	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE},
 };
 use crate::util::validate_route_handler;
-use std::ffi::OsStr;
 use std::{
 	fs::{File, OpenOptions},
 	io::prelude::*,
@@ -43,7 +42,7 @@ pub struct TypedMutationHandler {
 }
 
 /// Function for generating typescript types from a rapid routes directory
-pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
+pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptConverter) -> Vec<Handler> {
 	let mut handlers: Vec<Handler> = Vec::new();
 
 	let routes_dir = routes_path;
@@ -98,8 +97,8 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
 				None => continue,
 			};
 
-			let converted_type = match &rust_type.type_value {
-				Some(val) => convert_primitive(val),
+			let converted_type = match rust_type.type_value {
+				Some(val) => converter.convert_primitive(val),
 				None => TypescriptType { typescript_type: String::from("any"), is_optional: false }
 			};
 
@@ -144,8 +143,18 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
 }
 
 pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
-	let handlers = generate_handler_types(route_dir.clone());
+	// Create a new bindings.ts file to store all of our generated types
+	let file = OpenOptions::new()
+	.write(true)
+	.create(true)
+	.truncate(true)
+	.open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap()))
+	.unwrap();
 
+	// Init our typescript converter
+	let mut converter = TypescriptConverter::new(true, "".to_string(), true, 4, file);
+
+	let handlers = generate_handler_types(route_dir.clone(), &mut converter);
 
 	// Early exit without doing anything if we did not detect any handlers
 	if handlers.len() < 1 {
@@ -154,15 +163,13 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 
 	let routes = generate_routes(route_dir.to_str().unwrap());
 
-	let file = OpenOptions::new()
-		.write(true)
-		.create(true)
-		.truncate(true)
-		.open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap()))
-		.unwrap();
-	let mut converter = TypescriptConverter::new(true, "".to_string(), true, 4, file);
+	// Init our a queries and mutations keys in the handlers interface
 	let mut queries_ts = String::from("{");
 	let mut mutations_ts = String::from("{");
+
+
+	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
+	convert_all_types_in_path(route_dir.to_str().unwrap(), &mut converter);
 
 	for handler in handlers {
 		match handler {
@@ -209,20 +216,41 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				};
 
 				if let Some(query_params_type) = mutation.query_params {
-					let query_params = format!("\t\t\tquery_params: {}", query_params_type.typescript_type);
-					ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					// We only want to add query params if the TS type has already been generated
+					let query_type = query_params_type.typescript_type;
+					if converter.converted_types.contains(&query_type) {
+						let query_params = format!("\t\t\tquery_params: {}", query_type);
+						ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					} else {
+						let query_params = format!("\t\t\tquery_params: {}", "any");
+						ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					}
 				}
 
-				if let Some(path_type) = mutation.path {
-					let path = format!("\t\t\tpath: {}", path_type.typescript_type);
-					ts_type.push_str(&format!("{}{}\n", spacing, path));
+				if let Some(dynamic_path_type) = mutation.path {
+					let path_type = dynamic_path_type.typescript_type;
+					if converter.converted_types.contains(&path_type) {
+						let path = format!("\t\t\tpath: {}", path_type);
+						ts_type.push_str(&format!("{}{}\n", spacing, path));
+					} else {
+						let path = format!("\t\t\tpath: {}", "any");
+						ts_type.push_str(&format!("{}{}\n", spacing, path));
+					}
 				}
 
-				if let Some(body_type) = mutation.input_type {
-					let body = format!("\t\t\tinput: {}", body_type.typescript_type);
-					ts_type.push_str(&format!("{}{}\n", spacing, body));
+				if let Some(input_body_type) = mutation.input_type {
+					let input_body = input_body_type.typescript_type;
+					if converter.converted_types.contains(&input_body) {
+						let body = format!("\t\t\tinput: {}", input_body);
+						ts_type.push_str(&format!("{}{}\n", spacing, body));
+					} else {
+						let body = format!("\t\t\tinput: {}", "any");
+						ts_type.push_str(&format!("{}{}\n", spacing, body));
+					}
 				}
 
+				// Output body defaults to any (we currently do not support typesafe output types)
+				// TODO: when we support output types, lets change this!
 				let output_body = format!("\t\t\toutput: {}", mutation.output_type.typescript_type);
 				ts_type.push_str(&format!("{}{}\n", spacing, output_body));
 
@@ -256,8 +284,6 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	converter.generate(Some(&handlers_interface));
 	converter.generate(Some(&routes));
 
-	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
-	convert_all_types_in_path(route_dir.to_str().unwrap(), &mut converter);
 	// Write the new types to the bindings file
 	converter.generate(None);
 }

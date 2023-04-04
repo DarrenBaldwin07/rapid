@@ -161,7 +161,7 @@ impl RapidServer {
 		// Show a loading spinner as needed
 		let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
 
-		// TODO: we should turn this off until it is officially working
+		// TODO: we should turn this off until it is officially working (also, we should make this optional)
 		create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
 
 		// Sleep a little to show loading animation

@@ -230,8 +230,11 @@ impl TypescriptConverter {
 	}
 
 	/// Converts rust primitives to typescript types
-	pub fn convert_primitive(primitive: Type) -> TypescriptType {
-		convert_primitive(&primitive)
+	pub fn convert_primitive(&mut self, primitive: Type) -> TypescriptType {
+		let converted = convert_primitive(&primitive);
+		self.converted_types.push(converted.clone().typescript_type);
+		converted
+
 	}
 
 	// TODO
@@ -250,7 +253,7 @@ impl TypescriptConverter {
 	}
 
 	/// Converts rust type aliases to typescript types or interfaces
-	pub fn convert_type_alias(mut self, rust_type_alias: ItemType) {
+	pub fn convert_type_alias(&mut self, rust_type_alias: ItemType) {
 		let export_str = if self.should_export { "export " } else { "" };
 
 		let keyword = "type";
@@ -270,7 +273,7 @@ impl TypescriptConverter {
 		// After constructing the new type lets push it onto the store string
 		self.store.push_str(&type_scaffold);
 
-		// Now we want to update the converted types array with the name of the newrly created type
+		// Now we want to update the converted types array with the name of the newly created type
 		self.converted_types.push(alias_name);
 	}
 

@@ -1,7 +1,7 @@
 use syn::{Type, ItemStruct, ItemType};
 use super::util::{indent, space, get_struct_generics};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct TypescriptType {
 	pub typescript_type: String,
 	pub is_optional: bool,

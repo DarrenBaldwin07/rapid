@@ -18,3 +18,5 @@ function rapidFetcher<T extends RapidWebHandlerType, Key extends FetchKey<T>>() 
 }
 
 export default rapidFetcher;
+
+

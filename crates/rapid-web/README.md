@@ -3,7 +3,7 @@
 ## Initial features
 - Simplified router + middleware
 - File based routing
-- Codegen for typescript clients with extractor type safety
+- Codegen for typescript clients (rust types -> typescript types) with extractor type safety
 - Hot reload dev server
 - Good defaults (CORS, logging middleware, custom error pages and better extractor error logging)
 - Built-in actix crates (files, auth, etc)
@@ -18,7 +18,7 @@
     - Semi SSR for applying meta tags an OG-images (rapid calls it "meta" rendering)
 
 ## Next features
-- Custom async-first ORM
+- Custom async-first ORM (called "Lightning")
 - React query integration
 - Clerk sdk
 - Plugins

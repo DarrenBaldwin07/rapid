@@ -1,5 +1,11 @@
-use syn::{Type, ItemStruct, ItemType};
+use syn::{Type, ItemStruct, ItemType, parse_file};
+use std::{env::current_dir, path::PathBuf};
+use walkdir::WalkDir;
 use super::util::{indent, space, get_struct_generics};
+use std::{
+	fs::File,
+	io::prelude::*,
+};
 
 #[derive(Debug, Clone)]
 pub struct TypescriptType {
@@ -255,5 +261,47 @@ impl TypescriptConverter {
 
 		// After constructing the new type lets push it onto the store string
 		self.store.push_str(&type_scaffold);
+	}
+
+	/// Function for generating typescript bindings for every rust type in every file in a given rapid project
+	pub fn convert_all_types_in_path(directory: &str) {
+		// Get the directory that we will be parsing
+		let parsing_directory = current_dir().unwrap().join(directory);
+
+		for entry in WalkDir::new(&parsing_directory).sort_by_file_name() {
+			match entry {
+				Ok(dir_entry) => {
+					let path = dir_entry.path();
+
+					// We want to break out if we found a directory
+					if path.is_dir() {
+						continue
+					}
+
+					// Create a reference to the current route file and grab its contents as a string
+					let mut file = File::open(&path).unwrap();
+					let mut file_contents = String::new();
+					file.read_to_string(&mut file_contents).unwrap();
+
+					// Parse the file into a rust syntax tree
+					let file = parse_file(&file_contents).expect("Error: Syn could not parse handler source file!");
+
+					// Go through the newly parsed file and look for types that we want to convert
+					for item in file.items {
+
+					}
+				}
+				Err(_) => {
+					// if we were not able to parse the file lets error out
+					println!("An error occurred when attempting to parse directory with path: {:?}", parsing_directory);
+					continue
+				}
+ 			}
+
+
+		}
+
+
+
 	}
 }

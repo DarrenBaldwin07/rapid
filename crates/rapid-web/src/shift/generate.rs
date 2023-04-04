@@ -97,8 +97,6 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
 				None => continue,
 			};
 
-			println!("RUST TYPE: {:?}", rust_type);
-
 			let converted_type = match &rust_type.type_value {
 				Some(val) => convert_primitive(val),
 				None => TypescriptType { typescript_type: String::from("any"), is_optional: false }

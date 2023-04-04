@@ -111,26 +111,7 @@ impl RapidServer {
 		log_type: Option<RapidLogger>,
 		routes: Scope,
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
-		// Grab the routes directory from the rapid config file (this powers how we export types)
-		// Note: make sure we panic if we are not able to detect it
-		let routes_dir = get_routes_dir(RAPID_SERVER_CONFIG.server.as_ref());
-
-		// Grab the bindings directory from the rapid config file
-		// We want to make sure that it is valid and is actually defined (it defaults to an Option<String>)
-		let bindings_out_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
-			Some(server) => match server.bindings_export_path.clone() {
-				Some(dir) => match dir == "/" {
-					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
-					false => current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(dir)),
-				},
-				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
-			},
-			None => panic!("You must have a valid rapid config file in the base project directory!"),
-		};
-
-		// TODO: we should turn this off until it is officially working
-		create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir)));
-
+		// Initialize our router with the config options the user passed in
 		RapidServer::router(cors, log_type).service(routes)
 	}
 
@@ -152,14 +133,31 @@ impl RapidServer {
 		// or the actualy rapid config file in the project root
 		let bind_config = get_default_bind_config(RAPID_SERVER_CONFIG.clone(), self.hostname, self.port);
 
-		// Show the server initialization message
-		server_init(bind_config.clone());
-
-		// Grab the routes directory from the rapid config file
+		// Grab the routes directory from the rapid config file (this powers how we export types)
+		// Note: make sure we panic if we are not able to detect it
 		let routes_dir = get_routes_dir(RAPID_SERVER_CONFIG.server.as_ref());
+
+		// Grab the bindings directory from the rapid config file
+		// We want to make sure that it is valid and is actually defined (it defaults to an Option<String>)
+		let bindings_out_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(server) => match server.bindings_export_path.clone() {
+				Some(dir) => match dir == "/" {
+					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
+					false => current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(dir)),
+				},
+				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
+			},
+			None => panic!("You must have a valid rapid config file in the base project directory!"),
+		};
+
+		// TODO: we should turn this off until it is officially working
+		create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
 
 		// Check for any invalid routes and log them to the console
 		check_for_invalid_handlers(&routes_dir);
+
+		// Show the server initialization message
+		server_init(bind_config.clone());
 
 		server.bind(bind_config)?.run().await
 	}

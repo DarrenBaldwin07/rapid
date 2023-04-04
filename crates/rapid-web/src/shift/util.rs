@@ -1,5 +1,4 @@
 use syn::{File as SynFile, Item, Type, Generics, Lit, parse_file, Expr};
-
 pub const GENERATED_TS_FILE_MESSAGE: &str = "// @generated automatically by Rapid-web (https://rapid.cincinnati.ventures). DO NOT CHANGE OR EDIT THIS FILE!";
 
 #[derive(Debug)]
@@ -97,6 +96,7 @@ pub fn get_type_class(rust_type: Type) -> Option<TypeClass> {
 		_ => None,
 	}
 }
+
 
 /// Method for checking if a handler function is valid
 /// Handlers are only valid if they have a "#[rapid_handler]" macro on them

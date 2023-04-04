@@ -269,10 +269,10 @@ impl TypescriptConverter {
 	pub fn generate(&mut self, value: Option<&str>) {
 		match value {
 			Some(val) => {
-				self.file.write_all(val.as_bytes()).unwrap();
+				self.file.write_all(val.as_bytes()).expect("Could not write to typescript bindings file!");
 			},
 			None => {
-				self.file.write_all(self.store.as_bytes()).unwrap();
+				self.file.write_all(self.store.as_bytes()).expect("Could not write to typescript bindings file!");
 			}
  		}
 

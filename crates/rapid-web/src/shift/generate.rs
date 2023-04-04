@@ -92,17 +92,19 @@ pub fn generate_handler_types(routes_path: PathBuf) -> Vec<Handler> {
 		let request_type = handler_types[0].as_ref().unwrap().handler_type.clone();
 
 		for typed in handler_types {
-			let rust_primitive = match typed {
+			let rust_type = match typed {
 				Some(val) => val,
 				None => continue,
 			};
 
-			let converted_type = match &rust_primitive.type_value {
+			println!("RUST TYPE: {:?}", rust_type);
+
+			let converted_type = match &rust_type.type_value {
 				Some(val) => convert_primitive(val),
 				None => TypescriptType { typescript_type: String::from("any"), is_optional: false }
 			};
 
-			match rust_primitive.class {
+			match rust_type.class {
 				Some(TypeClass::InputBody) => body_type = Some(converted_type),
 				Some(TypeClass::QueryParam) => query_params = Some(converted_type),
 				Some(TypeClass::Path) => path = Some(converted_type),

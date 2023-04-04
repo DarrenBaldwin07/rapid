@@ -120,8 +120,8 @@ impl RapidServer {
 		let bindings_out_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
 			Some(server) => match server.bindings_export_path.clone() {
 				Some(dir) => match dir == "/" {
-					true => current_dir().unwrap(),
-					false => PathBuf::from(dir),
+					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
+					false => current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(dir)),
 				},
 				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
 			},
@@ -129,7 +129,7 @@ impl RapidServer {
 		};
 
 		// TODO: we should turn this off until it is officially working
-		create_typescript_types(bindings_out_dir, current_dir().unwrap().join(PathBuf::from(routes_dir)));
+		create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir)));
 
 		RapidServer::router(cors, log_type).service(routes)
 	}

@@ -13,6 +13,9 @@ use super::{
 	tui::{server_init, clean_console},
 	util::{check_for_invalid_handlers, get_routes_dir},
 };
+use std::{
+	thread, time,
+};
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
@@ -155,20 +158,24 @@ impl RapidServer {
 		// Clean the console before proceeding...
 		clean_console();
 
-
 		// Show a loading spinner as needed
 		let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
 
 		// TODO: we should turn this off until it is officially working
 		create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
 
-		// Check for any invalid routes and log them to the console
-		check_for_invalid_handlers(&routes_dir);
+		// Sleep a little to show loading animation
+		let timeout = time::Duration::from_millis(650);
+		thread::sleep(timeout);
 
-		loading.succeed("Finished!");
+		// Stop the loading animation
+		loading.stop();
 
 		// Show the server initialization message
 		server_init(bind_config.clone());
+
+		// Check for any invalid routes and log them to the console
+		check_for_invalid_handlers(&routes_dir);
 
 		server.bind(bind_config)?.run().await
 	}

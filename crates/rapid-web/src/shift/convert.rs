@@ -164,7 +164,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 }
 
 
-// TODO: support `Function` and `TypeAlias`
+// TODO: support `Function`, `TypeAlias`, `Enum`, and `Const`
 pub enum ConversionType {
 	Primitive,
 	Struct,
@@ -201,7 +201,6 @@ impl TypescriptConverter {
 		let keyword = if self.is_interface { "interface" } else { "type" };
 
 		let spacing = space(self.indentation);
-
 
 		// Push an indentation to the typescript file
 		self.store.push_str(&indent(2));

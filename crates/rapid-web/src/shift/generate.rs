@@ -245,7 +245,6 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 		mutations_ts.push_str("\t},");
 	}
 
-
 	let mut handlers_interface = format!("\n\nexport interface Handlers {{\n");
 
 	handlers_interface.push_str(&format!("\tqueries: {}\n", queries_ts));
@@ -258,7 +257,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	converter.generate(Some(&routes));
 
 	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
-	convert_all_types_in_path(current_dir().unwrap().as_os_str().to_str().unwrap(), &mut converter);
+	convert_all_types_in_path(route_dir.to_str().unwrap(), &mut converter);
 	// Write the new types to the bindings file
 	converter.generate(None);
 }

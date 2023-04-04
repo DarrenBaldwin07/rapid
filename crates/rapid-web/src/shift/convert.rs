@@ -180,7 +180,8 @@ pub struct TypescriptConverter {
 	pub store: String,
 	pub should_export: bool,
 	pub indentation: u32,
-	pub file: File
+	pub file: File,
+	pub converted_types: Vec<String>
 }
 
 impl TypescriptConverter {
@@ -190,7 +191,8 @@ impl TypescriptConverter {
 			store: initial_store_value,
 			should_export,
 			indentation,
-			file
+			file,
+			converted_types: Vec::new()
 		}
 	}
 
@@ -222,6 +224,9 @@ impl TypescriptConverter {
 
 		// Close out our newly generated interface/type
 		self.store.push_str("\n}");
+
+		// Now we want to update the converted types array with the name of the newrly created type
+		self.converted_types.push(rust_struct.ident.to_string());
 	}
 
 	/// Converts rust primitives to typescript types
@@ -264,6 +269,9 @@ impl TypescriptConverter {
 
 		// After constructing the new type lets push it onto the store string
 		self.store.push_str(&type_scaffold);
+
+		// Now we want to update the converted types array with the name of the newrly created type
+		self.converted_types.push(alias_name);
 	}
 
 	pub fn generate(&mut self, value: Option<&str>) {
@@ -306,6 +314,14 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 
 				// Parse the file into a rust syntax tree
 				let file = parse_file(&file_contents).expect("Error: Syn could not parse handler source file!");
+
+				// Grab the routes file name
+				let file_name = dir_entry.file_name();
+
+				// We want to ignore all middleware files by default
+				if file_name == "_middleware.rs" || file_name == "mod.rs" {
+					continue;
+				}
 
 				// Go through the newly parsed file and look for types that we want to convert
 				for item in file.items {

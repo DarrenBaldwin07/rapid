@@ -16,11 +16,12 @@
 - Auto-serve all static assets from the /public folder
 - A one-line SpaRouter for serving single page applications from a rapid-web server
     - Semi SSR for applying meta tags an OG-images (rapid calls it "meta" rendering)
+- Clerk sdk
 
 ## Next features
 - Custom async-first ORM (called "Lightning")
+- Specific queries (like GraphQL but without the overhead)
 - React query integration
-- Clerk sdk
 - Plugins
 
 > Note: We do not recommend that you use Rapid in production as all of its core implementations are subject to change rapidly :)

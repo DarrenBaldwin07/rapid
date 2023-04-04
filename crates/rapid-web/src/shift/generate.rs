@@ -3,13 +3,13 @@ use super::{
 	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE},
 };
 use crate::util::validate_route_handler;
+use std::ffi::OsStr;
 use std::{
 	fs::{File, OpenOptions},
 	io::prelude::*,
 	path::PathBuf,
 };
 use walkdir::WalkDir;
-use std::env::current_dir;
 
 #[derive(Debug, Clone)]
 pub enum Handler {
@@ -286,7 +286,7 @@ pub fn generate_routes(routes_dir: &str) -> String {
 			continue;
 		}
 
-		let file_name = entry.path().file_name().unwrap();
+		let file_name = entry.file_name();
 
 		// Make sure we ignore middleware and mod files from route generation
 		if file_name == "_middleware.rs" || file_name == "mod.rs" {

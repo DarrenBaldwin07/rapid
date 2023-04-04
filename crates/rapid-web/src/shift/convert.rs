@@ -1,4 +1,3 @@
-use actix_http::body::MessageBody;
 use syn::{Type, ItemStruct, ItemType, parse_file, Item};
 use std::env::current_dir;
 use walkdir::WalkDir;
@@ -155,11 +154,55 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 					_ => "any".to_string(),
 				}
 				.into(),
-				// By default just convert the
+				// By default just convert the type to a string
 				_ => parsed_type.to_string().into(),
 			}
 		}
 		_ => "any".to_string().into(),
+	}
+}
+
+/// Function for getting the type name as a string from a rust struct
+pub fn get_rust_typename(rust_type: &Type) -> String {
+	match rust_type {
+		Type::Reference(path) => get_rust_typename(&path.elem),
+		Type::Path(path) => {
+			let segment = path.path.segments.last().unwrap();
+			let tokens = &segment.ident;
+			let parsed_type = tokens.to_string();
+			let arguments = &segment.arguments;
+			match parsed_type.as_str() {
+				"RapidPath" => {
+					match arguments {
+						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
+							match anglebracketed_argument.args.first().unwrap() {
+								syn::GenericArgument::Type(rust_type) => {
+									get_rust_typename(rust_type)
+								}
+								_ => "unknown".to_string(),
+							}
+						}
+						_ => "unknown".to_string(),
+					}
+				},
+				"RapidJson" => {
+					match arguments {
+						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
+							match anglebracketed_argument.args.first().unwrap() {
+								syn::GenericArgument::Type(rust_type) => {
+									get_rust_typename(rust_type)
+								}
+								_ => "unknown".to_string(),
+							}
+						}
+						_ => "unknown".to_string(),
+					}
+				}
+				_ => parsed_type
+			}
+
+		}
+		_ => String::from("any")
 	}
 }
 
@@ -232,7 +275,10 @@ impl TypescriptConverter {
 	/// Converts rust primitives to typescript types
 	pub fn convert_primitive(&mut self, primitive: Type) -> TypescriptType {
 		let converted = convert_primitive(&primitive);
-		self.converted_types.push(converted.clone().typescript_type);
+		// We only want to update the converted types if the old typename is not the same as the newly converted type
+		if !(get_rust_typename(&primitive) == converted.typescript_type) {
+			self.converted_types.push(converted.clone().typescript_type);
+		}
 		converted
 
 	}

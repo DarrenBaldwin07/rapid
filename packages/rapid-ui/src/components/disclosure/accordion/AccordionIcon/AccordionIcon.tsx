@@ -5,7 +5,7 @@ import {
 	useAccordionItemIndex,
 	useAccordionIsOpen,
 	useAccordionContext,
-} from '../useAccordionHooks';
+} from '../useAccordion';
 
 const RAPID_CLASSNAME = 'rapid-accordion-icon';
 

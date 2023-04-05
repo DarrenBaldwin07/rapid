@@ -11,7 +11,7 @@ import {
 	useAccordionContext,
 	useAccordionItemIndex,
 	useAccordionIsOpen,
-} from '../useAccordionHooks';
+} from '../useAccordion';
 
 const RAPID_CLASSNAME = 'rapid-accordion-header';
 
@@ -42,11 +42,11 @@ export const AccordionHeader = forwardRef<
 		if (index === null) return;
 
 		if (allowToggle) {
-			setActiveItems((prev) =>
+			setActiveItems((prev: number[] | []) =>
 				isOpen ? prev.filter((i) => i !== index) : [...prev, index],
 			);
 		} else {
-			setActiveItems((prev) => (isOpen ? prev : [index]));
+			setActiveItems((prev: number[] | []) => (isOpen ? prev : [index]));
 		}
 	}, [index, isOpen, allowToggle, setActiveItems]);
 

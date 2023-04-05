@@ -1,28 +1,25 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { expect, it, describe } from 'vitest';
-import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalDescription,
-	ModalTitle,
-} from '../';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '../';
 
 describe('Modal', () => {
 	it('should render default correctly', () => {
 		const { container } = render(
 			<Modal open={true} onClose={() => {}}>
-				<ModalOverlay />
-				<ModalContent styles='flex flex-col'>
-					<ModalTitle>Delete Account</ModalTitle>
-
-					<p>
-						Are you sure you want to delete your account? All of
-						your data will be permanently removed. This action
-						cannot be undone.
-					</p>
-					<div className='self-end'></div>
+				<ModalContent>
+					<ModalHeader>Delete Account</ModalHeader>
+					<ModalBody>
+						<text>
+							Are you sure you want to delete your account? All of
+							your data will be permanently removed. This action
+							cannot be undone.
+						</text>
+					</ModalBody>
+					<ModalFooter>
+						<button>Cancel</button>
+						<button>Deactivate</button>
+					</ModalFooter>
 				</ModalContent>
 			</Modal>,
 		);

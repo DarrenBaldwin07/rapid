@@ -13,12 +13,12 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
+          class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
           role="button"
           tabindex="0"
         >
           <div
-            class="flex items-center justify-between "
+            class="flex justify-between items-center"
           >
             Item 1
             <svg
@@ -38,11 +38,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
           </div>
         </h2>
         <div
-          class="rapid-accordion-content"
           style="overflow: hidden; height: NaNpx;"
         >
           <div
-            class="p-2 text-gray-500"
+            class="p-2 text-gray-500 rapid-accordion-content"
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </div>
@@ -52,12 +51,12 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
+          class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
           role="button"
           tabindex="0"
         >
           <div
-            class="flex items-center justify-between "
+            class="flex justify-between items-center"
           >
             Item 2
             <svg
@@ -77,11 +76,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
           </div>
         </h2>
         <div
-          class="rapid-accordion-content"
           style="overflow: hidden; height: 0px;"
         >
           <div
-            class="p-2 text-gray-500"
+            class="p-2 text-gray-500 rapid-accordion-content"
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </div>
@@ -91,12 +89,12 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
+          class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
           role="button"
           tabindex="0"
         >
           <div
-            class="flex items-center justify-between "
+            class="flex justify-between items-center"
           >
             Item 3
             <svg
@@ -116,11 +114,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
           </div>
         </h2>
         <div
-          class="rapid-accordion-content"
           style="overflow: hidden; height: NaNpx;"
         >
           <div
-            class="p-2 text-gray-500"
+            class="p-2 text-gray-500 rapid-accordion-content"
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </div>
@@ -144,22 +141,21 @@ exports[`Accordion > should render default accordion correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
+          class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
           role="button"
           tabindex="0"
         >
           <div
-            class="flex items-center justify-between "
+            class="flex justify-between items-center"
           >
             Item 1
           </div>
         </h2>
         <div
-          class="rapid-accordion-content"
           style="overflow: hidden; height: 0px;"
         >
           <div
-            class="p-2 text-gray-500"
+            class="p-2 text-gray-500 rapid-accordion-content"
           >
             Content for item 1
           </div>
@@ -169,22 +165,21 @@ exports[`Accordion > should render default accordion correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
+          class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
           role="button"
           tabindex="0"
         >
           <div
-            class="flex items-center justify-between "
+            class="flex justify-between items-center"
           >
             Item 2
           </div>
         </h2>
         <div
-          class="rapid-accordion-content"
           style="overflow: hidden; height: 0px;"
         >
           <div
-            class="p-2 text-gray-500"
+            class="p-2 text-gray-500 rapid-accordion-content"
           >
             Content for item 2
           </div>
@@ -194,242 +189,21 @@ exports[`Accordion > should render default accordion correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
+          class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
           role="button"
           tabindex="0"
         >
           <div
-            class="flex items-center justify-between "
+            class="flex justify-between items-center"
           >
             Item 3
           </div>
         </h2>
         <div
-          class="rapid-accordion-content"
           style="overflow: hidden; height: 0px;"
         >
           <div
-            class="p-2 text-gray-500"
-          >
-            Content for item 3
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Accordion snapshots > should render accordion with props correctly 1`] = `
-<div>
-  <div
-    class="container mx-auto p-4"
-  >
-    <div
-      class="flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto rapid-accordion"
-      role="accordion"
-    >
-      <div
-        class="border-b rapid-accordion-item"
-      >
-        <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
-          role="button"
-          tabindex="0"
-        >
-          <div
-            class="flex items-center justify-between "
-          >
-            Item 1
-            <svg
-              class="transition-transform duration-300 rotate-180 transform rapid-accordion-icon"
-              height="16px"
-              pointer-events="box-none"
-              role="presentation"
-              viewBox="0 0 448 512"
-              width="16px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                fill="black"
-              />
-            </svg>
-          </div>
-        </h2>
-        <div
-          class="rapid-accordion-content"
-          style="overflow: hidden; height: NaNpx;"
-        >
-          <div
-            class="p-2 text-gray-500"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-        </div>
-      </div>
-      <div
-        class="border-b rapid-accordion-item"
-      >
-        <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
-          role="button"
-          tabindex="0"
-        >
-          <div
-            class="flex items-center justify-between "
-          >
-            Item 2
-            <svg
-              class="transition-transform duration-300 rapid-accordion-icon"
-              height="16px"
-              pointer-events="box-none"
-              role="presentation"
-              viewBox="0 0 448 512"
-              width="16px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                fill="black"
-              />
-            </svg>
-          </div>
-        </h2>
-        <div
-          class="rapid-accordion-content"
-          style="overflow: hidden; height: 0px;"
-        >
-          <div
-            class="p-2 text-gray-500"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-        </div>
-      </div>
-      <div
-        class="border-b rapid-accordion-item"
-      >
-        <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
-          role="button"
-          tabindex="0"
-        >
-          <div
-            class="flex items-center justify-between "
-          >
-            Item 3
-            <svg
-              class="transition-transform duration-300 rotate-180 transform rapid-accordion-icon"
-              height="16px"
-              pointer-events="box-none"
-              role="presentation"
-              viewBox="0 0 448 512"
-              width="16px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                fill="black"
-              />
-            </svg>
-          </div>
-        </h2>
-        <div
-          class="rapid-accordion-content"
-          style="overflow: hidden; height: NaNpx;"
-        >
-          <div
-            class="p-2 text-gray-500"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Accordion snapshots > should render default accordion correctly 1`] = `
-<div>
-  <div
-    class="container mx-auto p-4"
-  >
-    <div
-      class="flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto rapid-accordion"
-      role="accordion"
-    >
-      <div
-        class="border-b rapid-accordion-item"
-      >
-        <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
-          role="button"
-          tabindex="0"
-        >
-          <div
-            class="flex items-center justify-between "
-          >
-            Item 1
-          </div>
-        </h2>
-        <div
-          class="rapid-accordion-content"
-          style="overflow: hidden; height: 0px;"
-        >
-          <div
-            class="p-2 text-gray-500"
-          >
-            Content for item 1
-          </div>
-        </div>
-      </div>
-      <div
-        class="border-b rapid-accordion-item"
-      >
-        <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
-          role="button"
-          tabindex="0"
-        >
-          <div
-            class="flex items-center justify-between "
-          >
-            Item 2
-          </div>
-        </h2>
-        <div
-          class="rapid-accordion-content"
-          style="overflow: hidden; height: 0px;"
-        >
-          <div
-            class="p-2 text-gray-500"
-          >
-            Content for item 2
-          </div>
-        </div>
-      </div>
-      <div
-        class="border-b rapid-accordion-item"
-      >
-        <h2
-          class="cursor-pointer p-2 false rapid-accordion-header"
-          role="button"
-          tabindex="0"
-        >
-          <div
-            class="flex items-center justify-between "
-          >
-            Item 3
-          </div>
-        </h2>
-        <div
-          class="rapid-accordion-content"
-          style="overflow: hidden; height: 0px;"
-        >
-          <div
-            class="p-2 text-gray-500"
+            class="p-2 text-gray-500 rapid-accordion-content"
           >
             Content for item 3
           </div>

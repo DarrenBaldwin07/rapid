@@ -14,7 +14,9 @@ import {
 	Modal,
 	ModalOverlay,
 	ModalContent,
-	ModalTitle,
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
 	Text,
 	Tooltip,
 	Switch,
@@ -131,27 +133,27 @@ function App() {
 				Open Modal
 			</Button>
 			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
-				<ModalOverlay />
-				<ModalContent styles='flex flex-col'>
-					<ModalTitle>Delete Account</ModalTitle>
-
-					<Text styles='mt-2 text-secondaryGrey'>
-						Are you sure you want to delete your account? All of
-						your data will be permanently removed. This action
-						cannot be undone.
-					</Text>
-					<div className='self-end'>
+				{/* <ModalOverlay /> */}
+				<ModalContent>
+					<ModalHeader>Delete Account</ModalHeader>
+					<ModalBody>
+						<Text styles='text-secondaryGrey'>
+							Are you sure you want to delete your account? All of
+							your data will be permanently removed. This action
+							cannot be undone.
+						</Text>
+					</ModalBody>
+					<ModalFooter>
 						<Button
-							styles='mt-4 mr-2'
 							variant='outline'
 							onClick={() => setIsOpen(false)}
 						>
 							Cancel
 						</Button>
-						<Button styles='mt-4' onClick={() => setIsOpen(false)}>
+						<Button onClick={() => setIsOpen(false)}>
 							Deactivate
 						</Button>
-					</div>
+					</ModalFooter>
 				</ModalContent>
 			</Modal>
 			<Divider />

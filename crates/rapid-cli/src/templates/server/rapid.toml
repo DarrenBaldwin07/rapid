@@ -2,6 +2,7 @@ app_type = "server"
 
 [server]
 serve_static_files = true
+is_logging = true
 port = 8080
 routes_directory = "src/routes"
 bindings_export_path = "/"

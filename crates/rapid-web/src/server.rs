@@ -155,21 +155,19 @@ impl RapidServer {
 			None => panic!("You must have a valid rapid config file in the base project directory!"),
 		};
 
-		// Clean the console before proceeding...
-		clean_console();
+		// Check if we should generate typescript types or not
+		let should_generate_typescript_types = match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(server) => match server.typescript_generation.clone() {
+				Some(val) => val,
+				None => true
+			},
+			None => true
+		};
 
-		// Show a loading spinner as needed
-		let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
-
-		// TODO: we should turn this off until it is officially working (also, we should make this optional)
-		create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
-
-		// Sleep a little to show loading animation
-		let timeout = time::Duration::from_millis(650);
-		thread::sleep(timeout);
-
-		// Stop the loading animation
-		loading.stop();
+		// Only trigger type generation if the users configured options in their rapid config file permits it
+		if should_generate_typescript_types {
+			generate_typescript_types(bindings_out_dir, routes_dir.clone());
+		}
 
 		// Show the server initialization message
 		server_init(bind_config.clone());
@@ -181,6 +179,7 @@ impl RapidServer {
 	}
 }
 
+/// Generate the default server bind config based on the rapid config file
 fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port: Option<u16>) -> (String, u16) {
 	// Get the hostname from the server object initialized by the consumer
 	// We need to check if they passed one in -- if they didn't, we'll use localhost
@@ -205,4 +204,22 @@ fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port:
 	};
 
 	(server_hostname, port)
+}
+
+pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String) {
+	// Clean the console before proceeding...
+	clean_console();
+
+	// Show a loading spinner as needed
+	let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
+
+	// TODO: we should turn this off until it is officially working (also, we should make this optional)
+	create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
+
+	// Sleep a little to show loading animation
+	let timeout = time::Duration::from_millis(650);
+	thread::sleep(timeout);
+
+	// Stop the loading animation
+	loading.stop();
 }

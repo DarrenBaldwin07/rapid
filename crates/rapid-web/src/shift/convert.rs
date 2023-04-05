@@ -51,7 +51,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 			}
 
 			TypescriptType {
-				typescript_type: format!("{:?}", tuple_types),
+				typescript_type: format!("{:?}", tuple_types).replace(r#"""#, ""),
 				is_optional: false
 			}
 		},

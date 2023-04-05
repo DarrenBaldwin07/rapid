@@ -190,7 +190,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				}
 
 				if let Some(path_type) = query.path {
-					let path = format!("\t\t\tpath: {}", path_type.typescript_type.replace(r#"""#, ""));
+					let path = format!("\t\t\tpath: {}", path_type.typescript_type);
 					ts_type.push_str(&format!("{}{}\n", spacing, path));
 				}
 

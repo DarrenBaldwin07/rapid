@@ -262,11 +262,11 @@ impl TypescriptConverter {
 			let optional_marking = if field_type.is_optional { "?" } else { "" };
 
 			// For each rust struct field we want to form a valid typescript field and add that field to the typescript type/interface
-			self.store.push_str(&format!("{space}{name}{optional}: {ts_type};", space = spacing, name = field_name, ts_type = field_type.typescript_type, optional = optional_marking));
+			self.store.push_str(&format!("{space}{name}{optional}: {ts_type};\n", space = spacing, name = field_name, ts_type = field_type.typescript_type, optional = optional_marking));
 		}
 
 		// Close out our newly generated interface/type
-		self.store.push_str("\n}");
+		self.store.push_str("}");
 
 		// Now we want to update the converted types array with the name of the newrly created type
 		self.converted_types.push(rust_struct.ident.to_string());

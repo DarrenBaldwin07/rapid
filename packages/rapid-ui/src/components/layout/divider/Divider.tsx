@@ -1,4 +1,4 @@
-import React,{ forwardRef, HTMLAttributes } from 'react';
+import React, { forwardRef, HTMLAttributes } from 'react';
 import { RapidStyles, getVariantClassName } from '../../../utils';
 import { createVariant } from '../../../theme';
 

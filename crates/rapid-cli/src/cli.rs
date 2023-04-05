@@ -105,7 +105,12 @@ impl RapidCLI {
 
 // TODO: update this to actually be a legit health template
 pub fn get_help_template() -> &'static str {
-	"The cammand line tool for the RAPID framework.
+	"RAPID -- The modern software toolkit built on React and Rust
+
+Commands:
+  init
+  run
+  new
 
 Options:
   -V --version	  Print version info and exit

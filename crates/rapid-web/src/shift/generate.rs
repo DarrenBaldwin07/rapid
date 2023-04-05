@@ -1,5 +1,5 @@
 use super::{
-	convert::{convert_primitive, TypescriptType, TypescriptConverter, convert_all_types_in_path},
+	convert::{TypescriptType, TypescriptConverter, convert_all_types_in_path},
 	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE},
 };
 use crate::util::validate_route_handler;

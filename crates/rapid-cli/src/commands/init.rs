@@ -99,12 +99,12 @@ fn parse_init_args(args: &ArgMatches) {
 				match name {
 					"ui" => {
 						ui_subcommand_handler(UI_INIT_ARGS, subcommand_args, current_working_directory);
-						break;
+						return;
 					}
 					"fullstack" => {
 						// TODO: this will be the command that runs for initializing a new rapid app inside of an existing nextjs or remix application
 						println!("Coming soon...");
-						break;
+						return;
 					}
 					_ => {
 						println!("{} {}", "No init scripts found.".color(Color::Red), arg);
@@ -112,11 +112,11 @@ fn parse_init_args(args: &ArgMatches) {
 					}
 				}
 			}
-			None => {
-				println!("{} {}", "No init scripts found for:".color(Color::Red), arg);
-			}
+			None => {} // Do nothing if we dont find anythign
 		}
 	}
+
+	println!("{}", "No init scripts found!".color(Color::Red));
 }
 
 pub fn init_vite_template(current_working_directory: PathBuf, arg: &str) {

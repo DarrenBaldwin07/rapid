@@ -302,6 +302,7 @@ impl TypescriptConverter {
 	pub fn convert_type_alias(&mut self, rust_type_alias: ItemType) {
 		let export_str = if self.should_export { "export " } else { "" };
 
+		// Set our type keyword (it defaults to "type" because it does not make sense to use interfaces here)
 		let keyword = "type";
 
 		let spacing = space(self.indentation);

@@ -4,27 +4,29 @@ use crate::{
 	constants::LOGO,
 };
 use clap::{command, ArgMatches, Command};
+use colorful::Colorful;
 use std::{path::PathBuf, process::exit};
 use tiny_gradient::{GradientDisplay, GradientStr, RGB};
-pub type App = Command;
 use std::env::{current_dir, current_exe};
+
+pub type App = Command;
 
 // This should 100% pull from a GCP storage bucket or something
 const RAPID_VERSION_MESSAGE: &str = "v0.0.1";
 
 /// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
-	">>> R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+	GradientStr::gradient(&">>> R A P I D", [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
 /// Normal Logo
 pub fn rapid_logo_small<'a>() -> GradientDisplay<'a, [RGB; 4]> {
-	"R A P I D".gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+	GradientStr::gradient(&"R A P I D", [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
 /// Large Ascii printed logo
 pub fn logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
-	LOGO.gradient([RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+	GradientStr::gradient(&LOGO, [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
 }
 
 /// Returns what the current working directory of the user is
@@ -104,18 +106,20 @@ impl RapidCLI {
 }
 
 // TODO: update this to actually be a legit health template
-pub fn get_help_template() -> &'static str {
-	"RAPID -- The modern software toolkit built on React and Rust
+// Note: Dot not change indentation of this or else it will break
+fn get_help_template() -> String {
+	format!("RAPID -- The modern software toolkit built on React and Rust
 
 Commands:
-  init
-  run
-  new
+  {init}	Initialize Rapid functionality in an existing app
+  {run}	Run Rapid applications with a single command
+  {new} 	Create a new rapid app
 
 Options:
   -V --version	  Print version info and exit
 
-"
+",
+		 init = "init".bold(), run = "run".bold(), new = "new".bold())
 }
 
 #[derive(Debug)]

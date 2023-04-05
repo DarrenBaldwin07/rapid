@@ -37,6 +37,8 @@ type FetchKey<T extends RapidWebHandlerType> = keyof T['queries'] | keyof T['mut
  * @param routes RapidUiThemeConfig
  * @returns A new bolt client
  *
+ * TODO: support typesafe output types in v2
+ *
  * @beta
  */
 function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>() {

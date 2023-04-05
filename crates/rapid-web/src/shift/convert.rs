@@ -43,6 +43,18 @@ fn convert_generic_type(generic_type: &syn::GenericArgument) -> TypescriptType {
 /// Function for converting basic rust primitive types to typescript types and interfaces
 pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 	match rust_primitive {
+		Type::Tuple(path) => {
+			let mut tuple_types: Vec<String> = Vec::new();
+			for field in path.elems.iter() {
+				let converted_primitive = convert_primitive(field);
+				tuple_types.push(converted_primitive.typescript_type);
+			}
+
+			TypescriptType {
+				typescript_type: format!("{:?}", tuple_types),
+				is_optional: false
+			}
+		},
 		// If we find a reference type we want to extract it and re-call type conversion
 		Type::Reference(path) => convert_primitive(&path.elem),
 		Type::Path(path) => {

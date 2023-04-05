@@ -43,7 +43,6 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 					if let syn::FnArg::Typed(typed) = type_value {
 						let rust_type = *typed.ty.clone();
 						let type_class = get_type_class(rust_type.clone());
-
 						function_types.push(Some(HandlerType {
 							type_value: Some(rust_type),
 							class: type_class,

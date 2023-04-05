@@ -1,4 +1,3 @@
-
 export interface RapidWebHandlerType {
     queries: {
         [key: string]: TypedQueryHandler

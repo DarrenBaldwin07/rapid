@@ -190,7 +190,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				}
 
 				if let Some(path_type) = query.path {
-					let path = format!("\t\t\tpath: {}", path_type.typescript_type);
+					let path = format!("\t\t\tpath: {}", path_type.typescript_type.replace(r#"""#, ""));
 					ts_type.push_str(&format!("{}{}\n", spacing, path));
 				}
 
@@ -289,7 +289,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 }
 
 /// Function for generating a route handler object for use on the client
-/// It will output something similar to the following:`
+/// It will output something similar to the following:
 /// const routes = {
 /// 	index: '/'
 /// }

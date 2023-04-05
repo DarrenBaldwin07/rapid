@@ -8,15 +8,21 @@ export interface RapidWebHandlerType {
     }
 }
 
-interface TypedMutationHandler {
-    type: 'post' | 'get' | 'put' | 'delete',
+export interface TypedMutationHandler {
+    type: 'post' | 'get' | 'put' | 'delete' | 'patch',
     query_params?: any,
     path?: any,
-    body?: any
+    input?: any,
+    output: any
 }
 
-interface TypedQueryHandler {
-    type: 'post' | 'get' | 'put' | 'delete';
+export interface TypedQueryHandler {
+    type: 'post' | 'get' | 'put' | 'delete' | 'patch';
     query_params?: any;
     path?: any;
+    output: any
+}
+
+export interface BoltRoutes {
+    [key: string]: string
 }

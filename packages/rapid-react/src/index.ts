@@ -1,1 +1,1 @@
-export { default as rapidFetcher } from './rapidFetcher';
+export { default as bolt } from './bolt';

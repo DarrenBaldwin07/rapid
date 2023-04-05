@@ -288,6 +288,12 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	converter.generate(None);
 }
 
+/// Function for generating a route handler object for use on the client
+/// It will output something similar to the following:`
+/// const routes = {
+/// 	index: '/'
+/// }
+///
 pub fn generate_routes(routes_dir: &str) -> String {
 	let mut typescript_object = String::from("\n\nexport const routes = {");
 
@@ -332,7 +338,7 @@ pub fn generate_routes(routes_dir: &str) -> String {
 	 }
 
 	 // Once we are done we want to close off the object
-	 typescript_object.push_str("\n}");
+	 typescript_object.push_str("\n} as const");
 
 	 typescript_object
 }

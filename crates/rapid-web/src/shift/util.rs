@@ -29,7 +29,7 @@ pub struct HandlerType {
 }
 
 pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerType>>> {
-	let parsed_file: SynFile = syn::parse_str(route_source).unwrap();
+	let parsed_file: SynFile = syn::parse_str(route_source).expect("Error: Syn could not parse handler source file!");
 	for item in parsed_file.items {
 		// The first route handler that we find we want to break out
 		// Any valid handler functions found after the first one are ignored (in rapid, only one handler is allowed per file)
@@ -73,6 +73,22 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 
 
 				return Some(function_types);
+			}
+		}
+	}
+
+	None
+}
+
+pub fn get_handler_type(route_source: &str) -> Option<String> {
+	let parsed_file: SynFile = syn::parse_str(route_source).expect("Error: Syn could not parse handler source file!");
+	for item in parsed_file.items {
+		// The first route handler that we find we want to break out
+		// Any valid handler functions found after the first one are ignored (in rapid, only one handler is allowed per file)
+		if let Item::Fn(function) = item {
+			if is_valid_handler("rapid_handler", function.attrs) {
+				let function_name = function.sig.ident.to_string();
+				return Some(function_name);
 			}
 		}
 	}

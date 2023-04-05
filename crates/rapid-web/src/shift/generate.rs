@@ -1,6 +1,6 @@
 use super::{
 	convert::{TypescriptType, TypescriptConverter, convert_all_types_in_path},
-	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE},
+	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE, get_handler_type},
 };
 use crate::util::validate_route_handler;
 use std::{
@@ -327,13 +327,24 @@ pub fn generate_routes(routes_dir: &str) -> String {
 
 		let parsed_route_dir = entry.path().to_str().unwrap_or("/").to_string().replace(routes_dir, "").replace(".rs", "");
 
+		let handler_type = match get_handler_type(&route_file_contents) {
+			Some(name) => name,
+			None => String::from("get")
+		};
+
+		// Construct our routes object
 		let route_key = RouteKey {
 			key: get_route_key(&parsed_route_dir, &route_file_contents),
 			value: remove_last_occurrence(&parsed_route_dir, "index")
 		};
 
-
-		let route = format!("\n\t{}: '{}',", route_key.key, route_key.value);
+		let mut route = format!("\n\t{}: {{\n", route_key.key);
+		// Add the url
+		route.push_str(&format!("\t\turl: '{url}',\n", url = route_key.value));
+		// Add the route type
+		route.push_str(&format!("\t\ttype: '{route_type}',\n", route_type = handler_type));
+		// Make sure we close off the new route...
+		route.push_str("\t},");
 		typescript_object.push_str(&route);
 	 }
 

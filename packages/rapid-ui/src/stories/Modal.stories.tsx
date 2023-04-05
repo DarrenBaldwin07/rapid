@@ -2,9 +2,11 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { useState } from 'react';
 import {
 	Modal,
-	ModalOverlay,
+	// ModalOverlay,
+	ModalBody,
+	ModalFooter,
 	ModalContent,
-	ModalTitle,
+	ModalHeader,
 	Text,
 	Button,
 } from '..';
@@ -22,26 +24,27 @@ const Template: ComponentStory<typeof Modal> = (_: any) => {
 		<>
 			<Button onClick={() => setIsOpen(true)}>Open</Button>
 			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
-				<ModalOverlay />
+				{/* <ModalOverlay /> */}
 				<ModalContent>
-					<ModalTitle>Delete Account</ModalTitle>
-
-					<Text styles='mt-2 text-secondaryGrey'>
-						Are you sure you want to delete your account? All of
-						your data will be permanently removed. This action
-						cannot be undone.
-					</Text>
-
-					<Button styles='mt-4 mr-2' onClick={() => setIsOpen(false)}>
-						Delete
-					</Button>
-					<Button
-						styles='mt-4'
-						variant='outline'
-						onClick={() => setIsOpen(false)}
-					>
-						Cancel
-					</Button>
+					<ModalHeader>Delete Account</ModalHeader>
+					<ModalBody>
+						<Text styles='text-secondaryGrey'>
+							Are you sure you want to delete your account? All of
+							your data will be permanently removed. This action
+							cannot be undone.
+						</Text>
+					</ModalBody>
+					<ModalFooter>
+						<Button
+							variant='outline'
+							onClick={() => setIsOpen(false)}
+						>
+							Cancel
+						</Button>
+						<Button onClick={() => setIsOpen(false)}>
+							Deactivate
+						</Button>
+					</ModalFooter>
 				</ModalContent>
 			</Modal>
 		</>

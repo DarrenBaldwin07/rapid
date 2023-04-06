@@ -4,38 +4,7 @@ import {
 	BoltRoutes,
 	BoltOutput,
 } from './types';
-
-interface Handlers {
-	queries: {};
-	mutations: {
-		index: {
-			input: User;
-			output: any;
-			type: 'post';
-		};
-
-		test: {
-			input: string;
-			output: any;
-			type: 'post';
-		};
-	};
-}
-
-export interface User {
-	id: number;
-}
-
-const routes = {
-	index: {
-		url: '/',
-		type: 'post',
-	},
-	test: {
-		url: '/test',
-		type: 'post',
-	},
-} as const;
+import { isDynamicRoute } from './util';
 
 type FetchKey<T extends RapidWebHandlerType> =
 	| keyof T['queries']
@@ -58,6 +27,10 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		const route = routes[key];
 		// Grab the route type
 		const routeType = route.type;
+		// Grab the route path (this is what we will use to check if the route is a dynamic route)
+		const routePath = route.url;
+
+		const isDynamic = isDynamicRoute(routePath);
 
 		// Get the type that the input body should be (for post, delete, put, and patch requests)
 		type InputBody = T['mutations'][typeof key]['input'];
@@ -68,6 +41,9 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		// Declare our route types so that users can never pass in a path that is invalid (does not point to an actual route declared on the Rust backend)
 		// This will almost guarantee that users never request a route that throws a 404 :)
 		type RequestUrl = R[typeof key]['url'];
+		// Get the type of our url path for both a mutation and a query (this is the type that we will use to check if the route is a dynamic route)
+		type QueryPathType =  T['queries'][typeof key]['path'];
+		type MutationPathType =  T['mutations'][typeof key]['path'];
 
 		switch (routeType) {
 			case 'post':
@@ -158,7 +134,3 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 }
 
 export default createBoltClient;
-
-const bolt = createBoltClient<Handlers, typeof routes>(routes);
-
-const req = bolt('index').post('/');

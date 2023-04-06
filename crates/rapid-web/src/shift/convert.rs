@@ -300,12 +300,12 @@ impl TypescriptConverter {
 
 	}
 
-	// TODO
+	// TODO: enums in typescript suck but might be ideal to atleast support conversion
 	pub fn convert_enum() {
 
 	}
 
-	// TODO
+	// TODO: support converting all functions to typescript types
 	pub fn convert_function() {
 
 	}

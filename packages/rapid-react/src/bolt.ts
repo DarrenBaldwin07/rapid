@@ -3,6 +3,7 @@ import {
 	RapidWebHandlerType,
 	BoltRoutes,
 	BoltOutput,
+	BoltOutputDynamic
 } from './types';
 import { isDynamicRoute, generatePathUrl, toArray } from './util';
 

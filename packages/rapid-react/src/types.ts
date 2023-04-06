@@ -1,5 +1,40 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
 
+
+export type BoltOutputDynamic<
+	T extends SupportedHTTPMethods,
+	T1,
+	T2,
+	T3,
+> = T extends 'post'
+	? PostFunctionDynamic<T1, T2, T3>
+	: T extends 'get'
+	? GetFunction<T1, T2>
+	: T extends 'put'
+	? PutFunction<T1, T2, T3>
+	: T extends 'delete'
+	? DeleteFunction<T1, T2>
+	: T extends 'patch'
+	? PatchFunction<T1, T2, T3>
+	: never;
+
+
+export type PostFunctionDynamic<T1, T2, T3> = {
+	post: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: string,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+};
+
 export type BoltOutput<
 	T extends SupportedHTTPMethods,
 	T1,
@@ -17,14 +52,12 @@ export type BoltOutput<
 	? PatchFunction<T1, T2, T3>
 	: never;
 
-
 export type PostFunction<T1, T2, T3> = {
 	post: <
 		W extends T1,
 		T = any,
 		U = any,
 		V = T2,
-		X = T3,
 		R = AxiosResponse<T, U>,
 		D = V,
 	>(
@@ -54,12 +87,11 @@ export type PutFunction<T1, T2, T3> = {
 		T = any,
 		U = any,
 		V = T2,
-		X = T3,
 		R = AxiosResponse<T, U>,
 		D = V,
 	>(
 		url: W,
-		data?: X,
+		data?: T3,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };
@@ -83,12 +115,11 @@ export type PatchFunction<T1, T2, T3> = {
 		T = any,
 		U = any,
 		V = T2,
-		X = T3,
 		R = AxiosResponse<T, U>,
 		D = V,
 	>(
 		url: W,
-		data?: X,
+		data?: T3,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };

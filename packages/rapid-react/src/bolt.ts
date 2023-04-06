@@ -29,7 +29,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		const routeType = route.type;
 		// Grab the route path (this is what we will use to check if the route is a dynamic route)
 		const routePath = route.url;
-
+		// Check if the route path is a dynamic route
 		const isDynamic = isDynamicRoute(routePath);
 
 		// Get the type that the input body should be (for post, delete, put, and patch requests)

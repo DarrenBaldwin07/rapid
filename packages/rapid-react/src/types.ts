@@ -1,14 +1,5 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
 
-export interface RapidWebHandlerType {
-	queries: {
-		[key: string]: TypedQueryHandler;
-	};
-	mutations: {
-		[key: string]: TypedMutationHandler;
-	};
-}
-
 export type BoltOutput<
 	T extends SupportedHTTPMethods,
 	T1,
@@ -103,6 +94,16 @@ export type PatchFunction<T1, T2, T3> = {
 
 export type SupportedHTTPMethods = 'post' | 'get' | 'put' | 'delete' | 'patch';
 
+export interface RapidWebHandlerType {
+	queries: {
+		[key: string]: TypedQueryHandler;
+	};
+	mutations: {
+		[key: string]: TypedMutationHandler;
+	};
+}
+
+
 export interface TypedMutationHandler {
 	type: SupportedHTTPMethods;
 	query_params?: any;
@@ -118,7 +119,7 @@ export interface TypedQueryHandler {
 	output: any;
 }
 
-interface Route {
+export interface Route {
 	url: string;
 	type: SupportedHTTPMethods;
 }

@@ -36,7 +36,9 @@ const Divider = forwardRef<HTMLHRElement, DividerProps>(
 		ref,
 	) => {
 		const getDividerStyles = () => {
-			const commonStyles = 'border-current border-opacity-60 ';
+
+			const commonStyles =
+				'text-lightGrey border-current border-opacity-60';
 
 			return orientation === 'vertical'
 				? `${commonStyles} h-full border-t-0 border-l` // vertical

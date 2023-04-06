@@ -6,13 +6,13 @@ exports[`Divider > should render dashed  horizontal correctly 1`] = `
   "baseElement": <body>
     <div>
       <hr
-        class="border-current border-opacity-60 w-full border-b rapid-divider-dashed rapid-divider-sm"
+        class="text-lightGrey border-current border-opacity-60 w-full border-b rapid-divider-dashed rapid-divider-sm"
       />
     </div>
   </body>,
   "container": <div>
     <hr
-      class="border-current border-opacity-60 w-full border-b rapid-divider-dashed rapid-divider-sm"
+      class="text-lightGrey border-current border-opacity-60 w-full border-b rapid-divider-dashed rapid-divider-sm"
     />
   </div>,
   "debug": [Function],
@@ -78,7 +78,7 @@ exports[`Divider > should render default correctly 1`] = `
         class="align-center flex h-10  flex-row justify-center"
       >
         <hr
-          class="border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-sm"
+          class="text-lightGrey border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-sm"
         />
       </div>
     </div>
@@ -88,7 +88,7 @@ exports[`Divider > should render default correctly 1`] = `
       class="align-center flex h-10  flex-row justify-center"
     >
       <hr
-        class="border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-sm"
+        class="text-lightGrey border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-sm"
       />
     </div>
   </div>,
@@ -152,13 +152,13 @@ exports[`Divider > should render lg correcly 1`] = `
   "baseElement": <body>
     <div>
       <hr
-        class="border-current border-opacity-60 w-full border-b rapid-divider rapid-divider-lg"
+        class="text-lightGrey border-current border-opacity-60 w-full border-b rapid-divider rapid-divider-lg"
       />
     </div>
   </body>,
   "container": <div>
     <hr
-      class="border-current border-opacity-60 w-full border-b rapid-divider rapid-divider-lg"
+      class="text-lightGrey border-current border-opacity-60 w-full border-b rapid-divider rapid-divider-lg"
     />
   </div>,
   "debug": [Function],
@@ -224,7 +224,7 @@ exports[`Divider > should render vertical orientation correctly 1`] = `
         class="align-center flex h-10  flex-row justify-center"
       >
         <hr
-          class="border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-lg"
+          class="text-lightGrey border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-lg"
         />
       </div>
     </div>
@@ -234,7 +234,7 @@ exports[`Divider > should render vertical orientation correctly 1`] = `
       class="align-center flex h-10  flex-row justify-center"
     >
       <hr
-        class="border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-lg"
+        class="text-lightGrey border-current border-opacity-60 h-full border-t-0 border-l rapid-divider rapid-divider-lg"
       />
     </div>
   </div>,
@@ -301,7 +301,7 @@ exports[`Divider > should render xl size and dashed variant correctly 1`] = `
         class="align-center flex h-10  flex-row justify-center"
       >
         <hr
-          class="border-current border-opacity-60 h-full border-t-0 border-l rapid-divider-dashed rapid-divider-xl"
+          class="text-lightGrey border-current border-opacity-60 h-full border-t-0 border-l rapid-divider-dashed rapid-divider-xl"
         />
       </div>
     </div>
@@ -311,7 +311,7 @@ exports[`Divider > should render xl size and dashed variant correctly 1`] = `
       class="align-center flex h-10  flex-row justify-center"
     >
       <hr
-        class="border-current border-opacity-60 h-full border-t-0 border-l rapid-divider-dashed rapid-divider-xl"
+        class="text-lightGrey border-current border-opacity-60 h-full border-t-0 border-l rapid-divider-dashed rapid-divider-xl"
       />
     </div>
   </div>,

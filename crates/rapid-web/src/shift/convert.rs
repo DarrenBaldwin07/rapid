@@ -317,17 +317,16 @@ impl TypescriptConverter {
 		// Set our type keyword (it defaults to "type" because it does not make sense to use interfaces here)
 		let keyword = "type";
 
-		let spacing = space(self.indentation);
-
 		// Push an indentation to the typescript file
-		self.store.push_str(&indent(1));
+		self.store.push_str(&indent(2));
 
 		// Get the name of the type alias
 		let alias_name = rust_type_alias.ident.to_string();
 
 		let converted_type = convert_primitive(&rust_type_alias.ty);
 
-		let type_scaffold = format!("{space} {export} {key} {name} = {type_value};", space = spacing, key = keyword, export = export_str, name = alias_name, type_value = converted_type.typescript_type);
+		// Scaffold our new type
+		let type_scaffold = format!("{export}{key} {name} = {type_value};", key = keyword, export = export_str, name = alias_name, type_value = converted_type.typescript_type);
 
 		// After constructing the new type lets push it onto the store string
 		self.store.push_str(&type_scaffold);

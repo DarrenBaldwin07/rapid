@@ -1,2 +1,2 @@
-# React DOM bindings for the Rapid framework
+# React integration library for the Rapid framework
 > More coming soon...

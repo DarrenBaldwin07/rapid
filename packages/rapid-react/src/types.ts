@@ -17,6 +17,7 @@ export type BoltOutput<
 	? PatchFunction<T1, T2, T3>
 	: never;
 
+
 export type PostFunction<T1, T2, T3> = {
 	post: <
 		W extends T1,

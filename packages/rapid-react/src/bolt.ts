@@ -4,7 +4,7 @@ import {
 	BoltRoutes,
 	BoltOutput,
 } from './types';
-import { isDynamicRoute } from './util';
+import { isDynamicRoute, generatePathUrl, toArray } from './util';
 
 type FetchKey<T extends RapidWebHandlerType> =
 	| keyof T['queries']
@@ -133,4 +133,44 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	};
 }
 
+
+
 export default createBoltClient;
+
+interface Handlers {
+	queries: {};
+	mutations: {
+		index: {
+			input: User;
+			output: any;
+			type: 'post';
+		};
+
+		test: {
+			input: string;
+			output: any;
+			type: 'post';
+		};
+	};
+}
+
+export interface User {
+	id: number;
+}
+
+const routes = {
+	index: {
+		url: '/',
+		type: 'post',
+	},
+	test: {
+		url: '/test',
+		type: 'post',
+	},
+} as const;
+
+
+const bolt = createBoltClient<Handlers, typeof routes>(routes);
+
+const req = bolt('index').post('/', { id: 'oij' });
+

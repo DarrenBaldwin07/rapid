@@ -2,12 +2,13 @@ mod utils;
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2};
 use quote::quote;
+use regex::Regex;
 use std::{
 	fs::{read_dir, File},
 	io::prelude::*,
 	path::PathBuf,
 };
-use utils::{get_all_dirs, base_file_name, get_all_middleware};
+use utils::{base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler};
 
 /// Inits a traditional actix-web server entrypoint
 /// Note: this is only being done because we need to re-route the macro to point at rapid_web instead of actix
@@ -30,6 +31,13 @@ pub fn main(_: TokenStream, item: TokenStream) -> TokenStream {
 	output
 }
 
+// A macro for flagging functions as route handlers for type generation
+// Note: this macro does nothing other than serving as a flag for the rapid compiler/file-parser
+#[proc_macro_attribute]
+pub fn rapid_handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
+	item
+}
+
 struct Handler {
 	path: String,
 	absolute_path: String,
@@ -43,12 +51,13 @@ enum RouteHandler {
 	Post(Handler),
 	Delete(Handler),
 	Put(Handler),
+	Patch(Handler),
 }
 
 /// Macro for generated rapid route handlers based on the file system
 ///
-/// This macro will through the specified path and codegen route handlers for each one
-/// Currently, there is only logic inplace to support GET, POST, DELETE, and PUT requests (it does not yet support middleware but will soon)
+/// This macro will look through the specified path and codegen route handlers for each one
+/// Currently, there is only logic inplace to support GET, POST, DELETE, and PUT requests as well as middleware via a "_middleware.rs" file
 ///
 /// * `item` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
 /// # Examples
@@ -57,12 +66,17 @@ enum RouteHandler {
 /// ```
 #[proc_macro]
 pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
-	// Parse the inputted routes path param
+	// Get the rapid server config file and check for the routes path (we want to panic otherwise)
 	let routes_path = if let proc_macro::TokenTree::Literal(literal) = item.into_iter().next().unwrap() {
 		literal.to_string()
 	} else {
 		panic!("Error: Invalid routes path!")
 	};
+
+	// If the users routes path is not nested we want to panic
+	if routes_path == "/" {
+		panic!("The 'routes_directory' variable cannot be set to a base path. Please use something nested!");
+	}
 
 	// Remove string quotes on start and end of path
 	let parsed_path = &routes_path[1..routes_path.len() - 1];
@@ -76,7 +90,6 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 	// Get every nested dir and append them to the route_dirs aray
 	get_all_dirs(parsed_path, &mut route_dirs);
-
 
 	// Get all the files from the base specified path
 	let route_files = read_dir(parsed_path)
@@ -100,35 +113,47 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 		})
 		.collect::<Vec<_>>();
 
-
 	// Go through each file path and generate route handlers for each one (this is only for the base dir '/')
 	for file_path in route_files {
 		// Open the route file
 		let mut file = File::open(&file_path).unwrap();
 		// Get the name of the file (this drives the route path)
-		// Index.rs will generate a '/' route and anything else simply is generated based on the file name (stem)
+		// Index.rs will generate a '/' route and anything else simply is generated based on the file name (stem without ".rs")
 		let file_name = file_path.file_stem().unwrap().to_string_lossy().to_string();
 		// Save the file contents to a variable
 		let mut file_contents = String::new();
 		file.read_to_string(&mut file_contents).unwrap();
 
+		// Check for dynamic routes
+		let dynamic_route_regex = Regex::new(r"_.*?_").unwrap();
+
+		let is_dynamic_route = dynamic_route_regex.is_match(&file_name);
+
+		let parsed_name = match is_dynamic_route {
+			true => file_name.replacen("_", r"{", 1).replacen("_", "}", 1),
+			false => file_name,
+		};
+
 		// Construct our handler
 		let handler = Handler {
-			name: file_name,
+			name: parsed_name,
 			path: String::from("/"),
 			absolute_path: parsed_path.to_string(),
 			is_nested: false,
 		};
 
 		// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
-		if file_contents.contains("async fn get") {
+		// Routes are determined valid if they contain a function that starts with "async fn" and contains the "rapid_handler" attribute macro
+		if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Get(handler))
-		} else if file_contents.contains("async fn post") {
+		} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Post(handler))
-		} else if file_contents.contains("async fn delete") {
+		} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Delete(handler))
-		} else if file_contents.contains("async fn put") {
+		} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Put(handler))
+		} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+			route_handlers.push(RouteHandler::Patch(handler))
 		}
 	}
 
@@ -167,6 +192,15 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 				continue;
 			}
 
+			let dynamic_route_regex = Regex::new(r"_.*?_").unwrap();
+
+			let is_dynamic_route = dynamic_route_regex.is_match(&file_name);
+
+			let parsed_name = match is_dynamic_route {
+				true => file_name.replacen("_", r"{", 1).replacen("_", "}", 1),
+				false => file_name,
+			};
+
 			// Save the file contents to a variable
 			let mut file_contents = String::new();
 			// Get the files contents...
@@ -174,21 +208,24 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 			// Construct our handler
 			let handler = Handler {
-				name: file_name,
-				path: cleaned_route_path.clone(),
+				name: parsed_name,
+				path: parse_route_path(cleaned_route_path.clone()),
 				absolute_path: nested_file_path.as_os_str().to_str().unwrap().to_string(),
 				is_nested: true,
 			};
 
 			// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
-			if file_contents.contains("async fn get") {
+			// TODO: we should consider supporting HEAD requests here as well (currently, we require that this be done through a traditional .route() call on the route builder function)
+			if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Get(handler))
-			} else if file_contents.contains("async fn post") {
+			} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Post(handler))
-			} else if file_contents.contains("async fn delete") {
+			} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Delete(handler))
-			} else if file_contents.contains("async fn put") {
+			} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Put(handler))
+			} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+				route_handlers.push(RouteHandler::Patch(handler))
 			}
 		}
 	}
@@ -197,10 +234,11 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 	let idents = route_handlers
 		.into_iter()
 		.map(|it| match it {
-			RouteHandler::Get(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "get"),
-			RouteHandler::Post(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "post"),
-			RouteHandler::Delete(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "delete"),
-			RouteHandler::Put(route_handler) => genrate_handler_tokens(route_handler, parsed_path, "put")
+			RouteHandler::Get(route_handler) => generate_handler_tokens(route_handler, parsed_path, "get"),
+			RouteHandler::Post(route_handler) => generate_handler_tokens(route_handler, parsed_path, "post"),
+			RouteHandler::Delete(route_handler) => generate_handler_tokens(route_handler, parsed_path, "delete"),
+			RouteHandler::Put(route_handler) => generate_handler_tokens(route_handler, parsed_path, "put"),
+			RouteHandler::Patch(route_handler) => generate_handler_tokens(route_handler, parsed_path, "patch"),
 		})
 		.collect::<Vec<_>>();
 
@@ -233,7 +271,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 
 	let mut route_dirs: Vec<PathBuf> = vec![];
 
-	// Get every nested dir and append them to the route_dirs aray
+	// Get every nested dir and append them to the route_dirs array
 	get_all_dirs(path, &mut route_dirs);
 
 	// Grab all of the base idents that we need to power the base "/" handler
@@ -244,11 +282,8 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 			let name = path.file_stem().unwrap().to_string_lossy();
 			Ident::new(&name, Span::call_site())
 		})
-		.filter(|it| {
-			it.to_string() != "mod"
-		})
+		.filter(|it| it.to_string() != "mod")
 		.collect::<Vec<_>>();
-
 
 	let mut nested_idents: Vec<TokenStream2> = Vec::new();
 
@@ -272,42 +307,64 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 }
 
 /// Function that generates handler tokens from a Handler type
-/// Note: this currently depends on the assumption that each dir only has 1 _middleware.rs file
-fn genrate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_type: &str) -> proc_macro2::TokenStream {
+/// Note: this currently depends on the assumption that each dir only has 1 _middleware.rs file which we always be the case since dupe file names is not allowed
+fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_type: &str) -> proc_macro2::TokenStream {
 	let parsed_handler_type: proc_macro2::TokenStream = handler_type.parse().unwrap();
 
 	let mut middleware_paths: Vec<PathBuf> = Vec::new();
 	get_all_middleware(&route_handler.absolute_path, parsed_path, &mut middleware_paths);
 
-	let middleware_idents = middleware_paths.into_iter().map(|middleware| {
-		let base = base_file_name(&middleware.as_path(), parsed_path);
+	let middleware_idents = middleware_paths
+		.into_iter()
+		.map(|middleware| {
+			let base = base_file_name(&middleware.as_path(), parsed_path);
 
-		// Trigger an early exit here if we find that we were in the base dir anyway
-		if base == "" {
-			return quote!(.wrap(_middleware::Middleware));
-		}
-		// Parse the module name string and remove all the slashes (ex: "/job" endpoint)
-		let mod_name = format!("{}", base.replacen("/", "", 1)).replace("/", "::");
+			// Trigger an early exit here if we find that we were in the base dir anyway
+			if base == "" {
+				return quote!(.wrap(_middleware::Middleware));
+			}
+			// Parse the module name string and remove all the slashes (ex: "/job" endpoint)
+			let mod_name = format!("{}", base.replacen("/", "", 1)).replace("/", "::");
 
-		let parsed_mod: proc_macro2::TokenStream = mod_name.parse().unwrap();
+			let parsed_mod: proc_macro2::TokenStream = mod_name.parse().unwrap();
 
-		quote!(.wrap(#parsed_mod::_middleware::Middleware))
-	}).collect::<Vec<_>>();
-
-	let handler = Ident::new(&route_handler.name, Span::call_site());
+			quote!(.wrap(#parsed_mod::_middleware::Middleware))
+		})
+		.collect::<Vec<_>>();
 
 	// We want all "index.rs" files to auto map to "/"
 	let name = match route_handler.name.as_str() {
 		"index" => String::from(""),
-		_ => route_handler.name
+		_ => format!("/{}", route_handler.name),
 	};
-	let path = {
+
+	let parsed_path = match route_handler.path.as_str() {
+		"/" => "",
+		_ => route_handler.path.as_str(),
+	};
+
+	// Parse the module name string and remove all the slashes (ex: "/job" endpoint)
+	let handler_mod_name = format!(
+		"{}",
+		parse_handler_path(&format!("{}/{}", reverse_route_path(parsed_path.to_string()), route_handler.name)).replacen("/", "", 1)
+	)
+	.replace("/", "::");
+	let handler: proc_macro2::TokenStream = handler_mod_name.parse().unwrap();
+
+	// This is the path string that gets passed to the ".route(path)" function
+	let rapid_routes_path = {
 		if route_handler.is_nested {
-			format!("{}/{}", route_handler.path, name)
+			format!("{}{}", parsed_path, name)
 		} else {
-			format!("{}{}", route_handler.path, name)
+			// If the router is not nested then we want to set the name to a slash
+			let parsed_name = match name.as_str() {
+				"" => "/",
+				_ => name.as_str(),
+			};
+
+			format!("{}{}", parsed_path, parsed_name)
 		}
 	};
 
-	quote!(.route(#path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+	quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
 }

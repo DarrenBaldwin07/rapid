@@ -36,6 +36,7 @@ const Divider = forwardRef<HTMLHRElement, DividerProps>(
 		ref,
 	) => {
 		const getDividerStyles = () => {
+
 			const commonStyles =
 				'text-lightGrey border-current border-opacity-60';
 

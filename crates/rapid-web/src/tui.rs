@@ -20,6 +20,11 @@ pub fn server_init(bind_config: (String, u16)) {
 	);
 }
 
+pub fn clean_console() {
+	print!("{esc}c", esc = 27 as char);
+}
+
+
 pub fn rapid_log_target() -> GradientDisplay<'static, [RGB; 4]> {
 	let target = GradientStr::gradient(
 		&"[rapid-web::logger]",

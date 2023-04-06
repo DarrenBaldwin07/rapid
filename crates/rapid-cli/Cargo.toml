@@ -1,6 +1,6 @@
 [package]
 name = "rapid-cli"
-version = "0.1.5"
+version = "0.2.8"
 edition = "2021"
 description = "The CLI tool for the Rapid framework"
 repository = "https://github.com/DarrenBaldwin07/rapid"
@@ -22,6 +22,8 @@ path = "src/bin/main.rs"
 clap = { version = "4.1.4", features = ["derive", "cargo"] }
 colorful = "0.2.2"
 ctrlc = "3.2.5"
+include_dir = "0.7.3"
+requestty = "0.5.0"
 rust-embed = "6.4.2"
 serde = { version = "1.0", features = ["derive"] }
 spinach = "2.1.0"
@@ -31,3 +33,4 @@ terminal-emoji = "0.4.1"
 tiny-gradient = "0.1.0"
 toml = "0.7.2"
 tui = "0.19.0"
+walkdir = "2.3.3"

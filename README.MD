@@ -8,7 +8,7 @@
 
 # What is Rapid?
 
-Rapid is not a framework but an opinionated set of tools to enable developers to create full-stack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing DX.
+Rapid is a framework built to enable developers to create full-stack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing developer experience.
 
 # Why Rapid?
 

@@ -1,26 +1,33 @@
+use std::{env::current_dir, path::PathBuf};
+
 use super::{
 	actix::{
 		dev::{ServiceRequest, ServiceResponse},
 		middleware::{Condition, NormalizePath},
-		App, Error, HttpServer,
-		Scope
+		App, Error, HttpServer, Scope,
 	},
 	cors::Cors,
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
-	tui::server_init
+	shift::generate::create_typescript_types,
+	tui::{server_init, clean_console},
+	util::{check_for_invalid_handlers, get_routes_dir},
+};
+use std::{
+	thread, time,
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
 use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
+use rapid_cli::cli::rapid_logo;
+use spinach::Spinach;
 extern crate proc_macro;
 
 #[derive(Clone)]
 pub struct RapidServer {
 	pub port: Option<u16>,
-	pub base_route: Option<String>,
 	pub hostname: Option<String>,
 }
 
@@ -42,12 +49,13 @@ lazy_static! {
 ///
 /// ```
 impl RapidServer {
-	pub fn create(port: Option<u16>, base_route: Option<String>, hostname: Option<String>) -> Self {
-		Self { port, base_route, hostname }
+	pub fn create(port: Option<u16>, hostname: Option<String>) -> Self {
+		Self { port, hostname }
 	}
 
 	/// A stock re-export of the actix-web "App::new()" router with a few extras
-	/// Note: to experience the full capabilities of rapid-web, use the RapidServer::fs_router function
+	/// This router does not support type-safe file based routing
+	/// Note: to experience the full capabilities of rapid-web, we recommend useing the RapidServer::fs_router function
 	pub fn router(
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,
@@ -96,12 +104,19 @@ impl RapidServer {
 		}
 	}
 
-	/// A file-system based router for the rapid-web
+	/// A file-system based router for rapid-web
 	///
 	/// Build your api with a simple file based technique (ex: _middleware.rs, index.rs)
 	///
-	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
-	pub fn fs_router(cors: Option<Cors>, log_type: Option<RapidLogger>, routes: Scope) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
+	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
+	/// * `cors` - An optional cors middleware that can be used to configure the cors middleware
+	/// * `log_type` - An optional logger middleware that can be used to configure the logger middleware
+	pub fn fs_router(
+		cors: Option<Cors>,
+		log_type: Option<RapidLogger>,
+		routes: Scope,
+	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
+		// Initialize our router with the config options the user passed in
 		RapidServer::router(cors, log_type).service(routes)
 	}
 
@@ -123,13 +138,48 @@ impl RapidServer {
 		// or the actualy rapid config file in the project root
 		let bind_config = get_default_bind_config(RAPID_SERVER_CONFIG.clone(), self.hostname, self.port);
 
-		// Show the init message
+		// Grab the routes directory from the rapid config file (this powers how we export types)
+		// Note: make sure we panic if we are not able to detect it
+		let routes_dir = get_routes_dir(RAPID_SERVER_CONFIG.server.as_ref());
+
+		// Grab the bindings directory from the rapid config file
+		// We want to make sure that it is valid and is actually defined (it defaults to an Option<String>)
+		let bindings_out_dir = match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(server) => match server.bindings_export_path.clone() {
+				Some(dir) => match dir == "/" {
+					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
+					false => current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(dir)),
+				},
+				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
+			},
+			None => panic!("You must have a valid rapid config file in the base project directory!"),
+		};
+
+		// Check if we should generate typescript types or not
+		let should_generate_typescript_types = match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(server) => match server.typescript_generation.clone() {
+				Some(val) => val,
+				None => true
+			},
+			None => true
+		};
+
+		// Only trigger type generation if the users configured options in their rapid config file permits it
+		if should_generate_typescript_types {
+			generate_typescript_types(bindings_out_dir, routes_dir.clone());
+		}
+
+		// Show the server initialization message
 		server_init(bind_config.clone());
+
+		// Check for any invalid routes and log them to the console
+		check_for_invalid_handlers(&routes_dir);
 
 		server.bind(bind_config)?.run().await
 	}
 }
 
+/// Generate the default server bind config based on the rapid config file
 fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port: Option<u16>) -> (String, u16) {
 	// Get the hostname from the server object initialized by the consumer
 	// We need to check if they passed one in -- if they didn't, we'll use localhost
@@ -154,4 +204,22 @@ fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port:
 	};
 
 	(server_hostname, port)
+}
+
+pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String) {
+	// Clean the console before proceeding...
+	clean_console();
+
+	// Show a loading spinner as needed
+	let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
+
+	// TODO: we should turn this off until it is officially working (also, we should make this optional)
+	create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
+
+	// Sleep a little to show loading animation
+	let timeout = time::Duration::from_millis(650);
+	thread::sleep(timeout);
+
+	// Stop the loading animation
+	loading.stop();
 }

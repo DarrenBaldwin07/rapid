@@ -1,6 +1,6 @@
 use super::RapidCommand;
 use crate::{
-	cli::{current_directory, logo, Config},
+	cli::{current_directory, logo, rapid_logo, Config},
 	rapid_config::config::{find_rapid_config, is_rapid, AppType},
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
@@ -140,8 +140,19 @@ fn handle_run_server(server_port: u16) {
 		s.succeed("Rapid build scripts installed!");
 	}
 
-	let hot_reload_command = format!("systemfd --no-pid -s http::{} -- cargo watch -x run -q", server_port);
+	println!("{} Building rapid application...", rapid_logo());
 
+	// This is the hot reload command that powers how rapid is able to hot-reload its binary
+	// It uses a combination of cargo watch and systemfd to achieve this
+	// Checkout both crates here:
+	// - cargo-watch: https://crates.io/crates/cargo-watch
+	// - systemfd: https://crates.io/crates/systemfd
+	let hot_reload_command = format!(
+		"systemfd --no-pid --quiet -s http::{} -- cargo watch -x run -q --ignore 'bindings.ts'",
+		server_port
+	);
+
+	// Trigger the shell command to actually run + watch the rapid server
 	StdCommand::new("sh")
 		.current_dir(current_directory())
 		.arg("-c")

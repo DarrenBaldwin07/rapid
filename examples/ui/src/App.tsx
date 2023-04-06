@@ -49,15 +49,15 @@ function App() {
 		<Container>
 			<Heading styles='text-center'>Rapid Components</Heading>
 			<Text>Divider vertical</Text>
-			<div className='align-center flex h-10  flex-row justify-center'>
+			<div className='align-center flex h-10 flex-row justify-center'>
 				<Divider orientation='vertical' />
 			</div>
 			<Text>Divider vertical lg</Text>
-			<div className='align-center flex h-10  flex-row justify-center'>
+			<div className='align-center flex h-10 flex-row justify-center'>
 				<Divider size='lg' orientation='vertical' />
 			</div>
 			<Text>Divider sm variant dashed</Text>
-			<div className='align-center flex h-10  flex-row justify-center'>
+			<div className='align-center flex h-10 flex-row justify-center'>
 				<Divider size='sm' orientation='vertical' variant='dashed' />
 			</div>
 			<Text>Divider variant dashed</Text>

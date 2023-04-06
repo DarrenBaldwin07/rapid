@@ -29,7 +29,7 @@ export type PostFunction<T1, T2, T3> = {
 		D = V,
 	>(
 		url: W,
-		data?: X,
+		data?: T3,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };

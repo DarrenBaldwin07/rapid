@@ -172,5 +172,5 @@ const routes = {
 
 const bolt = createBoltClient<Handlers, typeof routes>(routes);
 
-const req = bolt('index').post('/', { id: 'oij' });
+const req = bolt('index').post('/', { id: 1 });
 

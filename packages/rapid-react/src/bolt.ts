@@ -2,11 +2,6 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import {
 	RapidWebHandlerType,
 	BoltRoutes,
-	PostFunction,
-	GetFunction,
-	PatchFunction,
-	PutFunction,
-	DeleteFunction,
 	BoltOutput,
 } from './types';
 
@@ -61,8 +56,6 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	return <Key extends FetchKey<T> & string>(key: Key) => {
 		// Get a reference to the route that we are trying to fetch
 		const route = routes[key];
-		// Grab the route path
-		const requestPath = route.url;
 		// Grab the route type
 		const routeType = route.type;
 

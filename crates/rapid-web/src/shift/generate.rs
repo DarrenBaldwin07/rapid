@@ -58,6 +58,15 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 			continue;
 		}
 
+		// We also want to make sure that we exit if we find a mod.rs file or a middleware file
+		let file_name = entry.file_name();
+
+		// Make sure we ignore middleware and mod files from route handler generation
+		if file_name == "_middleware.rs" || file_name == "mod.rs" {
+			continue;
+		}
+
+
 		// Create a reference to the current route file and grab its contents as a string
 		let mut file = File::open(&entry.path()).unwrap();
 		let mut route_file_contents = String::new();
@@ -190,8 +199,14 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				}
 
 				if let Some(path_type) = query.path {
+					// If we found a path then that means this route handler is dynamic so lets also push a isDynamic type to the handler schema
 					let path = format!("\t\t\tpath: {}", path_type.typescript_type);
+					let is_dynamic = format!("\t\t\tisDynamic: {}", "true");
 					ts_type.push_str(&format!("{}{}\n", spacing, path));
+					ts_type.push_str(&format!("{}{}\n", spacing, is_dynamic));
+				} else {
+					let is_dynamic = format!("\t\t\tisDynamic: {}", "false");
+					ts_type.push_str(&format!("{}{}\n", spacing, is_dynamic));
 				}
 
 				let output_body = format!("\t\t\toutput: {}", query.output_type.typescript_type);

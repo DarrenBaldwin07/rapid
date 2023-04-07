@@ -27,7 +27,6 @@ export type Bolt<T extends SupportedHTTPMethods, T1, T2, T3, T4> = {
 export type PostFunctionDynamic<T1, T2, T3, T4> = {
 	post: <
 		W extends T1,
-		X extends T4,
 		T = any,
 		U = any,
 		V = T2,
@@ -35,7 +34,7 @@ export type PostFunctionDynamic<T1, T2, T3, T4> = {
 		D = V,
 	>(
 		url: W,
-		params: X,
+		params: T4,
 		data?: T3,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
@@ -217,6 +216,7 @@ export interface TypedQueryHandler {
 	type: SupportedHTTPMethods;
 	query_params?: any;
 	path?: any;
+	isDynamic: boolean;
 	output: any;
 }
 

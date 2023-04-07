@@ -46,7 +46,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		type QueryPathType =  T['queries'][typeof key]['path'];
 		type MutationPathType =  T['mutations'][typeof key]['path'];
 
-		type isDynamicType = T['mutations'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+		type isDynamicMutationType = T['mutations'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+		type isDynamicQueryType = T['queries'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
 
 		switch (routeType) {
 			case 'post':
@@ -68,7 +69,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R,
 						InputBody,
 						MutationPathType
-					>[isDynamicType];
+					>[isDynamicMutationType];
 				}
 				return {
 					post: <
@@ -86,7 +87,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					R,
 					InputBody,
 					MutationPathType
-				>[isDynamicType];
+				>[isDynamicMutationType];
 			case 'get':
 				if (isDynamic) {
 					return {
@@ -105,7 +106,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R,
 						never,
 						QueryPathType
-					>[isDynamicType];
+					>[isDynamicQueryType];
 				}
 				return {
 					get: <
@@ -122,7 +123,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					R,
 					never,
 					QueryPathType
-				>[isDynamicType];
+				>[isDynamicQueryType];
 			case 'delete':
 				if (isDynamic) {
 					return {
@@ -141,7 +142,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R,
 						never,
 						QueryPathType
-					>[isDynamicType];
+					>[isDynamicQueryType];
 				}
 				return {
 					delete: <
@@ -158,7 +159,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					R,
 					never,
 					QueryPathType
-				>[isDynamicType];
+				>[isDynamicQueryType];
 			case 'put':
 				if (isDynamic) {
 					return {
@@ -178,7 +179,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R,
 						InputBody,
 						MutationPathType
-					>[isDynamicType];
+					>[isDynamicMutationType];
 				}
 				return {
 					put: <
@@ -196,7 +197,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					R,
 					InputBody,
 					MutationPathType
-				>[isDynamicType];
+				>[isDynamicMutationType];
 			case 'patch':
 				if (isDynamic) {
 					return {
@@ -216,7 +217,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R,
 						InputBody,
 						MutationPathType
-					>[isDynamicType];
+					>[isDynamicMutationType];
 				}
 				return {
 					patch: <
@@ -234,7 +235,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					R,
 					InputBody,
 					MutationPathType
-				>[isDynamicType];
+				>[isDynamicMutationType];
 		}
 	};
 }
@@ -281,5 +282,5 @@ const routes = {
 
 const bolt = createBoltClient<Handlers, typeof routes>(routes);
 
-const req = bolt('index').post('/', 'f');
+const req = bolt('index').post('/', '');
 

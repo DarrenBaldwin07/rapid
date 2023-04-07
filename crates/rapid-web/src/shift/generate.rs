@@ -1,6 +1,6 @@
 use super::{
 	convert::{TypescriptType, TypescriptConverter, convert_all_types_in_path},
-	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE, get_handler_type},
+	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE, get_handler_type, is_dynamic_route},
 };
 use crate::util::validate_route_handler;
 use std::{
@@ -185,6 +185,8 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 			Handler::Query(query) => {
 				let mut ts_type = format!("\n\t\t{}: {{\n", query.route_key.key);
 				let route_path = query.route_key.value;
+				let is_dynamic_route_path = is_dynamic_route(&route_path);
+
 				let spacing = space(2);
 				let request_type = match query.request_type {
 					HandlerRequestType::Post => "post",
@@ -223,13 +225,18 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				let request_type = format!("\t\t\ttype: '{}'", request_type);
 				ts_type.push_str(&format!("{}{}\n", spacing, request_type));
 
+				let dynamic_type = format!("\t\t\tisDynamic: {}", is_dynamic_route_path);
+				ts_type.push_str(&format!("{}{}\n", spacing, dynamic_type));
+
 				ts_type.push_str(&format!("\t\t}},\n"));
 
 				queries_ts.push_str(&ts_type);
 			}
 			Handler::Mutation(mutation) => {
 				let mut ts_type = format!("\n\t\t{}: {{\n", mutation.route_key.key);
+				let route_path = mutation.route_key.value;
 				let spacing = space(2);
+				let is_dynamic_route_path = is_dynamic_route(&route_path);
 				let request_type = match mutation.request_type {
 					HandlerRequestType::Post => "post",
 					HandlerRequestType::Put => "put",
@@ -279,6 +286,10 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 
 				let request_type = format!("\t\t\ttype: '{}'", request_type);
 				ts_type.push_str(&format!("{}{}\n", spacing, request_type));
+
+
+				let dynamic_type = format!("\t\t\tisDynamic: {}", is_dynamic_route_path);
+				ts_type.push_str(&format!("{}{}\n", spacing, dynamic_type));
 
 				ts_type.push_str(&format!("\t\t}}\n"));
 

@@ -1,26 +1,48 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
 
-
-export type BoltOutputDynamic<
+export type BoltDynamicOutput<
 	T extends SupportedHTTPMethods,
 	T1,
 	T2,
 	T3,
+	T4
 > = T extends 'post'
-	? PostFunctionDynamic<T1, T2, T3>
+	? PostFunctionDynamic<T1, T2, T3, T4>
 	: T extends 'get'
-	? GetFunction<T1, T2>
+	? GetFunctionDynamic<T1, T2, T4>
 	: T extends 'put'
-	? PutFunction<T1, T2, T3>
+	? PutFunctionDynamic<T1, T2, T3, T4>
 	: T extends 'delete'
-	? DeleteFunction<T1, T2>
+	? DeleteFunctionDynamic<T1, T2, T4>
 	: T extends 'patch'
-	? PatchFunction<T1, T2, T3>
+	? PatchFunctionDynamic<T1, T2, T3, T4>
 	: never;
 
+export type Bolt<T extends SupportedHTTPMethods, T1, T2, T3, T4> = {
+	dynamic: BoltDynamicOutput<T, T1, T2, T3, T4>
+	default: BoltOutput<T, T1, T2, T3>
+}
 
-export type PostFunctionDynamic<T1, T2, T3> = {
+
+export type PostFunctionDynamic<T1, T2, T3, T4> = {
 	post: <
+		W extends T1,
+		X extends T4,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: X,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+};
+
+export type PutFunctionDynamic<T1, T2, T3, T4> = {
+	put: <
 		W extends T1,
 		T = any,
 		U = any,
@@ -29,8 +51,54 @@ export type PostFunctionDynamic<T1, T2, T3> = {
 		D = V,
 	>(
 		url: W,
-		params: string,
+		params: T4,
 		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+};
+
+export type PatchFunctionDynamic<T1, T2, T3, T4> = {
+	patch: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: T4,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+};
+
+export type GetFunctionDynamic<T1, T2, T3> = {
+	get: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+};
+
+export type DeleteFunctionDynamic<T1, T2, T3> = {
+	delete: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: T3,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };
@@ -141,6 +209,7 @@ export interface TypedMutationHandler {
 	query_params?: any;
 	path?: any;
 	input?: any;
+	isDynamic: boolean;
 	output: any;
 }
 

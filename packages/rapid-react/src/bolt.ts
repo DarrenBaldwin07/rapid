@@ -1,9 +1,9 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import {
+import type {
 	RapidWebHandlerType,
 	BoltRoutes,
 	BoltOutput,
-	BoltOutputDynamic
+	Bolt
 } from './types';
 import { isDynamicRoute, generatePathUrl, toArray } from './util';
 
@@ -23,7 +23,7 @@ type FetchKey<T extends RapidWebHandlerType> =
 function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	routes: BoltRoutes,
 ) {
-	return <Key extends FetchKey<T> & string>(key: Key) => {
+	return <Key extends FetchKey<T> & string, >(key: Key) => {
 		// Get a reference to the route that we are trying to fetch
 		const route = routes[key];
 		// Grab the route type
@@ -31,7 +31,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		// Grab the route path (this is what we will use to check if the route is a dynamic route)
 		const routePath = route.url;
 		// Check if the route path is a dynamic route
-		const isDynamic = isDynamicRoute(routePath);
+		const isDynamic = isDynamicRoute(routePath) ? 'dynamic' : 'default';
 
 		// Get the type that the input body should be (for post, delete, put, and patch requests)
 		type InputBody = T['mutations'][typeof key]['input'];
@@ -46,8 +46,30 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		type QueryPathType =  T['queries'][typeof key]['path'];
 		type MutationPathType =  T['mutations'][typeof key]['path'];
 
+		type isDynamicType = T['mutations'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+
 		switch (routeType) {
 			case 'post':
+				if (isDynamic) {
+					return {
+						post: <
+							T = any,
+							R = AxiosResponse<T, OutputMutationBody>,
+							D = InputBody,
+						>(
+							url: RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => axios.post(url, data, config),
+					} as Bolt<
+						T['mutations'][Key]['type'],
+						RequestUrl,
+						R,
+						InputBody,
+						MutationPathType
+					>[isDynamicType];
+				}
 				return {
 					post: <
 						T = any,
@@ -58,13 +80,33 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
 					): Promise<R> => axios.post(url, data, config),
-				} as BoltOutput<
+				} as Bolt<
 					T['mutations'][Key]['type'],
 					RequestUrl,
 					R,
-					InputBody
-				>;
+					InputBody,
+					MutationPathType
+				>[isDynamicType];
 			case 'get':
+				if (isDynamic) {
+					return {
+						get: <
+							T = any,
+							R = AxiosResponse<T, OutputQueryBody>,
+							D = any,
+						>(
+							url: RequestUrl,
+							params: QueryPathType,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => axios.get(url, config),
+					} as Bolt<
+						T['queries'][Key]['type'],
+						RequestUrl,
+						R,
+						never,
+						QueryPathType
+					>[isDynamicType];
+				}
 				return {
 					get: <
 						T = any,
@@ -74,29 +116,70 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						url: RequestUrl,
 						config?: AxiosRequestConfig<D>,
 					): Promise<R> => axios.get(url, config),
-				} as BoltOutput<
+				} as Bolt<
 					T['queries'][Key]['type'],
 					RequestUrl,
 					R,
-					never
-				>;
+					never,
+					QueryPathType
+				>[isDynamicType];
 			case 'delete':
+				if (isDynamic) {
+					return {
+						delete: <
+							T = any,
+							R = AxiosResponse<T, OutputQueryBody>,
+							D = any,
+						>(
+							url: RequestUrl,
+							params: QueryPathType,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => axios.get(url, config),
+					} as Bolt<
+						T['queries'][Key]['type'],
+						RequestUrl,
+						R,
+						never,
+						QueryPathType
+					>[isDynamicType];
+				}
 				return {
 					delete: <
 						T = any,
-						R = AxiosResponse<T, OutputMutationBody>,
-						D = InputBody,
+						R = AxiosResponse<T, OutputQueryBody>,
+						D = any,
 					>(
 						url: RequestUrl,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.delete(url, config),
-				} as BoltOutput<
-					T['mutations'][Key]['type'],
+					): Promise<R> => axios.get(url, config),
+				} as Bolt<
+					T['queries'][Key]['type'],
 					RequestUrl,
 					R,
-					InputBody
-				>;
+					never,
+					QueryPathType
+				>[isDynamicType];
 			case 'put':
+				if (isDynamic) {
+					return {
+						put: <
+							T = any,
+							R = AxiosResponse<T, OutputMutationBody>,
+							D = InputBody,
+						>(
+							url: RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => axios.post(url, data, config),
+					} as Bolt<
+						T['mutations'][Key]['type'],
+						RequestUrl,
+						R,
+						InputBody,
+						MutationPathType
+					>[isDynamicType];
+				}
 				return {
 					put: <
 						T = any,
@@ -106,14 +189,35 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						url: RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.put(url, data, config),
-				} as BoltOutput<
+					): Promise<R> => axios.post(url, data, config),
+				} as Bolt<
 					T['mutations'][Key]['type'],
 					RequestUrl,
 					R,
-					InputBody
-				>;
+					InputBody,
+					MutationPathType
+				>[isDynamicType];
 			case 'patch':
+				if (isDynamic) {
+					return {
+						patch: <
+							T = any,
+							R = AxiosResponse<T, OutputMutationBody>,
+							D = InputBody,
+						>(
+							url: RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => axios.post(url, data, config),
+					} as Bolt<
+						T['mutations'][Key]['type'],
+						RequestUrl,
+						R,
+						InputBody,
+						MutationPathType
+					>[isDynamicType];
+				}
 				return {
 					patch: <
 						T = any,
@@ -123,13 +227,14 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						url: RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.patch(url, data, config),
-				} as BoltOutput<
+					): Promise<R> => axios.post(url, data, config),
+				} as Bolt<
 					T['mutations'][Key]['type'],
 					RequestUrl,
 					R,
-					InputBody
-				>;
+					InputBody,
+					MutationPathType
+				>[isDynamicType];
 		}
 	};
 }
@@ -143,14 +248,17 @@ interface Handlers {
 	mutations: {
 		index: {
 			input: User;
+			path: string;
 			output: any;
 			type: 'post';
+			isDynamic: true
 		};
 
 		test: {
 			input: string;
 			output: any;
 			type: 'post';
+			isDynamic: false
 		};
 	};
 }
@@ -173,5 +281,5 @@ const routes = {
 
 const bolt = createBoltClient<Handlers, typeof routes>(routes);
 
-const req = bolt('index').post('/', { id: 1 });
+const req = bolt('index').post('/', 'f');
 

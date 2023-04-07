@@ -2,7 +2,6 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import type {
 	RapidWebHandlerType,
 	BoltRoutes,
-	BoltOutput,
 	Bolt
 } from './types';
 import { isDynamicRoute, generatePathUrl, toArray } from './util';
@@ -13,8 +12,9 @@ type FetchKey<T extends RapidWebHandlerType> =
 
 /**
  * Creates a new typesafe Bolt client for the given routes
+ * Note: All routes are generated and export from the Rapid-web rust crate
  *
- * @returns A new bolt client
+ * @returns A new Bolt client
  *
  * TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2)
  *
@@ -46,8 +46,16 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		type QueryPathType =  T['queries'][typeof key]['path'];
 		type MutationPathType =  T['mutations'][typeof key]['path'];
 
+		// Grab our type for the dynamic mutation params
 		type isDynamicMutationType = T['mutations'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+		// Grab our type for the dynamic query params
 		type isDynamicQueryType = T['queries'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+
+		// Generate a type for our bolt route object
+		type Route = {
+			url: RequestUrl;
+			type: typeof routeType;
+		}
 
 		switch (routeType) {
 			case 'post':
@@ -58,14 +66,26 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							R = AxiosResponse<T, OutputMutationBody>,
 							D = InputBody,
 						>(
-							url: RequestUrl,
+							url: Route | RequestUrl,
 							params: MutationPathType,
 							data?: InputBody,
 							config?: AxiosRequestConfig<D>,
-						): Promise<R> => axios.post(url, data, config),
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.post(generatePathUrl(parsedUrl, toArray(params)), data, config)
+						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
-						RequestUrl,
+						Route | RequestUrl,
 						R,
 						InputBody,
 						MutationPathType
@@ -77,13 +97,24 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.post(url, data, config),
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = url;
+						} else {
+							parsedUrl = url.url;
+						}
+						return axios.post(parsedUrl, data, config);
+					},
 				} as Bolt<
 					T['mutations'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
 					InputBody,
 					MutationPathType
@@ -96,13 +127,25 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							R = AxiosResponse<T, OutputQueryBody>,
 							D = any,
 						>(
-							url: RequestUrl,
+							url: Route | RequestUrl,
 							params: QueryPathType,
 							config?: AxiosRequestConfig<D>,
-						): Promise<R> => axios.get(url, config),
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.get(generatePathUrl(parsedUrl, toArray(params)), config);
+						},
 					} as Bolt<
 						T['queries'][Key]['type'],
-						RequestUrl,
+						Route | RequestUrl,
 						R,
 						never,
 						QueryPathType
@@ -114,12 +157,23 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R = AxiosResponse<T, OutputQueryBody>,
 						D = any,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.get(url, config),
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = url;
+						} else {
+							parsedUrl = url.url;
+						}
+						return axios.get(parsedUrl, config)
+					},
 				} as Bolt<
 					T['queries'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
 					never,
 					QueryPathType
@@ -132,13 +186,24 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							R = AxiosResponse<T, OutputQueryBody>,
 							D = any,
 						>(
-							url: RequestUrl,
+							url: Route | RequestUrl,
 							params: QueryPathType,
 							config?: AxiosRequestConfig<D>,
-						): Promise<R> => axios.get(url, config),
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+							return axios.delete(generatePathUrl(parsedUrl, toArray(params)), config);
+						}
 					} as Bolt<
 						T['queries'][Key]['type'],
-						RequestUrl,
+						Route | RequestUrl,
 						R,
 						never,
 						QueryPathType
@@ -150,12 +215,23 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R = AxiosResponse<T, OutputQueryBody>,
 						D = any,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.get(url, config),
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = url;
+						} else {
+							parsedUrl = url.url;
+						}
+						return axios.delete(parsedUrl, config)
+					},
 				} as Bolt<
 					T['queries'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
 					never,
 					QueryPathType
@@ -168,14 +244,26 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							R = AxiosResponse<T, OutputMutationBody>,
 							D = InputBody,
 						>(
-							url: RequestUrl,
+							url: Route | RequestUrl,
 							params: MutationPathType,
 							data?: InputBody,
 							config?: AxiosRequestConfig<D>,
-						): Promise<R> => axios.post(url, data, config),
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.put(generatePathUrl(parsedUrl, toArray(params)), data, config)
+						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
-						RequestUrl,
+						Route | RequestUrl,
 						R,
 						InputBody,
 						MutationPathType
@@ -187,13 +275,25 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.post(url, data, config),
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = url;
+						} else {
+							parsedUrl = url.url;
+						}
+
+						return axios.put(parsedUrl, data, config)
+					},
 				} as Bolt<
 					T['mutations'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
 					InputBody,
 					MutationPathType
@@ -206,14 +306,26 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							R = AxiosResponse<T, OutputMutationBody>,
 							D = InputBody,
 						>(
-							url: RequestUrl,
+							url: Route | RequestUrl,
 							params: MutationPathType,
 							data?: InputBody,
 							config?: AxiosRequestConfig<D>,
-						): Promise<R> => axios.post(url, data, config),
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.patch(generatePathUrl(parsedUrl, toArray(params)), data, config);
+						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
-						RequestUrl,
+						Route | RequestUrl,
 						R,
 						InputBody,
 						MutationPathType
@@ -225,13 +337,24 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.post(url, data, config),
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = url;
+						} else {
+							parsedUrl = url.url;
+						}
+						return axios.patch(parsedUrl, data, config)
+					},
 				} as Bolt<
 					T['mutations'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
 					InputBody,
 					MutationPathType
@@ -245,7 +368,13 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 export default createBoltClient;
 
 interface Handlers {
-	queries: {};
+	queries: {
+		"route": {
+			output: any
+			type: 'get'
+			isDynamic: false
+	  },
+	};
 	mutations: {
 		index: {
 			input: User;
@@ -277,10 +406,23 @@ const routes = {
 		url: '/test',
 		type: 'post',
 	},
+	test2: {
+		url: '/test2',
+		type: 'put',
+	},
+	test3: {
+		url: '/test3',
+		type: 'get',
+	},
+	"route": {
+		url: '/route',
+		type: 'get'
+	}
+
 } as const;
 
 
 const bolt = createBoltClient<Handlers, typeof routes>(routes);
 
-const req = bolt('index').post('/', '');
+const req = bolt('route').get(routes.route)
 

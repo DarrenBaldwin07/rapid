@@ -12,11 +12,19 @@ type FetchKey<T extends RapidWebHandlerType> =
 
 /**
  * Creates a new typesafe Bolt client for the given routes
- * Note: All routes are generated and export from the Rapid-web rust crate
+ * Note: All routes are generated and exported from the Rapid-web rust crate
  *
  * @returns A new Bolt client
  *
- * TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2)
+ * TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
+ *
+ * # Example
+ * ```ts
+ * // Create a new bolt client
+ * const bolt = createBoltClient(routes);
+ * // Fetch data from your rust backend with full typesafety!
+ * const route = bolt('getUsers').post('/users', { id: 1 });
+ *```
  *
  * @beta
  */

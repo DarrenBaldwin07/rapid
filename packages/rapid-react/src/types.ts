@@ -202,7 +202,7 @@ export interface RapidWebHandlerType {
 	};
 }
 
-
+// Types that represent a typescript handler generated from rapid-web
 export interface TypedMutationHandler {
 	type: SupportedHTTPMethods;
 	query_params?: any;
@@ -212,6 +212,7 @@ export interface TypedMutationHandler {
 	output: any;
 }
 
+// Queries are the same as mutations except they don't have an input type
 export interface TypedQueryHandler {
 	type: SupportedHTTPMethods;
 	query_params?: any;

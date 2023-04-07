@@ -424,5 +424,5 @@ const routes = {
 
 const bolt = createBoltClient<Handlers, typeof routes>(routes);
 
-const req = bolt('route').get(routes.route)
+const req = bolt('route').get('/route')
 

@@ -184,6 +184,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 		match handler {
 			Handler::Query(query) => {
 				let mut ts_type = format!("\n\t\t{}: {{\n", query.route_key.key);
+				let route_path = query.route_key.value;
 				let spacing = space(2);
 				let request_type = match query.request_type {
 					HandlerRequestType::Post => "post",
@@ -194,19 +195,26 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				};
 
 				if let Some(query_params_type) = query.query_params {
-					let query_params = format!("\t\t\tquery_params: {}", query_params_type.typescript_type);
-					ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					let query_type = query_params_type.typescript_type;
+					if converter.converted_types.contains(&query_type) {
+						let query_params = format!("\t\t\tquery_params: {}", query_type);
+						ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					} else {
+						let query_params = format!("\t\t\tquery_params: {}", "any");
+						ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					}
 				}
 
-				if let Some(path_type) = query.path {
+				if let Some(dynamic_path_type) = query.path {
+					let path_type = dynamic_path_type.typescript_type;
 					// If we found a path then that means this route handler is dynamic so lets also push a isDynamic type to the handler schema
-					let path = format!("\t\t\tpath: {}", path_type.typescript_type);
-					let is_dynamic = format!("\t\t\tisDynamic: {}", "true");
-					ts_type.push_str(&format!("{}{}\n", spacing, path));
-					ts_type.push_str(&format!("{}{}\n", spacing, is_dynamic));
-				} else {
-					let is_dynamic = format!("\t\t\tisDynamic: {}", "false");
-					ts_type.push_str(&format!("{}{}\n", spacing, is_dynamic));
+					if converter.converted_types.contains(&path_type) {
+						let path = format!("\t\t\tpath: {}", path_type);
+						ts_type.push_str(&format!("{}{}\n", spacing, path));
+					} else {
+						let path = format!("\t\t\tpath: {}", "any");
+						ts_type.push_str(&format!("{}{}\n", spacing, path));
+					}
 				}
 
 				let output_body = format!("\t\t\toutput: {}", query.output_type.typescript_type);

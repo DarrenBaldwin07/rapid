@@ -201,6 +201,12 @@ pub fn get_route_key(file_path: &str, handler_source: &str) -> String {
 	fallback_key
 }
 
+/// Function for checking if a rapid route path is dynamic (example: "/route/todo/_id_")
+pub fn is_dynamic_route(str: &str) -> bool {
+    let regex = regex::Regex::new(r"_\w+_").unwrap();
+    regex.is_match(str)
+}
+
 /// Removes the last occurrence of a substring in a string
 pub fn remove_last_occurrence(s: &str, sub: &str) -> String {
     let mut split = s.rsplitn(2, sub);

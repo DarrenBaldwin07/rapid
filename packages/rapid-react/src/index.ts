@@ -1,1 +1,1 @@
-export { default as bolt } from './bolt';
+export { default as createBoltClient } from './bolt';

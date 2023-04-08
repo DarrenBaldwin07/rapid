@@ -1,6 +1,9 @@
 use rapid_web::actix::HttpResponse;
 use rapid_web::{rapid_web_codegen::rapid_handler, welcome_view};
 
+
+pub const ROUTE_KEY: &str = "index";
+
 #[rapid_handler]
 pub async fn get() -> HttpResponse {
     HttpResponse::Ok()

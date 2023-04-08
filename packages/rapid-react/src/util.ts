@@ -15,7 +15,7 @@ export const getDynamicSubstrings = (inputString: string): string[] => {
 }
 
 // Function for generating a path url from a path string that contains rapid-web dynamic substrings
-export const generatePathUrl = (path: string, updated_paths: Array<any>): string => {
+export const generatePathUrl = (path: string, updated_paths: Array<any>, baseUrl: string): string => {
     const dynamicPaths: Array<any> = getDynamicSubstrings(path);
 
     // If we have dynamic paths, we need to replace them with the correct values
@@ -24,11 +24,11 @@ export const generatePathUrl = (path: string, updated_paths: Array<any>): string
         dynamicPaths.forEach((dynamicPath, index) => {
             url = url.replace(dynamicPath, updated_paths[index]);
         });
-        return url;
+        return `${baseUrl}${url}`;
     }
 
 
-    return path;
+    return `${baseUrl}${path}`;
 }
 
 export const toArray = (obj: any): any[] => {

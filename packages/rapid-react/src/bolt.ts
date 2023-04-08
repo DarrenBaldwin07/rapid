@@ -15,6 +15,11 @@ type FetchKey<T extends RapidWebHandlerType> =
 	| keyof T['queries']
 	| keyof T['mutations'];
 
+/// The bolt config object (this will expand to have more options in the future)
+interface BoltConfig {
+	transport: string
+}
+
 /**
  * Creates a new typesafe Bolt client for the given routes
  * Note: All routes are generated and exported from the Rapid-web rust crate
@@ -35,7 +40,10 @@ type FetchKey<T extends RapidWebHandlerType> =
  */
 function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	routes: BoltRoutes,
+	config: BoltConfig
 ) {
+	const transport = config.transport;
+
 	return <Key extends FetchKey<T> & string, >(key: Key) => {
 		// Get a reference to the route that we are trying to fetch
 		const route = routes[key];
@@ -94,7 +102,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.post(generatePathUrl(parsedUrl, toArray(params)), data, config)
+							return axios.post(generatePathUrl(parsedUrl, toArray(params), transport), data, config)
 						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
@@ -154,7 +162,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.get(generatePathUrl(parsedUrl, toArray(params)), config);
+							return axios.get(generatePathUrl(parsedUrl, toArray(params), transport), config);
 						},
 					} as Bolt<
 						T['queries'][Key]['type'],
@@ -212,7 +220,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							} else {
 								parsedUrl = url.url;
 							}
-							return axios.delete(generatePathUrl(parsedUrl, toArray(params)), config);
+							return axios.delete(generatePathUrl(parsedUrl, toArray(params), transport), config);
 						}
 					} as Bolt<
 						T['queries'][Key]['type'],
@@ -272,7 +280,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.put(generatePathUrl(parsedUrl, toArray(params)), data, config)
+							return axios.put(generatePathUrl(parsedUrl, toArray(params), transport), data, config)
 						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
@@ -334,7 +342,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.patch(generatePathUrl(parsedUrl, toArray(params)), data, config);
+							return axios.patch(generatePathUrl(parsedUrl, toArray(params), transport), data, config);
 						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
@@ -375,7 +383,6 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		}
 	};
 }
-
 
 
 export default createBoltClient;

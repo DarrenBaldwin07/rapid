@@ -6,6 +6,11 @@ import type {
 } from './types';
 import { isDynamicRoute, generatePathUrl, toArray } from './util';
 
+
+// TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
+// TODO: Improve some of the generics here (they are a bit messy)
+// TODO: Some of the hover context overlays are bloated with the route generics (not sure how we fix this but would be good to revisit)
+
 type FetchKey<T extends RapidWebHandlerType> =
 	| keyof T['queries']
 	| keyof T['mutations'];
@@ -70,9 +75,9 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				if (isDynamic) {
 					return {
 						post: <
-							T = any,
-							R = AxiosResponse<T, OutputMutationBody>,
-							D = InputBody,
+							T = OutputMutationBody, // The type of the output body
+							R = AxiosResponse<T, OutputMutationBody>, // The type of the response
+							D = InputBody, // The type of the input body
 						>(
 							url: Route | RequestUrl,
 							params: MutationPathType,
@@ -101,7 +106,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				}
 				return {
 					post: <
-						T = any,
+						T = OutputMutationBody,
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
@@ -131,7 +136,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				if (isDynamic) {
 					return {
 						get: <
-							T = any,
+							T = OutputQueryBody,
 							R = AxiosResponse<T, OutputQueryBody>,
 							D = any,
 						>(
@@ -161,7 +166,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				}
 				return {
 					get: <
-						T = any,
+						T = OutputQueryBody,
 						R = AxiosResponse<T, OutputQueryBody>,
 						D = any,
 					>(
@@ -190,7 +195,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				if (isDynamic) {
 					return {
 						delete: <
-							T = any,
+							T = OutputQueryBody,
 							R = AxiosResponse<T, OutputQueryBody>,
 							D = any,
 						>(
@@ -219,7 +224,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				}
 				return {
 					delete: <
-						T = any,
+						T = OutputQueryBody,
 						R = AxiosResponse<T, OutputQueryBody>,
 						D = any,
 					>(
@@ -248,7 +253,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				if (isDynamic) {
 					return {
 						put: <
-							T = any,
+							T = OutputMutationBody,
 							R = AxiosResponse<T, OutputMutationBody>,
 							D = InputBody,
 						>(
@@ -279,7 +284,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				}
 				return {
 					put: <
-						T = any,
+						T = OutputMutationBody,
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
@@ -310,7 +315,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				if (isDynamic) {
 					return {
 						patch: <
-							T = any,
+							T = OutputMutationBody,
 							R = AxiosResponse<T, OutputMutationBody>,
 							D = InputBody,
 						>(
@@ -341,7 +346,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 				}
 				return {
 					patch: <
-						T = any,
+						T = OutputMutationBody,
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
@@ -371,6 +376,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	};
 }
 
-export default createBoltClient;
 
+
+export default createBoltClient;
 

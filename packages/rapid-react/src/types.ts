@@ -75,7 +75,7 @@ export type PatchFunctionDynamic<T1, T2, T3, T4> = {
 export type GetFunctionDynamic<T1, T2, T3> = {
 	get: <
 		W extends T1,
-		T = any,
+		T = any, // Using any here because we do not yet support typesafe output (TODO: support this)
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,

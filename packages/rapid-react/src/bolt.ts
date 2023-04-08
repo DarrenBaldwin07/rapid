@@ -371,66 +371,6 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	};
 }
 
-
-
 export default createBoltClient;
 
-interface Handlers {
-	queries: {
-		"route": {
-			output: any
-			type: 'get'
-			isDynamic: false
-	  },
-	};
-	mutations: {
-		index: {
-			input: User;
-			path: string;
-			output: any;
-			type: 'post';
-			isDynamic: true
-		};
-
-		test: {
-			input: string;
-			output: any;
-			type: 'post';
-			isDynamic: false
-		};
-	};
-}
-
-export interface User {
-	id: number;
-}
-
-const routes = {
-	index: {
-		url: '/',
-		type: 'post',
-	},
-	test: {
-		url: '/test',
-		type: 'post',
-	},
-	test2: {
-		url: '/test2',
-		type: 'put',
-	},
-	test3: {
-		url: '/test3',
-		type: 'get',
-	},
-	"route": {
-		url: '/route',
-		type: 'get'
-	}
-
-} as const;
-
-
-const bolt = createBoltClient<Handlers, typeof routes>(routes);
-
-const req = bolt('route').get('/route')
 

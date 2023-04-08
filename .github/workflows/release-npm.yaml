@@ -2,9 +2,9 @@ name: Publish packages to npm
 
 # Github action for publishig all the Rapid npm packages (@Rapid/react, @Rapid/ui, etc)
 on:
-  push:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+' # Prod build should deploy only on tag
+   push:
+    branches:
+      - bolt-completion # Prod build should deploy only on tag
 
 jobs:
   build-react:

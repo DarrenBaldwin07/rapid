@@ -10,7 +10,7 @@ import {
 	useAccordionContext,
 	useAccordionItemIndex,
 	useAccordionIsOpen,
-} from '../useAccordionHooks';
+} from '../useAccordion';
 import { useCombinedRefs } from '../../../../hooks';
 
 const RAPID_CLASSNAME = 'rapid-accordion-content';

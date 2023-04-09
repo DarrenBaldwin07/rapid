@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import {
 	Button,
 	VStack,
@@ -14,7 +14,10 @@ import {
 	Modal,
 	ModalOverlay,
 	ModalContent,
-	ModalTitle,
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
+	ModalCloseButton,
 	Text,
 	Tooltip,
 	Switch,
@@ -26,25 +29,40 @@ import {
 	Heading,
 	Divider,
 	Flex,
+	Drawer,
+	DrawerContent,
+	DrawerHeader,
+	DrawerBody,
+	DrawerFooter,
+	DrawerCloseButton,
 	Accordion,
 	AccordionItem,
 	AccordionContent,
 	AccordionHeader,
 	AccordionIcon,
 } from '@rapid-web/ui';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faUser,
-	faGear,
-	faBook,
-	faPlus,
-} from '@fortawesome/free-solid-svg-icons';
-import { AnimatePresence } from 'framer-motion';
 import './index.css';
 
 function App() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isEnabled, setIsEnabled] = useState(false);
+	const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+	const [placement, setPlacement] = useState<
+		'left' | 'right' | 'top' | 'bottom'
+	>('left');
+
+	const openDrawer = (position: 'left' | 'right' | 'top' | 'bottom') => {
+		setPlacement(position);
+		setIsOpenDrawer(true);
+	};
+
+	const closeDrawer = () => {
+		setIsOpenDrawer(false);
+	};
+
+	const modalCloseBttn = createRef<HTMLButtonElement>();
+	const drawerCloseBttn = createRef<HTMLButtonElement>();
+
 	return (
 		<Container>
 			<Heading styles='text-center'>Rapid Components</Heading>
@@ -111,28 +129,35 @@ function App() {
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
 				Open Modal
 			</Button>
-			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
-				<ModalOverlay />
-				<ModalContent styles='flex flex-col'>
-					<ModalTitle>Delete Account</ModalTitle>
-
-					<Text styles='mt-2 text-secondaryGrey'>
-						Are you sure you want to delete your account? All of
-						your data will be permanently removed. This action
-						cannot be undone.
-					</Text>
-					<div className='self-end'>
+			<Modal
+				open={isOpen}
+				onClose={() => setIsOpen(false)}
+				initialFocus={modalCloseBttn}
+			>
+				<ModalContent>
+					<ModalHeader>
+						Delete Account
+						<ModalCloseButton />
+					</ModalHeader>
+					<ModalBody>
+						<Text styles='text-secondaryGrey'>
+							Are you sure you want to delete your account? All of
+							your data will be permanently removed. This action
+							cannot be undone.
+						</Text>
+					</ModalBody>
+					<ModalFooter>
 						<Button
-							styles='mt-4 mr-2'
+							ref={modalCloseBttn}
 							variant='outline'
 							onClick={() => setIsOpen(false)}
 						>
 							Cancel
 						</Button>
-						<Button styles='mt-4' onClick={() => setIsOpen(false)}>
+						<Button onClick={() => setIsOpen(false)}>
 							Deactivate
 						</Button>
-					</div>
+					</ModalFooter>
 				</ModalContent>
 			</Modal>
 			<Divider />
@@ -142,6 +167,45 @@ function App() {
 				onChange={(value) => setIsEnabled(value)}
 				size='md'
 			/>
+			<Divider />
+			<h1>Drawer</h1>
+			<Button onClick={() => openDrawer('left')}>Open Left Drawer</Button>
+			<Button onClick={() => openDrawer('right')}>
+				Open Right Drawer
+			</Button>
+			<Button onClick={() => openDrawer('top')}>Open Top Drawer</Button>
+			<Button onClick={() => openDrawer('bottom')}>
+				Open Bottom Drawer
+			</Button>
+			<Drawer
+				open={isOpenDrawer}
+				direction={placement}
+				onClose={closeDrawer}
+				initialFocus={drawerCloseBttn}
+				size='md'
+			>
+				<DrawerContent>
+					<DrawerHeader>
+						<Text>Drawer Title</Text>
+						<DrawerCloseButton />
+					</DrawerHeader>
+					<DrawerBody>
+						<Text>
+							This is the drawer content. You can add any elements
+							here to display inside the drawer.
+						</Text>
+					</DrawerBody>
+					<DrawerFooter>
+						<Button
+							ref={drawerCloseBttn}
+							className='btn btn-primary'
+							onClick={closeDrawer}
+						>
+							Close Drawer
+						</Button>
+					</DrawerFooter>
+				</DrawerContent>
+			</Drawer>
 			<Divider />
 			Accordion
 			<div className='container mx-auto p-4'>

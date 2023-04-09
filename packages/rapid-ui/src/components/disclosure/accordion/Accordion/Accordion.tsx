@@ -1,24 +1,13 @@
 import React, {
-	createContext,
 	useState,
 	forwardRef,
 	DetailedHTMLProps,
 	HTMLAttributes,
 } from 'react';
 import { RapidStyles } from '../../../../utils';
+import { AccordionContext } from '../useAccordion';
 
 const RAPID_CLASSNAME = 'rapid-accordion';
-
-export type AccordionContextType = {
-	allowMultiple: boolean;
-	allowToggle: boolean;
-	activeItems: number[];
-	setActiveItems: React.Dispatch<React.SetStateAction<number[]>>;
-};
-
-export const AccordionContext = createContext<AccordionContextType | undefined>(
-	undefined,
-);
 
 interface AccordionProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

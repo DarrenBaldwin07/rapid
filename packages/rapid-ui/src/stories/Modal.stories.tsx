@@ -1,10 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { useState } from 'react';
+import { useState, createRef } from 'react';
 import {
 	Modal,
-	ModalOverlay,
+	// ModalOverlay,
+	ModalBody,
+	ModalFooter,
 	ModalContent,
-	ModalTitle,
+	ModalHeader,
 	Text,
 	Button,
 } from '..';
@@ -18,30 +20,34 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Modal> = (_: any) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const modalCloseBttn = createRef<HTMLButtonElement>();
+
 	return (
 		<>
 			<Button onClick={() => setIsOpen(true)}>Open</Button>
 			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
-				<ModalOverlay />
+				{/* <ModalOverlay /> */}
 				<ModalContent>
-					<ModalTitle>Delete Account</ModalTitle>
-
-					<Text styles='mt-2 text-secondaryGrey'>
-						Are you sure you want to delete your account? All of
-						your data will be permanently removed. This action
-						cannot be undone.
-					</Text>
-
-					<Button styles='mt-4 mr-2' onClick={() => setIsOpen(false)}>
-						Delete
-					</Button>
-					<Button
-						styles='mt-4'
-						variant='outline'
-						onClick={() => setIsOpen(false)}
-					>
-						Cancel
-					</Button>
+					<ModalHeader>Delete Account</ModalHeader>
+					<ModalBody>
+						<Text styles='text-secondaryGrey'>
+							Are you sure you want to delete your account? All of
+							your data will be permanently removed. This action
+							cannot be undone.
+						</Text>
+					</ModalBody>
+					<ModalFooter>
+						<Button
+							ref={modalCloseBttn}
+							variant='outline'
+							onClick={() => setIsOpen(false)}
+						>
+							Cancel
+						</Button>
+						<Button onClick={() => setIsOpen(false)}>
+							Deactivate
+						</Button>
+					</ModalFooter>
 				</ModalContent>
 			</Modal>
 		</>

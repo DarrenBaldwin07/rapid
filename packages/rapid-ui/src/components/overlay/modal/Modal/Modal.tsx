@@ -1,36 +1,98 @@
-import React, { ElementType } from 'react';
+import React, {
+	useEffect,
+	useMemo,
+	HTMLAttributes,
+	RefObject,
+	forwardRef,
+	KeyboardEvent,
+	useCallback,
+} from 'react';
 import { RapidStyles } from '../../../../utils';
-import { Dialog } from '@headlessui/react';
-
-// TODO: HeadlessUI still does not export component prop types -- later on we want to clean this up once they do!
-// See this issue: https://github.com/tailwindlabs/headlessui/issues/1394
+import { ModalOverlay } from '../';
+import { Portal } from '../../../utilities/portal';
+import { ModalContext } from '../useModal';
+import { AnimatePresence } from 'framer-motion';
 
 const RAPID_CLASSNAME = 'rapid-modal';
 
-interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
-	styles?: string;
+interface ModalProps extends HTMLAttributes<HTMLDivElement> {
 	open: boolean;
 	onClose: () => void;
-	initialFocus?: React.MutableRefObject<HTMLElement>;
-	as?: ElementType<any>;
-	static?: boolean;
+	initialFocus?: RefObject<HTMLElement>;
+	enableAnimation?: boolean;
+	styles?: string;
 }
 
-const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
-	({ styles, ...rest }, ref) => {
+const Modal = forwardRef<HTMLDivElement, ModalProps>(
+	(
+		{
+			open,
+			onClose,
+			initialFocus,
+			enableAnimation = true,
+			styles,
+			children,
+			...rest
+		},
+		ref,
+	) => {
+		useEffect(() => {
+			if (open) {
+				if (initialFocus && initialFocus.current) {
+					initialFocus.current.focus();
+				} else {
+					const firstFocusableElement = document.querySelector(
+						`.${RAPID_CLASSNAME}`,
+					) as HTMLElement;
+					if (firstFocusableElement) {
+						firstFocusableElement.focus({
+							preventScroll: true,
+						});
+					}
+				}
+			}
+		}, [open, initialFocus]);
+
+		const handleKeyDown = useCallback(
+			(e: KeyboardEvent<HTMLDivElement>) => {
+				if (e.key === 'Escape') {
+					onClose();
+				}
+			},
+			[onClose],
+		);
+
+		const contextValue = useMemo(
+			() => ({ open, onClose, enableAnimation }),
+			[open, onClose, enableAnimation],
+		);
+
 		return (
-			<Dialog
-				className={RapidStyles(
-					styles || rest.className,
-					RAPID_CLASSNAME,
-				)}
-				{...rest}
-				ref={ref}
-			/>
+			<AnimatePresence>
+				{open ? (
+					<Portal className={'absolute'}>
+						<ModalContext.Provider value={contextValue}>
+							<div
+								ref={ref}
+								{...rest}
+								role='dialog'
+								tabIndex={-1}
+								data-focus-guard
+								onKeyDown={handleKeyDown}
+								className={RapidStyles(
+									styles || rest.className,
+									RAPID_CLASSNAME,
+								)}
+							>
+								<ModalOverlay />
+								{children}
+							</div>
+						</ModalContext.Provider>
+					</Portal>
+				) : null}
+			</AnimatePresence>
 		);
 	},
 );
-
-Modal.displayName = 'Modal';
 
 export default Modal;

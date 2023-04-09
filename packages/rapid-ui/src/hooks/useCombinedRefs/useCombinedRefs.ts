@@ -1,19 +1,18 @@
-import React, { MutableRefObject } from 'react';
+import { MutableRefObject, useRef, useEffect } from 'react';
 
-const useCombinedRefs = <T>(
-	...refs: Array<
-		MutableRefObject<T | null> | ((instance: T | null) => void) | null
-	>
-): MutableRefObject<T | null> => {
-	const targetRef = React.useRef<T | null>(null);
+type ReactRef<T> = React.Ref<T> | React.MutableRefObject<T>;
 
-	React.useEffect(() => {
+const useCombinedRefs = <T>(...refs: (ReactRef<T> | undefined)[]) => {
+	const targetRef = useRef<T | null>(null);
+
+	useEffect(() => {
 		refs.forEach((ref) => {
 			if (!ref) return;
 
 			if (typeof ref === 'function') {
 				ref(targetRef.current);
 			} else {
+				// @ts-ignore
 				ref.current = targetRef.current;
 			}
 		});

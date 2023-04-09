@@ -3,7 +3,7 @@ name: test
 on:
   push:
     branches:
-      - bolt-completion # Currently this workflow runs on every merge to main (we may want to change this to ever branch or maybe even only on tag?)
+      - main # Currently this workflow runs on every merge to main (we may want to change this to ever branch or maybe even only on tag?)
 
 jobs:
   test-rapid-ui:

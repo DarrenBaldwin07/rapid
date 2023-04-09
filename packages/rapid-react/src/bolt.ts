@@ -24,6 +24,8 @@ interface BoltConfig {
  * Creates a new typesafe Bolt client for the given routes
  * Note: All routes are generated and exported from the Rapid-web rust crate
  *
+ * @param routes - The routes that you want to fetch from your rust backend
+ * @param config - The bolt config object
  * @returns A new Bolt client
  *
  * TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
@@ -42,6 +44,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	routes: BoltRoutes,
 	config: BoltConfig
 ) {
+	// Get our transport string from the bolt config object (eventually this will be expanded to have more options)
 	const transport = config.transport;
 
 	return <Key extends FetchKey<T> & string, >(key: Key) => {

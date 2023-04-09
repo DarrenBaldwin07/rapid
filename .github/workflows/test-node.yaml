@@ -1,9 +1,6 @@
 name: test
 
-on:
-  push:
-    branches:
-      - main # Currently this workflow runs on every merge to main (we may want to change this to ever branch or maybe even only on tag?)
+on: [push, pull_request] # CI should run on every push and pull request
 
 jobs:
   test-rapid-ui:

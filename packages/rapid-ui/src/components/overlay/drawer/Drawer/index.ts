@@ -1,10 +1,9 @@
 export {
-	Drawer,
+	default as Drawer,
 	DrawerOverlay,
-	DrawerContent,
 	DrawerCloseButton,
 	DrawerHeader,
 	DrawerBody,
 	DrawerFooter,
 } from './Drawer';
-export { useDrawer, DrawerProvider } from './DrawerContext';
+export type { DrawerDirections, DrawerSizes } from './Drawer';

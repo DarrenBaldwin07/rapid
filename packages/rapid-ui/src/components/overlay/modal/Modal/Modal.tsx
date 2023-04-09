@@ -1,32 +1,41 @@
 import React, {
-	ElementType,
 	useEffect,
 	useMemo,
 	HTMLAttributes,
-	MutableRefObject,
+	RefObject,
 	forwardRef,
 	KeyboardEvent,
 	useCallback,
 } from 'react';
 import { RapidStyles } from '../../../../utils';
 import { ModalOverlay } from '../';
-// import { useCombinedRefs } from '../../../../hooks';
 import { Portal } from '../../../utilities/portal';
 import { ModalContext } from '../useModal';
+import { AnimatePresence } from 'framer-motion';
 
 const RAPID_CLASSNAME = 'rapid-modal';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
-	styles?: string;
 	open: boolean;
 	onClose: () => void;
-	initialFocus?: MutableRefObject<HTMLElement>;
-	as?: ElementType<any>;
-	static?: boolean;
+	initialFocus?: RefObject<HTMLElement>;
+	enableAnimation?: boolean;
+	styles?: string;
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
-	({ styles, open, onClose, initialFocus, children, ...rest }, ref) => {
+	(
+		{
+			open,
+			onClose,
+			initialFocus,
+			enableAnimation = true,
+			styles,
+			children,
+			...rest
+		},
+		ref,
+	) => {
 		useEffect(() => {
 			if (open) {
 				if (initialFocus && initialFocus.current) {
@@ -54,12 +63,12 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 		);
 
 		const contextValue = useMemo(
-			() => ({ open, onClose }),
-			[open, onClose],
+			() => ({ open, onClose, enableAnimation }),
+			[open, onClose, enableAnimation],
 		);
 
 		return (
-			<>
+			<AnimatePresence>
 				{open ? (
 					<Portal className={'absolute'}>
 						<ModalContext.Provider value={contextValue}>
@@ -67,7 +76,6 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 								ref={ref}
 								{...rest}
 								role='dialog'
-								aria-modal='true'
 								tabIndex={-1}
 								data-focus-guard
 								onKeyDown={handleKeyDown}
@@ -82,7 +90,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 						</ModalContext.Provider>
 					</Portal>
 				) : null}
-			</>
+			</AnimatePresence>
 		);
 	},
 );

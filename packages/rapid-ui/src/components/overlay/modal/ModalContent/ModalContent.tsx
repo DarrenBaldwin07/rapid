@@ -2,7 +2,7 @@ import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { RapidStyles } from '../../../../utils';
 import { ScaleFade } from '../../../transition';
 import { useDidClickOutside, useMergeRefs } from '../../../../hooks';
-import { useModalClose } from '../useModal';
+import { useModalContext } from '../useModal';
 
 const RAPID_CLASSNAME = 'rapid-modal-content';
 const CONTAINER_CLASS = 'rapid-modal-panel-container';
@@ -19,7 +19,7 @@ interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
 
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 	({ styles, containerStyles, children, ...rest }, ref) => {
-		const onClose = useModalClose();
+		const { onClose, enableAnimation } = useModalContext();
 
 		const clickOutsideRef = useDidClickOutside({
 			onMatch: () => onClose(),
@@ -28,13 +28,16 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 
 		return (
 			<div
+				aria-modal='true'
+				aria-labelledby='rapid-modal-header'
+				aria-describedby='rapid-modal-body'
 				className={RapidStyles(
 					containerStyles,
 					DEFAULT_CONTAINER_STYLES,
 					CONTAINER_CLASS,
 				)}
 			>
-				<ScaleFade>
+				<ScaleFade isEnabled={enableAnimation}>
 					<div
 						ref={useMergeRefs(ref, clickOutsideRef)}
 						{...rest}

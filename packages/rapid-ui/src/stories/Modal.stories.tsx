@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { useState } from 'react';
+import { useState, createRef } from 'react';
 import {
 	Modal,
 	// ModalOverlay,
@@ -20,6 +20,8 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Modal> = (_: any) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const modalCloseBttn = createRef<HTMLButtonElement>();
+
 	return (
 		<>
 			<Button onClick={() => setIsOpen(true)}>Open</Button>
@@ -36,6 +38,7 @@ const Template: ComponentStory<typeof Modal> = (_: any) => {
 					</ModalBody>
 					<ModalFooter>
 						<Button
+							ref={modalCloseBttn}
 							variant='outline'
 							onClick={() => setIsOpen(false)}
 						>

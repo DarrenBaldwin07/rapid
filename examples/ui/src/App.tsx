@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import {
 	Button,
 	VStack,
@@ -17,6 +17,7 @@ import {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
+	ModalCloseButton,
 	Text,
 	Tooltip,
 	Switch,
@@ -29,6 +30,7 @@ import {
 	Divider,
 	Flex,
 	Drawer,
+	DrawerContent,
 	DrawerHeader,
 	DrawerBody,
 	DrawerFooter,
@@ -39,14 +41,6 @@ import {
 	AccordionHeader,
 	AccordionIcon,
 } from '@rapid-web/ui';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faUser,
-	faGear,
-	faBook,
-	faPlus,
-} from '@fortawesome/free-solid-svg-icons';
-import { AnimatePresence } from 'framer-motion';
 import './index.css';
 
 function App() {
@@ -63,8 +57,11 @@ function App() {
 	};
 
 	const closeDrawer = () => {
-		setIsOpen(false);
+		setIsOpenDrawer(false);
 	};
+
+	const modalCloseBttn = createRef<HTMLButtonElement>();
+	const drawerCloseBttn = createRef<HTMLButtonElement>();
 
 	return (
 		<Container>
@@ -132,10 +129,16 @@ function App() {
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
 				Open Modal
 			</Button>
-			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
-				{/* <ModalOverlay /> */}
+			<Modal
+				open={isOpen}
+				onClose={() => setIsOpen(false)}
+				initialFocus={modalCloseBttn}
+			>
 				<ModalContent>
-					<ModalHeader>Delete Account</ModalHeader>
+					<ModalHeader>
+						Delete Account
+						<ModalCloseButton />
+					</ModalHeader>
 					<ModalBody>
 						<Text styles='text-secondaryGrey'>
 							Are you sure you want to delete your account? All of
@@ -145,6 +148,7 @@ function App() {
 					</ModalBody>
 					<ModalFooter>
 						<Button
+							ref={modalCloseBttn}
 							variant='outline'
 							onClick={() => setIsOpen(false)}
 						>
@@ -164,7 +168,7 @@ function App() {
 				size='md'
 			/>
 			<Divider />
-			<h1>Drawer Component Example</h1>
+			<h1>Drawer</h1>
 			<Button onClick={() => openDrawer('left')}>Open Left Drawer</Button>
 			<Button onClick={() => openDrawer('right')}>
 				Open Right Drawer
@@ -174,27 +178,35 @@ function App() {
 				Open Bottom Drawer
 			</Button>
 			<Drawer
-				isOpen={isOpenDrawer}
-				placement={placement}
+				open={isOpenDrawer}
+				direction={placement}
 				onClose={closeDrawer}
+				initialFocus={drawerCloseBttn}
+				size='md'
 			>
-				<DrawerHeader>Drawer Title</DrawerHeader>
-				<DrawerBody>
-					<p>
-						This is the drawer content. You can add any elements
-						here to display inside the drawer.
-					</p>
-				</DrawerBody>
-				<DrawerFooter>
-					{/* <button
+				<DrawerContent>
+					<DrawerHeader>
+						<Text>Drawer Title</Text>
+						<DrawerCloseButton />
+					</DrawerHeader>
+					<DrawerBody>
+						<Text>
+							This is the drawer content. You can add any elements
+							here to display inside the drawer.
+						</Text>
+					</DrawerBody>
+					<DrawerFooter>
+						<Button
+							ref={drawerCloseBttn}
 							className='btn btn-primary'
 							onClick={closeDrawer}
 						>
 							Close Drawer
-						</button> */}
-					<DrawerCloseButton />
-				</DrawerFooter>
+						</Button>
+					</DrawerFooter>
+				</DrawerContent>
 			</Drawer>
+			<Divider />
 			Accordion
 			<div className='container mx-auto p-4'>
 				<Accordion allowMultiple allowToggle defaultIndexes={[0, 2]}>

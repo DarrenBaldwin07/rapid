@@ -1,0 +1,5 @@
+// Vitest Snapshot v1
+
+exports[`Modal > should render correctly with non default props 1`] = `<div />`;
+
+exports[`Modal > should render default correctly 1`] = `<div />`;

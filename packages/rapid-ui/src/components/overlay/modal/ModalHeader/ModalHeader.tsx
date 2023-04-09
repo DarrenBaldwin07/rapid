@@ -1,9 +1,8 @@
 import React, { HTMLAttributes, forwardRef } from 'react';
 import { RapidStyles } from '../../../../utils';
-import { ModalCloseButton } from '../ModalCloseButton';
 
-const RAPID_CLASSNAME = 'rapid-modal-title';
-const TITLE_STYLES = 'text-lg font-semibold p-4';
+const RAPID_CLASSNAME = 'rapid-modal-header';
+const TITLE_STYLES = 'text-lg font-semibold p-4'; //  justify-between items-center
 
 interface ModalHeaderProps extends HTMLAttributes<HTMLHeadingElement> {
 	styles?: string;
@@ -12,7 +11,8 @@ interface ModalHeaderProps extends HTMLAttributes<HTMLHeadingElement> {
 const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
 	({ styles, children, ...rest }, ref) => {
 		return (
-			<h2
+			<header
+				id={RAPID_CLASSNAME}
 				ref={ref}
 				{...rest}
 				className={RapidStyles(
@@ -22,8 +22,7 @@ const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
 				)}
 			>
 				{children}
-				<ModalCloseButton />
-			</h2>
+			</header>
 		);
 	},
 );

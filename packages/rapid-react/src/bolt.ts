@@ -33,7 +33,7 @@ interface BoltConfig {
  * # Example
  * ```ts
  * // Create a new bolt client
- * const bolt = createBoltClient(routes);
+ * const bolt = createBoltClient<Handlers, typeof routes>(routes, config);
  * // Fetch data from your rust backend with full typesafety!
  * const route = bolt('getUsers').post('/users', { id: 1 });
  *```

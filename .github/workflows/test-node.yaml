@@ -1,0 +1,50 @@
+name: test
+
+on:
+  push:
+    branches:
+      - bolt-completion # Currently this workflow runs on every merge to main (we may want to change this to ever branch or maybe even only on tag?)
+
+jobs:
+  test-rapid-ui:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/rapid-ui
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies with pnpm
+        run: |
+          npm install -g pnpm
+          pnpm install
+
+      - name: Run vitest tests
+        run: pnpm run test
+  test-rapid-react:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/rapid-react
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies with pnpm
+        run: |
+          npm install -g pnpm
+          pnpm install
+
+      - name: Run vitest tests
+        run: pnpm run test

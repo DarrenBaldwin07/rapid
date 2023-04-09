@@ -31,6 +31,7 @@ export const generatePathUrl = (path: string, updated_paths: Array<any>, baseUrl
     return `${baseUrl}${path}`;
 }
 
+// Converts any given javascript value/object to an array of that same value
 export const toArray = (obj: any): any[] => {
     if (Array.isArray(obj)) {
         return obj;

@@ -4,7 +4,7 @@ import { RapidStyles } from '../../../../utils';
 import { Button } from '../../../primitives';
 
 const RAPID_CLASSNAME = 'rapid-modal-close-button';
-const BUTTON_STYLES = 'absolute top-4 right-4 p-2 hover:bg-lightGrey';
+const BUTTON_STYLES = 'absolute top-4 right-4 p-2';
 
 interface ModalCloseButtonProps
 	extends ButtonHTMLAttributes<HTMLButtonElement> {

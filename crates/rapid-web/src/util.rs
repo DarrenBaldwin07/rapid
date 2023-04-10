@@ -13,7 +13,7 @@ pub fn check_for_invalid_handlers(dir: &str) {
 		// Check to make sure that the rust file is not a mod.rs file and is valid (it also cannot be a middleware file either)
 		if entry.path().extension().and_then(|ext| ext.to_str()) == Some("rs")
 			&& entry.path().file_name().and_then(|name| name.to_str()) != Some("mod.rs")
-			&& entry.path().file_name().and_then(|name| name.to_str()) != Some("_middleware.rs")
+			&& entry.path().file_name().and_then(|name| name.to_str()) != Some("_middleware.rs") // TODO: we can exclude other files here (may want to include _types.rs)
 		{
 			// Read the rust file to a string
 			let mut file = File::open(entry.path()).unwrap();

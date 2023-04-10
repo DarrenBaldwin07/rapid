@@ -1,17 +1,37 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import { Text } from '../';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
 	title: 'Components/primitives/Text',
 	component: Text,
+	argTypes: {
+		as: {
+			control: 'select',
+			options: [
+				'p',
+				'span',
+				'i',
+				'b',
+				'u',
+				'abbr',
+				'cite',
+				'kbd',
+				'mark',
+				's',
+				'samp',
+				'sup',
+			],
+			description: 'The HTML element used for the Text component.',
+		},
+		styles: {
+			control: 'text',
+			description: 'Additional styles for the Text component.',
+		},
+	},
 } as ComponentMeta<typeof Text>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Text> = (_: any) => (
-	<Text>Hello World!</Text>
+const Template: ComponentStory<typeof Text> = (args) => (
+	<Text {...args}>Hello World!</Text>
 );
 
 export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args

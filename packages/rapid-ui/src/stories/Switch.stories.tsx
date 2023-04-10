@@ -1,22 +1,51 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { useState } from 'react';
-import { Switch } from '../';
+import React, { useState } from 'react';
+import { ComponentStory } from '@storybook/react';
+import { Switch, SwitchProps } from '../';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
 	title: 'Components/forms/Switch',
 	component: Switch,
-} as ComponentMeta<typeof Switch>;
+	args: {
+		ariaLabel: 'Toggle Switch',
+	},
+	argTypes: {
+		enabled: {
+			control: { type: 'boolean' },
+			description: 'Whether the switch is enabled or disabled.',
+		},
+		size: {
+			control: { type: 'inline-radio', options: ['sm', 'md', 'lg'] },
+			description: 'The size of the switch.',
+		},
+		variant: {
+			control: { type: 'text' },
+			description: 'The variant of the switch.',
+		},
+		enabledStyles: {
+			control: { type: 'text' },
+			description: 'Custom styles for the enabled state of the switch.',
+		},
+		disabledStyles: {
+			control: { type: 'text' },
+			description: 'Custom styles for the disabled state of the switch.',
+		},
+	},
+};
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Switch> = (_: any) => {
-	const [enabled, setEnabled] = useState(false);
+const Template: ComponentStory<typeof Switch> = (args: SwitchProps) => {
+	const [enabled, setEnabled] = useState(args.enabled);
 	return (
 		<div>
-			<Switch enabled={enabled} onChange={(value) => setEnabled(value)} />
+			<Switch
+				{...args}
+				enabled={enabled}
+				onChange={(value) => setEnabled(value)}
+			/>
 		</div>
 	);
 };
 
 export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+Primary.args = {
+	enabled: true,
+};

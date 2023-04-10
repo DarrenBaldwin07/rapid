@@ -47,13 +47,15 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 		};
 
 		const getDirectionStyles = (direction: Direction) => {
+			const spaceValue = getSpacing(spacing);
 			switch (direction) {
 				case 'row':
-					return `flex space-x-${getSpacing(spacing)}`;
+					return `flex ${`space-x-${spaceValue}`}`;
 				case 'column':
-					return `flex flex-col space-y-${getSpacing(spacing)}`;
+					return `flex flex-col ${`space-y-${spaceValue}`}`;
 			}
 		};
+
 		// This component does not support custom dividers or wrapping (maybe a TODO ?)
 		return (
 			<div

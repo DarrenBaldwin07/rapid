@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, forwardRef } from 'react';
+import React, { HTMLAttributes, forwardRef, useEffect } from 'react';
 import { RapidStyles } from '../../../../utils';
 import { Fade } from '../../../transition';
 
@@ -11,6 +11,14 @@ interface ModalOverlayProps extends HTMLAttributes<HTMLDivElement> {
 
 const ModalOverlay = forwardRef<HTMLDivElement, ModalOverlayProps>(
 	({ styles, ...rest }, ref) => {
+		// add css to body element to prevent scrolling when modal is open
+		useEffect(() => {
+			document.body.style.overflow = 'hidden';
+			return () => {
+				document.body.style.overflow = 'auto';
+			};
+		}, []);
+
 		return (
 			<Fade initialOpacity={0.75}>
 				<div

@@ -23,7 +23,7 @@ export const switchTheme = createVariant({
 	},
 });
 
-interface SwitchProps extends SwitchGroupProps<typeof HeadlessSwitch> {
+export interface SwitchProps extends SwitchGroupProps<typeof HeadlessSwitch> {
 	styles?: string;
 	ariaLabel?: string;
 	enabled: boolean;

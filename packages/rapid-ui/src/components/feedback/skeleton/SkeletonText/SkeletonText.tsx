@@ -8,16 +8,16 @@ import type { Speed } from '..';
 
 const RAPID_CLASSNAME = 'rapid-skeleton';
 
-interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
-	styles?: string;
+interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> {
 	isLoading?: boolean;
-	containerStyles?: string;
-	lineSpacing?: Spacing;
 	numberOfLines?: number;
 	speed?: Speed;
+	lineSpacing?: Spacing;
+	containerStyles?: string;
+	styles?: string;
 }
 
-const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonProps>(
+const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
 	(
 		{
 			styles,

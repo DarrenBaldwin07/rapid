@@ -5,4 +5,7 @@
 <a href='https://rapid.cincinnati.ventures/' target='_blank'>rapid.cincinnati.ventures</a>
 </div>
 
+<br />
+<br />
+
 > Checkout all the components on our storybook found here: http://storybook.rapid.cincinnati.ventures/

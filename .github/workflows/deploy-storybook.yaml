@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build all components
+        run: npm run build
+
       - name: Build CSS
         run: npx tailwindcss -i ./src/styles/index.css -o ./src/styles/tailwind-dev.css
 

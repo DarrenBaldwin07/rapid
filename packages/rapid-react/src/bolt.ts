@@ -134,7 +134,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						} else {
 							parsedUrl = url.url;
 						}
-						return axios.post(parsedUrl, data, config);
+						return axios.post(`${parsedUrl}${transport}`, data, config);
 					},
 				} as Bolt<
 					T['mutations'][Key]['type'],

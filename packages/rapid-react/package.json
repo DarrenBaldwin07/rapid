@@ -1,7 +1,7 @@
 {
 	"name": "@rapid-web/react",
 	"description": "React DOM bindings for the Rapid framework",
-	"version": "0.0.9",
+	"version": "0.1.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Cincinnati-Ventures/rapid",

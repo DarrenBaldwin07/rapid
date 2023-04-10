@@ -11,7 +11,7 @@ vi.mock('axios',  () => ({
 import axios from 'axios';
 
 
-// Test handlers + routes
+// Testcase handlers + routes
 interface Handlers {
 	queries: {
 		"route": {
@@ -34,7 +34,7 @@ const routes = {
 
 describe('bolt', () => {
     test('createBoltClient', async () => {
-        it('handles a GET request', async () => {
+        it('handles a standard request with output data', async () => {
             // prepare our mock
             const mockedAxios = axios as jest.Mocked<typeof axios>;
             const outputData = { id: 1, name: 'bilbo', age: 22 };

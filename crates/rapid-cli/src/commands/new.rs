@@ -2,6 +2,7 @@ use super::RapidCommand;
 use crate::{
 	cli::{current_directory, logo, rapid_logo, Config},
 	constants::BOLT_EMOJI,
+	tui::clean_console
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};

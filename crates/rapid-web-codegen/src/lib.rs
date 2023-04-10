@@ -10,6 +10,9 @@ use std::{
 };
 use utils::{base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler};
 
+
+// TODO: some of this could leverage tokio
+
 /// Inits a traditional actix-web server entrypoint
 /// Note: this is only being done because we need to re-route the macro to point at rapid_web instead of actix
 ///

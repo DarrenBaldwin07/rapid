@@ -22,13 +22,13 @@ Rapid uses React and Rust as the foundation for its fullstack tooling. Do your h
 
 # Rapid Libs
 
-### Backend (all on crates.io coming soon)
+### Backend (all on crates.io)
 
 -   rapid-web
 -   rapid-ssr
 -   rapid-cli
 
-### Frontend
+### Frontend (all on npm)
 
 -   @rapid-web/react
 -   @rapid-web/ui

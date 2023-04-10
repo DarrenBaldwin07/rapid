@@ -3,7 +3,7 @@ name: Publish crates to crates.io
 on:
   push:
     branches:
-    - main # Prod build should deploy only on tag
+      - main
 
 jobs:
   publish-rapid-web:

@@ -5,6 +5,8 @@ use rapid_web::{
 };
 use rapid_web_codegen::main;
 
+// TODO: this example is outdated and needs updated
+
 async fn index() -> HttpResponse {
 	HttpResponse::Ok().body("Hey there!")
 }

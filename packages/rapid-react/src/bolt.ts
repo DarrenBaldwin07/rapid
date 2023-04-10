@@ -55,7 +55,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		// Grab the route path (this is what we will use to check if the route is a dynamic route)
 		const routePath = route.url;
 		// Check if the route path is a dynamic route
-		const isDynamic = isDynamicRoute(routePath) ? 'dynamic' : 'default';
+		const isDynamic = isDynamicRoute(routePath);
 
 		// Get the type that the input body should be (for post, delete, put, and patch requests)
 		type InputBody = T['mutations'][typeof key]['input'];
@@ -130,11 +130,11 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 
 						// Use a type guard to make sure we extract the URL we need
 						if (typeof url === 'string') {
-							parsedUrl = url;
+							parsedUrl = `${transport}${url}`;
 						} else {
-							parsedUrl = url.url;
+							parsedUrl = `${transport}${url.url}`;
 						}
-						return axios.post(`${parsedUrl}${transport}`, data, config);
+						return axios.post(parsedUrl, data, config);
 					},
 				} as Bolt<
 					T['mutations'][Key]['type'],
@@ -189,9 +189,9 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 
 						// Use a type guard to make sure we extract the URL we need
 						if (typeof url === 'string') {
-							parsedUrl = url;
+							parsedUrl = `${transport}${url}`;
 						} else {
-							parsedUrl = url.url;
+							parsedUrl = `${transport}${url.url}`;
 						}
 						return axios.get(parsedUrl, config)
 					},
@@ -247,10 +247,11 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 
 						// Use a type guard to make sure we extract the URL we need
 						if (typeof url === 'string') {
-							parsedUrl = url;
+							parsedUrl = `${transport}${url}`;
 						} else {
-							parsedUrl = url.url;
+							parsedUrl = `${transport}${url.url}`;
 						}
+
 						return axios.delete(parsedUrl, config)
 					},
 				} as Bolt<
@@ -308,9 +309,9 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 
 						// Use a type guard to make sure we extract the URL we need
 						if (typeof url === 'string') {
-							parsedUrl = url;
+							parsedUrl = `${transport}${url}`;
 						} else {
-							parsedUrl = url.url;
+							parsedUrl = `${transport}${url.url}`;
 						}
 
 						return axios.put(parsedUrl, data, config)
@@ -370,9 +371,9 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 
 						// Use a type guard to make sure we extract the URL we need
 						if (typeof url === 'string') {
-							parsedUrl = url;
+							parsedUrl = `${transport}${url}`;
 						} else {
-							parsedUrl = url.url;
+							parsedUrl = `${transport}${url.url}`;
 						}
 						return axios.patch(parsedUrl, data, config)
 					},

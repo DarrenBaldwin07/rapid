@@ -1,14 +1,14 @@
 ![banner (7)](https://user-images.githubusercontent.com/68653294/218370294-a4bcaef6-087c-489e-8748-0b2eea0fcb90.jpg)
 
 <h1 align='center'>Rapid</h1>
-<h4 align='center'>The complete fullstack toolkit for building advanced, scallable, and highly efficient software.</h4>
+<h4 align='center'>The intersection between developer experience and scalability!</h4>
 <div align='center'>
-<a href='https://rapid.cincinnati.ventures/' target='_blank'>rapid.cincinnati.ventures</a>
+    <a href='https://rapid.cincinnati.ventures/' target='_blank'>rapid.cincinnati.ventures</a>
 </div>
 
 # What is Rapid?
 
-Rapid is a framework built to enable developers to create full-stack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing developer experience.
+The complete fullstack toolkit for building advanced, scallable, and highly efficient software. Rapid is a framework built to enable developers to create full-stack applications with React and Rust. Rapid focuses on scalability and performance without sacrificing developer experience.
 
 # Why Rapid?
 

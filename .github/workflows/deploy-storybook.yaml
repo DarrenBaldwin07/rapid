@@ -1,6 +1,9 @@
 name: Storybook
 
-on: [push, pull_request] # Stoybook will be deployed on every push and pull request
+on:
+  push:
+    branches:
+      - main # Stoybook will be deployed on every merge into the main branch
 
 jobs:
   deploy:

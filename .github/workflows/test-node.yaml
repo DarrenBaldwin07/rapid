@@ -1,6 +1,6 @@
 name: test
 
-on: [push, pull_request] # CI should run on every push and pull request
+on: [pull_request] # CI should only run on pull requests
 
 jobs:
   test-rapid-ui:

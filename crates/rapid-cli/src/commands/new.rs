@@ -179,8 +179,10 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	println!("{}", "\nInitializing a new rapid-web server application...".color(Color::LightCyan));
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(500);
+	let timeout = time::Duration::from_millis(675);
 	thread::sleep(timeout);
+
+	clean_console();
 
 	println!(
 		"\n\n{} {} {} {}",

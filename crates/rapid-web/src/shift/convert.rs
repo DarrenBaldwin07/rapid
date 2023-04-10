@@ -295,7 +295,7 @@ impl TypescriptConverter {
 
 	}
 
-	// TODO
+	// TODO: we should also convert constants to typescript aliases as well
 	pub fn convert_const() {
 
 	}

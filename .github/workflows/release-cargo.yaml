@@ -3,7 +3,7 @@ name: Publish crates to crates.io
 on:
   push:
     branches:
-      - main
+      - rapid-launch
 
 jobs:
   publish-rapid-web:

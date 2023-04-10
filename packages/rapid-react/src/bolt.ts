@@ -1,28 +1,53 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import {
+import type {
 	RapidWebHandlerType,
 	BoltRoutes,
-	BoltOutput,
+	Bolt
 } from './types';
-import { isDynamicRoute } from './util';
+import { isDynamicRoute, generatePathUrl, toArray } from './util';
+
+
+// TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
+// TODO: Improve some of the generics here (they are a bit messy)
+// TODO: Some of the hover context overlays are bloated with the route generics (not sure how we fix this but would be good to revisit)
 
 type FetchKey<T extends RapidWebHandlerType> =
 	| keyof T['queries']
 	| keyof T['mutations'];
 
+/// The bolt config object (this will expand to have more options in the future)
+interface BoltConfig {
+	transport: string
+}
+
 /**
  * Creates a new typesafe Bolt client for the given routes
+ * Note: All routes are generated and exported from the Rapid-web rust crate
  *
- * @returns A new bolt client
+ * @param routes - The routes that you want to fetch from your rust backend
+ * @param config - The bolt config object
+ * @returns A new Bolt client
  *
- * TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2)
+ * TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
+ *
+ * # Example
+ * ```ts
+ * // Create a new bolt client
+ * const bolt = createBoltClient<Handlers, typeof routes>(routes, config);
+ * // Fetch data from your rust backend with full typesafety!
+ * const route = bolt('getUsers').post('/users', { id: 1 });
+ *```
  *
  * @beta
  */
 function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	routes: BoltRoutes,
+	config: BoltConfig
 ) {
-	return <Key extends FetchKey<T> & string>(key: Key) => {
+	// Get our transport string from the bolt config object (eventually this will be expanded to have more options)
+	const transport = config.transport;
+
+	return <Key extends FetchKey<T> & string, >(key: Key) => {
 		// Get a reference to the route that we are trying to fetch
 		const route = routes[key];
 		// Grab the route type
@@ -45,92 +70,324 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		type QueryPathType =  T['queries'][typeof key]['path'];
 		type MutationPathType =  T['mutations'][typeof key]['path'];
 
+		// Grab our type for the dynamic mutation params
+		type isDynamicMutationType = T['mutations'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+		// Grab our type for the dynamic query params
+		type isDynamicQueryType = T['queries'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+
+		// Generate a type for our bolt route object
+		type Route = {
+			url: RequestUrl;
+			type: typeof routeType;
+		}
+
 		switch (routeType) {
 			case 'post':
+				if (isDynamic) {
+					return {
+						post: <
+							T = OutputMutationBody, // The type of the output body
+							R = AxiosResponse<T, OutputMutationBody>, // The type of the response
+							D = InputBody, // The type of the input body
+						>(
+							url: Route | RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.post(generatePathUrl(parsedUrl, toArray(params), transport), data, config)
+						},
+					} as Bolt<
+						T['mutations'][Key]['type'],
+						Route | RequestUrl,
+						R,
+						InputBody,
+						MutationPathType
+					>[isDynamicMutationType];
+				}
 				return {
 					post: <
-						T = any,
+						T = OutputMutationBody,
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.post(url, data, config),
-				} as BoltOutput<
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+						return axios.post(parsedUrl, data, config);
+					},
+				} as Bolt<
 					T['mutations'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
-					InputBody
-				>;
+					InputBody,
+					MutationPathType
+				>[isDynamicMutationType];
 			case 'get':
+				if (isDynamic) {
+					return {
+						get: <
+							T = OutputQueryBody,
+							R = AxiosResponse<T, OutputQueryBody>,
+							D = any,
+						>(
+							url: Route | RequestUrl,
+							params: QueryPathType,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.get(generatePathUrl(parsedUrl, toArray(params), transport), config);
+						},
+					} as Bolt<
+						T['queries'][Key]['type'],
+						Route | RequestUrl,
+						R,
+						never,
+						QueryPathType
+					>[isDynamicQueryType];
+				}
 				return {
 					get: <
-						T = any,
+						T = OutputQueryBody,
 						R = AxiosResponse<T, OutputQueryBody>,
 						D = any,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.get(url, config),
-				} as BoltOutput<
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+						return axios.get(parsedUrl, config)
+					},
+				} as Bolt<
 					T['queries'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
-					never
-				>;
+					never,
+					QueryPathType
+				>[isDynamicQueryType];
 			case 'delete':
+				if (isDynamic) {
+					return {
+						delete: <
+							T = OutputQueryBody,
+							R = AxiosResponse<T, OutputQueryBody>,
+							D = any,
+						>(
+							url: Route | RequestUrl,
+							params: QueryPathType,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+							return axios.delete(generatePathUrl(parsedUrl, toArray(params), transport), config);
+						}
+					} as Bolt<
+						T['queries'][Key]['type'],
+						Route | RequestUrl,
+						R,
+						never,
+						QueryPathType
+					>[isDynamicQueryType];
+				}
 				return {
 					delete: <
-						T = any,
-						R = AxiosResponse<T, OutputMutationBody>,
-						D = InputBody,
+						T = OutputQueryBody,
+						R = AxiosResponse<T, OutputQueryBody>,
+						D = any,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.delete(url, config),
-				} as BoltOutput<
-					T['mutations'][Key]['type'],
-					RequestUrl,
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+
+						return axios.delete(parsedUrl, config)
+					},
+				} as Bolt<
+					T['queries'][Key]['type'],
+					Route | RequestUrl,
 					R,
-					InputBody
-				>;
+					never,
+					QueryPathType
+				>[isDynamicQueryType];
 			case 'put':
+				if (isDynamic) {
+					return {
+						put: <
+							T = OutputMutationBody,
+							R = AxiosResponse<T, OutputMutationBody>,
+							D = InputBody,
+						>(
+							url: Route | RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.put(generatePathUrl(parsedUrl, toArray(params), transport), data, config)
+						},
+					} as Bolt<
+						T['mutations'][Key]['type'],
+						Route | RequestUrl,
+						R,
+						InputBody,
+						MutationPathType
+					>[isDynamicMutationType];
+				}
 				return {
 					put: <
-						T = any,
+						T = OutputMutationBody,
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.put(url, data, config),
-				} as BoltOutput<
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+
+						return axios.put(parsedUrl, data, config)
+					},
+				} as Bolt<
 					T['mutations'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
-					InputBody
-				>;
+					InputBody,
+					MutationPathType
+				>[isDynamicMutationType];
 			case 'patch':
+				if (isDynamic) {
+					return {
+						patch: <
+							T = OutputMutationBody,
+							R = AxiosResponse<T, OutputMutationBody>,
+							D = InputBody,
+						>(
+							url: Route | RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.patch(generatePathUrl(parsedUrl, toArray(params), transport), data, config);
+						},
+					} as Bolt<
+						T['mutations'][Key]['type'],
+						Route | RequestUrl,
+						R,
+						InputBody,
+						MutationPathType
+					>[isDynamicMutationType];
+				}
 				return {
 					patch: <
-						T = any,
+						T = OutputMutationBody,
 						R = AxiosResponse<T, OutputMutationBody>,
 						D = InputBody,
 					>(
-						url: RequestUrl,
+						url: Route | RequestUrl,
 						data?: InputBody,
 						config?: AxiosRequestConfig<D>,
-					): Promise<R> => axios.patch(url, data, config),
-				} as BoltOutput<
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+						return axios.patch(parsedUrl, data, config)
+					},
+				} as Bolt<
 					T['mutations'][Key]['type'],
-					RequestUrl,
+					Route | RequestUrl,
 					R,
-					InputBody
-				>;
+					InputBody,
+					MutationPathType
+				>[isDynamicMutationType];
 		}
 	};
 }
 
+
 export default createBoltClient;
+

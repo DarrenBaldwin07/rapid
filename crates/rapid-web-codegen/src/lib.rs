@@ -302,6 +302,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 			#(#base_idents,)*
 		};
 		#(#nested_idents)*
+		#[cfg(debug_assertions)] // Only run this in debug mod (having extra code in main.rs file makes binary way larger)
 		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
 	))
 }

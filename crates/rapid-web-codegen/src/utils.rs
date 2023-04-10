@@ -146,6 +146,7 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	if parse_file(handler_source).is_err() {
 		return false;
 	}
+
 	// Parse the file into a syn file
 	// Its possible that this could fail if the file is not valid rust code (ex: a user has a txt file in the routes folder)
 	// -- however, it wont happen because this case is caught in the if-satement above

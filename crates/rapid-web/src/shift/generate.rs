@@ -1,6 +1,6 @@
 use super::{
 	convert::{TypescriptType, TypescriptConverter, convert_all_types_in_path},
-	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE, get_handler_type},
+	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE, get_handler_type, is_dynamic_route},
 };
 use crate::util::validate_route_handler;
 use std::{
@@ -57,6 +57,15 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 		if entry.path().is_dir() {
 			continue;
 		}
+
+		// We also want to make sure that we exit if we find a mod.rs file or a middleware file
+		let file_name = entry.file_name();
+
+		// Make sure we ignore middleware and mod files from route handler generation
+		if file_name == "_middleware.rs" || file_name == "mod.rs" {
+			continue;
+		}
+
 
 		// Create a reference to the current route file and grab its contents as a string
 		let mut file = File::open(&entry.path()).unwrap();
@@ -175,6 +184,9 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 		match handler {
 			Handler::Query(query) => {
 				let mut ts_type = format!("\n\t\t{}: {{\n", query.route_key.key);
+				let route_path = query.route_key.value;
+				let is_dynamic_route_path = is_dynamic_route(&route_path);
+
 				let spacing = space(2);
 				let request_type = match query.request_type {
 					HandlerRequestType::Post => "post",
@@ -185,13 +197,26 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				};
 
 				if let Some(query_params_type) = query.query_params {
-					let query_params = format!("\t\t\tquery_params: {}", query_params_type.typescript_type);
-					ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					let query_type = query_params_type.typescript_type;
+					if converter.converted_types.contains(&query_type) {
+						let query_params = format!("\t\t\tquery_params: {}", query_type);
+						ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					} else {
+						let query_params = format!("\t\t\tquery_params: {}", "any");
+						ts_type.push_str(&format!("{}{}\n", spacing, query_params));
+					}
 				}
 
-				if let Some(path_type) = query.path {
-					let path = format!("\t\t\tpath: {}", path_type.typescript_type);
-					ts_type.push_str(&format!("{}{}\n", spacing, path));
+				if let Some(dynamic_path_type) = query.path {
+					let path_type = dynamic_path_type.typescript_type;
+					// If we found a path then that means this route handler is dynamic so lets also push a isDynamic type to the handler schema
+					if converter.converted_types.contains(&path_type) {
+						let path = format!("\t\t\tpath: {}", path_type);
+						ts_type.push_str(&format!("{}{}\n", spacing, path));
+					} else {
+						let path = format!("\t\t\tpath: {}", "any");
+						ts_type.push_str(&format!("{}{}\n", spacing, path));
+					}
 				}
 
 				let output_body = format!("\t\t\toutput: {}", query.output_type.typescript_type);
@@ -200,13 +225,18 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				let request_type = format!("\t\t\ttype: '{}'", request_type);
 				ts_type.push_str(&format!("{}{}\n", spacing, request_type));
 
+				let dynamic_type = format!("\t\t\tisDynamic: {}", is_dynamic_route_path);
+				ts_type.push_str(&format!("{}{}\n", spacing, dynamic_type));
+
 				ts_type.push_str(&format!("\t\t}},\n"));
 
 				queries_ts.push_str(&ts_type);
 			}
 			Handler::Mutation(mutation) => {
 				let mut ts_type = format!("\n\t\t{}: {{\n", mutation.route_key.key);
+				let route_path = mutation.route_key.value;
 				let spacing = space(2);
+				let is_dynamic_route_path = is_dynamic_route(&route_path);
 				let request_type = match mutation.request_type {
 					HandlerRequestType::Post => "post",
 					HandlerRequestType::Put => "put",
@@ -256,6 +286,10 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 
 				let request_type = format!("\t\t\ttype: '{}'", request_type);
 				ts_type.push_str(&format!("{}{}\n", spacing, request_type));
+
+
+				let dynamic_type = format!("\t\t\tisDynamic: {}", is_dynamic_route_path);
+				ts_type.push_str(&format!("{}{}\n", spacing, dynamic_type));
 
 				ts_type.push_str(&format!("\t\t}}\n"));
 

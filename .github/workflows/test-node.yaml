@@ -1,0 +1,47 @@
+name: test
+
+on: [push, pull_request] # CI should run on every push and pull request
+
+jobs:
+  test-rapid-ui:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/rapid-ui
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 19
+
+      - name: Install dependencies with pnpm
+        run: |
+          npm install -g pnpm
+          pnpm install
+
+      - name: Run vitest tests
+        run: pnpm run test
+  test-rapid-react:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/rapid-react
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 19
+
+      - name: Install dependencies with pnpm
+        run: |
+          npm install -g pnpm
+          pnpm install
+
+      - name: Run vitest tests
+        run: pnpm run test

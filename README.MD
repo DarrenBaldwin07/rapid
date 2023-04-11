@@ -58,4 +58,8 @@ Rapid is built on multiple React and Rust libraries. View them bellow:
 - Rapid ORM (fully async ORM inspired by Prisma and built for Rust)
 
 # Getting Started
-> Coming soon...
+
+Refer to our getting started documents below:
+- Rapid-UI: https://github.com/Cincinnati-Ventures/rapid/blob/main/docs/rapid-ui/gettingStarted.md
+- Rapid-web: (Coming soon)
+- Setting up a development environment: https://github.com/Cincinnati-Ventures/rapid/blob/main/docs/dev.md

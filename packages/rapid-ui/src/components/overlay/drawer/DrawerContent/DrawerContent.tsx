@@ -46,7 +46,7 @@ const buildContainerCSS = (
 
 const DrawerContent = forwardRef<HTMLDivElement, DrawerContentProps>(
 	({ styles, containerStyles, children, ...rest }, ref) => {
-		const { open, onClose, size, direction, enableAnimation } =
+		const { open, onClose, size, direction, enableAnimation, zIndex } =
 			useDrawerContext();
 
 		const clickOutsideRef = useDidClickOutside({
@@ -56,7 +56,10 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentProps>(
 
 		return (
 			<div
-				style={buildContainerCSS(direction, size)}
+				style={{
+					...buildContainerCSS(direction, size),
+					zIndex: zIndex ? zIndex + 1 : 50,
+				}}
 				className={RapidStyles(
 					containerStyles,
 					`${DEFAULT_CONTAINER_STYLES} ${DIRECTIONAL_CONTAINER_STYLES[direction]}`,

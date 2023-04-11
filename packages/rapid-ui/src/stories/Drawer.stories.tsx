@@ -46,6 +46,17 @@ export default {
 			},
 			description: 'Toggles the animation of the Drawer component.',
 		},
+		initialFocus: {
+			control: { type: 'ref' },
+			description:
+				'The element to focus when the Drawer component opens.',
+		},
+		zIndex: {
+			control: {
+				type: 'number',
+			},
+			description: 'The z-index of the Drawer component.',
+		},
 	},
 } as ComponentMeta<typeof Drawer>;
 

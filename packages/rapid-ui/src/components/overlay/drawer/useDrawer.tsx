@@ -7,6 +7,7 @@ type DrawerContextType = {
 	size: DrawerSizes;
 	direction: DrawerDirections;
 	enableAnimation: boolean;
+	zIndex?: number;
 	// finalFocus?: MutableRefObject<HTMLElement>;
 };
 

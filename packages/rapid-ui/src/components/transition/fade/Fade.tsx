@@ -20,9 +20,12 @@ const Fade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 				transitionEnd: transitionEnd?.enter,
 			}),
 			exit: ({ transition, transitionEnd } = {}) => ({
-				opacity: initialOpacity || 0,
-				transition: transition?.exit,
+				opacity: initialOpacity || 1,
 				transitionEnd: transitionEnd?.exit,
+				transition: {
+					duration: 0.025,
+					...transition?.exit,
+				},
 			}),
 		};
 

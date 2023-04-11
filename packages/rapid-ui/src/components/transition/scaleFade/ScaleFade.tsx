@@ -26,16 +26,16 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 				transitionEnd: transitionEnd?.enter,
 			}),
 			initial: ({ transition, transitionEnd } = {}) => ({
-				opacity: initialOpacity || 0,
+				opacity: initialOpacity || 1,
 				scale: rest.initialscale || 0.95,
 				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,
 			}),
 			exit: ({ transition, transitionEnd } = {}) => ({
 				opacity: 0,
-				scale: rest.initialscale || 0.85,
+				scale: rest.initialscale || 0.95,
 				transition: {
-					duration: 0.05, // @todo
+					duration: 0.025,
 					...transition?.exit,
 				},
 				transitionEnd: transitionEnd?.exit,

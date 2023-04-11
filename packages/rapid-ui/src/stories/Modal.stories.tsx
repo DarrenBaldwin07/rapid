@@ -23,6 +23,7 @@ export default {
 			description: 'Function to close the modal.',
 		},
 		initialFocus: {
+			control: { type: 'ref' },
 			description: 'Ref of the initial element to be focused.',
 		},
 		enableAnimation: {

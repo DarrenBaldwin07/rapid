@@ -20,16 +20,18 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
 	onClose: () => void;
 	initialFocus?: RefObject<HTMLElement>;
 	enableAnimation?: boolean;
+	zIndex?: number;
 	styles?: string;
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
 	(
 		{
-			open,
+			open = false,
 			onClose,
 			initialFocus,
 			enableAnimation = true,
+			zIndex = 40,
 			styles,
 			children,
 			...rest
@@ -63,14 +65,14 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 		);
 
 		const contextValue = useMemo(
-			() => ({ open, onClose, enableAnimation }),
-			[open, onClose, enableAnimation],
+			() => ({ open, onClose, enableAnimation, zIndex }),
+			[open, onClose, enableAnimation, zIndex],
 		);
 
 		return (
 			<AnimatePresence>
 				{open ? (
-					<Portal className={'absolute'}>
+					<Portal>
 						<ModalContext.Provider value={contextValue}>
 							<div
 								ref={ref}
@@ -79,6 +81,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 								tabIndex={-1}
 								data-focus-guard
 								onKeyDown={handleKeyDown}
+								style={{ position: 'relative', zIndex }}
 								className={RapidStyles(
 									styles || rest.className,
 									RAPID_CLASSNAME,

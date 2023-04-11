@@ -2,7 +2,7 @@ import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { RapidStyles } from '../../../../utils';
 
 const RAPID_CLASSNAME = 'rapid-modal-body';
-const BODY_STYLES = 'p-4 flex-1'; // px-6 py-2
+const BODY_STYLES = 'p-4 flex-1';
 
 interface ModalBodyProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode;

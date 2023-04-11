@@ -19,7 +19,7 @@ interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
 
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 	({ styles, containerStyles, children, ...rest }, ref) => {
-		const { onClose, enableAnimation } = useModalContext();
+		const { onClose, enableAnimation, zIndex } = useModalContext();
 
 		const clickOutsideRef = useDidClickOutside({
 			onMatch: () => onClose(),
@@ -31,6 +31,7 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 				aria-modal='true'
 				aria-labelledby='rapid-modal-header'
 				aria-describedby='rapid-modal-body'
+				style={{ zIndex: zIndex ? zIndex + 1 : 50 }}
 				className={RapidStyles(
 					containerStyles,
 					DEFAULT_CONTAINER_STYLES,

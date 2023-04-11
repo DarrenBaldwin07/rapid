@@ -38,7 +38,12 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 					CONTAINER_CLASS,
 				)}
 			>
-				<ScaleFade isEnabled={enableAnimation}>
+				<ScaleFade
+					isEnabled={enableAnimation}
+					initialscale={0.85}
+					transition={{ exit: { duration: 0.025 } }}
+					initialOpacity={0}
+				>
 					<div
 						ref={useMergeRefs(ref, clickOutsideRef)}
 						{...rest}

@@ -186,8 +186,8 @@ function App() {
 				direction={placement}
 				onClose={closeDrawer}
 				initialFocus={drawerCloseBttn}
-				zIndex={2}
-				size='md'
+				zIndex={20}
+				size='sm'
 			>
 				<DrawerContent>
 					<DrawerHeader>

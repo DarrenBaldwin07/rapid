@@ -14,7 +14,13 @@ const RAPID_CLASSNAME = 'rapid-scale-fade';
 
 const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 	(
-		{ styles, initialOpacity, exitAnimation = 'exit', isEnabled, ...rest },
+		{
+			styles,
+			initialOpacity,
+			exitAnimation = 'initial',
+			isEnabled,
+			...rest
+		},
 		ref,
 	) => {
 		// Framer-motion animation variants
@@ -32,12 +38,8 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 				transitionEnd: transitionEnd?.exit,
 			}),
 			exit: ({ transition, transitionEnd } = {}) => ({
-				opacity: 0,
 				scale: rest.initialscale || 0.95,
-				transition: {
-					duration: 0.025,
-					...transition?.exit,
-				},
+				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,
 			}),
 		};

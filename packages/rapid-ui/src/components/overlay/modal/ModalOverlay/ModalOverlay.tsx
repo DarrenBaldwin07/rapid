@@ -22,7 +22,7 @@ const ModalOverlay = forwardRef<HTMLDivElement, ModalOverlayProps>(
 		}, []);
 
 		return (
-			<Fade>
+			<Fade transition={{ exit: { duration: 0.025 } }}>
 				<div
 					ref={ref}
 					{...rest}

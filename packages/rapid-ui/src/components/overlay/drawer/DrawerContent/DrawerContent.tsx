@@ -9,16 +9,15 @@ const RAPID_CLASSNAME = 'rapid-drawer-content';
 const CONTAINER_CLASS = 'rapid-drawer-panel-container';
 
 const DEFAULT_CONTAINER_STYLES = 'fixed';
-const DEFAULT_PANEL_STYLES = 'flex flex-col item-start bg-white';
+const DEFAULT_PANEL_STYLES =
+	'flex flex-col item-start bg-white w-full h-full overflow-y-auto';
 
 const DIRECTIONAL_CONTAINER_STYLES = {
 	left: 'flex inset-y-0 left-0',
 	right: 'flex inset-y-0 right-0',
-	top: 'inset-x-0 top-0',
+	top: 'inset-x-0 top-0 overflow-y-auto',
 	bottom: 'inset-x-0 bottom-0',
 };
-
-const drawerPannelStyles = `${DEFAULT_PANEL_STYLES} w-full h-full`;
 
 interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
 	containerStyles?: string;
@@ -77,7 +76,7 @@ const DrawerContent = forwardRef<HTMLDivElement, DrawerContentProps>(
 						{...rest}
 						className={RapidStyles(
 							styles || rest.className,
-							drawerPannelStyles,
+							DEFAULT_PANEL_STYLES,
 							RAPID_CLASSNAME,
 						)}
 					>

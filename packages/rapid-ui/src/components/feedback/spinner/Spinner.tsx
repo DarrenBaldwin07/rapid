@@ -22,6 +22,9 @@ export const spinnerSafeList = [
 	'spinner-fast',
 ];
 
+const defaultStyles =
+	'h-6 w-6 spinner-fast rounded-full border border-solid border-black border-t-transparent border-r-transparent';
+
 const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 	(
 		{
@@ -34,8 +37,6 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 		},
 		ref,
 	) => {
-		const defaultStyles =
-			'h-6 w-6 spinner-fast rounded-full border border-solid border-black border-t-transparent border-r-transparent';
 		const getSpinnerSpeed = (speed: Speed) => {
 			switch (speed) {
 				case 'slow':

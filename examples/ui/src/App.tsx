@@ -1,4 +1,4 @@
-import { createRef, useState } from 'react';
+import { createRef, useState, MutableRefObject } from 'react';
 import {
 	Button,
 	VStack,
@@ -80,7 +80,7 @@ function App() {
 			</div>
 			<Text>Divider variant dashed</Text>
 			<Divider variant='dashed' />
-			<Text>Divider horizontel</Text>
+			<Text>Divider horizontal</Text>
 			<Divider size='lg' />
 			<br />
 			<Text>Skeleton & SkeletonText</Text>
@@ -129,10 +129,14 @@ function App() {
 			<Button styles='w-max' onClick={() => setIsOpen(true)}>
 				Open Modal
 			</Button>
+			<div className='relative z-10 border-2'>
+				I'm a div with a z index
+			</div>
 			<Modal
 				open={isOpen}
 				onClose={() => setIsOpen(false)}
-				initialFocus={modalCloseBttn}
+				initialFocus={modalCloseBttn as MutableRefObject<HTMLElement>}
+				zIndex={20}
 			>
 				<ModalContent>
 					<ModalHeader>
@@ -182,7 +186,8 @@ function App() {
 				direction={placement}
 				onClose={closeDrawer}
 				initialFocus={drawerCloseBttn}
-				size='md'
+				zIndex={20}
+				size='sm'
 			>
 				<DrawerContent>
 					<DrawerHeader>

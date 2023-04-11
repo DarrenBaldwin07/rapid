@@ -9,23 +9,69 @@ import {
 	DrawerCloseButton,
 	Text,
 	Button,
+	Container,
 } from '..';
+import { DrawerDirections } from '../components/overlay/drawer/Drawer';
 
 export default {
 	title: 'Components/overlay/Drawer',
 	component: Drawer,
+	argTypes: {
+		open: {
+			control: { type: 'boolean' },
+			description: 'Whether the drawer is open.',
+		},
+		onClose: {
+			action: 'onClose',
+			description: 'Function to close the drawer.',
+		},
+		direction: {
+			control: {
+				type: 'inline-radio',
+				options: ['left', 'right', 'top', 'bottom'],
+			},
+			description:
+				'The direction the Drawer component will slide in from.',
+		},
+		size: {
+			control: {
+				type: 'inline-radio',
+				options: ['sm', 'md', 'lg', 'xl', 'full'],
+			},
+			description: 'The size of the Drawer component.',
+		},
+		enableAnimation: {
+			control: {
+				type: 'boolean',
+			},
+			description: 'Toggles the animation of the Drawer component.',
+		},
+		initialFocus: {
+			control: { type: 'ref' },
+			description:
+				'The element to focus when the Drawer component opens.',
+		},
+		zIndex: {
+			control: {
+				type: 'number',
+			},
+			description: 'The z-index of the Drawer component.',
+		},
+	},
 } as ComponentMeta<typeof Drawer>;
 
-const Template: ComponentStory<typeof Drawer> = (_: any) => {
+const Template: ComponentStory<typeof Drawer> = ({
+	size,
+	enableAnimation,
+}: any) => {
 	const [isOpenDrawer, setIsOpenDrawer] = useState(false);
-	const drawerCloseBttn = createRef<HTMLButtonElement>();
-	const [placement, setPlacement] = useState<
-		'left' | 'right' | 'top' | 'bottom'
-	>('left');
+	const [direction, setDirection] = useState('right');
 
-	const openDrawer = (position: 'left' | 'right' | 'top' | 'bottom') => {
-		setPlacement(position);
+	const drawerCloseBttn = createRef<HTMLButtonElement>();
+
+	const openDrawer = (position: DrawerDirections) => {
 		setIsOpenDrawer(true);
+		setDirection(position);
 	};
 
 	const closeDrawer = () => {
@@ -34,20 +80,28 @@ const Template: ComponentStory<typeof Drawer> = (_: any) => {
 
 	return (
 		<>
-			<Button onClick={() => openDrawer('left')}>Open Left Drawer</Button>
-			<Button onClick={() => openDrawer('right')}>
-				Open Right Drawer
-			</Button>
-			<Button onClick={() => openDrawer('top')}>Open Top Drawer</Button>
-			<Button onClick={() => openDrawer('bottom')}>
-				Open Bottom Drawer
-			</Button>
+			<Container className='flex justify-evenly'>
+				<Button onClick={() => openDrawer('left')}>
+					Open Left Drawer
+				</Button>
+				<Button onClick={() => openDrawer('right')}>
+					Open Right Drawer
+				</Button>
+				<Button onClick={() => openDrawer('top')}>
+					Open Top Drawer
+				</Button>
+				<Button onClick={() => openDrawer('bottom')}>
+					Open Bottom Drawer
+				</Button>
+			</Container>
+
 			<Drawer
 				open={isOpenDrawer}
-				direction={placement}
+				direction={direction as DrawerDirections}
 				onClose={closeDrawer}
 				initialFocus={drawerCloseBttn}
-				size='xl'
+				size={size}
+				enableAnimation={enableAnimation}
 			>
 				<DrawerContent>
 					<DrawerHeader>

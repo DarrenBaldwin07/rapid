@@ -2,8 +2,6 @@ import * as React from 'react';
 import { createVariant } from '../../../theme';
 import { RapidStyles } from '../../../utils';
 
-const THEME_CLASSNAME = 'rapid-input';
-
 export interface InputProps
 	extends React.InputHTMLAttributes<HTMLInputElement> {
 	styles?: string;
@@ -28,6 +26,8 @@ export const inputTheme = createVariant({
 		variant: 'default',
 	},
 });
+
+const THEME_CLASSNAME = 'rapid-input';
 
 const getVariantClassName = (variant: string | undefined) => {
 	if (variant) return `rapid-input-${variant}`;

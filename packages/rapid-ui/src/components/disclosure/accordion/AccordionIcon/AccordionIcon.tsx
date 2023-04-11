@@ -7,11 +7,11 @@ import {
 	useAccordionContext,
 } from '../useAccordion';
 
-const RAPID_CLASSNAME = 'rapid-accordion-icon';
-
 interface AccordionIconProps extends React.SVGProps<SVGSVGElement> {
 	styles?: string;
 }
+
+const RAPID_CLASSNAME = 'rapid-accordion-icon';
 
 const AccordionIcon = forwardRef<SVGSVGElement, AccordionIconProps>(
 	({ styles, ...rest }, ref) => {

@@ -1,15 +1,14 @@
 import React, { forwardRef, DetailedHTMLProps, HTMLAttributes } from 'react';
 import { RapidStyles } from '../../../../utils';
 
-export const RAPID_CLASSNAME = 'rapid-accordion-item';
-
 interface AccordionItemProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 	children: React.ReactNode;
 	styles?: string;
 }
 
-const ACDN_ITEM_STYLES = 'border-b';
+export const RAPID_CLASSNAME = 'rapid-accordion-item';
+const ACC_HEADER_DIV_STYLES = 'border-b';
 
 const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
 	({ children, styles, ...rest }, ref) => {
@@ -19,7 +18,7 @@ const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
 				{...rest}
 				className={RapidStyles(
 					styles || rest.className,
-					ACDN_ITEM_STYLES,
+					ACC_HEADER_DIV_STYLES,
 					RAPID_CLASSNAME,
 				)}
 			>

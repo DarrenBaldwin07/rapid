@@ -2,31 +2,57 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { useState, createRef } from 'react';
 import {
 	Modal,
-	// ModalOverlay,
 	ModalBody,
 	ModalFooter,
-	ModalContent,
 	ModalHeader,
 	Text,
 	Button,
+	ModalContent,
 } from '..';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
 	title: 'Components/overlay/Modal',
 	component: Modal,
+	argTypes: {
+		open: {
+			control: { type: 'boolean' },
+			description: 'Whether the modal is open.',
+		},
+		onClose: {
+			action: 'onClose',
+			description: 'Function to close the modal.',
+		},
+		initialFocus: {
+			control: { type: 'ref' },
+			description: 'Ref of the initial element to be focused.',
+		},
+		enableAnimation: {
+			control: { type: 'boolean' },
+			description:
+				'Whether to enable the default animation for the modal.',
+		},
+		styles: {
+			control: {
+				type: 'string',
+			},
+			description: 'Custom styles for the Skeleton component.',
+		},
+	},
 } as ComponentMeta<typeof Modal>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Modal> = (_: any) => {
-	const [isOpen, setIsOpen] = useState(false);
+const Template: ComponentStory<typeof Modal> = ({ open }) => {
+	const [isOpen, setIsOpen] = useState(open);
 	const modalCloseBttn = createRef<HTMLButtonElement>();
+
+	const handleClose = () => {
+		setIsOpen(false);
+	};
 
 	return (
 		<>
-			<Button onClick={() => setIsOpen(true)}>Open</Button>
-			<Modal open={isOpen} onClose={() => setIsOpen(false)}>
-				{/* <ModalOverlay /> */}
+			<Button onClick={() => setIsOpen(true)}>Delete Account</Button>
+
+			<Modal open={isOpen} onClose={handleClose}>
 				<ModalContent>
 					<ModalHeader>Delete Account</ModalHeader>
 					<ModalBody>
@@ -40,13 +66,11 @@ const Template: ComponentStory<typeof Modal> = (_: any) => {
 						<Button
 							ref={modalCloseBttn}
 							variant='outline'
-							onClick={() => setIsOpen(false)}
+							onClick={handleClose}
 						>
 							Cancel
 						</Button>
-						<Button onClick={() => setIsOpen(false)}>
-							Deactivate
-						</Button>
+						<Button onClick={handleClose}>Deactivate</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
@@ -55,4 +79,6 @@ const Template: ComponentStory<typeof Modal> = (_: any) => {
 };
 
 export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+Primary.args = {
+	open: false,
+};

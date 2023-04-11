@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const RAPID_CLASSNAME = 'rapid-portal';
-
 interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
 	node?: DocumentFragment;
 }
+
+const RAPID_CLASSNAME = 'rapid-portal';
 
 // Currently, this is a internal Component that we are not re-exporting -- as we add more to it we can re-evaluate
 const Portal = React.forwardRef<HTMLDivElement, PortalProps>(

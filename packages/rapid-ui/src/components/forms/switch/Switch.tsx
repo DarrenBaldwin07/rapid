@@ -5,7 +5,15 @@ import classes from '../../../conditional';
 import { createVariant } from '../../../theme';
 import { motion } from 'framer-motion';
 
-const THEME_CLASSNAME = 'rapid-switch';
+export interface SwitchProps extends SwitchGroupProps<typeof HeadlessSwitch> {
+	styles?: string;
+	ariaLabel?: string;
+	enabled: boolean;
+	size?: 'sm' | 'md' | 'lg';
+	variant?: string;
+	enabledStyles?: string;
+	disabledStyles?: string;
+}
 
 export const switchTheme = createVariant({
 	variants: {
@@ -23,15 +31,7 @@ export const switchTheme = createVariant({
 	},
 });
 
-interface SwitchProps extends SwitchGroupProps<typeof HeadlessSwitch> {
-	styles?: string;
-	ariaLabel?: string;
-	enabled: boolean;
-	size?: 'sm' | 'md' | 'lg';
-	variant?: string;
-	enabledStyles?: string;
-	disabledStyles?: string;
-}
+const THEME_CLASSNAME = 'rapid-switch';
 
 const Switch = React.forwardRef<
 	React.ElementRef<typeof HeadlessSwitch>,
@@ -50,34 +50,35 @@ const Switch = React.forwardRef<
 		},
 		ref,
 	) => {
+		const switchClassNames = RapidStyles(
+			classes(
+				enabled
+					? enabledStyles || 'bg-black'
+					: disabledStyles || 'bg-lightGrey',
+				'inline-flex ring-0 focus:ring-0',
+				enabled ? 'justify-end' : 'justify-start',
+			),
+			styles || rest.className,
+			getVariantClassName(variant, 'switch', size) || THEME_CLASSNAME,
+		);
+
+		const switchLabel = ariaLabel || 'toggle';
+
 		return (
 			<HeadlessSwitch
 				checked={enabled}
 				ref={ref}
 				{...rest}
-				className={RapidStyles(
-					classes(
-						enabled
-							? enabledStyles || 'bg-black'
-							: disabledStyles || 'bg-lightGrey',
-						'inline-flex ring-0 focus:ring-0',
-						enabled ? 'justify-end' : 'justify-start',
-					),
-					styles || rest.className,
-					getVariantClassName(variant, 'switch', size) ||
-						THEME_CLASSNAME,
-				)}
+				className={switchClassNames}
 			>
-				<span className='sr-only'>{ariaLabel || 'toggle'}</span>
+				<span className='sr-only'>{switchLabel}</span>
 				<motion.span
 					layout
 					transition={{
 						duration: 0.2,
 					}}
 					aria-hidden='true'
-					className={classes(
-						'pointer-events-none inline-block aspect-square h-[100%] transform rounded-full bg-white shadow-lg ring-0 focus:ring-0',
-					)}
+					className='pointer-events-none inline-block aspect-square h-[100%] transform rounded-full bg-white shadow-lg ring-0 focus:ring-0'
 				/>
 			</HeadlessSwitch>
 		);

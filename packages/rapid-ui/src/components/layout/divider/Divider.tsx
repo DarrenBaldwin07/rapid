@@ -1,8 +1,15 @@
-import React, { forwardRef, HTMLAttributes } from 'react';
+import React, { forwardRef, HTMLAttributes, useMemo } from 'react';
 import { RapidStyles, getVariantClassName } from '../../../utils';
 import { createVariant } from '../../../theme';
 
-const THEME_CLASSNAME = 'rapid-divider';
+type Orientation = 'horizontal' | 'vertical';
+
+interface DividerProps extends HTMLAttributes<HTMLHRElement> {
+	styles?: string;
+	size?: 'sm' | 'md' | 'lg' | 'xl';
+	orientation?: Orientation;
+	variant?: 'dashed' | 'solid';
+}
 
 export const dividerTheme = createVariant({
 	variants: {
@@ -21,29 +28,19 @@ export const dividerTheme = createVariant({
 	},
 });
 
-type Orientation = 'horizontal' | 'vertical';
-
-interface DividerProps extends HTMLAttributes<HTMLHRElement> {
-	styles?: string;
-	size?: 'sm' | 'md' | 'lg' | 'xl';
-	orientation?: Orientation;
-	variant?: 'dashed' | 'solid';
-}
+const THEME_CLASSNAME = 'rapid-divider';
+const DIVIDER_STYLES = 'text-lightGrey border-current border-opacity-60';
 
 const Divider = forwardRef<HTMLHRElement, DividerProps>(
 	(
 		{ styles, size = 'sm', orientation = 'horizontal', variant, ...rest },
 		ref,
 	) => {
-		const getDividerStyles = () => {
-
-			const commonStyles =
-				'text-lightGrey border-current border-opacity-60';
-
+		const getDividerStyles = useMemo(() => {
 			return orientation === 'vertical'
-				? `${commonStyles} h-full border-t-0 border-l` // vertical
-				: `${commonStyles} w-full border-b`; // horizantel
-		};
+				? `${DIVIDER_STYLES} h-full border-t-0 border-l` // vertical
+				: `${DIVIDER_STYLES} w-full border-b`; // horizontal
+		}, [orientation]);
 
 		return (
 			<hr
@@ -51,7 +48,7 @@ const Divider = forwardRef<HTMLHRElement, DividerProps>(
 				{...rest}
 				className={RapidStyles(
 					styles || rest.className,
-					getDividerStyles(),
+					getDividerStyles,
 					getVariantClassName(variant, 'divider', size) ||
 						THEME_CLASSNAME,
 				)}

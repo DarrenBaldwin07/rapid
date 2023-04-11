@@ -2,12 +2,18 @@ import React from 'react';
 import { motion, Variants, HTMLMotionProps, MotionProps } from 'framer-motion';
 import { RapidStyles } from '../../../utils';
 
+type Transition = {
+	enter?: {};
+	exit?: {};
+};
 interface SlideFadeProps extends MotionProps {
 	open: boolean;
 	initialOpacity?: number;
 	exitAnimation?: 'exit' | 'initial';
 	isEnabled?: boolean;
 	direction?: 'left' | 'right' | 'top' | 'bottom';
+	transition?: Transition;
+	transitionEnd?: Transition;
 	styles?: string;
 }
 
@@ -35,13 +41,15 @@ const SlideFade = React.forwardRef<HTMLDivElement, SlideFadeProps>(
 			exitAnimation = 'exit',
 			isEnabled,
 			direction = 'right',
+			transition,
+			transitionEnd,
 			...rest
 		},
 		ref,
 	) => {
 		// Framer-motion animation variants
 		const variants: Variants = {
-			enter: ({ transition, transitionEnd } = {}) => ({
+			enter: {
 				opacity: 1,
 				x:
 					direction === 'right'
@@ -57,8 +65,8 @@ const SlideFade = React.forwardRef<HTMLDivElement, SlideFadeProps>(
 						: undefined,
 				transition: transition?.enter || defaultTransition.enter,
 				transitionEnd: transitionEnd?.enter || defaultTransition.enter,
-			}),
-			initial: ({ transition, transitionEnd } = {}) => ({
+			},
+			initial: {
 				opacity: initialOpacity || 1,
 				x:
 					direction === 'right'
@@ -74,8 +82,8 @@ const SlideFade = React.forwardRef<HTMLDivElement, SlideFadeProps>(
 						: 0,
 				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,
-			}),
-			exit: ({ transition, transitionEnd } = {}) => ({
+			},
+			exit: {
 				opacity: 1,
 				x:
 					direction === 'right'
@@ -91,7 +99,7 @@ const SlideFade = React.forwardRef<HTMLDivElement, SlideFadeProps>(
 						: 0,
 				transition: transition?.exit || defaultTransition.exit,
 				transitionEnd: transitionEnd?.exit || defaultTransition.exit,
-			}),
+			},
 		};
 
 		// The animation config that pass as props to a <motion.div />

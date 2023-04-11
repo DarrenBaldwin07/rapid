@@ -2,14 +2,35 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Skeleton } from '../';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
 	title: 'Components/feedback/Skeleton',
 	component: Skeleton,
+	argTypes: {
+		isLoading: {
+			control: { type: 'boolean' },
+			description: 'Whether the skeleton text is in a loading state.',
+		},
+		speed: {
+			control: { type: 'number' },
+			description:
+				'The speed at which the skeleton animation will pulse.',
+		},
+		styles: {
+			control: {
+				type: 'string',
+			},
+			description: 'Custom styles for the Skeleton component.',
+		},
+	},
 } as ComponentMeta<typeof Skeleton>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Skeleton> = (_: any) => <Skeleton />;
+const Template: ComponentStory<typeof Skeleton> = (args) => (
+	<Skeleton {...args} />
+);
 
-export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+export const Default = Template.bind({});
+
+export const WithCustomSpeed = Template.bind({});
+WithCustomSpeed.args = {
+	speed: 'skeleton-pulse-fast',
+};

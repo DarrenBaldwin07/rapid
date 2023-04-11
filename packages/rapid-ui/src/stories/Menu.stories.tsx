@@ -1,17 +1,21 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import { Menu, MenuButton, MenuItem, MenuItems } from '..';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
 	title: 'Components/overlay/Menu',
 	component: Menu,
+	subcomponents: { MenuButton, MenuItem, MenuItems },
+	argTypes: {
+		styles: {
+			control: 'text',
+			description: 'Additional styles for the Menu component.',
+		},
+	},
 } as ComponentMeta<typeof Menu>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Menu> = (_: any) => (
-	<Menu>
-		<MenuButton variant='outline'>More</MenuButton>
+const Template: ComponentStory<typeof Menu> = (args) => (
+	<Menu {...args}>
+		<MenuButton variant='outline'>Menu</MenuButton>
 		<MenuItems>
 			<MenuItem>
 				{({ active }: any) => (
@@ -62,4 +66,4 @@ const Template: ComponentStory<typeof Menu> = (_: any) => (
 );
 
 export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+Primary.args = {};

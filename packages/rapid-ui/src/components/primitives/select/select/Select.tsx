@@ -4,8 +4,6 @@ import { RapidStyles } from '../../../../utils';
 import SelectIcon from '../selectIcon/SelectIcon';
 import Option from '../option/Option';
 
-const THEME_CLASSNAME = 'rapid-select';
-
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 	styles?: string;
 	icon?: React.ReactNode;
@@ -34,6 +32,13 @@ export const selectTheme = createVariant({
 	},
 });
 
+const THEME_CLASSNAME = 'rapid-select';
+const SELECT_CLASSNAME = 'rapid-select-select';
+
+const SELECT_WRAPPER_STYLES = 'relative flex items-center';
+const DEFAULT_SELECT_STYLES =
+	'w-full focus:outline-none focus:shadow-none px-3 bg-transparent';
+
 const getVariantClassName = (
 	variant: string | undefined,
 	size: string | undefined,
@@ -51,9 +56,6 @@ const getVariantClassName = (
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 	(props: SelectProps, ref) => {
-		const defaultSelectStyles =
-			'w-full focus:outline-none focus:shadow-none px-3 bg-transparent';
-
 		const {
 			styles,
 			variant,
@@ -70,7 +72,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 			<div
 				className={RapidStyles(
 					styles || rest.className,
-					'relative flex items-center',
+					SELECT_WRAPPER_STYLES,
 					getVariantClassName(variant, variantSize) ||
 						THEME_CLASSNAME,
 				)}
@@ -79,8 +81,8 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 					ref={ref}
 					{...rest}
 					className={RapidStyles(
-						selectStyles || defaultSelectStyles,
-						'rapid-select-child',
+						selectStyles || DEFAULT_SELECT_STYLES,
+						SELECT_CLASSNAME,
 					)}
 				>
 					{placeholder && <Option value=''>{placeholder}</Option>}

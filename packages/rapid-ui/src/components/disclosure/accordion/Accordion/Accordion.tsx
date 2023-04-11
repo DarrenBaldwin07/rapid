@@ -3,11 +3,10 @@ import React, {
 	forwardRef,
 	DetailedHTMLProps,
 	HTMLAttributes,
+	useId,
 } from 'react';
 import { RapidStyles } from '../../../../utils';
 import { AccordionContext } from '../useAccordion';
-
-const RAPID_CLASSNAME = 'rapid-accordion';
 
 interface AccordionProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -18,8 +17,8 @@ interface AccordionProps
 	styles?: string;
 }
 
-const ACDN_STYLES =
-	'flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto';
+const RAPID_CLASSNAME = 'rapid-accordion';
+const ACC_STYLES = 'flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto';
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 	(
@@ -43,6 +42,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 					allowToggle,
 					activeItems,
 					setActiveItems,
+					id: useId(),
 				}}
 			>
 				<div
@@ -50,10 +50,11 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 					{...rest}
 					className={RapidStyles(
 						styles || rest.className,
-						ACDN_STYLES,
+						ACC_STYLES,
 						RAPID_CLASSNAME,
 					)}
-					role='accordion'
+					role='region'
+					aria-multiselectable={allowMultiple}
 				>
 					{children}
 				</div>

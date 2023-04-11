@@ -7,16 +7,42 @@ import {
 	AccordionIcon,
 } from '..';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
 	title: 'components/disclosure/accordion',
 	component: Accordion,
+	argTypes: {
+		allowMultiple: {
+			description:
+				'Whether to allow multiple items to be open at the same time.',
+			control: { type: 'boolean' },
+		},
+		allowToggle: {
+			description:
+				'Whether to allow items to be closed if they are already open.',
+			control: { type: 'boolean' },
+		},
+		defaultIndexes: {
+			description:
+				'The indexes of the items that should be open by default.',
+			control: { type: 'array' },
+		},
+		children: {
+			description:
+				'The items to be rendered inside the Accordion component.',
+			control: { type: null },
+		},
+		styles: {
+			description:
+				'Custom styles to be applied to the Accordion component.',
+			control: { type: 'text' },
+		},
+	},
 } as ComponentMeta<typeof Accordion>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Accordion> = (_: any) => (
+const Template: ComponentStory<typeof Accordion> = (args) => (
 	<div className='container mx-auto p-4'>
-		<Accordion>
+		<Accordion {...args}>
 			<AccordionItem>
 				<AccordionHeader>
 					Item 1<AccordionIcon />
@@ -54,5 +80,35 @@ const Template: ComponentStory<typeof Accordion> = (_: any) => (
 	</div>
 );
 
-export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+const DefaultAccordion = Template.bind({});
+DefaultAccordion.args = {};
+
+const AllowMultipleAccordion = Template.bind({});
+AllowMultipleAccordion.args = { allowMultiple: true };
+AllowMultipleAccordion.parameters = {
+	controls: { matchers: { color: /(primary|secondary|tertiary)/i } },
+};
+
+const AllowToggleAccordion = Template.bind({});
+AllowToggleAccordion.args = { allowToggle: true };
+AllowToggleAccordion.parameters = {
+	controls: { matchers: { color: /(primary|secondary|tertiary)/i } },
+};
+
+const DefaultIndexesAccordion = Template.bind({});
+DefaultIndexesAccordion.args = { defaultIndexes: [0, 2] };
+DefaultIndexesAccordion.parameters = {
+	controls: { matchers: { color: /(primary|secondary|tertiary)/i } },
+};
+
+const WithCustomStylesAccordion = Template.bind({});
+WithCustomStylesAccordion.args = { styles: 'bg-red-200' };
+WithCustomStylesAccordion.parameters = {
+	controls: { matchers: { color: /(primary|secondary|tertiary)/i } },
+};
+
+export const Primary = DefaultAccordion;
+export const AllowMultiple = AllowMultipleAccordion;
+export const AllowToggle = AllowToggleAccordion;
+export const DefaultIndexes = DefaultIndexesAccordion;
+export const WithCustomStyles = WithCustomStylesAccordion;

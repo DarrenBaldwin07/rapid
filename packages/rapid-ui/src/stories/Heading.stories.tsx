@@ -1,17 +1,25 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Heading } from '../';
+import { Heading } from '..';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
 	title: 'Components/primitives/Heading',
 	component: Heading,
+	argTypes: {
+		size: {
+			control: 'radio',
+			options: ['sm', 'md', 'lg'],
+			description: 'The size of the heading.',
+		},
+		styles: {
+			control: 'text',
+			description: 'Additional styles for the Heading component.',
+		},
+	},
 } as ComponentMeta<typeof Heading>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Heading> = (_: any) => (
-	<Heading>Hello World!</Heading>
+const Template: ComponentStory<typeof Heading> = (args) => (
+	<Heading {...args}>Hello World!</Heading>
 );
 
 export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args

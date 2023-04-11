@@ -4,6 +4,7 @@ interface ModalContextProps {
 	open: boolean;
 	onClose: () => void;
 	enableAnimation: boolean;
+	zIndex?: number;
 }
 
 export const ModalContext = createContext<ModalContextProps | null>(null);

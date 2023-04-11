@@ -22,17 +22,17 @@ Rapid uses React and Rust as the foundation for its fullstack tooling. Do your h
 # Rapid Libs
 Rapid is built on multiple React and Rust libraries. View them bellow:
 
-### Backend (all on crates.io)
+### Backend
 
--   rapid-web
--   rapid-ssr
--   rapid-cli
--   rapid-web-codegen
+-   [Rapid-web](https://crates.io/crates/rapid-web)
+-   Rapid-ssr (coming soon...)
+-   [Rapid-cli](https://crates.io/crates/rapid-cli)
+-   [Rapid-web-codegen](https://crates.io/crates/rapid-web-codegen)
 
-### Frontend (all on npm)
+### Frontend
 
--   @rapid-web/react
--   @rapid-web/ui
+-   [@Rapid-web/react](https://www.npmjs.com/package/@rapid-web/react)
+-   [@rapid-web/ui](https://www.npmjs.com/package/@rapid-web/ui)
 
 # Roadmap
 

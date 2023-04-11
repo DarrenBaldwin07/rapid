@@ -4,18 +4,18 @@ import { ScaleFade } from '../../../transition';
 import { useDidClickOutside, useMergeRefs } from '../../../../hooks';
 import { useModalContext } from '../useModal';
 
+interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
+	containerStyles?: string;
+	children: ReactNode;
+	styles?: string;
+}
+
 const RAPID_CLASSNAME = 'rapid-modal-content';
 const CONTAINER_CLASS = 'rapid-modal-panel-container';
 const DEFAULT_CONTAINER_STYLES =
 	'fixed inset-0 flex items-center justify-center';
 const DEFAULT_PANEL_STYLES =
 	'w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all';
-
-interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
-	containerStyles?: string;
-	children: ReactNode;
-	styles?: string;
-}
 
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 	({ styles, containerStyles, children, ...rest }, ref) => {

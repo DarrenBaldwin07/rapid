@@ -4,8 +4,6 @@ import { RapidStyles } from '../../../../utils';
 import SelectIcon from '../selectIcon/SelectIcon';
 import Option from '../option/Option';
 
-const THEME_CLASSNAME = 'rapid-select';
-
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 	styles?: string;
 	icon?: React.ReactNode;
@@ -33,6 +31,8 @@ export const selectTheme = createVariant({
 		variant: 'default',
 	},
 });
+
+const THEME_CLASSNAME = 'rapid-select';
 
 const getVariantClassName = (
 	variant: string | undefined,

@@ -6,8 +6,6 @@ import { VStack } from '../../../layout';
 import type { Spacing } from '../../../../types';
 import type { Speed } from '..';
 
-const RAPID_CLASSNAME = 'rapid-skeleton';
-
 interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> {
 	isLoading?: boolean;
 	numberOfLines?: number;
@@ -16,6 +14,9 @@ interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> {
 	containerStyles?: string;
 	styles?: string;
 }
+
+const RAPID_CLASSNAME = 'rapid-skeleton';
+const SKELETON_TEXT_STYLES = 'h-3 w-full rounded-md';
 
 const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
 	(
@@ -29,7 +30,6 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
 		},
 		ref,
 	) => {
-		const defaultStyles = 'h-3 w-full rounded-md';
 		return (
 			<VStack styles={containerStyles} spacing={lineSpacing}>
 				{Array.from(Array(numberOfLines).keys()).map(
@@ -41,7 +41,7 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
 								className={twMerge(
 									RapidStyles(
 										styles,
-										defaultStyles,
+										SKELETON_TEXT_STYLES,
 										RAPID_CLASSNAME,
 									),
 									classNames({

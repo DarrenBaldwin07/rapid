@@ -6,14 +6,18 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
     class="container mx-auto p-4"
   >
     <div
+      aria-multiselectable="true"
       class="flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto rapid-accordion"
-      role="accordion"
+      role="region"
     >
       <div
         class="border-b rapid-accordion-item"
       >
         <h2
+          aria-controls="rapid-accordion-content-0"
+          aria-expanded="true"
           class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
+          id="rapid-accordion-header-0"
           role="button"
           tabindex="0"
         >
@@ -41,7 +45,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
           style="overflow: hidden; height: NaNpx;"
         >
           <div
+            aria-labelledby="rapid-accordion-header-0"
             class="p-2 text-gray-500 rapid-accordion-content"
+            id="rapid-accordion-content-0"
+            role="region"
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </div>
@@ -51,7 +58,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
+          aria-controls="rapid-accordion-content-1"
+          aria-expanded="false"
           class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
+          id="rapid-accordion-header-1"
           role="button"
           tabindex="0"
         >
@@ -79,7 +89,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
           style="overflow: hidden; height: 0px;"
         >
           <div
+            aria-labelledby="rapid-accordion-header-1"
             class="p-2 text-gray-500 rapid-accordion-content"
+            id="rapid-accordion-content-1"
+            role="region"
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </div>
@@ -89,7 +102,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
+          aria-controls="rapid-accordion-content-2"
+          aria-expanded="true"
           class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
+          id="rapid-accordion-header-2"
           role="button"
           tabindex="0"
         >
@@ -117,7 +133,10 @@ exports[`Accordion > should render accordion with props correctly 1`] = `
           style="overflow: hidden; height: NaNpx;"
         >
           <div
+            aria-labelledby="rapid-accordion-header-2"
             class="p-2 text-gray-500 rapid-accordion-content"
+            id="rapid-accordion-content-2"
+            role="region"
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </div>
@@ -134,14 +153,18 @@ exports[`Accordion > should render default accordion correctly 1`] = `
     class="container mx-auto p-4"
   >
     <div
+      aria-multiselectable="false"
       class="flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto rapid-accordion"
-      role="accordion"
+      role="region"
     >
       <div
         class="border-b rapid-accordion-item"
       >
         <h2
+          aria-controls="rapid-accordion-content-0"
+          aria-expanded="false"
           class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
+          id="rapid-accordion-header-0"
           role="button"
           tabindex="0"
         >
@@ -155,7 +178,10 @@ exports[`Accordion > should render default accordion correctly 1`] = `
           style="overflow: hidden; height: 0px;"
         >
           <div
+            aria-labelledby="rapid-accordion-header-0"
             class="p-2 text-gray-500 rapid-accordion-content"
+            id="rapid-accordion-content-0"
+            role="region"
           >
             Content for item 1
           </div>
@@ -165,7 +191,10 @@ exports[`Accordion > should render default accordion correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
+          aria-controls="rapid-accordion-content-1"
+          aria-expanded="false"
           class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
+          id="rapid-accordion-header-1"
           role="button"
           tabindex="0"
         >
@@ -179,7 +208,10 @@ exports[`Accordion > should render default accordion correctly 1`] = `
           style="overflow: hidden; height: 0px;"
         >
           <div
+            aria-labelledby="rapid-accordion-header-1"
             class="p-2 text-gray-500 rapid-accordion-content"
+            id="rapid-accordion-content-1"
+            role="region"
           >
             Content for item 2
           </div>
@@ -189,7 +221,10 @@ exports[`Accordion > should render default accordion correctly 1`] = `
         class="border-b rapid-accordion-item"
       >
         <h2
+          aria-controls="rapid-accordion-content-2"
+          aria-expanded="false"
           class="cursor-pointer p-2 hover:bg-lightGrey rapid-accordion-header"
+          id="rapid-accordion-header-2"
           role="button"
           tabindex="0"
         >
@@ -203,7 +238,10 @@ exports[`Accordion > should render default accordion correctly 1`] = `
           style="overflow: hidden; height: 0px;"
         >
           <div
+            aria-labelledby="rapid-accordion-header-2"
             class="p-2 text-gray-500 rapid-accordion-content"
+            id="rapid-accordion-content-2"
+            role="region"
           >
             Content for item 3
           </div>

@@ -1,13 +1,13 @@
 import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { RapidStyles } from '../../../../utils';
 
-const RAPID_CLASSNAME = 'rapid-modal-footer';
-const FOOTER_STYLES = 'flex items-center justify-end p-4';
-
 interface ModalFooterProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode;
 	styles?: string;
 }
+
+const RAPID_CLASSNAME = 'rapid-modal-footer';
+const FOOTER_STYLES = 'flex items-center justify-end p-4';
 
 const ModalFooter = forwardRef<HTMLDivElement, ModalFooterProps>(
 	({ styles, children, ...rest }, ref) => {

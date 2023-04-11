@@ -3,8 +3,13 @@ import { createVariant } from '../../../theme';
 import { RapidStyles, getVariantClassName } from '../../../utils';
 import { default as AliasSpinner } from '../../feedback/spinner/Spinner';
 
-// This is the class name that will be used to apply the global rapid theme from tailwindCSS
-const THEME_CLASSNAME = 'rapid-button';
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+	styles?: string;
+	isLoading?: boolean;
+	spinner?: React.ReactNode;
+	variant?: string;
+	size?: string;
+}
 
 export const buttonTheme = createVariant({
 	baseStyle:
@@ -29,13 +34,8 @@ export const buttonTheme = createVariant({
 	},
 });
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	styles?: string;
-	isLoading?: boolean;
-	spinner?: React.ReactNode;
-	variant?: string;
-	size?: string;
-}
+// This is the class name that will be used to apply the global rapid theme from tailwindCSS
+const THEME_CLASSNAME = 'rapid-button';
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(

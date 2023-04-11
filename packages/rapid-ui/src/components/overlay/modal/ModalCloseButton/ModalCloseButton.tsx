@@ -3,13 +3,13 @@ import { useModalClose } from '../useModal';
 import { RapidStyles } from '../../../../utils';
 import { Button } from '../../../primitives';
 
-const RAPID_CLASSNAME = 'rapid-modal-close-button';
-const BUTTON_STYLES = 'absolute top-4 right-4 p-2';
-
 interface ModalCloseButtonProps
 	extends ButtonHTMLAttributes<HTMLButtonElement> {
 	styles?: string;
 }
+
+const RAPID_CLASSNAME = 'rapid-modal-close-button';
+const BUTTON_STYLES = 'absolute top-4 right-4 p-2';
 
 const ModalCloseButton = forwardRef<HTMLButtonElement, ModalCloseButtonProps>(
 	({ styles, ...rest }, ref) => {

@@ -4,8 +4,6 @@ import { RapidStyles, getValidReactChildren } from '../../../utils';
 type Spacing = 'sm' | 'md' | 'lg';
 type Direction = 'row' | 'column';
 
-const RAPID_CLASSNAME = 'rapid-stack';
-
 interface StackProps
 	extends React.DetailedHTMLProps<
 		React.HTMLAttributes<HTMLDivElement>,
@@ -15,6 +13,8 @@ interface StackProps
 	direction?: Direction;
 	styles?: string;
 }
+
+const RAPID_CLASSNAME = 'rapid-stack';
 
 // ------------------- TAILWINDCSS CLASSES TO FORCE JIT TO COMPILE -------------------
 // space-y-6
@@ -35,7 +35,7 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 			[children],
 		);
 
-		const getSpacing = (spacing: Spacing) => {
+		const getSpacing = useMemo(() => {
 			switch (spacing) {
 				case 'sm':
 					return '1.5';
@@ -44,17 +44,16 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 				case 'lg':
 					return '6';
 			}
-		};
+		}, [spacing]);
 
-		const getDirectionStyles = (direction: Direction) => {
-			const spaceValue = getSpacing(spacing);
+		const getDirectionStyles = useMemo(() => {
 			switch (direction) {
 				case 'row':
-					return `flex ${`space-x-${spaceValue}`}`;
+					return `flex ${`space-x-${getSpacing}`}`;
 				case 'column':
-					return `flex flex-col ${`space-y-${spaceValue}`}`;
+					return `flex flex-col ${`space-y-${getSpacing}`}`;
 			}
-		};
+		}, [direction, getSpacing]);
 
 		// This component does not support custom dividers or wrapping (maybe a TODO ?)
 		return (
@@ -63,7 +62,7 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 				{...rest}
 				className={RapidStyles(
 					styles || rest.className,
-					getDirectionStyles(direction),
+					getDirectionStyles,
 					RAPID_CLASSNAME,
 				)}
 			>

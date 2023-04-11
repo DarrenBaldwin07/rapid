@@ -14,7 +14,16 @@ import { Text } from '../../primitives';
 import { createVariant } from '../../../theme';
 import { Portal } from '../../utilities/portal';
 
-const THEME_CLASSNAME = 'rapid-tooltip';
+interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
+	children: React.ReactElement;
+	shouldCloseOnSroll?: boolean;
+	label?: string;
+	id?: string;
+	styles?: string;
+	orientation?: 'top' | 'bottom' | 'left' | 'right';
+	isAnimated?: boolean;
+	variant?: string;
+}
 
 export const tooltipTheme = createVariant({
 	baseStyle: 'rounded-[13px] py-1 px-2',
@@ -29,16 +38,7 @@ export const tooltipTheme = createVariant({
 	},
 });
 
-interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
-	children: React.ReactElement;
-	shouldCloseOnSroll?: boolean;
-	label?: string;
-	id?: string;
-	styles?: string;
-	orientation?: 'top' | 'bottom' | 'left' | 'right';
-	isAnimated?: boolean;
-	variant?: string;
-}
+const THEME_CLASSNAME = 'rapid-tooltip';
 
 /**
  * Tooltips display descriptions about (usually) interactive elements when the user hovers over or focuses on the element.

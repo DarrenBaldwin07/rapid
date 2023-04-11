@@ -2,13 +2,14 @@ import React, { HTMLAttributes, forwardRef, useEffect } from 'react';
 import { RapidStyles } from '../../../../utils';
 import { Fade } from '../../../transition';
 
-const RAPID_CLASSNAME = 'rapid-modal-overlay';
-const OVERLAY_STYLES =
-	'fixed inset-0 bg-black bg-opacity-50 top-0 left-0 w-full h-full flex justify-center items-center';
 interface ModalOverlayProps extends HTMLAttributes<HTMLDivElement> {
 	isEnabled?: boolean;
 	styles?: string;
 }
+
+const RAPID_CLASSNAME = 'rapid-modal-overlay';
+const OVERLAY_STYLES =
+	'fixed inset-0 bg-black bg-opacity-50 top-0 left-0 w-full h-full flex justify-center items-center';
 
 const ModalOverlay = forwardRef<HTMLDivElement, ModalOverlayProps>(
 	({ styles, isEnabled, ...rest }, ref) => {

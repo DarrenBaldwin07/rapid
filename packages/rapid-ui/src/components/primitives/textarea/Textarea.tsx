@@ -2,8 +2,6 @@ import React, { forwardRef } from 'react';
 import { RapidStyles } from '../../../utils';
 import { createVariant } from '../../../theme';
 
-const THEME_CLASSNAME = 'rapid-textarea';
-
 export interface TextareaProps
 	extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 	variant?: string;
@@ -31,6 +29,8 @@ const getVariantClassName = (variant: string | undefined) => {
 	if (variant) return `rapid-textarea-${variant}`;
 	else return undefined;
 };
+
+const THEME_CLASSNAME = 'rapid-textarea';
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 	({ styles, variant, ...rest }, ref) => {

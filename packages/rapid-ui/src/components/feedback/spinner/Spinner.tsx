@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { RapidStyles, sanitizeClassNames } from '../../../utils';
 
 type Speed = 'slow' | 'medium' | 'fast';
@@ -21,6 +21,8 @@ export const spinnerSafeList = [
 	'spinner-medium',
 	'spinner-fast',
 ];
+const defaultStyles =
+	'h-6 w-6 spinner-fast rounded-full border border-solid border-black border-t-transparent border-r-transparent';
 
 const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 	(
@@ -34,9 +36,7 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 		},
 		ref,
 	) => {
-		const defaultStyles =
-			'h-6 w-6 spinner-fast rounded-full border border-solid border-black border-t-transparent border-r-transparent';
-		const getSpinnerSpeed = (speed: Speed) => {
+		const getSpinnerSpeed = useMemo(() => {
 			switch (speed) {
 				case 'slow':
 					return 'spinner-slow';
@@ -45,9 +45,9 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 				case 'fast':
 					return 'spinner-fast';
 			}
-		};
+		}, [speed]);
 
-		const getSpinnerSize = (size: Size) => {
+		const getSpinnerSize = useMemo(() => {
 			switch (size) {
 				case 'sm':
 					return 'h-4 w-4';
@@ -56,7 +56,8 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 				case 'lg':
 					return 'h-8 w-8';
 			}
-		};
+		}, [size]);
+
 		return (
 			<div
 				{...rest}
@@ -65,8 +66,8 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 					styles || rest.className,
 					sanitizeClassNames(
 						defaultStyles,
-						getSpinnerSpeed(speed),
-						getSpinnerSize(size),
+						getSpinnerSpeed,
+						getSpinnerSize,
 					),
 				)}
 			>

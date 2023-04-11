@@ -9,7 +9,7 @@ interface ModalCloseButtonProps
 }
 
 const RAPID_CLASSNAME = 'rapid-modal-close-button';
-const BUTTON_STYLES = 'absolute top-4 right-4 p-2';
+const BUTTON_STYLES = 'top-4 right-4 p-2';
 
 const ModalCloseButton = forwardRef<HTMLButtonElement, ModalCloseButtonProps>(
 	({ styles, ...rest }, ref) => {

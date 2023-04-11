@@ -38,7 +38,7 @@ const Fade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 		};
 
 		// Return nothing if the consumer did not want to enable the animation
-		if (isEnabled === false) return null;
+		if (isEnabled === false) return <>{rest.children}</>;
 
 		return (
 			<motion.div

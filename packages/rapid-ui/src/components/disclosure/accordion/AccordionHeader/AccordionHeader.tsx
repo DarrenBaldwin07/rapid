@@ -12,12 +12,7 @@ import {
 	useAccordionItemIndex,
 	useAccordionIsOpen,
 } from '../useAccordion';
-
-const RAPID_CLASSNAME = 'rapid-accordion-header';
-
-const ACDN_HEADER_STYLES = `cursor-pointer p-2 hover:bg-lightGrey`;
-
-const ACDN_HEADER_DIV_STYLES = `flex justify-between items-center`;
+import { ACC_CONTENT_CLASSNAME } from '../';
 
 interface AccordionHeaderProps
 	extends DetailedHTMLProps<
@@ -28,6 +23,10 @@ interface AccordionHeaderProps
 	styles?: string;
 	children: React.ReactNode;
 }
+
+export const RAPID_CLASSNAME = 'rapid-accordion-header';
+const ACC_HEADER_STYLES = `cursor-pointer p-2 hover:bg-lightGrey`;
+const ACC_HEADER_DIV_STYLES = `flex justify-between items-center`;
 
 export const AccordionHeader = forwardRef<
 	HTMLHeadingElement,
@@ -63,17 +62,20 @@ export const AccordionHeader = forwardRef<
 		<h2
 			ref={ref}
 			{...rest}
+			id={`${RAPID_CLASSNAME}-${index}`}
 			className={RapidStyles(
 				styles || rest.className,
-				ACDN_HEADER_STYLES,
+				ACC_HEADER_STYLES,
 				RAPID_CLASSNAME,
 			)}
 			onClick={handleToggle}
 			onKeyDown={handleKeyDown}
 			role='button'
 			tabIndex={0}
+			aria-expanded={isOpen}
+			aria-controls={`${ACC_CONTENT_CLASSNAME}-${index}`}
 		>
-			<div ref={divRef} className={ACDN_HEADER_DIV_STYLES}>
+			<div ref={divRef} className={ACC_HEADER_DIV_STYLES}>
 				{children}
 			</div>
 		</h2>

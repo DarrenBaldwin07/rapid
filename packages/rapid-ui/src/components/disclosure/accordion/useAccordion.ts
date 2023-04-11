@@ -5,7 +5,7 @@ import {
 	useState,
 	RefObject,
 } from 'react';
-import { ACCORDION_ITEM_CLASSNAME } from '.';
+import { ACC_ITEM_CLASSNAME } from '.';
 
 export type AccordionContextType = {
 	allowMultiple: boolean;
@@ -36,9 +36,7 @@ export const useAccordionItemIndex = (
 	const [index, setIndex] = useState<number | null>(null);
 
 	useEffect(() => {
-		const accordionItem = divRef.current?.closest(
-			`.${ACCORDION_ITEM_CLASSNAME}`,
-		);
+		const accordionItem = divRef.current?.closest(`.${ACC_ITEM_CLASSNAME}`);
 		const accordion = accordionItem?.parentElement;
 
 		if (accordion && accordionItem) {

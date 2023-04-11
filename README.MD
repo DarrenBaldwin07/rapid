@@ -32,7 +32,7 @@ Rapid is built on multiple React and Rust libraries. View them bellow:
 ### Frontend
 
 -   [@Rapid-web/react](https://www.npmjs.com/package/@rapid-web/react)
--   [@rapid-web/ui](https://www.npmjs.com/package/@rapid-web/ui)
+-   [@Rapid-web/ui](https://www.npmjs.com/package/@rapid-web/ui)
 
 # Roadmap
 

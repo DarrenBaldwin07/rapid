@@ -39,7 +39,7 @@ const Divider = forwardRef<HTMLHRElement, DividerProps>(
 		const getDividerStyles = useMemo(() => {
 			return orientation === 'vertical'
 				? `${DIVIDER_STYLES} h-full border-t-0 border-l` // vertical
-				: `${DIVIDER_STYLES} w-full border-b`; // horizontel
+				: `${DIVIDER_STYLES} w-full border-b`; // horizontal
 		}, [orientation]);
 
 		return (

@@ -32,7 +32,8 @@ export const AccordionHeader = forwardRef<
 	HTMLHeadingElement,
 	AccordionHeaderProps
 >(({ children, styles, ...rest }, ref) => {
-	const { allowToggle, activeItems, setActiveItems } = useAccordionContext();
+	const { allowToggle, activeItems, setActiveItems, id } =
+		useAccordionContext();
 	const divRef = useRef<HTMLDivElement>(null);
 	const index = useAccordionItemIndex(divRef);
 	const isOpen = useAccordionIsOpen(index, activeItems);
@@ -62,7 +63,7 @@ export const AccordionHeader = forwardRef<
 		<h2
 			ref={ref}
 			{...rest}
-			id={`${RAPID_CLASSNAME}-${index}`}
+			id={`${RAPID_CLASSNAME}-${id}-${index}`}
 			className={RapidStyles(
 				styles || rest.className,
 				ACC_HEADER_STYLES,
@@ -73,7 +74,7 @@ export const AccordionHeader = forwardRef<
 			role='button'
 			tabIndex={0}
 			aria-expanded={isOpen}
-			aria-controls={`${ACC_CONTENT_CLASSNAME}-${index}`}
+			aria-controls={`${ACC_CONTENT_CLASSNAME}-${id}-${index}`}
 		>
 			<div ref={divRef} className={ACC_HEADER_DIV_STYLES}>
 				{children}

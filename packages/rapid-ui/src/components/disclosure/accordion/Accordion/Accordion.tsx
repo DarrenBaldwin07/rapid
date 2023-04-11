@@ -3,6 +3,7 @@ import React, {
 	forwardRef,
 	DetailedHTMLProps,
 	HTMLAttributes,
+	useId,
 } from 'react';
 import { RapidStyles } from '../../../../utils';
 import { AccordionContext } from '../useAccordion';
@@ -41,6 +42,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 					allowToggle,
 					activeItems,
 					setActiveItems,
+					id: useId(),
 				}}
 			>
 				<div

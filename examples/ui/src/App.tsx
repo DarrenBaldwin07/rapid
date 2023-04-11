@@ -80,7 +80,7 @@ function App() {
 			</div>
 			<Text>Divider variant dashed</Text>
 			<Divider variant='dashed' />
-			<Text>Divider horizontel</Text>
+			<Text>Divider horizontal</Text>
 			<Divider size='lg' />
 			<br />
 			<Text>Skeleton & SkeletonText</Text>

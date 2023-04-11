@@ -12,6 +12,7 @@ export type AccordionContextType = {
 	allowToggle: boolean;
 	activeItems: number[];
 	setActiveItems: React.Dispatch<React.SetStateAction<number[]>>;
+	id: string;
 };
 
 export const AccordionContext = createContext<AccordionContextType | undefined>(

@@ -1,4 +1,7 @@
-# Getting Started
+# Setting up your development enviroment for contributing to the Rapid project
+
+## Rapid-UI
+
 To setup your dev environment for Rapid-UI on your local machine follow these steps:
 
 - node v16 or higher is required

@@ -8,6 +8,10 @@ interface SlideFadeProps extends MotionProps {
 	exitAnimation?: 'exit' | 'initial';
 	isEnabled?: boolean;
 	direction?: 'left' | 'right' | 'top' | 'bottom';
+	transition?: {
+		enter?: {};
+		exit?: {};
+	};
 	styles?: string;
 }
 
@@ -35,6 +39,7 @@ const SlideFade = React.forwardRef<HTMLDivElement, SlideFadeProps>(
 			exitAnimation = 'exit',
 			isEnabled,
 			direction = 'right',
+			transition,
 			...rest
 		},
 		ref,

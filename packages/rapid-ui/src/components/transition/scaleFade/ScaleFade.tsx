@@ -8,6 +8,10 @@ interface ScaleFadeProps extends MotionProps {
 	styles?: string;
 	exitAnimation?: 'exit' | 'initial';
 	isEnabled?: boolean;
+	transition?: {
+		enter?: {};
+		exit?: {};
+	};
 }
 
 const RAPID_CLASSNAME = 'rapid-scale-fade';
@@ -19,6 +23,7 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 			initialOpacity,
 			exitAnimation = 'initial',
 			isEnabled,
+			transition,
 			...rest
 		},
 		ref,
@@ -38,6 +43,7 @@ const ScaleFade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 				transitionEnd: transitionEnd?.exit,
 			}),
 			exit: ({ transition, transitionEnd } = {}) => ({
+				opacity: initialOpacity || 1,
 				scale: rest.initialscale || 0.95,
 				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,

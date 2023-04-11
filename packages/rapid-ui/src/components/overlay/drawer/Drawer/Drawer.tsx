@@ -14,6 +14,7 @@ interface DrawerProps extends HTMLAttributes<HTMLDivElement> {
 	size?: DrawerSizes;
 	enableAnimation?: boolean;
 	initialFocus?: RefObject<HTMLElement>;
+	enableOverlay?: boolean;
 	zIndex?: number;
 	styles?: string;
 }
@@ -25,6 +26,7 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>((props, ref) => {
 		direction = 'right',
 		size = 'md',
 		enableAnimation = true,
+		enableOverlay = true,
 		initialFocus,
 		zIndex,
 		styles,
@@ -50,6 +52,14 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>((props, ref) => {
 					RAPID_CLASSNAME,
 				)}
 				zIndex={zIndex}
+				enableOverlay={enableOverlay}
+				fadeAnimation={{
+					transition: {
+						exit: {
+							duration: 0.25,
+						},
+					},
+				}}
 			>
 				{children}
 			</Modal>

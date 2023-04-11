@@ -21,6 +21,13 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
 	initialFocus?: RefObject<HTMLElement>;
 	enableAnimation?: boolean;
 	zIndex?: number;
+	fadeAnimation?: {
+		transition?: {
+			exit?: {};
+			enter?: {};
+		};
+	};
+	enableOverlay?: boolean;
 	styles?: string;
 }
 
@@ -32,6 +39,8 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 			initialFocus,
 			enableAnimation = true,
 			zIndex = 40,
+			fadeAnimation,
+			enableOverlay = true,
 			styles,
 			children,
 			...rest
@@ -87,7 +96,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 									RAPID_CLASSNAME,
 								)}
 							>
-								<ModalOverlay />
+								{enableOverlay ? (
+									<ModalOverlay
+										transition={fadeAnimation?.transition}
+									/>
+								) : null}
 								{children}
 							</div>
 						</ModalContext.Provider>

@@ -6,7 +6,7 @@ pub use rapid_web_codegen;
 pub use default_routes::templates::WELCOME_TEMPLATE as welcome_view;
 pub mod logger;
 pub mod server;
-pub mod shift;
+pub(crate) mod shift; // TODO: shift needs to be abstracted out into its own crate (for now it will be left private to rapid-web)
 pub(crate) mod default_routes;
 pub(crate) mod tui;
 pub(crate) mod util;

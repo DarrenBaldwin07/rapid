@@ -20,7 +20,7 @@ pub fn check_for_invalid_handlers(dir: &str) {
 			let mut file_contents = String::new();
 			file.read_to_string(&mut file_contents).unwrap();
 
-			// Check if the handler is invalid
+			// Check if the handler is invalid (this is specifically for the actual function itself)
 			if !validate_route_handler(&file_contents) || !is_valid_route_function(&file_contents) {
 				// Show warning logs to the user as needed
 				println!("\n"); // Each log should have a indent of 1 so that we get some nice spacing

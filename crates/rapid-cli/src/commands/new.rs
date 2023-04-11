@@ -2,6 +2,7 @@ use super::RapidCommand;
 use crate::{
 	cli::{current_directory, logo, rapid_logo, Config},
 	constants::BOLT_EMOJI,
+	tui::clean_console
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
@@ -178,8 +179,10 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	println!("{}", "\nInitializing a new rapid-web server application...".color(Color::LightCyan));
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(500);
+	let timeout = time::Duration::from_millis(675);
 	thread::sleep(timeout);
+
+	clean_console();
 
 	println!(
 		"\n\n{} {} {} {}",

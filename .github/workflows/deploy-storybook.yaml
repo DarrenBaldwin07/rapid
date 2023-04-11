@@ -1,0 +1,42 @@
+name: Storybook
+
+on:
+  push:
+    branches:
+      - main # Stoybook will be deployed on every merge into the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/rapid-ui
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build all components
+        run: npm run build
+
+      - name: Build CSS
+        run: npx tailwindcss -i ./src/styles/index.css -o ./src/styles/tailwind-dev.css
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=packages/rapid-ui/storybook-static --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 3160fdc6-812b-403f-a540-9a1a6b2b0524

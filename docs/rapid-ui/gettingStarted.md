@@ -89,7 +89,7 @@ Add the TailwindCSS directives to your css:
 @tailwind utilities;
 ```
 
-Finally, be sure to import your css file inside the vite entrypoint (either `_app.tsx` or `index.tsx`): `import globals.css`
+Finally, be sure to import your css file inside the nextjs entrypoint (either `_app.tsx` or `index.tsx`): `import globals.css`
 
 
 ## Vite
@@ -112,3 +112,5 @@ css: {
 ```
 
 Finally, be sure to import your css file inside the vite entrypoint (either `app.tsx` or `index.tsx`): `import index.css`
+
+> Checkout the Rapid-UI components on Storybook here: https://storybook.rapid.cincinnati.ventures

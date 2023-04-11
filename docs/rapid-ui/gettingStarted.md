@@ -3,14 +3,30 @@
 # Initializing Rapid UI in an existing application
 
 ## Remix
-Begin by installing the tailwindCSS depedencies:
+Begin by installing the TailwindCSS depedencies:
 ```bash
 npm install -D tailwindcss postcss autoprefixer
 ```
 
 Initialize rapid-ui using the rapid cli:
 ```bash
-rapid-cli init --remix
+rapid init ui --remix
+```
+
+Enable the `unstable_tailwind` option in the Remix config:
+```javascript
+/** @type {import('@remix-run/dev').AppConfig} */
+module.exports = {
+  ignoredRouteFiles: ["**/.*"],
+  server:
+    process.env.NETLIFY || process.env.NETLIFY_LOCAL
+      ? "./server.js"
+      : undefined,
+  future: {
+    unstable_tailwind: true, // Add this line
+  },
+};
+
 ```
 
 Import and declare you css in the Remix root:
@@ -32,7 +48,7 @@ Import and declare you css in the Remix root:
         viewport: "width=device-width,initial-scale=1",
     });
 
-    // Be sure to add this line below
+    // Be sure to add this line below that will registor your tailwind styles
     export function links() {
         return [{ rel: "stylesheet", href: styles }]
     }
@@ -56,17 +72,35 @@ Import and declare you css in the Remix root:
 ```
 
 ## Nextjs
-> Note: Next.js will be supported very soon :)
-
-## Vite
-Begin by installing the tailwindCSS depedencies:
+Begin by installing the TailwindCSS depedencies:
 ```bash
 npm install -D tailwindcss postcss autoprefixer
 ```
 
 Initialize rapid-ui using the rapid cli:
 ```bash
-rapid-cli init --vite
+rapid init ui --nextjs
+```
+
+Add the TailwindCSS directives to your css:
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Finally, be sure to import your css file inside the vite entrypoint (either `_app.tsx` or `index.tsx`): `import globals.css`
+
+
+## Vite
+Begin by installing the TailwindCSS depedencies:
+```bash
+npm install -D tailwindcss postcss autoprefixer
+```
+
+Initialize rapid-ui using the rapid cli:
+```bash
+rapid init ui --vite
 ```
 
 Locate your vite.config.ts file and add the following to the config object:
@@ -77,4 +111,4 @@ css: {
 }
 ```
 
-Finally, be sure to import your css file inside the vite entrypoint: `import index.css`
+Finally, be sure to import your css file inside the vite entrypoint (either `app.tsx` or `index.tsx`): `import index.css`

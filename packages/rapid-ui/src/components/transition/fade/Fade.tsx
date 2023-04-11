@@ -2,32 +2,44 @@ import React from 'react';
 import { motion, Variants, HTMLMotionProps, MotionProps } from 'framer-motion';
 import { RapidStyles } from '../../../utils';
 
+type Transition = {
+	enter?: {};
+	exit?: {};
+};
 interface ScaleFadeProps extends MotionProps {
 	styles?: string;
 	initialOpacity?: number;
-	transition?: {
-		enter?: {};
-		exit?: {};
-	};
 	isEnabled?: boolean;
+	transition?: Transition;
+	transitionEnd?: Transition;
 }
 
 const RAPID_CLASSNAME = 'rapid-fade';
 
 const Fade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
-	({ styles, initialOpacity, isEnabled, transition, ...rest }, ref) => {
+	(
+		{
+			styles,
+			initialOpacity,
+			isEnabled,
+			transition,
+			transitionEnd,
+			...rest
+		},
+		ref,
+	) => {
 		// Framer-motion animation variants
 		const variants: Variants = {
-			enter: ({ transition, transitionEnd } = {}) => ({
+			enter: {
 				opacity: 1,
 				transition: transition?.enter,
 				transitionEnd: transitionEnd?.enter,
-			}),
-			exit: ({ transition, transitionEnd } = {}) => ({
+			},
+			exit: {
 				opacity: initialOpacity || 0,
 				transition: transition?.exit,
 				transitionEnd: transitionEnd?.exit,
-			}),
+			},
 		};
 
 		// The animation config that pass as props to a <motion.div />
@@ -45,6 +57,7 @@ const Fade = React.forwardRef<HTMLDivElement, ScaleFadeProps>(
 			<motion.div
 				{...rest}
 				{...fadeConfig}
+				// transition={{ duration: 0.025 }}
 				ref={ref}
 				className={RapidStyles(styles, RAPID_CLASSNAME)}
 			/>

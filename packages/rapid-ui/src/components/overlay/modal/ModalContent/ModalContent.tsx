@@ -41,7 +41,7 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 				<ScaleFade
 					isEnabled={enableAnimation}
 					initialscale={0.98}
-					transition={{ exit: { duration: 0.5 } }}
+					transition={{ exit: { duration: 0.025 } }}
 					exitAnimation='exit'
 					initialOpacity={0}
 				>

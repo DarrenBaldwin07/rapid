@@ -151,7 +151,7 @@ const Tooltip = (props: TooltipProps) => {
 		<>
 			{trigger}
 			<AnimatePresence>
-				{isOpen && (
+				{isOpen ? (
 					<Portal>
 						<div
 							ref={refs.setFloating}
@@ -165,6 +165,8 @@ const Tooltip = (props: TooltipProps) => {
 								isEnabled={isAnimated}
 								initialscale={0.85}
 								exitAnimation='exit'
+								initialOpacity={0}
+								transition={{ exit: { duration: 0.1 } }}
 							>
 								<div
 									id={tooltipId}
@@ -182,7 +184,7 @@ const Tooltip = (props: TooltipProps) => {
 							</ScaleFade>
 						</div>
 					</Portal>
-				)}
+				) : null}
 			</AnimatePresence>
 		</>
 	);

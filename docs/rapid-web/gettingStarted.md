@@ -1,6 +1,6 @@
 # Getting Started
 
-1. To start developing with rapid you will first need to install the Rapid CLI:
+1. To start developing applications with rapid you will first need to install the Rapid CLI:
 ```bash
 cargo install rapid-cli
 ```

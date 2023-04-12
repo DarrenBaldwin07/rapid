@@ -29,4 +29,8 @@
 - React query integration
 - Plugins
 
+
+## Acknowledgments
+- Rapid is built on-top of one the most performant web server frameworks in the world ([actix-web](https://github.com/actix)) and would not be possible without its existance
+
 > Note: We do not recommend that you use Rapid in production as all of its core implementations are subject to change rapidly :)

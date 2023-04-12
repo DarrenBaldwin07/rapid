@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Divider } from '../';
 
 export default {
-	title: 'Components/primitives/Divider',
+	title: 'Components/layout/Divider',
 	component: Divider,
 	argTypes: {
 		size: {

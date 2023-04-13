@@ -5,7 +5,7 @@
 <div align='center'>
     <a href='https://rapid.cincinnati.ventures/' target='_blank'>rapid.cincinnati.ventures</a>
 </div>
-
+[![OSSRank](https://shields.io/endpoint?url=https://ossrank.com/shield/2856)](https://ossrank.com/p/2856)
 # What is Rapid?
 
 The complete fullstack toolkit for building advanced, scallable, and highly efficient software. Rapid is not a framework but a toolkit that enables developers to create fullstack applications built on React and Rust. Rapid focuses on scalability and performance without sacrificing great developer experience.

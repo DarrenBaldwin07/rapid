@@ -6,6 +6,8 @@
     <a href='https://rapid.cincinnati.ventures/' target='_blank'>rapid.cincinnati.ventures</a>
 </div>
 
+[![OSSRank](https://shields.io/endpoint?url=https://ossrank.com/shield/2856)](https://ossrank.com/p/2856)
+    
 # What is Rapid?
 
 The complete fullstack toolkit for building advanced, scaleable, and highly efficient software. 

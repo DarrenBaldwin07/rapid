@@ -22,7 +22,7 @@ progressed, programming languages have began to specialize and become more direc
 solving hyper specific problems. However, developers have still preferred the single language 
 stack -- hence the popularity of things like [NodeJS](https://nodejs.org). 
 
-## But why? 
+## Why is the single language stack so popular? 
 
 Developing applications with one language front-to-back means that engineers have the ability to 
 share buisiness logic across their entire development process, allowing them to iterate very 

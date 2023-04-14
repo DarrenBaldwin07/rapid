@@ -4,7 +4,7 @@ name: Publish packages to npm
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+' # Prod build should deploy only on tag
+      - '[0-9]+.[0-9]+.[0-9]+' # We only want to publish when a tag is pushed
 
 jobs:
   build-react:

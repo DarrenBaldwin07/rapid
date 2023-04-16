@@ -5,7 +5,7 @@
 ## Remix
 Begin by installing the TailwindCSS depedencies:
 ```bash
-npm install -D tailwindcss postcss autoprefixer
+npm install -D tailwindcss
 ```
 
 Initialize rapid-ui using the rapid cli:

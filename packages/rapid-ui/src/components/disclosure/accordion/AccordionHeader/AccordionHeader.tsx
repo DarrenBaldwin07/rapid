@@ -25,7 +25,7 @@ interface AccordionHeaderProps
 }
 
 export const RAPID_CLASSNAME = 'rapid-accordion-header';
-const ACC_HEADER_STYLES = `cursor-pointer p-2 hover:bg-hoverWhite`; // @todo dark mode should cause this to switch
+const ACC_HEADER_STYLES = `cursor-pointer p-2 hover:bg-hoverWhite`;
 const ACC_HEADER_DIV_STYLES = `flex justify-between items-center`;
 
 export const AccordionHeader = forwardRef<

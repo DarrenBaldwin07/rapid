@@ -102,7 +102,57 @@ DefaultIndexesAccordion.parameters = {
 };
 
 const WithCustomStylesAccordion = Template.bind({});
-WithCustomStylesAccordion.args = { styles: 'bg-red-200' };
+WithCustomStylesAccordion.args = {
+	styles: 'mt-5 pl-3 pr-3 border-2 rounded-lg bg-black text-white',
+	allowToggle: false,
+	defaultIndexes: [0, 1, 2],
+	allowMultiple: true,
+};
+
+WithCustomStylesAccordion.decorators = [
+	(Story) => (
+		<div className='container mx-auto p-4'>
+			<Accordion {...WithCustomStylesAccordion.args}>
+				<AccordionItem>
+					<AccordionHeader className='hover:bg-black hover:text-white'>
+						Item 1<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+						sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud
+						exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat.
+					</AccordionContent>
+				</AccordionItem>
+				<AccordionItem>
+					<AccordionHeader className='hover:bg-black hover:text-white'>
+						Item 2<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+						sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud
+						exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat.
+					</AccordionContent>
+				</AccordionItem>
+				<AccordionItem styles='border-b-0'>
+					<AccordionHeader className='hover:bg-black hover:text-white'>
+						Item 3<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+						sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud
+						exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat.
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+		</div>
+	),
+];
 WithCustomStylesAccordion.parameters = {
 	controls: { matchers: { color: /(primary|secondary|tertiary)/i } },
 };

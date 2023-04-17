@@ -213,69 +213,69 @@ function App() {
 			</Drawer>
 			<Divider />
 			Accordion
-			<div className='container mx-auto p-4'>
-				<Accordion allowMultiple allowToggle defaultIndexes={[0, 2]}>
-					<AccordionItem>
-						<AccordionHeader>
-							Item 1<AccordionIcon />
-						</AccordionHeader>
-						<AccordionContent>
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit, sed do eiusmod tempor incididunt ut labore et
-							dolore magna aliqua. Ut enim ad minim veniam, quis
-							nostrud exercitation ullamco laboris nisi ut aliquip
-							ex ea commodo consequat.
-						</AccordionContent>
-					</AccordionItem>
-					<AccordionItem>
-						<AccordionHeader>
-							Item 2<AccordionIcon />
-						</AccordionHeader>
-						<AccordionContent>
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit, sed do eiusmod tempor incididunt ut labore et
-							dolore magna aliqua. Ut enim ad minim veniam, quis
-							nostrud exercitation ullamco laboris nisi ut aliquip
-							ex ea commodo consequat.
-						</AccordionContent>
-					</AccordionItem>
-					<AccordionItem>
-						<AccordionHeader>
-							Item 3<AccordionIcon />
-						</AccordionHeader>
-						<AccordionContent>
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit, sed do eiusmod tempor incididunt ut labore et
-							dolore magna aliqua. Ut enim ad minim veniam, quis
-							nostrud exercitation ullamco laboris nisi ut aliquip
-							ex ea commodo consequat.
-						</AccordionContent>
-					</AccordionItem>
-				</Accordion>
-			</div>
+			{/* <div className='container mx-auto p-4'> */}
+			<Accordion allowMultiple allowToggle defaultIndexes={[0, 2]}>
+				<AccordionItem>
+					<AccordionHeader>
+						Item 1<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+						sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud
+						exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat.
+					</AccordionContent>
+				</AccordionItem>
+				<AccordionItem>
+					<AccordionHeader>
+						Item 2<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+						sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud
+						exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat.
+					</AccordionContent>
+				</AccordionItem>
+				<AccordionItem>
+					<AccordionHeader>
+						Item 3<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+						sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud
+						exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat.
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+			{/* </div> */}
 			Accordion default
-			<div className='container mx-auto p-4'>
-				<Accordion>
-					<AccordionItem>
-						<AccordionHeader>
-							Item 1<AccordionIcon />
-						</AccordionHeader>
-						<AccordionContent>Content for item 1</AccordionContent>
-					</AccordionItem>
-					<AccordionItem>
-						<AccordionHeader>
-							Item 2<AccordionIcon />
-						</AccordionHeader>
-						<AccordionContent>Content for item 2</AccordionContent>
-					</AccordionItem>
-					<AccordionItem>
-						<AccordionHeader>
-							Item 3<AccordionIcon />
-						</AccordionHeader>
-						<AccordionContent>Content for item 3</AccordionContent>
-					</AccordionItem>
-				</Accordion>
-			</div>
+			{/* <div className='container mx-auto p-4'> */}
+			<Accordion styles='mt-5 pl-3 pr-3 border-2 rounded-lg bg-black text-white'>
+				<AccordionItem>
+					<AccordionHeader styles='hover:bg-gray'>
+						Item 1<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>Content for item 1</AccordionContent>
+				</AccordionItem>
+				<AccordionItem>
+					<AccordionHeader styles='hover:bg-gray'>
+						Item 2<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>Content for item 2</AccordionContent>
+				</AccordionItem>
+				<AccordionItem>
+					<AccordionHeader styles='hover:bg-gray'>
+						Item 3<AccordionIcon />
+					</AccordionHeader>
+					<AccordionContent>Content for item 3</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+			{/* </div> */}
 		</Container>
 	);
 }

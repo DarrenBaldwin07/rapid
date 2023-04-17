@@ -18,7 +18,7 @@ interface AccordionProps
 }
 
 const RAPID_CLASSNAME = 'rapid-accordion';
-const ACC_STYLES = 'flex flex-col mt-5 p-3 border-2 rounded-lg overflow-x-auto';
+const ACC_STYLES = 'flex flex-col overflow-x-auto';
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 	(

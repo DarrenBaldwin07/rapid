@@ -255,21 +255,21 @@ function App() {
 			{/* </div> */}
 			Accordion default
 			{/* <div className='container mx-auto p-4'> */}
-			<Accordion>
+			<Accordion styles='mt-5 pl-3 pr-3 border-2 rounded-lg bg-black text-white'>
 				<AccordionItem>
-					<AccordionHeader>
+					<AccordionHeader styles='hover:bg-gray'>
 						Item 1<AccordionIcon />
 					</AccordionHeader>
 					<AccordionContent>Content for item 1</AccordionContent>
 				</AccordionItem>
 				<AccordionItem>
-					<AccordionHeader>
+					<AccordionHeader styles='hover:bg-gray'>
 						Item 2<AccordionIcon />
 					</AccordionHeader>
 					<AccordionContent>Content for item 2</AccordionContent>
 				</AccordionItem>
 				<AccordionItem>
-					<AccordionHeader>
+					<AccordionHeader styles='hover:bg-gray'>
 						Item 3<AccordionIcon />
 					</AccordionHeader>
 					<AccordionContent>Content for item 3</AccordionContent>

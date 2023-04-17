@@ -5,7 +5,7 @@
 ## Remix
 Begin by installing the TailwindCSS depedencies:
 ```bash
-npm install -D tailwindcss
+npm install -D tailwindcss @rapid-web/ui
 ```
 
 Initialize rapid-ui using the rapid cli:
@@ -74,7 +74,7 @@ Import and declare you css in the Remix root:
 ## Nextjs
 Begin by installing the TailwindCSS depedencies:
 ```bash
-npm install -D tailwindcss postcss autoprefixer
+npm install -D tailwindcss postcss autoprefixer @rapid-web/ui
 ```
 
 Initialize rapid-ui using the rapid cli:
@@ -95,7 +95,7 @@ Finally, be sure to import your css file inside the nextjs entrypoint (either `_
 ## Vite
 Begin by installing the TailwindCSS depedencies:
 ```bash
-npm install -D tailwindcss postcss autoprefixer
+npm install -D tailwindcss postcss autoprefixer @rapid-web/ui
 ```
 
 Initialize rapid-ui using the rapid cli:

@@ -9,3 +9,4 @@ target
 # Any
 build
 tailwind-dev.css
+.DS_STORE

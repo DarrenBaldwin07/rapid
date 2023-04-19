@@ -1,3 +1,6 @@
+# Buid Dockerfile: docker build -t rapid-server -f ./rapid.Dockerfile .
+# Run Dockerfile: docker run -p 8080:8080 rapid-server
+
 FROM rust:1.66-slim-buster as build
 
 # 1. Create a new empty shell project

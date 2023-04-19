@@ -1,4 +1,4 @@
-name: Publish rapid-clito crates.io
+name: Publish rapid-cli to crates.io
 
 on:
   push:

@@ -164,8 +164,8 @@ impl RapidServer {
 			None => true
 		};
 
-		// Only trigger type generation if the users configured options in their rapid config file permits it
-		if should_generate_typescript_types {
+		// Only trigger type generation if the users configured options in their rapid config file permits it (we also dont want to generate types in a production environment)
+		if should_generate_typescript_types && cfg!(debug_assertions) {
 			generate_typescript_types(bindings_out_dir, routes_dir.clone());
 		}
 

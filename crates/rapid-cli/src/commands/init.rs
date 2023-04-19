@@ -25,6 +25,11 @@ struct RemixAssets;
 #[folder = "src/templates/rapidUI/nextjs/"]
 struct NextJsAssets;
 
+
+#[derive(RustEmbed)]
+#[folder = "src/templates/dockerfiles/"]
+struct Dockerfiles;
+
 pub struct Init {}
 
 impl RapidCommand for Init {
@@ -32,6 +37,17 @@ impl RapidCommand for Init {
 		Command::new("init")
 			.about("A command for initializing Rapid libraries in your projects!")
 			.subcommand(Command::new("fullstack").about("A command for initializing a fullstack rapid application in your react projects!"))
+			.subcommand(Command::new("server")
+				.about("A command for initializing functionality inside of a rapid server")
+				.arg(
+					arg!(
+						-deploy --deploy "Initializes functionality inside of an existing rapid server application"
+					)
+					.required(false)
+					.action(ArgAction::SetTrue)
+					.value_parser(value_parser!(PathBuf)),
+				)
+			)
 			.subcommand(
 				Command::new("ui")
 					.about("A command for initializing Rapid-UI in your react projects!")
@@ -102,10 +118,38 @@ pub fn ui_subcommand_handler(init_args: [&str; 3], subcommand_args: &ArgMatches,
 	}
 }
 
+pub fn server_subcommand_handler(init_args: [&str; 1], subcommand_args: &ArgMatches, current_working_directory: PathBuf) {
+	for server_arg in init_args {
+		match subcommand_args.get_one::<PathBuf>(server_arg) {
+			Some(val) => {
+				if val == &PathBuf::from("true") {
+					match server_arg {
+						"deploy" => {
+							init_deployments_dockerfile(current_working_directory);
+							return;
+						}
+						_ => {
+							println!("{}", "No command found. Please try '--deploy'".color(Color::Red));
+							return;
+						}
+					}
+				}
+			}
+			None => {
+				println!("{}", "No command found. Please try '--deploy'".color(Color::Red));
+			}
+		}
+	}
+
+
+	println!("{}", "No init commands found! Please try using '--deploy'".color(Color::Red));
+}
+
 fn parse_init_args(args: &ArgMatches) {
 	/// NOTE: We can add more args for templates here (ideally we add nextjs asap)
 	const UI_INIT_ARGS: [&str; 3] = ["vite", "remix", "nextjs"];
-	const INIT_COMMANDS: [&str; 2] = ["ui", "fullstack"];
+	const SERVER_INIT_ARGS: [&str; 1] = ["deploy"];
+	const INIT_COMMANDS: [&str; 3] = ["ui", "fullstack", "server"];
 	// Get the current working directory of the user
 	let current_working_directory = current_directory();
 	for arg in INIT_COMMANDS {
@@ -114,6 +158,10 @@ fn parse_init_args(args: &ArgMatches) {
 				match name {
 					"ui" => {
 						ui_subcommand_handler(UI_INIT_ARGS, subcommand_args, current_working_directory);
+						return;
+					}
+					"server" => {
+						server_subcommand_handler(SERVER_INIT_ARGS, subcommand_args, current_working_directory);
 						return;
 					}
 					"fullstack" => {
@@ -210,5 +258,30 @@ pub fn init_nextjs_template(current_working_directory: PathBuf, arg: &str) {
 		"Success".bg_blue().color(Color::White).bold(),
 		BOLT_EMOJI,
 		"Rapid-ui has been initialized in your NextJS project!"
+	);
+}
+
+
+pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
+	println!("{}...", "Initializing rapid deployments".color(Color::Green));
+	let dockerfile_conents = Dockerfiles::get("rapidServer.Dockerfile").unwrap();
+
+	// Create the Dockerfile
+	File::create(current_working_directory.join("rapid.Dockerfile")).expect("Failed to create the depoyment Dockerfile. Is there already a dockerfile created with the name 'rapid.Dockerfile'?");
+
+	// Write to the Dockerfuke
+	write("rapid.Dockerfile", std::str::from_utf8(dockerfile_conents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
+
+	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
+	let timeout = time::Duration::from_millis(500);
+	thread::sleep(timeout);
+
+	println!(
+		"{} {} {} {} {}",
+		"\n\n🚀".bold(),
+		"Next Steps".bg_blue().color(Color::White).bold(),
+		BOLT_EMOJI,
+		format!("{}{}", format!("\n\nBuild: {}", "").bold(), "docker build -t rapid-server -f ./rapid.Dockerfile .".color(Color::LightCyan)),
+		format!("{}{}", format!("\nRun: {}", "").bold(),  "docker run -p 8080:8080 rapid-server".color(Color::LightCyan)),
 	);
 }

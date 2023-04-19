@@ -1,0 +1,34 @@
+name: Publish rapid-clito crates.io
+
+on:
+  push:
+    tags:
+      - 'rapid-cli-[0-9]+.[0-9]+.[0-9]+' # We only want to publish when a tag is pushed
+
+jobs:
+  publish-rapid-cli:
+    name: Publish Rapid-cli crate to crates.io
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./crates/rapid-cli
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - run: cargo publish --token ${CRATES_TOKEN}
+        env:
+          CRATES_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+
+
+
+
+
+

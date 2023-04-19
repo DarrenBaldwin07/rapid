@@ -1,0 +1,28 @@
+name: Publish rapid-web-codegen to crates.io
+
+on:
+  push:
+    tags:
+      - 'rapid-web-codegen-[0-9]+.[0-9]+.[0-9]+' # We only want to publish when a tag is pushed
+
+jobs:
+  publish-rapid-codegen:
+    name: Publish Rapid-codegen crate to crates.io
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./crates/rapid-web-codegen
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - run: cargo publish --token ${CRATES_TOKEN}
+        env:
+          CRATES_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}

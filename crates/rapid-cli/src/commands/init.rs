@@ -277,11 +277,11 @@ pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
 	thread::sleep(timeout);
 
 	println!(
-		"{} {} {} {}",
-		format!("{}", rapid_logo()).bold(),
-		"Success".bg_blue().color(Color::White).bold(),
+		"{} {} {} {} {}",
+		"\n\n🚀".bold(),
+		"Next Steps".bg_blue().color(Color::White).bold(),
 		BOLT_EMOJI,
-		"Rapid deployment Dockerfile has been initialized"
+		format!("{}{}", format!("\n\nBuild: {}", "").bold(), "docker build -t rapid-server -f ./rapid.Dockerfile .".color(Color::LightCyan)),
+		format!("{}{}", format!("\nRun: {}", "").bold(),  "docker run -p 8080:8080 rapid-server".color(Color::LightCyan)),
 	);
-
 }

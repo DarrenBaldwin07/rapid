@@ -12,7 +12,7 @@ use std::env::{current_dir, current_exe};
 pub type App = Command;
 
 // This should 100% pull from a GCP storage bucket or something
-const RAPID_VERSION_MESSAGE: &str = "v0.0.1";
+const RAPID_VERSION_MESSAGE: &str = "v0.3.0";
 
 /// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
@@ -92,7 +92,7 @@ impl RapidCLI {
 			} else {
 				// Show the help command if the user inputted a invalid command
 				println!("{}", get_help_template());
-				exit(64); // exit 64 is a standard usage error with clis
+				exit(64); // exit 64 is a standard usage error with CLIs
 			}
 		} else {
 			// Show the help template if there was no command match found

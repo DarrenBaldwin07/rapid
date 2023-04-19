@@ -25,6 +25,11 @@ struct RemixAssets;
 #[folder = "src/templates/rapidUI/nextjs/"]
 struct NextJsAssets;
 
+
+#[derive(RustEmbed)]
+#[folder = "src/templates/dockerfiles/"]
+struct Dockerfiles;
+
 pub struct Init {}
 
 impl RapidCommand for Init {
@@ -121,11 +126,11 @@ pub fn server_subcommand_handler(init_args: [&str; 1], subcommand_args: &ArgMatc
 					match server_arg {
 						"deploy" => {
 							init_deployments_dockerfile(current_working_directory);
-							break;
+							return;
 						}
 						_ => {
 							println!("{}", "No command found. Please try '--deploy'".color(Color::Red));
-							break;
+							return;
 						}
 					}
 				}
@@ -135,6 +140,9 @@ pub fn server_subcommand_handler(init_args: [&str; 1], subcommand_args: &ArgMatc
 			}
 		}
 	}
+
+
+	println!("{}", "No init commands found! Please try using '--deploy'".color(Color::Red));
 }
 
 fn parse_init_args(args: &ArgMatches) {
@@ -255,5 +263,25 @@ pub fn init_nextjs_template(current_working_directory: PathBuf, arg: &str) {
 
 
 pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
+	println!("{}...", "Initializing rapid deployments".color(Color::Green));
+	let dockerfile_conents = Dockerfiles::get("rapidServer.Dockerfile").unwrap();
+
+	// Create the Dockerfile
+	File::create(current_working_directory.join("rapid.Dockerfile")).expect("Failed to create the depoyment Dockerfile. Is there already a dockerfile created with the name 'rapid.Dockerfile'?");
+
+	// Write to the Dockerfuke
+	write("rapid.Dockerfile", std::str::from_utf8(dockerfile_conents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
+
+	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
+	let timeout = time::Duration::from_millis(500);
+	thread::sleep(timeout);
+
+	println!(
+		"{} {} {} {}",
+		format!("{}", rapid_logo()).bold(),
+		"Success".bg_blue().color(Color::White).bold(),
+		BOLT_EMOJI,
+		"Rapid deployment Dockerfile has been initialized"
+	);
 
 }

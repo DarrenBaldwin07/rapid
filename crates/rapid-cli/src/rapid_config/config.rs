@@ -30,6 +30,7 @@ pub struct RemixConfig {
 	pub show_error_pages: Option<bool>,
 	pub serve_static_files: Option<bool>,
 	pub bindings_export_path: Option<String>,
+	pub typescript_generation: Option<bool>,
 }
 
 #[derive(Deserialize, Clone)]
@@ -46,6 +47,7 @@ pub struct RapidConfig {
 	pub app_type: String,
 	pub features: Option<Features>,
 	pub server: Option<ServerConfig>,
+	pub remix: Option<RemixConfig>
 }
 
 pub fn find_rapid_config() -> RapidConfig {

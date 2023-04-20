@@ -28,7 +28,7 @@ pub struct ServerConfig {
 	pub serve_static_files: Option<bool>,
 	pub bindings_export_path: Option<String>,
 	pub routes_directory: Option<String>,
-	pub typescript_generation: Option<bool>
+	pub typescript_generation: Option<bool>,
 }
 
 #[derive(Deserialize, Clone)]

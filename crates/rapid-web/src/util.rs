@@ -13,7 +13,8 @@ pub fn check_for_invalid_handlers(dir: &str) {
 		// Check to make sure that the rust file is not a mod.rs file and is valid (it also cannot be a middleware file either)
 		if entry.path().extension().and_then(|ext| ext.to_str()) == Some("rs")
 			&& entry.path().file_name().and_then(|name| name.to_str()) != Some("mod.rs")
-			&& entry.path().file_name().and_then(|name| name.to_str()) != Some("_middleware.rs") // TODO: we can exclude other files here (may want to include _types.rs)
+			&& entry.path().file_name().and_then(|name| name.to_str()) != Some("_middleware.rs")
+		// TODO: we can exclude other files here (may want to include _types.rs)
 		{
 			// Read the rust file to a string
 			let mut file = File::open(entry.path()).unwrap();
@@ -32,8 +33,6 @@ pub fn check_for_invalid_handlers(dir: &str) {
 			}
 		}
 	}
-
-
 }
 
 /// Note: this is a dupe of a function in the rapid-web-codegen crate (ideally we create a rapid-web-utils crate at some point)
@@ -42,7 +41,7 @@ pub fn check_for_invalid_handlers(dir: &str) {
 pub fn validate_route_handler(handler_source: &String) -> bool {
 	// Check if the file is actually valid rust code
 	// If not, we want to output a invalid route rusult (false)
-    // This covers any cases where the user could have a non-rust file in the routes directory
+	// This covers any cases where the user could have a non-rust file in the routes directory
 	if parse_file(handler_source).is_err() {
 		return false;
 	}

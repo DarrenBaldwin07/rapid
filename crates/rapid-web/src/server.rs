@@ -10,19 +10,19 @@ use super::{
 	default_routes::static_files,
 	logger::{init_logger, RapidLogger},
 	shift::generate::create_typescript_types,
-	tui::{server_init, clean_console},
+	tui::{clean_console, server_init},
 	util::{check_for_invalid_handlers, get_routes_dir},
-};
-use std::{
-	thread, time,
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
-use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
-use rapid_cli::cli::rapid_logo;
+use rapid_cli::{
+	cli::rapid_logo,
+	rapid_config::config::{find_rapid_config, RapidConfig},
+};
 use spinach::Spinach;
+use std::{thread, time};
 extern crate proc_macro;
 
 #[derive(Clone)]
@@ -148,7 +148,9 @@ impl RapidServer {
 			Some(server) => match server.bindings_export_path.clone() {
 				Some(dir) => match dir == "/" {
 					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
-					false => current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(dir)),
+					false => current_dir()
+						.expect("Could not parse bindings export path found in rapid config file.")
+						.join(PathBuf::from(dir)),
 				},
 				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
 			},
@@ -159,9 +161,9 @@ impl RapidServer {
 		let should_generate_typescript_types = match RAPID_SERVER_CONFIG.server.as_ref() {
 			Some(server) => match server.typescript_generation.clone() {
 				Some(val) => val,
-				None => true
+				None => true,
 			},
-			None => true
+			None => true,
 		};
 
 		// Only trigger type generation if the users configured options in their rapid config file permits it (we also dont want to generate types in a production environment)
@@ -214,7 +216,12 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String) 
 	let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
 
 	// TODO: we should turn this off until it is officially working (also, we should make this optional)
-	create_typescript_types(bindings_out_dir, current_dir().expect("Could not parse bindings export path found in rapid config file.").join(PathBuf::from(routes_dir.clone())));
+	create_typescript_types(
+		bindings_out_dir,
+		current_dir()
+			.expect("Could not parse bindings export path found in rapid config file.")
+			.join(PathBuf::from(routes_dir.clone())),
+	);
 
 	// Sleep a little to show loading animation
 	let timeout = time::Duration::from_millis(650);

@@ -8,8 +8,10 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
-use utils::{base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler};
-
+use utils::{
+	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
+	REMIX_ROUTE_PATH,
+};
 
 // TODO: some of this could leverage tokio
 
@@ -310,7 +312,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 	))
 }
 
-/// A macro for generating imports for every route handler in a Rapid Remix app
+/// A macro for generating imports for every route handler in a Rapid Remix application
 ///
 /// This macro must be used before any other code runs.
 ///
@@ -320,7 +322,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 /// ```
 #[proc_macro]
 pub fn rapid_configure_remix(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
-	let path = "app/api/routes";
+	let path = REMIX_ROUTE_PATH;
 	let module_name = Ident::new("routes", Span::call_site());
 
 	let mut route_dirs: Vec<PathBuf> = vec![];

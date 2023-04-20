@@ -310,6 +310,57 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 	))
 }
 
+/// A macro for generating imports for every route handler in a Rapid Remix app
+///
+/// This macro must be used before any other code runs.
+///
+/// # Examples
+/// ```
+/// rapid_configure_remix!()
+/// ```
+#[proc_macro]
+pub fn rapid_configure_remix(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
+	let path = "app/api/routes";
+	let module_name = Ident::new("routes", Span::call_site());
+
+	let mut route_dirs: Vec<PathBuf> = vec![];
+
+	// Get every nested dir and append them to the route_dirs array
+	get_all_dirs(path, &mut route_dirs);
+
+	// Grab all of the base idents that we need to power the base "/" handler
+	let base_idents = std::fs::read_dir(path)
+		.unwrap()
+		.map(|it| {
+			let path = it.unwrap().path();
+			let name = path.file_stem().unwrap().to_string_lossy();
+			Ident::new(&name, Span::call_site())
+		})
+		.filter(|it| it.to_string() != "mod")
+		.collect::<Vec<_>>();
+
+	let mut nested_idents: Vec<TokenStream2> = Vec::new();
+
+	for dir in route_dirs {
+		let string = dir.into_os_string().into_string().unwrap();
+
+		let mod_name = format!("{}", string.replace("src/", "").replace("/", "::"));
+		let tokens: proc_macro2::TokenStream = mod_name.parse().unwrap();
+		nested_idents.push(quote! { pub use #tokens::*; });
+	}
+
+	proc_macro::TokenStream::from(quote!(
+		use include_dir::{include_dir, Dir};
+		mod #module_name { #(pub mod #base_idents;)* }
+		pub use #module_name::{
+			#(#base_idents,)*
+		};
+		#(#nested_idents)*
+		#[cfg(debug_assertions)] // Only run this in debug mod (having extra code in main.rs file makes binary way larger)
+		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
+	))
+}
+
 /// Function that generates handler tokens from a Handler type
 /// Note: this currently depends on the assumption that each dir only has 1 _middleware.rs file which we always be the case since dupe file names is not allowed
 fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_type: &str) -> proc_macro2::TokenStream {

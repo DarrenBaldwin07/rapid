@@ -21,7 +21,7 @@ actix-cors = "0.6.4"
 actix-web-httpauth = "0.8.0"
 actix-service = "2.0.2"
 actix-http = "3.3.1"
-rapid-cli = "0.2.9"
+rapid-cli = { version = "0.3.1", path = "../rapid-cli" }
 futures-util = "0.3.26"
 colorful = "0.2.2"
 log = "0.4.17"

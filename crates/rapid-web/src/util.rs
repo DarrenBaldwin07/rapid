@@ -2,9 +2,11 @@ use super::{shift::util::is_valid_handler, tui::rapid_log_target};
 use colorful::{Color, Colorful};
 use log::info;
 use rapid_cli::rapid_config::config::ServerConfig;
+use core::panic;
 use std::{fs::File, io::Read};
 use syn::{parse_file, parse_str, File as SynFile, Item};
 use walkdir::WalkDir;
+use rapid_cli::rapid_config::config::RapidConfig;
 
 /// Checks to make sure that there are no conflicting routes in the handlers directory
 /// If there are, it prints helpful warnings to the user
@@ -96,5 +98,50 @@ pub fn get_routes_dir(rapid_server_config: Option<&ServerConfig>) -> String {
 			None => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!"),
 		},
 		None => panic!("You must have a valid rapid config file in the base project directory!"),
+	}
+}
+
+pub fn get_server_port(config: RapidConfig, fallback_port: u16) -> u16 {
+	let app_type = config.app_type;
+
+	match app_type.as_str() {
+		"server" => match config.server {
+			Some(val) => match val.port {
+				Some(p) => p,
+				None => fallback_port
+			},
+			_ => fallback_port
+		}
+		"remix" => match config.remix {
+			Some(val) => match val.server_port {
+				Some(s_port) => s_port,
+				None => fallback_port
+			},
+			_ => fallback_port
+		}
+		_ => fallback_port
+	}
+}
+
+
+pub fn should_generate_types(config: RapidConfig) -> bool {
+	let app_type = config.app_type.as_str();
+
+	match app_type {
+		"server" => match config.server.as_ref() {
+			Some(server) => match server.typescript_generation.clone() {
+				Some(val) => val,
+				None => true,
+			},
+			None => true,
+		},
+		"remix" => match config.remix.as_ref() {
+			Some(server) => match server.typescript_generation.clone() {
+				Some(val) => val,
+				None => true,
+			},
+			None => true,
+		}
+		_ => panic!("Error: invalid app_type found inside of rapid config file!")
 	}
 }

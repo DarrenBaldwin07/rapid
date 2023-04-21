@@ -1214,7 +1214,7 @@ dependencies = [
  "lazy_static",
  "log",
  "proc-macro2",
- "rapid-cli 0.2.9",
+ "rapid-cli 0.3.1",
  "rapid-web-codegen",
  "regex",
  "serde",

@@ -80,7 +80,7 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 	}
 
 	// As we add support for more apps this array can grow
-	const RUN_ARGS: [&str; 2] = ["server", "app"];
+	const RUN_ARGS: [&str; 3] = ["server", "remix", "app"];
 
 	for arg in RUN_ARGS {
 		match args.get_one::<PathBuf>(arg) {
@@ -107,15 +107,13 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 					}
 				}
 			}
-			None => {
-				println!("No rapid 'run' applications found. Try one of the following: ['server']");
-				return Ok(());
-			}
+			None => break
 		}
 	}
 
 	// If no valid args were inputted then we want to fallback to the rapid config file
 	let application_type = AppType::from_str(&rapid_config.app_type).expect("Error: invalid rapid application type!");
+
 	match application_type {
 		AppType::App => {
 			// Currently app does nothing (we are yet to implement this)

@@ -66,7 +66,7 @@ pub fn parse_new_args(args: &ArgMatches) {
 				if val == &PathBuf::from("true") {
 					match arg {
 						"remix" => {
-							init_remix_template(current_working_directory, arg);
+							init_remix_template(current_working_directory);
 							did_find_match = true;
 							break;
 						}
@@ -108,7 +108,7 @@ pub fn parse_new_args(args: &ArgMatches) {
 }
 
 // TODO: scaffold a new remix + rapid app as the default fullstack app (we will then support nextjs, etc)
-pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
+pub fn init_remix_template(current_working_directory: PathBuf) {
 	// Ask the user what they want to name their project
 	let project_name = prompt_one(
 		Question::input("project_name")
@@ -148,8 +148,9 @@ pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
 		}
 	}
 
+	println!("{}", "\nInitializing a new Rapid Remix application...".color(Color::LightCyan));
 
-		// Run the cargo commands
+	// Run the scaffold commands
 	StdCommand::new("sh")
 		.current_dir(current_directory())
 		.arg("-c")
@@ -159,11 +160,20 @@ pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
 		.wait()
 		.expect("Error: Could not scaffold project. Please try again!");
 
+	// Initialize a git repo
+	StdCommand::new("sh")
+		.current_dir(current_directory().join(project_name))
+		.arg("-c")
+		.arg(format!("git init --quiet"))
+		.spawn()
+		.unwrap()
+		.wait()
+		.expect("Error: Could not scaffold project. Please try again!");
+
 
 	// Replace the default source dir with our own template files
 	REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
 
-	println!("{}", "\nInitializing a new Rapid Remix application...".color(Color::LightCyan));
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
 	let timeout = time::Duration::from_millis(675);
@@ -187,7 +197,6 @@ pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
 		format!("\n\ncd {}", project_name).bold(),
 		"\nrapid run".bold()
 	);
-
 }
 
 pub fn init_server_template(current_working_directory: PathBuf, _: &str) {

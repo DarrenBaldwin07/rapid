@@ -1,0 +1,17 @@
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+futures-util = "0.3.28"
+include_dir = "0.7.3"
+rapid-web = { version = "0.3.3", path = "/Users/JRDarrenbaldwin/Documents/Coding/CincinnatVentures/RapidFramework/rapid/crates/rapid-web" }
+rapid-web-codegen = { version = "0.2.0", path = "/Users/JRDarrenbaldwin/Documents/Coding/CincinnatVentures/RapidFramework/rapid/crates/rapid-web-codegen" }
+
+# Rapid binary
+[[bin]]
+name = "api"
+path = "app/api/root.rs"

@@ -10,6 +10,7 @@ use toml;
 pub enum AppType {
 	App,
 	Server,
+	Remix
 }
 
 #[derive(Deserialize, Clone)]

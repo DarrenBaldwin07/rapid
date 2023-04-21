@@ -1,7 +1,7 @@
 use super::RapidCommand;
 use crate::{
 	cli::{current_directory, logo, rapid_logo, Config},
-	rapid_config::config::{find_rapid_config, is_rapid, AppType},
+	rapid_config::config::{find_rapid_config, is_rapid, AppType, RapidConfig},
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use spinach::Spinach;
@@ -44,17 +44,33 @@ impl RapidCommand for Run {
 	}
 }
 
+pub fn get_server_port(config: &RapidConfig, fallback_port: u16) -> u16 {
+	let app_type = &config.app_type;
+
+	match app_type.as_str() {
+		"server" => match &config.server {
+			Some(val) => match val.port {
+				Some(p) => p,
+				None => fallback_port
+			},
+			_ => fallback_port
+		}
+		"remix" => match &config.remix {
+			Some(val) => match val.server_port {
+				Some(s_port) => s_port,
+				None => fallback_port
+			},
+			_ => fallback_port
+		}
+		_ => fallback_port
+	}
+}
+
 fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 	// Grab the rapid config file early on because we will need it to for most of the below logic
 	let rapid_config = find_rapid_config();
 
-	let server_port = match rapid_config.server {
-		Some(server) => match server.port {
-			Some(val) => val,
-			None => 8080,
-		},
-		None => 8080,
-	};
+	let server_port = get_server_port(&rapid_config, 8080);
 
 	// We want to early exit before do anything at all if we are not inside of a rapid application
 	if !is_rapid() {
@@ -72,6 +88,10 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 				if val == &PathBuf::from("true") {
 					match arg {
 						"server" => {
+							handle_run_server(server_port);
+							return Ok(());
+						},
+						"remix" => {
 							handle_run_server(server_port);
 							return Ok(());
 						}
@@ -102,6 +122,10 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 			println!("Coming soon...");
 		}
 		AppType::Server => {
+			handle_run_server(server_port);
+			return Ok(());
+		}
+		AppType::Remix => {
 			handle_run_server(server_port);
 			return Ok(());
 		}

@@ -188,7 +188,6 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	.expect("Error: Could not scaffold project. Please try again!");
 
 
-
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
 	let timeout = time::Duration::from_millis(675);
 	thread::sleep(timeout);

@@ -17,8 +17,8 @@ use std::{
 use spinach::Spinach;
 
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
-const PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/server");
-const REMIX_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/fullstack/remix");
+static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/server");
+static REMIX_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/remix");
 
 pub struct New {}
 
@@ -173,9 +173,20 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		.wait()
 		.expect("Error: Could not scaffold project. Please try again!");
 
-
 	// Replace the default source dir with our own template files
 	REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
+
+
+	// Rename cargo.toml file (We have to set it to Cargo__toml due to a random bug with cargo publish command in a workspace)
+	StdCommand::new("sh")
+	.current_dir(current_directory().join(project_name))
+	.arg("-c")
+	.arg(format!("mv Cargo__toml Cargo.toml"))
+	.spawn()
+	.unwrap()
+	.wait()
+	.expect("Error: Could not scaffold project. Please try again!");
+
 
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)

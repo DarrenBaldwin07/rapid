@@ -13,19 +13,19 @@ use std::{
 };
 
 #[derive(RustEmbed)]
-#[folder = "src/templates/rapidUI/reactVite/"]
+#[folder = "templates/rapidUI/reactVite/"]
 struct Asset;
 
 #[derive(RustEmbed)]
-#[folder = "src/templates/rapidUI/remix/"]
+#[folder = "templates/rapidUI/remix/"]
 struct RemixAssets;
 
 #[derive(RustEmbed)]
-#[folder = "src/templates/rapidUI/nextjs/"]
+#[folder = "templates/rapidUI/nextjs/"]
 struct NextJsAssets;
 
 #[derive(RustEmbed)]
-#[folder = "src/templates/dockerfiles/"]
+#[folder = "templates/dockerfiles/"]
 struct Dockerfiles;
 
 pub struct Init {}

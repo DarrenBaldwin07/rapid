@@ -30,11 +30,9 @@ function Welcome({ children }: WelcomeProps) {
                 <rect width='10.8379' height='25.5856' rx='5.41894' transform='matrix(-0.892596 -0.450858 0.533643 -0.84571 14.4911 42.986)' fill='white'/>
             </svg>
         </div>
-        <div className='mt-6 flex items-center gap-6'>
-            {children}
-        </div>
+        {children}
         <a rel="noreferrer" target='_blank' className='docs-link' href='https://rapid.cincinnati.ventures'>
-            <div className='mr-2'>Documentation</div>
+            <div style={{marginRight: '2px'}}>Documentation</div>
             <ArrowIcon />
         </a>
         </div>

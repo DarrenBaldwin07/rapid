@@ -6,14 +6,20 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node";
+import { rootAuthLoader } from "@clerk/remix/ssr.server";
+import { ClerkApp, ClerkCatchBoundary } from "@clerk/remix";
 import styles from "./index.css";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }]
 }
 
+export const loader: LoaderFunction = (args) => {
+  return rootAuthLoader(args);
+};
 
-export default function App() {
+function App() {
   return (
     <html lang="en">
       <head>
@@ -31,3 +37,8 @@ export default function App() {
     </html>
   );
 }
+
+export default ClerkApp(App);
+
+// Refer to this documentation for more info on how to use Clerk with Remix: https://clerk.com/docs/quickstarts/get-started-with-remix
+export const CatchBoundary = ClerkCatchBoundary();

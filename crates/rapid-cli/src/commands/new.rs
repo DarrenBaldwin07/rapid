@@ -2,7 +2,7 @@ use super::RapidCommand;
 use crate::{
 	cli::{current_directory, logo, rapid_logo, Config},
 	constants::BOLT_EMOJI,
-	tui::clean_console,
+	tui::{clean_console, indent},
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
@@ -14,6 +14,7 @@ use std::{
 	process::{exit, Command as StdCommand},
 	thread, time,
 };
+use spinach::Spinach;
 
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
 const PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/templates/server");
@@ -148,7 +149,9 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		}
 	}
 
-	println!("{}", "\nInitializing a new Rapid Remix application...".color(Color::LightCyan));
+	println!("{}", indent(1));
+
+	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
 
 	// Run the scaffold commands
 	StdCommand::new("sh")
@@ -178,6 +181,9 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
 	let timeout = time::Duration::from_millis(675);
 	thread::sleep(timeout);
+
+	// stop showing the loader
+	loading.stop();
 
 	clean_console();
 
@@ -239,6 +245,10 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 		}
 	}
 
+	println!("{}", indent(1));
+
+	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
+
 	// Run the cargo commands
 	StdCommand::new("sh")
 		.current_dir(current_directory())
@@ -264,11 +274,12 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	// Replace the default source dir with our own template files
 	PROJECT_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
 
-	println!("{}", "\nInitializing a new rapid-web server application...".color(Color::LightCyan));
-
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
 	let timeout = time::Duration::from_millis(675);
 	thread::sleep(timeout);
+
+	// Stop our loading spinner
+	loading.stop();
 
 	clean_console();
 

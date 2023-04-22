@@ -273,7 +273,7 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	StdCommand::new("sh")
 		.current_dir(current_directory().join(project_name))
 		.arg("-c")
-		.arg("cargo add rapid-web rapid-web-codegen futures-util include_dir --quiet")
+		.arg("cargo add rapid-web futures-util include_dir --quiet")
 		.spawn()
 		.unwrap()
 		.wait()

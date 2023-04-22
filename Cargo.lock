@@ -1168,6 +1168,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "rapid-cli"
+version = "0.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "018491dddb01a34cb0de291ec2701089859fbf5c1f5942f69f80557ef26830cf"
+dependencies = [
+ "clap",
+ "colorful",
+ "ctrlc",
+ "include_dir",
+ "requestty",
+ "rust-embed",
+ "serde",
+ "spinach",
+ "strum",
+ "strum_macros",
+ "terminal-emoji",
+ "tiny-gradient",
+ "toml",
+ "tui",
+ "walkdir",
+]
+
+[[package]]
 name = "rapid-ssr"
 version = "0.1.0"
 dependencies = [
@@ -1177,7 +1200,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.3.4"
+version = "0.3.5"
 dependencies = [
  "actix-cors",
  "actix-files",
@@ -1191,7 +1214,7 @@ dependencies = [
  "lazy_static",
  "log",
  "proc-macro2",
- "rapid-cli",
+ "rapid-cli 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "rapid-web-codegen",
  "regex",
  "serde",

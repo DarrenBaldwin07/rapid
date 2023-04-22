@@ -1,16 +1,18 @@
-name: Publish @rapid/ui to npm
+name: Publish @rapid-web/react to npm
+
 
 on:
   push:
     tags:
-      - 'rapid-ui-[0-9]+.[0-9]+.[0-9]+' # We only want to publish when a tag is pushed
+      - 'rapid-react-[0-9]+.[0-9]+.[0-9]+' # We only want to publish when a tag is pushed
 
-  build-ui:
-    name: Deploy @rapid/ui
+jobs:
+  build-react:
+    name: Deploy @rapid-web/react
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/rapid-ui
+        working-directory: ./packages/rapid-react
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,10 +21,10 @@ on:
         with:
           node-version: '19.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Install pnpm
+        run: npm install -g pnpm
       - name: Install dependencies and build 🔧
-        run: npm ci
-      - name: Build package via Vite
-        run: npm run build
+        run: pnpm install --no-frozen-lockfile && pnpm run build
       - name: Publish package on NPM 📦
         run: npm publish --access public
         env:

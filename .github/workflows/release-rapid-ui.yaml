@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'rapid-ui-[0-9]+.[0-9]+.[0-9]+' # We only want to publish when a tag is pushed
-
+jobs:
   build-ui:
     name: Deploy @rapid/ui
     runs-on: ubuntu-latest

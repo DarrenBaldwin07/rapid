@@ -8,8 +8,8 @@ edition = "2021"
 [dependencies]
 futures-util = "0.3.28"
 include_dir = "0.7.3"
-rapid-web = { version = "0.3.3", path = "/Users/JRDarrenbaldwin/Documents/Coding/CincinnatVentures/RapidFramework/rapid/crates/rapid-web" }
-rapid-web-codegen = { version = "0.2.0", path = "/Users/JRDarrenbaldwin/Documents/Coding/CincinnatVentures/RapidFramework/rapid/crates/rapid-web-codegen" }
+rapid-web = "0.3.4"
+rapid-web-codegen = "0.2.1"
 
 # Rapid binary
 [[bin]]

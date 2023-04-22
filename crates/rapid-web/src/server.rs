@@ -67,17 +67,11 @@ impl RapidServer {
 		// Next we need to go to the rapid config file and check for the is_logging variable
 		let is_logging = match app_type.as_str() {
 			"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
-				Some(value) => match value.is_logging {
-					Some(log_value) => log_value,
-					None => true,
-				},
+				Some(value) => value.is_logging.unwrap_or(true),
 				None => true,
 			},
 			"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
-				Some(value) => match value.is_logging {
-					Some(log_value) => log_value,
-					None => true,
-				},
+				Some(value) => value.is_logging.unwrap_or(true),
 				None => true,
 			}
 			_ => panic!("Error: invalid config type found in rapid config file. Please use either `server` or `remix`")
@@ -86,17 +80,11 @@ impl RapidServer {
 		// Check if we should also be serving static files
 		let is_serving_static_files = match app_type.as_str() {
 			"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
-				Some(value) => match value.serve_static_files {
-					Some(static_value) => static_value,
-					None => true,
-				},
+				Some(value) => value.serve_static_files.unwrap_or(true),
 				None => true,
 			},
 			"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
-				Some(value) => match value.serve_static_files {
-					Some(static_value) => static_value,
-					None => true,
-				},
+				Some(value) => value.serve_static_files.unwrap_or(true),
 				None => true,
 			}
 			_ => panic!("Error: invalid config type found in rapid config file. Please use either `server` or `remix`")

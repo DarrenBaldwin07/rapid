@@ -258,7 +258,7 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 
 	println!("{}", indent(1));
 
-	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
+	let loading = Spinach::new(format!("{}", "Initializing a new Rapid server application..".color(Color::LightCyan)));
 
 	// Run the cargo commands
 	StdCommand::new("sh")

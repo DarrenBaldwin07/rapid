@@ -118,7 +118,7 @@ impl RapidCLI {
 }
 
 // TODO: update this to actually be a legit health template
-// Note: Dot not change indentation of this or else it will break
+// Note: Do not change indentation of this or else it will break
 fn get_help_template() -> String {
 	format!(
 		"RAPID -- The modern software toolkit built on React and Rust

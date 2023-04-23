@@ -161,7 +161,7 @@ impl RapidServer {
 
 		// Grab the bindings directory from the rapid config file
 		// We want to make sure that it is valid and is actually defined (it defaults to an Option<String>)
-		// TODO: this needs refactored (or abstracted) really bad
+		// TODO: this needs refactored (or abstracted) really bad -- we need to have the match statements if we want better panic messages
 		let bindings_out_dir = match RAPID_SERVER_CONFIG.app_type.as_str() {
 			"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
 				Some(server) => match server.bindings_export_path.clone() {
@@ -193,7 +193,8 @@ impl RapidServer {
 		// Check if we should generate typescript types or not
 		let should_generate_typescript_types = should_generate_types(RAPID_SERVER_CONFIG.clone());
 
-		// Only trigger type generation if the users configured options in their rapid config file permits it (we also dont want to generate types in a production environment)
+		// Only trigger type generation if the users configured options in their rapid config file permits it
+		// (we also dont want to generate types in a production environment)
 		if should_generate_typescript_types && cfg!(debug_assertions) {
 			generate_typescript_types(bindings_out_dir, routes_dir.clone());
 		}
@@ -236,7 +237,7 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String) 
 	// Show a loading spinner as needed
 	let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
 
-	// TODO: we should turn this off until it is officially working (also, we should make this optional)
+	// TODO: Support output types with this function
 	create_typescript_types(
 		bindings_out_dir,
 		current_dir()

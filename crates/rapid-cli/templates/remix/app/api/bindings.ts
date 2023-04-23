@@ -7,6 +7,12 @@ export interface Handlers {
   			type: 'get'
   			isDynamic: false
 		},
+
+		"hello": {
+  			output: any
+  			type: 'get'
+  			isDynamic: false
+		},
 	},
 	mutations: {},
 }
@@ -14,6 +20,10 @@ export interface Handlers {
 export const routes = {
 	"index": {
 		url: '/',
+		type: 'get',
+	},
+	"hello": {
+		url: '/hello',
 		type: 'get',
 	},
 } as const

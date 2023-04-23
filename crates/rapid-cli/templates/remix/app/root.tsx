@@ -9,7 +9,14 @@ import {
 import type { LoaderFunction } from "@remix-run/node";
 import { rootAuthLoader } from "@clerk/remix/ssr.server";
 import { ClerkApp, ClerkCatchBoundary } from "@clerk/remix";
+import { routes } from "./api/bindings";
+import type { Handlers } from './api/bindings';
+import { createBoltClient } from "@rapid-web/react";
 import styles from "./index.css";
+
+export const bolt = createBoltClient<Handlers, typeof routes>(routes, {
+  transport: 'http://localhost:8080'
+});
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }]

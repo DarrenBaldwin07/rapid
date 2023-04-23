@@ -20,6 +20,7 @@ interface BoltConfig {
 	transport: string
 }
 
+
 /**
  * Creates a new typesafe Bolt client for the given routes
  * Note: All routes are generated and exported from the Rapid-web rust crate

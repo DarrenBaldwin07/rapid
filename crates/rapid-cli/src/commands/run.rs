@@ -78,7 +78,6 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 		// Exit 64 is a standard error code..
 		std::process::exit(64);
 	}
-
 	// As we add support for more apps this array can grow
 	const RUN_ARGS: [&str; 3] = ["server", "remix", "app"];
 
@@ -88,11 +87,11 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 				if val == &PathBuf::from("true") {
 					match arg {
 						"server" => {
-							handle_run_server(server_port);
+							handle_run_server(server_port, rapid_config.app_type);
 							return Ok(());
 						},
 						"remix" => {
-							handle_run_server(server_port);
+							handle_run_server(server_port, rapid_config.app_type);
 							return Ok(());
 						}
 						"app" => {
@@ -120,11 +119,11 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 			println!("Coming soon...");
 		}
 		AppType::Server => {
-			handle_run_server(server_port);
+			handle_run_server(server_port, rapid_config.app_type);
 			return Ok(());
 		}
 		AppType::Remix => {
-			handle_run_server(server_port);
+			handle_run_server(server_port, rapid_config.app_type);
 			return Ok(());
 		}
 	}
@@ -132,7 +131,7 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 	Ok(())
 }
 
-fn handle_run_server(server_port: u16) {
+fn handle_run_server(server_port: u16, app_type: String) {
 	// Before running this script we need to check if the user has cargo-watch and systemfd on their machine
 	// If they do, we want to continue -- however, if they dont, we need to trigger an isntall of the binaries
 	let install_list = StdCommand::new("sh")
@@ -140,6 +139,23 @@ fn handle_run_server(server_port: u16) {
 		.arg("cargo install --list")
 		.output()
 		.expect("Could not complete pre-run checks.");
+
+
+
+	// This is the hot reload command that powers how rapid is able to hot-reload its binary
+	// It uses a combination of cargo watch and systemfd to achieve this
+	// Checkout both crates here:
+	// - cargo-watch: https://crates.io/crates/cargo-watch
+	// - systemfd: https://crates.io/crates/systemfd
+	let mut hot_reload_command = format!(
+		"systemfd --no-pid --quiet -s http::{} -- cargo watch -x run -q --ignore 'bindings.ts'",
+		server_port
+	);
+
+	// If we have a app_type equal to remix we want to use a different watch command (this specific one will only reload the routes dir by defaul)
+	if app_type == String::from("remix") {
+		hot_reload_command = String::from("systemfd --no-pid --quiet -s http::8080 -- cargo watch -x run -w app/api -q --ignore 'bindings.ts'");
+	}
 
 	// Check if the user had cargo-watch and systemfd
 	if !std::str::from_utf8(&install_list.stdout).unwrap().contains("cargo-watch")
@@ -163,16 +179,6 @@ fn handle_run_server(server_port: u16) {
 	}
 
 	println!("{} Building rapid application...", rapid_logo());
-
-	// This is the hot reload command that powers how rapid is able to hot-reload its binary
-	// It uses a combination of cargo watch and systemfd to achieve this
-	// Checkout both crates here:
-	// - cargo-watch: https://crates.io/crates/cargo-watch
-	// - systemfd: https://crates.io/crates/systemfd
-	let hot_reload_command = format!(
-		"systemfd --no-pid --quiet -s http::{} -- cargo watch -x run -q --ignore 'bindings.ts'",
-		server_port
-	);
 
 	// Trigger the shell command to actually run + watch the rapid server
 	StdCommand::new("sh")

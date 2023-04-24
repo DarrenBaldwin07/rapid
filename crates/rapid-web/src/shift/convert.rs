@@ -1,12 +1,7 @@
-use syn::{Type, ItemStruct, ItemType, parse_file, Item};
-use std::env::current_dir;
+use super::util::{get_struct_generics, indent, space};
+use std::{env::current_dir, ffi::OsStr, fs::File, io::prelude::*};
+use syn::{parse_file, Item, ItemStruct, ItemType, Type};
 use walkdir::WalkDir;
-use std::ffi::OsStr;
-use super::util::{indent, space, get_struct_generics};
-use std::{
-	fs::File,
-	io::prelude::*,
-};
 
 #[derive(Debug, Clone)]
 pub struct TypescriptType {
@@ -52,9 +47,9 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 
 			TypescriptType {
 				typescript_type: format!("{:?}", tuple_types).replace(r#"""#, ""),
-				is_optional: false
+				is_optional: false,
 			}
-		},
+		}
 		// If we find a reference type we want to extract it and re-call type conversion
 		Type::Reference(path) => convert_primitive(&path.elem),
 		Type::Path(path) => {
@@ -184,40 +179,26 @@ pub fn get_rust_typename(rust_type: &Type) -> String {
 			let parsed_type = tokens.to_string();
 			let arguments = &segment.arguments;
 			match parsed_type.as_str() {
-				"RapidPath" => {
-					match arguments {
-						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
-							match anglebracketed_argument.args.first().unwrap() {
-								syn::GenericArgument::Type(rust_type) => {
-									get_rust_typename(rust_type)
-								}
-								_ => "unknown".to_string(),
-							}
-						}
+				"RapidPath" => match arguments {
+					syn::PathArguments::AngleBracketed(anglebracketed_argument) => match anglebracketed_argument.args.first().unwrap() {
+						syn::GenericArgument::Type(rust_type) => get_rust_typename(rust_type),
 						_ => "unknown".to_string(),
-					}
+					},
+					_ => "unknown".to_string(),
 				},
-				"RapidJson" => {
-					match arguments {
-						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
-							match anglebracketed_argument.args.first().unwrap() {
-								syn::GenericArgument::Type(rust_type) => {
-									get_rust_typename(rust_type)
-								}
-								_ => "unknown".to_string(),
-							}
-						}
+				"RapidJson" => match arguments {
+					syn::PathArguments::AngleBracketed(anglebracketed_argument) => match anglebracketed_argument.args.first().unwrap() {
+						syn::GenericArgument::Type(rust_type) => get_rust_typename(rust_type),
 						_ => "unknown".to_string(),
-					}
-				}
-				_ => parsed_type
+					},
+					_ => "unknown".to_string(),
+				},
+				_ => parsed_type,
 			}
-
 		}
-		_ => String::from("any")
+		_ => String::from("any"),
 	}
 }
-
 
 // TODO: support `Function`, `TypeAlias`, `Enum`, and `Const`
 pub enum ConversionType {
@@ -225,8 +206,8 @@ pub enum ConversionType {
 	Struct,
 	Const,
 	Enum,
-	Function, // Coming soon
-	TypeAlias // Coming soon
+	Function,  // Coming soon
+	TypeAlias, // Coming soon
 }
 
 /// Provides ability to convert syn (https://crates.io/crates/syn) parser types to typescript types with ease
@@ -236,7 +217,7 @@ pub struct TypescriptConverter {
 	pub should_export: bool,
 	pub indentation: u32,
 	pub file: File,
-	pub converted_types: Vec<String>
+	pub converted_types: Vec<String>,
 }
 
 impl TypescriptConverter {
@@ -247,7 +228,7 @@ impl TypescriptConverter {
 			should_export,
 			indentation,
 			file,
-			converted_types: Vec::new()
+			converted_types: Vec::new(),
 		}
 	}
 
@@ -262,7 +243,13 @@ impl TypescriptConverter {
 		// Push an indentation to the typescript file
 		self.store.push_str(&indent(2));
 
-		let type_scaffold = format!("{export}{key} {name}{generics} {{\n", export = export_str, key = keyword, name = rust_struct.ident, generics = get_struct_generics(rust_struct.generics.clone()));
+		let type_scaffold = format!(
+			"{export}{key} {name}{generics} {{\n",
+			export = export_str,
+			key = keyword,
+			name = rust_struct.ident,
+			generics = get_struct_generics(rust_struct.generics.clone())
+		);
 
 		// Push our type scaffold to the store string (this string will eventually be pushed to a file once formed fully)
 		self.store.push_str(&type_scaffold);
@@ -274,7 +261,13 @@ impl TypescriptConverter {
 			let optional_marking = if field_type.is_optional { "?" } else { "" };
 
 			// For each rust struct field we want to form a valid typescript field and add that field to the typescript type/interface
-			self.store.push_str(&format!("{space}{name}{optional}: {ts_type};\n", space = spacing, name = field_name, ts_type = field_type.typescript_type, optional = optional_marking));
+			self.store.push_str(&format!(
+				"{space}{name}{optional}: {ts_type};\n",
+				space = spacing,
+				name = field_name,
+				ts_type = field_type.typescript_type,
+				optional = optional_marking
+			));
 		}
 
 		// Close out our newly generated interface/type
@@ -292,23 +285,16 @@ impl TypescriptConverter {
 			self.converted_types.push(converted.clone().typescript_type);
 		}
 		converted
-
 	}
 
 	// TODO: we should also convert constants to typescript aliases as well
-	pub fn convert_const() {
-
-	}
+	pub fn convert_const() {}
 
 	// TODO: enums in typescript suck but might be ideal to atleast support conversion
-	pub fn convert_enum() {
-
-	}
+	pub fn convert_enum() {}
 
 	// TODO: support converting all functions to typescript types
-	pub fn convert_function() {
-
-	}
+	pub fn convert_function() {}
 
 	/// Converts rust type aliases to typescript types or interfaces
 	pub fn convert_type_alias(&mut self, rust_type_alias: ItemType) {
@@ -326,7 +312,13 @@ impl TypescriptConverter {
 		let converted_type = convert_primitive(&rust_type_alias.ty);
 
 		// Scaffold our new type
-		let type_scaffold = format!("{export}{key} {name} = {type_value};", key = keyword, export = export_str, name = alias_name, type_value = converted_type.typescript_type);
+		let type_scaffold = format!(
+			"{export}{key} {name} = {type_value};",
+			key = keyword,
+			export = export_str,
+			name = alias_name,
+			type_value = converted_type.typescript_type
+		);
 
 		// After constructing the new type lets push it onto the store string
 		self.store.push_str(&type_scaffold);
@@ -339,12 +331,13 @@ impl TypescriptConverter {
 		match value {
 			Some(val) => {
 				self.file.write_all(val.as_bytes()).expect("Could not write to typescript bindings file!");
-			},
-			None => {
-				self.file.write_all(self.store.as_bytes()).expect("Could not write to typescript bindings file!");
 			}
- 		}
-
+			None => {
+				self.file
+					.write_all(self.store.as_bytes())
+					.expect("Could not write to typescript bindings file!");
+			}
+		}
 	}
 }
 
@@ -360,18 +353,19 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 
 				// We want to break out if we found a directory
 				if path.is_dir() {
-					continue
+					continue;
 				}
 
 				// We are only interested in rust files (break out if we do not find one)
-				if !(path.extension().unwrap_or(OsStr::new("")).to_str().unwrap_or("") == "rs")  {
-					continue
+				if !(path.extension().unwrap_or(OsStr::new("")).to_str().unwrap_or("") == "rs") {
+					continue;
 				}
 
 				// Create a reference to the current route file and grab its contents as a string
 				let mut file = File::open(&path).expect("Could not open file while attempting to generate Typescript types!");
 				let mut file_contents = String::new();
-				file.read_to_string(&mut file_contents).expect("Could not open file while attempting to generate Typescript types!");
+				file.read_to_string(&mut file_contents)
+					.expect("Could not open file while attempting to generate Typescript types!");
 
 				// Parse the file into a rust syntax tree
 				let file = parse_file(&file_contents).expect("Error: Syn could not parse handler source file!");
@@ -391,12 +385,10 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 						Item::Struct(val) => {
 							converter_instance.convert_struct(val);
 						}
-						Item::Type(val) => {
-							converter_instance.convert_type_alias(val)
-						}
+						Item::Type(val) => converter_instance.convert_type_alias(val),
 						_ => {
 							// If we found a rust item that we do not care about lets just continue
-							continue
+							continue;
 						}
 					}
 				}
@@ -404,7 +396,7 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 			Err(_) => {
 				// if we were not able to parse the file lets error out
 				println!("An error occurred when attempting to parse directory with path: {:?}", parsing_directory);
-				continue
+				continue;
 			}
 		}
 	}

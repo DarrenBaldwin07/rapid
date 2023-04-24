@@ -1,0 +1,8 @@
+app_type = "remix"
+
+[remix]
+server_port = 8080
+serve_static_files = true
+is_logging = true
+typescript_generation = true
+bindings_export_path = "app/api"

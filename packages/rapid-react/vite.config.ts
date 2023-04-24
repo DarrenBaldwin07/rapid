@@ -19,11 +19,12 @@ export default defineConfig({
 			fileName: (format) => `${name}.${format}.js`,
 		},
 		rollupOptions: {
-			external: ['react', 'react-dom'],
+			external: ['react', 'react-dom', 'axios'],
 			output: {
 				globals: {
 					react: 'React',
 					'react-dom': 'ReactDOM',
+					axios: 'axios'
 				},
 			},
 		},

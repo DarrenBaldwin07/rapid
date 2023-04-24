@@ -8,8 +8,10 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
-use utils::{base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler};
-
+use utils::{
+	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
+	REMIX_ROUTE_PATH,
+};
 
 // TODO: some of this could leverage tokio
 
@@ -271,6 +273,57 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 	};
 	let path = &path_string[1..path_string.len() - 1];
 	let module_name = Ident::new(&path[path.find("/").map(|it| it + 1).unwrap_or(0)..], Span::call_site());
+
+	let mut route_dirs: Vec<PathBuf> = vec![];
+
+	// Get every nested dir and append them to the route_dirs array
+	get_all_dirs(path, &mut route_dirs);
+
+	// Grab all of the base idents that we need to power the base "/" handler
+	let base_idents = std::fs::read_dir(path)
+		.unwrap()
+		.map(|it| {
+			let path = it.unwrap().path();
+			let name = path.file_stem().unwrap().to_string_lossy();
+			Ident::new(&name, Span::call_site())
+		})
+		.filter(|it| it.to_string() != "mod")
+		.collect::<Vec<_>>();
+
+	let mut nested_idents: Vec<TokenStream2> = Vec::new();
+
+	for dir in route_dirs {
+		let string = dir.into_os_string().into_string().unwrap();
+
+		let mod_name = format!("{}", string.replace("src/", "").replace("/", "::"));
+		let tokens: proc_macro2::TokenStream = mod_name.parse().unwrap();
+		nested_idents.push(quote! { pub use #tokens::*; });
+	}
+
+	proc_macro::TokenStream::from(quote!(
+		use include_dir::{include_dir, Dir};
+		mod #module_name { #(pub mod #base_idents;)* }
+		pub use #module_name::{
+			#(#base_idents,)*
+		};
+		#(#nested_idents)*
+		#[cfg(debug_assertions)] // Only run this in debug mod (having extra code in main.rs file makes binary way larger)
+		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
+	))
+}
+
+/// A macro for generating imports for every route handler in a Rapid Remix application
+///
+/// This macro must be used before any other code runs.
+///
+/// # Examples
+/// ```
+/// rapid_configure_remix!()
+/// ```
+#[proc_macro]
+pub fn rapid_configure_remix(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
+	let path = REMIX_ROUTE_PATH;
+	let module_name = Ident::new("routes", Span::call_site());
 
 	let mut route_dirs: Vec<PathBuf> = vec![];
 

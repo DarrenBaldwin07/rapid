@@ -1,7 +1,7 @@
-use syn::{File as SynFile, Item, Type, Generics, Lit, parse_file, Expr};
+use syn::{parse_file, Expr, File as SynFile, Generics, Item, Lit, Type};
 
-pub const GENERATED_TS_FILE_MESSAGE: &str = "// @generated automatically by Rapid-web (https://rapid.cincinnati.ventures). DO NOT CHANGE OR EDIT THIS FILE!";
-
+pub const GENERATED_TS_FILE_MESSAGE: &str =
+	"// @generated automatically by Rapid-web (https://rapid.cincinnati.ventures). DO NOT CHANGE OR EDIT THIS FILE!";
 
 #[derive(Debug)]
 pub enum TypeClass {
@@ -71,7 +71,6 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 					},
 				}));
 
-
 				return Some(function_types);
 			}
 		}
@@ -114,7 +113,6 @@ pub fn get_type_class(rust_type: Type) -> Option<TypeClass> {
 	}
 }
 
-
 /// Method for checking if a handler function is valid
 /// Handlers are only valid if they have a "#[rapid_handler]" macro on them
 pub fn is_valid_handler(macro_name: &str, attributes: Vec<syn::Attribute>) -> bool {
@@ -144,21 +142,20 @@ pub fn indent(amount: u32) -> String {
 
 /// Function for extracting generics from a rust struct
 pub fn get_struct_generics(type_generics: Generics) -> String {
-    let mut generic_params: Vec<String> = Vec::new();
+	let mut generic_params: Vec<String> = Vec::new();
 
-    for generic_param in type_generics.params {
-        if let syn::GenericParam::Type(rust_type) = generic_param {
-            generic_params.push(rust_type.ident.to_string());
-        }
-    }
+	for generic_param in type_generics.params {
+		if let syn::GenericParam::Type(rust_type) = generic_param {
+			generic_params.push(rust_type.ident.to_string());
+		}
+	}
 
-    if generic_params.is_empty() {
-        "".to_string()
-    } else {
-        format!("<{}>", generic_params.join(", "))
-    }
+	if generic_params.is_empty() {
+		"".to_string()
+	} else {
+		format!("<{}>", generic_params.join(", "))
+	}
 }
-
 
 /// A function for getting the route key of a rapid route handler
 /// Handlers will have a route key that is always unique (we can never have duplicate route keys)
@@ -185,16 +182,16 @@ pub fn get_route_key(file_path: &str, handler_source: &str) -> String {
 								}
 
 								key
-							},
-							_ => continue
+							}
+							_ => continue,
 						},
-						_ => continue
+						_ => continue,
 					};
 				}
 
-                continue
-			},
-			_ => continue
+				continue;
+			}
+			_ => continue,
 		}
 	}
 
@@ -204,14 +201,14 @@ pub fn get_route_key(file_path: &str, handler_source: &str) -> String {
 /// Function for checking if a rapid route path is dynamic (example: "/route/todo/_id_" -- this route is dynamic because it has a "_id_" substring)
 pub fn is_dynamic_route(str: &str) -> bool {
 	// Check for a regex match for a substring similar to "_anythingInHere_"
-    let regex = regex::Regex::new(r"_\w+_").unwrap();
-    regex.is_match(str)
+	let regex = regex::Regex::new(r"_\w+_").unwrap();
+	regex.is_match(str)
 }
 
 /// Removes the last occurrence of a substring in a string
 pub fn remove_last_occurrence(s: &str, sub: &str) -> String {
-    let mut split = s.rsplitn(2, sub);
-    let back = split.next().unwrap_or("");
-    let front = split.next().unwrap_or("").to_owned();
-    front + back
+	let mut split = s.rsplitn(2, sub);
+	let back = split.next().unwrap_or("");
+	let front = split.next().unwrap_or("").to_owned();
+	front + back
 }

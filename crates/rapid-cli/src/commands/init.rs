@@ -13,21 +13,19 @@ use std::{
 };
 
 #[derive(RustEmbed)]
-#[folder = "src/templates/rapidUI/reactVite/"]
+#[folder = "templates/rapidUI/reactVite/"]
 struct Asset;
 
 #[derive(RustEmbed)]
-#[folder = "src/templates/rapidUI/remix/"]
+#[folder = "templates/rapidUI/remix/"]
 struct RemixAssets;
 
-
 #[derive(RustEmbed)]
-#[folder = "src/templates/rapidUI/nextjs/"]
+#[folder = "templates/rapidUI/nextjs/"]
 struct NextJsAssets;
 
-
 #[derive(RustEmbed)]
-#[folder = "src/templates/dockerfiles/"]
+#[folder = "templates/dockerfiles/"]
 struct Dockerfiles;
 
 pub struct Init {}
@@ -37,16 +35,17 @@ impl RapidCommand for Init {
 		Command::new("init")
 			.about("A command for initializing Rapid libraries in your projects!")
 			.subcommand(Command::new("fullstack").about("A command for initializing a fullstack rapid application in your react projects!"))
-			.subcommand(Command::new("server")
-				.about("A command for initializing functionality inside of a rapid server")
-				.arg(
-					arg!(
-						-deploy --deploy "Initializes functionality inside of an existing rapid server application"
-					)
-					.required(false)
-					.action(ArgAction::SetTrue)
-					.value_parser(value_parser!(PathBuf)),
-				)
+			.subcommand(
+				Command::new("server")
+					.about("A command for initializing functionality inside of a rapid server")
+					.arg(
+						arg!(
+							-deploy --deploy "Initializes functionality inside of an existing rapid server application"
+						)
+						.required(false)
+						.action(ArgAction::SetTrue)
+						.value_parser(value_parser!(PathBuf)),
+					),
 			)
 			.subcommand(
 				Command::new("ui")
@@ -75,7 +74,6 @@ impl RapidCommand for Init {
 						.action(ArgAction::SetTrue)
 						.value_parser(value_parser!(PathBuf)),
 					),
-
 			)
 	}
 
@@ -140,7 +138,6 @@ pub fn server_subcommand_handler(init_args: [&str; 1], subcommand_args: &ArgMatc
 			}
 		}
 	}
-
 
 	println!("{}", "No init commands found! Please try using '--deploy'".color(Color::Red));
 }
@@ -261,13 +258,13 @@ pub fn init_nextjs_template(current_working_directory: PathBuf, arg: &str) {
 	);
 }
 
-
 pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
 	println!("{}...", "Initializing rapid deployments".color(Color::Green));
 	let dockerfile_conents = Dockerfiles::get("rapidServer.Dockerfile").unwrap();
 
 	// Create the Dockerfile
-	File::create(current_working_directory.join("rapid.Dockerfile")).expect("Failed to create the depoyment Dockerfile. Is there already a dockerfile created with the name 'rapid.Dockerfile'?");
+	File::create(current_working_directory.join("rapid.Dockerfile"))
+		.expect("Failed to create the depoyment Dockerfile. Is there already a dockerfile created with the name 'rapid.Dockerfile'?");
 
 	// Write to the Dockerfuke
 	write("rapid.Dockerfile", std::str::from_utf8(dockerfile_conents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
@@ -281,7 +278,15 @@ pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
 		"\n\n🚀".bold(),
 		"Next Steps".bg_blue().color(Color::White).bold(),
 		BOLT_EMOJI,
-		format!("{}{}", format!("\n\nBuild: {}", "").bold(), "docker build -t rapid-server -f ./rapid.Dockerfile .".color(Color::LightCyan)),
-		format!("{}{}", format!("\nRun: {}", "").bold(),  "docker run -p 8080:8080 rapid-server".color(Color::LightCyan)),
+		format!(
+			"{}{}",
+			format!("\n\nBuild: {}", "").bold(),
+			"docker build -t rapid-server -f ./rapid.Dockerfile .".color(Color::LightCyan)
+		),
+		format!(
+			"{}{}",
+			format!("\nRun: {}", "").bold(),
+			"docker run -p 8080:8080 rapid-server".color(Color::LightCyan)
+		),
 	);
 }

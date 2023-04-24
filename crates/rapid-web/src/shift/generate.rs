@@ -1,6 +1,9 @@
 use super::{
-	convert::{TypescriptType, TypescriptConverter, convert_all_types_in_path},
-	util::{extract_handler_types, space, get_route_key, remove_last_occurrence, HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE, get_handler_type, is_dynamic_route},
+	convert::{convert_all_types_in_path, TypescriptConverter, TypescriptType},
+	util::{
+		extract_handler_types, get_handler_type, get_route_key, is_dynamic_route, remove_last_occurrence, space, HandlerRequestType, TypeClass,
+		GENERATED_TS_FILE_MESSAGE,
+	},
 };
 use crate::util::validate_route_handler;
 use std::{
@@ -28,7 +31,7 @@ pub struct TypedQueryHandler {
 	pub path: Option<TypescriptType>,
 	pub query_params: Option<TypescriptType>,
 	pub output_type: TypescriptType,
-	pub route_key: RouteKey
+	pub route_key: RouteKey,
 }
 
 #[derive(Debug, Clone)]
@@ -38,7 +41,7 @@ pub struct TypedMutationHandler {
 	pub path: Option<TypescriptType>,
 	pub input_type: Option<TypescriptType>,
 	pub output_type: TypescriptType,
-	pub route_key: RouteKey
+	pub route_key: RouteKey,
 }
 
 /// Function for generating typescript types from a rapid routes directory
@@ -66,7 +69,6 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 			continue;
 		}
 
-
 		// Create a reference to the current route file and grab its contents as a string
 		let mut file = File::open(&entry.path()).unwrap();
 		let mut route_file_contents = String::new();
@@ -77,11 +79,17 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 			continue;
 		}
 
-		let parsed_route_dir = entry.path().to_str().unwrap_or("/").to_string().replace(routes_dir.to_str().unwrap_or("src/routes"), "").replace(".rs", "");
+		let parsed_route_dir = entry
+			.path()
+			.to_str()
+			.unwrap_or("/")
+			.to_string()
+			.replace(routes_dir.to_str().unwrap_or("src/routes"), "")
+			.replace(".rs", "");
 
 		let route_key = RouteKey {
 			key: get_route_key(&parsed_route_dir, &route_file_contents),
-			value: parsed_route_dir
+			value: parsed_route_dir,
 		};
 
 		let handler_types = match extract_handler_types(&route_file_contents) {
@@ -108,7 +116,10 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 
 			let converted_type = match rust_type.type_value {
 				Some(val) => converter.convert_primitive(val),
-				None => TypescriptType { typescript_type: String::from("any"), is_optional: false }
+				None => TypescriptType {
+					typescript_type: String::from("any"),
+					is_optional: false,
+				},
 			};
 
 			match rust_type.class {
@@ -127,9 +138,9 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 					query_params,
 					output_type: TypescriptType {
 						typescript_type: "any".to_string(),
-						is_optional: true
+						is_optional: true,
 					},
-					route_key
+					route_key,
 				}));
 			}
 			_ => {
@@ -140,9 +151,9 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 					input_type: body_type,
 					output_type: TypescriptType {
 						typescript_type: "any".to_string(),
-						is_optional: true
+						is_optional: true,
 					},
-					route_key
+					route_key,
 				}));
 			}
 		}
@@ -154,11 +165,11 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	// Create a new bindings.ts file to store all of our generated types
 	let file = OpenOptions::new()
-	.write(true)
-	.create(true)
-	.truncate(true)
-	.open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap()))
-	.unwrap();
+		.write(true)
+		.create(true)
+		.truncate(true)
+		.open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap()))
+		.unwrap();
 
 	// Init our typescript converter
 	let mut converter = TypescriptConverter::new(true, "".to_string(), true, 4, file);
@@ -175,7 +186,6 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	// Init our a queries and mutations keys in the handlers interface
 	let mut queries_ts = String::from("{");
 	let mut mutations_ts = String::from("{");
-
 
 	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
 	convert_all_types_in_path(route_dir.to_str().unwrap(), &mut converter);
@@ -287,7 +297,6 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 				let request_type = format!("\t\t\ttype: '{}'", request_type);
 				ts_type.push_str(&format!("{}{}\n", spacing, request_type));
 
-
 				let dynamic_type = format!("\t\t\tisDynamic: {}", is_dynamic_route_path);
 				ts_type.push_str(&format!("{}{}\n", spacing, dynamic_type));
 
@@ -359,17 +368,23 @@ pub fn generate_routes(routes_dir: &str) -> String {
 			continue;
 		}
 
-		let parsed_route_dir = entry.path().to_str().unwrap_or("/").to_string().replace(routes_dir, "").replace(".rs", "");
+		let parsed_route_dir = entry
+			.path()
+			.to_str()
+			.unwrap_or("/")
+			.to_string()
+			.replace(routes_dir, "")
+			.replace(".rs", "");
 
 		let handler_type = match get_handler_type(&route_file_contents) {
 			Some(name) => name,
-			None => String::from("get")
+			None => String::from("get"),
 		};
 
 		// Construct our routes object
 		let route_key = RouteKey {
 			key: get_route_key(&parsed_route_dir, &route_file_contents),
-			value: remove_last_occurrence(&parsed_route_dir, "index")
+			value: remove_last_occurrence(&parsed_route_dir, "index"),
 		};
 
 		let mut route = format!("\n\t{}: {{\n", route_key.key);
@@ -380,12 +395,10 @@ pub fn generate_routes(routes_dir: &str) -> String {
 		// Make sure we close off the new route...
 		route.push_str("\t},");
 		typescript_object.push_str(&route);
-	 }
+	}
 
-	 // Once we are done we want to close off the object
-	 typescript_object.push_str("\n} as const");
+	// Once we are done we want to close off the object
+	typescript_object.push_str("\n} as const");
 
-	 typescript_object
+	typescript_object
 }
-
-

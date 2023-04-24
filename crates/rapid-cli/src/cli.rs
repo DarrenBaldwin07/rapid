@@ -5,9 +5,12 @@ use crate::{
 };
 use clap::{command, ArgMatches, Command};
 use colorful::Colorful;
-use std::{path::PathBuf, process::exit};
+use std::{
+	env::{current_dir, current_exe},
+	path::PathBuf,
+	process::exit,
+};
 use tiny_gradient::{GradientDisplay, GradientStr, RGB};
-use std::env::{current_dir, current_exe};
 
 pub type App = Command;
 
@@ -16,17 +19,26 @@ const RAPID_VERSION_MESSAGE: &str = "v0.3.0";
 
 /// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
-	GradientStr::gradient(&">>> R A P I D", [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+	GradientStr::gradient(
+		&">>> R A P I D",
+		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)],
+	)
 }
 
 /// Normal Logo
 pub fn rapid_logo_small<'a>() -> GradientDisplay<'a, [RGB; 4]> {
-	GradientStr::gradient(&"R A P I D", [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+	GradientStr::gradient(
+		&"R A P I D",
+		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)],
+	)
 }
 
 /// Large Ascii printed logo
 pub fn logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
-	GradientStr::gradient(&LOGO, [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)])
+	GradientStr::gradient(
+		&LOGO,
+		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)],
+	)
 }
 
 /// Returns what the current working directory of the user is
@@ -106,9 +118,10 @@ impl RapidCLI {
 }
 
 // TODO: update this to actually be a legit health template
-// Note: Dot not change indentation of this or else it will break
+// Note: Do not change indentation of this or else it will break
 fn get_help_template() -> String {
-	format!("RAPID -- The modern software toolkit built on React and Rust
+	format!(
+		"RAPID -- The modern software toolkit built on React and Rust
 
 Commands:
   {init}	Initialize Rapid functionality in an existing app
@@ -119,7 +132,10 @@ Options:
   -V --version	  Print version info and exit
 
 ",
-		 init = "init".bold(), run = "run".bold(), new = "new".bold())
+		init = "init".bold(),
+		run = "run".bold(),
+		new = "new".bold()
+	)
 }
 
 #[derive(Debug)]

@@ -10,14 +10,7 @@ use toml;
 pub enum AppType {
 	App,
 	Server,
-}
-
-#[derive(Deserialize, Clone)]
-pub struct AppConfig {
-	// TODO: Add app options here as needed
-	// host port
-	// api url
-	// include_environment_variables
+	Remix
 }
 
 #[derive(Deserialize, Clone)]
@@ -28,7 +21,17 @@ pub struct ServerConfig {
 	pub serve_static_files: Option<bool>,
 	pub bindings_export_path: Option<String>,
 	pub routes_directory: Option<String>,
-	pub typescript_generation: Option<bool>
+	pub typescript_generation: Option<bool>,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct RemixConfig {
+	pub server_port: Option<u16>,
+	pub is_logging: Option<bool>,
+	pub show_error_pages: Option<bool>,
+	pub serve_static_files: Option<bool>,
+	pub bindings_export_path: Option<String>,
+	pub typescript_generation: Option<bool>,
 }
 
 #[derive(Deserialize, Clone)]
@@ -43,9 +46,9 @@ pub struct Features {
 /// # Example:
 pub struct RapidConfig {
 	pub app_type: String,
-	pub app_config: Option<AppConfig>,
 	pub features: Option<Features>,
 	pub server: Option<ServerConfig>,
+	pub remix: Option<RemixConfig>
 }
 
 pub fn find_rapid_config() -> RapidConfig {

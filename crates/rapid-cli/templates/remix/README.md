@@ -10,4 +10,21 @@ This [RAPID](https://rapid.cincinnati.ventures/) Remix project was scaffolded wi
 </div>
 
 # Getting started
-> Coming soon...
+1. First, download the project dependencies using your favorite package manager:
+```bash
+pnpm install
+```
+
+2. Next, Run the [Remix](https://remix.run) frontend:
+```bash
+pnpm run dev
+```
+
+3. Finally, run the Rapid rust backend:
+```bash
+rapid run
+```
+
+</br>
+
+> Refer to our docs for any assistance: https://rapid.cincinnati.ventures

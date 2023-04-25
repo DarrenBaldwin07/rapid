@@ -3,7 +3,7 @@ use crate::{
 	commands::{self, RapidCommand},
 	constants::LOGO,
 };
-use clap::{command, ArgMatches, Command};
+use clap::{command, ArgMatches, Command, crate_version};
 use colorful::Colorful;
 use std::{
 	env::{current_dir, current_exe},
@@ -14,8 +14,10 @@ use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 
 pub type App = Command;
 
-// This should 100% pull from a GCP storage bucket or something
-const RAPID_VERSION_MESSAGE: &str = "v0.3.0";
+// This should 100% pull from a GCP storage bucket or something that gets updataed in CI when we trigger releases
+// TODO: eventually, we should use this to tell the user that they need to update their CLI version
+// (we could detect this by comparing this value with the crate_version!() macro value)
+pub const RAPID_LATEST_VERSION: &str = "v0.4.3";
 
 /// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
@@ -69,7 +71,7 @@ impl RapidCLI {
 			.allow_external_subcommands(true)
 			.disable_colored_help(false)
 			.override_usage(usage)
-			.long_version(RAPID_VERSION_MESSAGE)
+			.long_version(crate_version!())
 			.help_template(get_help_template())
 			.arg(flag("help", "List command(s)"))
 			.subcommands(RapidCLI::commands())

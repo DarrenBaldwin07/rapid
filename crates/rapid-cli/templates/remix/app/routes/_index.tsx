@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { Welcome } from "@rapid-web/react";
 import { Heading } from "@rapid-web/ui";
 import { bolt } from "../root";
+import { routes } from "../api/bindings";
 import { SignOutButton, SignedIn, SignedOut } from "@clerk/remix";
 
 export const meta: V2_MetaFunction = () => {
@@ -10,7 +11,7 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const req = await bolt('hello').get('/hello');
+  const req = await bolt('hello').get(routes.hello);
   return req.data;
 }
 

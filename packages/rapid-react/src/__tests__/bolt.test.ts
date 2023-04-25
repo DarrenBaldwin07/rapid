@@ -40,8 +40,6 @@ describe('bolt', () => {
             const outputData = { id: 1, name: 'bilbo', age: 22 };
             mockedAxios.get.mockResolvedValue({ data: outputData });
 
-
-
             const bolt = createBoltClient<Handlers, typeof routes>(routes, {
                 transport: ''
             });

@@ -1,19 +1,18 @@
 The `Button` component is a versatile and customizable button that can be used in various parts of your application. It is designed to be accessible, responsive, and easy to use.
 
+#### Import
+```jsx
+import { Button } from '@rapid-web/ui';
+```
+
 #### Usage
 
 Here's a basic example of how to use the `Button` component:
 
 ```tsx
-import { Button } from '@rapid-web/ui';
-
-function App() {
-  return (
-    <Button>
-      Hello World!
-    </Button>
-  );
-}
+<Button>
+  Hello World!
+</Button>
 ```
 
 #### Customization
@@ -27,7 +26,6 @@ The `Button` component provides a set of props to allow customization of its app
 - `disabled`: Disables the button when set to `true`.
 
 #### Examples
-> mention variants and sizze
 
 ```jsx
 // Example of a primary button 

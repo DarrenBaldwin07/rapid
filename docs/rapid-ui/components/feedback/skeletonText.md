@@ -45,5 +45,5 @@ Here's an example of a customized `SkeletonText` component with custom height an
 
 For more information and examples, please visit the `SkeletonText` component's Storybook page:
 
--   [Storybook: SkeletonText](https://storybook.rapid.cincinnati.ventures/?path=/docs/components-feedback-skeleton-text--default)
+-   [Storybook: SkeletonText](https://storybook.rapid.cincinnati.ventures/?path=/docs/components-feedback-skeletontext--primary)
 

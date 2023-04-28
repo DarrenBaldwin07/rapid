@@ -9,7 +9,7 @@ import { Button } from '@rapid-web/ui';
 
 Here's a basic example of how to use the `Button` component:
 
-```tsx
+```jsx
 <Button>
   Hello World!
 </Button>

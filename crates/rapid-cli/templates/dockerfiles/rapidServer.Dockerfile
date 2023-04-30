@@ -35,4 +35,4 @@ RUN cargo install --path .
 EXPOSE 8080
 
 # Invoke the binary (this has to be the name of the binary in Cargo.toml)
-CMD ["tensor-testing"]
+CMD ["rapid"]

@@ -51,6 +51,7 @@ pub fn get_all_middleware(current_path: &str, route_root: &str, path_array: &mut
 						file.read_to_string(&mut file_contents).unwrap();
 						// We only want to add a middleware path if it is valid
 						// TODO: when we implement support for "wrap_fn()" this will need tweaked (might also just be wrapping a async function to support the normal .wrap() syntax as well or using something in actix-web-lab)
+						// TODO: we should validate this more (maybe use another derive macro)
 						if file_contents.contains("pub struct Middleware") {
 							path_array.push(path.parent().expect("Error: could not parse parent route directory!").to_path_buf());
 						}

@@ -15,3 +15,8 @@ pub(crate) mod util;
 pub mod request {
 	pub use actix_web::web::{Json as RapidJson, Path as RapidPath, Query as RapidQuery};
 }
+// Authentication adapters are re-exported under the 'authentication' module
+// TODO: add support for auth0 and other providers here as well
+pub mod authentication {
+	pub use clerk_rs;
+}

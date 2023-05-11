@@ -95,7 +95,7 @@ impl<'a> SsrV8<'a> {
 				.map(|(i, &p)| {
 					let name = p.get_index(scope, i as u32).unwrap();
 
-					//A HandleScope which first allocates a handle in the current scope which will be later filled with the escape value.
+					// A HandleScope which first allocates a handle in the current scope which will be later filled with the escape value.
 					let mut scope = v8::EscapableHandleScope::new(scope);
 
 					let func = object.get(&mut scope, name).unwrap();

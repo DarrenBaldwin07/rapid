@@ -52,6 +52,8 @@ struct Handler {
 
 // Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats (we could support patch if needed)
 enum RouteHandler {
+	Query(Handler),
+	Mutation(Handler),
 	Get(Handler),
 	Post(Handler),
 	Delete(Handler),
@@ -244,6 +246,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			RouteHandler::Delete(route_handler) => generate_handler_tokens(route_handler, parsed_path, "delete"),
 			RouteHandler::Put(route_handler) => generate_handler_tokens(route_handler, parsed_path, "put"),
 			RouteHandler::Patch(route_handler) => generate_handler_tokens(route_handler, parsed_path, "patch"),
+			RouteHandler::Query(route_handler) => generate_handler_tokens(route_handler, parsed_path, "query"),
+			RouteHandler::Mutation(route_handler) => generate_handler_tokens(route_handler, parsed_path, "mutation"),
 		})
 		.collect::<Vec<_>>();
 

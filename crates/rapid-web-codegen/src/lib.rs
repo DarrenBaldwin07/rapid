@@ -407,6 +407,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 		}
 	};
 
+	// Output our idents based on the handler types
 	match handler_type {
 		// Check if we got a query or mutation..
 		"query" => {
@@ -430,6 +431,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
 	}
 }
+
 
 /// Function for parsing a route fileer and making sure it contains a valid handler
 /// If it does, we want to push the valid handler to the handlers array

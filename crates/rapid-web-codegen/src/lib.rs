@@ -436,5 +436,24 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 		}
 	};
 
-	quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+	match handler_type {
+		// Check if we got a query or mutation..
+		"query" => {
+			// If we got a query type we want to generate routes for `get` request types (`delete` could get moved to here too...?)
+			quote!(
+				.route(#rapid_routes_path, web::get().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+			)
+		},
+		"mutation" => {
+			// If we got a mutation type we want to generate routes for each of the following:
+			// `post`, `put`, `patch`, `delete`
+			quote!(
+				.route(#rapid_routes_path, web::post().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+				.route(#rapid_routes_path, web::put().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+				.route(#rapid_routes_path, web::patch().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+			)
+		},
+		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+	}
 }

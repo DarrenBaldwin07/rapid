@@ -427,7 +427,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 			)
 		},
 		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
-		// ^^^ Eventually, what was described above
+		// ^^^ Eventually, what was described above should get deprecated
 		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
 	}
 }

@@ -1,6 +1,6 @@
 [package]
 name = "rapid-web"
-version = "0.3.6"
+version = "0.3.7"
 edition = "2021"
 description = "A simple Rust server for the Rapid framework."
 repository = "https://github.com/DarrenBaldwin07/rapid"
@@ -35,6 +35,6 @@ syn = { version = "2.0.10", features = ["full", "extra-traits"] }
 walkdir = "2.3.3"
 regex = "1.7.3"
 spinach = "2.1.0"
-clerk-rs = "0.1.5"
+clerk-rs = "0.1.6"
 
 

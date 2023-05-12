@@ -82,7 +82,12 @@ pub fn is_valid_route_function(file_contents: &str) -> bool {
 		return true;
 	} else if file_contents.contains("async fn patch") {
 		return true;
+	} else if file_contents.contains("async fn query") {
+		return true;
+	} else if file_contents.contains("async fn mutation") {
+		return true;
 	}
+
 
 	false
 }

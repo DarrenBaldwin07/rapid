@@ -161,7 +161,12 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			route_handlers.push(RouteHandler::Put(handler))
 		} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
 			route_handlers.push(RouteHandler::Patch(handler))
+		} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
+			route_handlers.push(RouteHandler::Query(handler))
+		} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
+			route_handlers.push(RouteHandler::Mutation(handler))
 		}
+
 	}
 
 	for nested_file_path in route_dirs {
@@ -233,6 +238,10 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 				route_handlers.push(RouteHandler::Put(handler))
 			} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
 				route_handlers.push(RouteHandler::Patch(handler))
+			} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
+				route_handlers.push(RouteHandler::Query(handler))
+			} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
+				route_handlers.push(RouteHandler::Mutation(handler))
 			}
 		}
 	}

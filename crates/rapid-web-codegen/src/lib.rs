@@ -151,22 +151,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 		// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
 		// Routes are determined valid if they contain a function that starts with "async fn" and contains the "rapid_handler" attribute macro
-		if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Get(handler))
-		} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Post(handler))
-		} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Delete(handler))
-		} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Put(handler))
-		} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Patch(handler))
-		} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Query(handler))
-		} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Mutation(handler))
-		}
-
+		parse_handlers(&mut route_handlers, file_contents, handler);
 	}
 
 	for nested_file_path in route_dirs {
@@ -228,21 +213,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 			// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
 			// TODO: we should consider supporting HEAD requests here as well (currently, we require that this be done through a traditional .route() call on the route builder function)
-			if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Get(handler))
-			} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Post(handler))
-			} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Delete(handler))
-			} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Put(handler))
-			} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Patch(handler))
-			} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Query(handler))
-			} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Mutation(handler))
-			}
+			parse_handlers(&mut route_handlers, file_contents, handler);
 		}
 	}
 
@@ -455,5 +426,24 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 			)
 		},
 		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+	}
+}
+
+
+fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {
+	if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Get(handler))
+	} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Post(handler))
+	} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Delete(handler))
+	} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Put(handler))
+	} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Patch(handler))
+	} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Query(handler))
+	} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Mutation(handler))
 	}
 }

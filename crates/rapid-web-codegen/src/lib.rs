@@ -425,6 +425,8 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
 		},
+		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
+		// ^^^ Eventually, what was described above
 		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
 	}
 }
@@ -432,6 +434,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 /// Function for parsing a route fileer and making sure it contains a valid handler
 /// If it does, we want to push the valid handler to the handlers array
 fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {
+	// TODO: we need to depricate everything except for `query` and `mutation`
 	if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 		route_handlers.push(RouteHandler::Get(handler))
 	} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {

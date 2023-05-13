@@ -67,44 +67,38 @@ pub fn parse_new_args(args: &ArgMatches) {
 				if val == &PathBuf::from("true") {
 					match arg {
 						"remix" => {
-							init_remix_template(current_working_directory);
+							init_remix_template(current_working_directory.clone());
 							did_find_match = true;
 							break;
 						}
 						"server" => {
-							init_server_template(current_working_directory, arg);
+							init_server_template(current_working_directory.clone(), arg);
 							did_find_match = true;
 							break;
 						}
 						_ => {
-							// If we got valid args but none of them actually matched on one of
-							// our support application types, we want to show the user an error message
-							println!(
-								"{}",
-								"No application type detected. Please use either --server or --remix".color(Color::Red)
-							);
+							// By default we should generate the remix template:
+							init_remix_template(current_working_directory.clone());
+							did_find_match = true;
 							break;
 						}
 					}
 				}
 			}
 			None => {
-				println!(
-					"{}",
-					"No application type detected. Please use either --server or --remix".color(Color::Red)
-				);
+				// By default we should generate the remix template:
+				init_remix_template(current_working_directory.clone());
+				did_find_match = true;
 				break;
 			}
 		}
 	}
 
 	// Check if we found a app type match
-	// If we did not than we want to show a log to the user
+	// If we did not than we want to simply generate the remix template
 	if !did_find_match {
-		println!(
-			"{}",
-			"No application type detected. Please use either --server or --remix".color(Color::Red)
-		);
+		// By default we should generate the remix template:
+		init_remix_template(current_working_directory);
 	}
 }
 

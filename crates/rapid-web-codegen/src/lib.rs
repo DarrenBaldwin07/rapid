@@ -8,6 +8,7 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
+use syn::parse_macro_input;
 use utils::{
 	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
 	REMIX_ROUTE_PATH,
@@ -417,7 +418,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 			)
 		},
 		"mutation" => {
-			// If we got a mutation type we want to generate routes for each of the following:
+			// If we got a mutation type we want to generate routes for each of the following (all at the same path):
 			// `post`, `put`, `patch`, `delete`
 			quote!(
 				.route(#rapid_routes_path, web::post().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
@@ -432,9 +433,9 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 	}
 }
 
-
 /// Function for parsing a route fileer and making sure it contains a valid handler
 /// If it does, we want to push the valid handler to the handlers array
+/// Note: no need to support HEAD and OPTIONS requests
 fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {
 	// TODO: we need to depricate everything except for `query` and `mutation`
 	if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
@@ -453,3 +454,4 @@ fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String,
 		route_handlers.push(RouteHandler::Mutation(handler))
 	}
 }
+

@@ -5,7 +5,7 @@ export type BoltDynamicOutput<
 	T1,
 	T2,
 	T3,
-	T4
+	T4,
 > = T extends 'post'
 	? PostFunctionDynamic<T1, T2, T3, T4>
 	: T extends 'get'
@@ -16,13 +16,141 @@ export type BoltDynamicOutput<
 	? DeleteFunctionDynamic<T1, T2, T4>
 	: T extends 'patch'
 	? PatchFunctionDynamic<T1, T2, T3, T4>
+	: T extends 'query'
+	? GetFunctionDynamic<T1, T2, T4>
+	: T extends 'mutation'
+	? MutationFunctionDynamic<T1, T2, T3, T4>
+	: never
+
+export type BoltOutput<
+	T extends SupportedHTTPMethods,
+	T1,
+	T2,
+	T3,
+> = T extends 'post'
+	? PostFunction<T1, T2, T3>
+	: T extends 'get'
+	? GetFunction<T1, T2>
+	: T extends 'put'
+	? PutFunction<T1, T2, T3>
+	: T extends 'delete'
+	? DeleteFunction<T1, T2>
+	: T extends 'patch'
+	? PatchFunction<T1, T2, T3>
+	: T extends 'query'
+	? GetFunction<T1, T2>
+	: T extends 'mutation'
+	? MutationFunction<T1, T2, T3>
 	: never;
 
 export type Bolt<T extends SupportedHTTPMethods, T1, T2, T3, T4> = {
-	dynamic: BoltDynamicOutput<T, T1, T2, T3, T4>
-	default: BoltOutput<T, T1, T2, T3>
+	dynamic: BoltDynamicOutput<T, T1, T2, T3, T4>;
+	default: BoltOutput<T, T1, T2, T3>;
+};
+
+export type MutationFunction<T1, T2, T3> = {
+	post: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+	put: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+	patch: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+	delete: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
 }
 
+export type MutationFunctionDynamic<T1, T2, T3, T4> = {
+	post: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: T4,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+	put: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: T4,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+	patch: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: T4,
+		data?: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+	delete: <
+		W extends T1,
+		T = any,
+		U = any,
+		V = T2,
+		R = AxiosResponse<T, U>,
+		D = V,
+	>(
+		url: W,
+		params: T3,
+		config?: AxiosRequestConfig<D>,
+	) => Promise<R>;
+}
 
 export type PostFunctionDynamic<T1, T2, T3, T4> = {
 	post: <
@@ -102,22 +230,6 @@ export type DeleteFunctionDynamic<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type BoltOutput<
-	T extends SupportedHTTPMethods,
-	T1,
-	T2,
-	T3,
-> = T extends 'post'
-	? PostFunction<T1, T2, T3>
-	: T extends 'get'
-	? GetFunction<T1, T2>
-	: T extends 'put'
-	? PutFunction<T1, T2, T3>
-	: T extends 'delete'
-	? DeleteFunction<T1, T2>
-	: T extends 'patch'
-	? PatchFunction<T1, T2, T3>
-	: never;
 
 export type PostFunction<T1, T2, T3> = {
 	post: <
@@ -191,7 +303,14 @@ export type PatchFunction<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type SupportedHTTPMethods = 'post' | 'get' | 'put' | 'delete' | 'patch';
+export type SupportedHTTPMethods =
+	| 'post'
+	| 'get'
+	| 'put'
+	| 'delete'
+	| 'patch'
+	| 'query'
+	| 'mutation';
 
 export interface RapidWebHandlerType {
 	queries: {

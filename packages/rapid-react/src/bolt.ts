@@ -1,11 +1,6 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import type {
-	RapidWebHandlerType,
-	BoltRoutes,
-	Bolt
-} from './types';
+import type { RapidWebHandlerType, BoltRoutes, Bolt } from './types';
 import { isDynamicRoute, generatePathUrl, toArray } from './util';
-
 
 // TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
 // TODO: Improve some of the generics here (they are a bit messy)
@@ -17,9 +12,8 @@ type FetchKey<T extends RapidWebHandlerType> =
 
 /// The bolt config object (this will expand to have more options in the future)
 interface BoltConfig {
-	transport: string
+	transport: string;
 }
-
 
 /**
  * Creates a new typesafe Bolt client for the given routes
@@ -43,12 +37,12 @@ interface BoltConfig {
  */
 function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 	routes: BoltRoutes,
-	config: BoltConfig
+	config: BoltConfig,
 ) {
 	// Get our transport string from the bolt config object (eventually this will be expanded to have more options)
 	const transport = config.transport;
 
-	return <Key extends FetchKey<T> & string, >(key: Key) => {
+	return <Key extends FetchKey<T> & string>(key: Key) => {
 		// Get a reference to the route that we are trying to fetch
 		const route = routes[key];
 		// Grab the route type
@@ -68,19 +62,25 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 		// This will almost guarantee that users never request a route that throws a 404 :)
 		type RequestUrl = R[typeof key]['url'];
 		// Get the type of our url path for both a mutation and a query (this is the type that we will use to check if the route is a dynamic route)
-		type QueryPathType =  T['queries'][typeof key]['path'];
-		type MutationPathType =  T['mutations'][typeof key]['path'];
+		type QueryPathType = T['queries'][typeof key]['path'];
+		type MutationPathType = T['mutations'][typeof key]['path'];
 
 		// Grab our type for the dynamic mutation params
-		type isDynamicMutationType = T['mutations'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+		type isDynamicMutationType =
+			T['mutations'][typeof key]['isDynamic'] extends true
+				? 'dynamic'
+				: 'default';
 		// Grab our type for the dynamic query params
-		type isDynamicQueryType = T['queries'][typeof key]['isDynamic'] extends true ? 'dynamic' : 'default';
+		type isDynamicQueryType =
+			T['queries'][typeof key]['isDynamic'] extends true
+				? 'dynamic'
+				: 'default';
 
 		// Generate a type for our bolt route object
 		type Route = {
 			url: RequestUrl;
 			type: typeof routeType;
-		}
+		};
 
 		switch (routeType) {
 			case 'post':
@@ -106,7 +106,15 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.post(generatePathUrl(parsedUrl, toArray(params), transport), data, config)
+							return axios.post(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								data,
+								config,
+							);
 						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
@@ -166,7 +174,14 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.get(generatePathUrl(parsedUrl, toArray(params), transport), config);
+							return axios.get(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								config,
+							);
 						},
 					} as Bolt<
 						T['queries'][Key]['type'],
@@ -194,7 +209,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						} else {
 							parsedUrl = `${transport}${url.url}`;
 						}
-						return axios.get(parsedUrl, config)
+						return axios.get(parsedUrl, config);
 					},
 				} as Bolt<
 					T['queries'][Key]['type'],
@@ -224,8 +239,15 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							} else {
 								parsedUrl = url.url;
 							}
-							return axios.delete(generatePathUrl(parsedUrl, toArray(params), transport), config);
-						}
+							return axios.delete(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								config,
+							);
+						},
 					} as Bolt<
 						T['queries'][Key]['type'],
 						Route | RequestUrl,
@@ -253,7 +275,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							parsedUrl = `${transport}${url.url}`;
 						}
 
-						return axios.delete(parsedUrl, config)
+						return axios.delete(parsedUrl, config);
 					},
 				} as Bolt<
 					T['queries'][Key]['type'],
@@ -285,7 +307,15 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.put(generatePathUrl(parsedUrl, toArray(params), transport), data, config)
+							return axios.put(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								data,
+								config,
+							);
 						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
@@ -315,7 +345,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 							parsedUrl = `${transport}${url.url}`;
 						}
 
-						return axios.put(parsedUrl, data, config)
+						return axios.put(parsedUrl, data, config);
 					},
 				} as Bolt<
 					T['mutations'][Key]['type'],
@@ -347,7 +377,15 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 								parsedUrl = url.url;
 							}
 
-							return axios.patch(generatePathUrl(parsedUrl, toArray(params), transport), data, config);
+							return axios.patch(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								data,
+								config,
+							);
 						},
 					} as Bolt<
 						T['mutations'][Key]['type'],
@@ -376,7 +414,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						} else {
 							parsedUrl = `${transport}${url.url}`;
 						}
-						return axios.patch(parsedUrl, data, config)
+						return axios.patch(parsedUrl, data, config);
 					},
 				} as Bolt<
 					T['mutations'][Key]['type'],
@@ -385,10 +423,74 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					InputBody,
 					MutationPathType
 				>[isDynamicMutationType];
+			case 'query':
+				if (isDynamic) {
+					return {
+						get: <
+							T = OutputQueryBody,
+							R = AxiosResponse<T, OutputQueryBody>,
+							D = any,
+						>(
+							url: Route | RequestUrl,
+							params: QueryPathType,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.get(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								config,
+							);
+						},
+					} as Bolt<
+						T['queries'][Key]['type'],
+						Route | RequestUrl,
+						R,
+						never,
+						QueryPathType
+					>[isDynamicQueryType];
+				}
+				return {
+					get: <
+						T = OutputQueryBody,
+						R = AxiosResponse<T, OutputQueryBody>,
+						D = any,
+					>(
+						url: Route | RequestUrl,
+						config?: AxiosRequestConfig<D>,
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+						return axios.get(parsedUrl, config);
+					},
+				} as Bolt<
+					T['queries'][Key]['type'],
+					Route | RequestUrl,
+					R,
+					never,
+					QueryPathType
+				>[isDynamicQueryType];
 		}
 	};
 }
 
-
 export default createBoltClient;
-

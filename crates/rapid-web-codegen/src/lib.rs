@@ -8,6 +8,7 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
+use syn::parse_macro_input;
 use utils::{
 	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
 	REMIX_ROUTE_PATH,
@@ -52,6 +53,8 @@ struct Handler {
 
 // Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats (we could support patch if needed)
 enum RouteHandler {
+	Query(Handler),
+	Mutation(Handler),
 	Get(Handler),
 	Post(Handler),
 	Delete(Handler),
@@ -149,17 +152,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 		// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
 		// Routes are determined valid if they contain a function that starts with "async fn" and contains the "rapid_handler" attribute macro
-		if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Get(handler))
-		} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Post(handler))
-		} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Delete(handler))
-		} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Put(handler))
-		} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
-			route_handlers.push(RouteHandler::Patch(handler))
-		}
+		parse_handlers(&mut route_handlers, file_contents, handler);
 	}
 
 	for nested_file_path in route_dirs {
@@ -221,17 +214,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 			// Check if the contents contain a valid rapid_web route and append them to the route handlers vec
 			// TODO: we should consider supporting HEAD requests here as well (currently, we require that this be done through a traditional .route() call on the route builder function)
-			if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Get(handler))
-			} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Post(handler))
-			} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Delete(handler))
-			} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Put(handler))
-			} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
-				route_handlers.push(RouteHandler::Patch(handler))
-			}
+			parse_handlers(&mut route_handlers, file_contents, handler);
 		}
 	}
 
@@ -244,6 +227,8 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 			RouteHandler::Delete(route_handler) => generate_handler_tokens(route_handler, parsed_path, "delete"),
 			RouteHandler::Put(route_handler) => generate_handler_tokens(route_handler, parsed_path, "put"),
 			RouteHandler::Patch(route_handler) => generate_handler_tokens(route_handler, parsed_path, "patch"),
+			RouteHandler::Query(route_handler) => generate_handler_tokens(route_handler, parsed_path, "query"),
+			RouteHandler::Mutation(route_handler) => generate_handler_tokens(route_handler, parsed_path, "mutation"),
 		})
 		.collect::<Vec<_>>();
 
@@ -423,5 +408,50 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 		}
 	};
 
-	quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+	// Output our idents based on the handler types
+	match handler_type {
+		// Check if we got a query or mutation..
+		"query" => {
+			// If we got a query type we want to generate routes for `get` request types (`delete` could get moved to here too...?)
+			quote!(
+				.route(#rapid_routes_path, web::get().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+			)
+		},
+		"mutation" => {
+			// If we got a mutation type we want to generate routes for each of the following (all at the same path):
+			// `post`, `put`, `patch`, `delete`
+			quote!(
+				.route(#rapid_routes_path, web::post().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+				.route(#rapid_routes_path, web::put().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+				.route(#rapid_routes_path, web::patch().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
+			)
+		},
+		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
+		// ^^^ Eventually, what was described above should get deprecated
+		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+	}
 }
+
+/// Function for parsing a route fileer and making sure it contains a valid handler
+/// If it does, we want to push the valid handler to the handlers array
+/// Note: no need to support HEAD and OPTIONS requests
+fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {
+	// TODO: we need to depricate everything except for `query` and `mutation`
+	if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Get(handler))
+	} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Post(handler))
+	} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Delete(handler))
+	} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Put(handler))
+	} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Patch(handler))
+	} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Query(handler))
+	} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
+		route_handlers.push(RouteHandler::Mutation(handler))
+	}
+}
+

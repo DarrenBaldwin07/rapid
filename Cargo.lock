@@ -1570,7 +1570,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-cli"
-version = "0.4.5"
+version = "0.4.6"
 dependencies = [
  "clap",
  "colorful",
@@ -1599,7 +1599,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.3.7"
+version = "0.3.8"
 dependencies = [
  "actix-cors",
  "actix-files",
@@ -1626,7 +1626,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web-codegen"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "include_dir",
  "proc-macro2",

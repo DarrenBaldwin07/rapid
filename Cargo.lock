@@ -1599,7 +1599,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.3.7"
+version = "0.3.8"
 dependencies = [
  "actix-cors",
  "actix-files",

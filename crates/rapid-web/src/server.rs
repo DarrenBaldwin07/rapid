@@ -124,6 +124,8 @@ impl RapidServer {
 	/// * `routes` - A string slice that holds the path to the file system routes root directory (ex: "src/routes") -- this value can be anything as long as it is a valid (relative) directory path
 	/// * `cors` - An optional cors value that can be used to configure the cors middleware
 	/// * `log_type` - An optional logger type that can be used to configure the logger middleware used for every request/response
+	///
+	/// > Docs coming soon...
 	pub fn fs_router(
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,

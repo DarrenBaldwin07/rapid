@@ -20,7 +20,7 @@ export type BoltDynamicOutput<
 	? GetFunctionDynamic<T1, T2, T4>
 	: T extends 'mutation'
 	? MutationFunctionDynamic<T1, T2, T3, T4>
-	: never
+	: never;
 
 export type BoltOutput<
 	T extends SupportedHTTPMethods,
@@ -96,7 +96,7 @@ export type MutationFunction<T1, T2, T3> = {
 		url: W,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
-}
+};
 
 export type MutationFunctionDynamic<T1, T2, T3, T4> = {
 	post: <
@@ -150,7 +150,7 @@ export type MutationFunctionDynamic<T1, T2, T3, T4> = {
 		params: T3,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
-}
+};
 
 export type PostFunctionDynamic<T1, T2, T3, T4> = {
 	post: <
@@ -229,7 +229,6 @@ export type DeleteFunctionDynamic<T1, T2, T3> = {
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };
-
 
 export type PostFunction<T1, T2, T3> = {
 	post: <

@@ -489,8 +489,229 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					never,
 					QueryPathType
 				>[isDynamicQueryType];
+			case 'mutation':
+				if (isDynamic) {
+					return {
+						post: <
+							T = OutputMutationBody, // The type of the output body
+							R = AxiosResponse<T, OutputMutationBody>, // The type of the response
+							D = InputBody, // The type of the input body
+						>(
+							url: Route | RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.post(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								data,
+								config,
+							);
+						},
+						put: <
+							T = OutputMutationBody,
+							R = AxiosResponse<T, OutputMutationBody>,
+							D = InputBody,
+						>(
+							url: Route | RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.put(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								data,
+								config,
+							);
+						},
+						patch: <
+							T = OutputMutationBody,
+							R = AxiosResponse<T, OutputMutationBody>,
+							D = InputBody,
+						>(
+							url: Route | RequestUrl,
+							params: MutationPathType,
+							data?: InputBody,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+
+							return axios.patch(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								data,
+								config,
+							);
+						},
+						delete: <
+							T = OutputQueryBody,
+							R = AxiosResponse<T, OutputQueryBody>,
+							D = any,
+						>(
+							url: Route | RequestUrl,
+							params: QueryPathType,
+							config?: AxiosRequestConfig<D>,
+						): Promise<R> => {
+							// Users have the option to pass in a string or an object with a url property
+							let parsedUrl;
+
+							// Use a type guard to make sure we extract the URL we need
+							if (typeof url === 'string') {
+								parsedUrl = url;
+							} else {
+								parsedUrl = url.url;
+							}
+							return axios.delete(
+								generatePathUrl(
+									parsedUrl,
+									toArray(params),
+									transport,
+								),
+								config,
+							);
+						},
+					} as Bolt<
+						T['mutations'][Key]['type'],
+						Route | RequestUrl,
+						R,
+						InputBody,
+						MutationPathType
+					>[isDynamicMutationType];
+				}
+				return {
+					post: <
+						T = OutputMutationBody,
+						R = AxiosResponse<T, OutputMutationBody>,
+						D = InputBody,
+					>(
+						url: Route | RequestUrl,
+						data?: InputBody,
+						config?: AxiosRequestConfig<D>,
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+						return axios.post(parsedUrl, data, config);
+					},
+					put: <
+						T = OutputMutationBody,
+						R = AxiosResponse<T, OutputMutationBody>,
+						D = InputBody,
+					>(
+						url: Route | RequestUrl,
+						data?: InputBody,
+						config?: AxiosRequestConfig<D>,
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+
+						return axios.put(parsedUrl, data, config);
+					},
+					patch: <
+						T = OutputMutationBody,
+						R = AxiosResponse<T, OutputMutationBody>,
+						D = InputBody,
+					>(
+						url: Route | RequestUrl,
+						data?: InputBody,
+						config?: AxiosRequestConfig<D>,
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+						return axios.patch(parsedUrl, data, config);
+					},
+					delete: <
+						T = OutputQueryBody,
+						R = AxiosResponse<T, OutputQueryBody>,
+						D = any,
+					>(
+						url: Route | RequestUrl,
+						config?: AxiosRequestConfig<D>,
+					): Promise<R> => {
+						// Users have the option to pass in a string or an object with a url property
+						let parsedUrl;
+
+						// Use a type guard to make sure we extract the URL we need
+						if (typeof url === 'string') {
+							parsedUrl = `${transport}${url}`;
+						} else {
+							parsedUrl = `${transport}${url.url}`;
+						}
+
+						return axios.delete(parsedUrl, config);
+					},
+				} as Bolt<
+					T['mutations'][Key]['type'],
+					Route | RequestUrl,
+					R,
+					InputBody,
+					MutationPathType
+				>[isDynamicMutationType];
 		}
 	};
 }
 
+
 export default createBoltClient;
+
+
+

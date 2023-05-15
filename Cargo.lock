@@ -1548,6 +1548,8 @@ dependencies = [
 [[package]]
 name = "rapid-cli"
 version = "0.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "74aab1dd3f693fcb03dee199f72d4f33110dd16ba86d486ed680c4915537e08f"
 dependencies = [
  "clap",
  "colorful",
@@ -1568,9 +1570,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-cli"
-version = "0.4.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74aab1dd3f693fcb03dee199f72d4f33110dd16ba86d486ed680c4915537e08f"
+version = "0.4.7"
 dependencies = [
  "clap",
  "colorful",
@@ -1614,7 +1614,7 @@ dependencies = [
  "lazy_static",
  "log",
  "proc-macro2",
- "rapid-cli 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rapid-cli 0.4.6",
  "rapid-web-codegen",
  "regex",
  "serde",

@@ -10,7 +10,7 @@
 	"dependencies": {
 		"@clerk/remix": "^2.5.5",
 		"@netlify/functions": "^1.4.0",
-		"@rapid-web/react": "^0.2.1",
+		"@rapid-web/react": "^0.2.2",
 		"@remix-run/netlify": "^1.15.0",
 		"@remix-run/node": "^1.15.0",
 		"@remix-run/react": "^1.15.0",

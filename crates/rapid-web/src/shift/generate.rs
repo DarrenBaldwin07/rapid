@@ -143,6 +143,18 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 					route_key,
 				}));
 			}
+			HandlerRequestType::Query => {
+				handlers.push(Handler::Query(TypedQueryHandler {
+					request_type,
+					path,
+					query_params,
+					output_type: TypescriptType {
+						typescript_type: "any".to_string(),
+						is_optional: true,
+					},
+					route_key,
+				}));
+			}
 			_ => {
 				handlers.push(Handler::Mutation(TypedMutationHandler {
 					request_type,
@@ -204,6 +216,8 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 					HandlerRequestType::Delete => "delete",
 					HandlerRequestType::Get => "get",
 					HandlerRequestType::Patch => "patch",
+					HandlerRequestType::Query => "query",
+					HandlerRequestType::Mutation => "mutation",
 				};
 
 				if let Some(query_params_type) = query.query_params {
@@ -253,6 +267,8 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 					HandlerRequestType::Delete => "delete",
 					HandlerRequestType::Get => "get",
 					HandlerRequestType::Patch => "patch",
+					HandlerRequestType::Query => "query",
+					HandlerRequestType::Mutation => "mutation",
 				};
 
 				if let Some(query_params_type) = mutation.query_params {

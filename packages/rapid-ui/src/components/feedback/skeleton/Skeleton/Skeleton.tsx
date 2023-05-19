@@ -22,16 +22,16 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 				{...rest}
 				ref={ref}
 				className={twMerge(
+					classNames({
+						condition: isLoading,
+						classNames: speed || 'skeleton-pulse',
+					}),
 					RapidStyles(
 						styles || rest.className,
 						SKELETON_STYLES,
 						RAPID_CLASSNAME,
 					),
 					// The pulse className is merged with all the others so that it cannot get overridden by the user
-					classNames({
-						condition: isLoading,
-						classNames: speed || 'skeleton-pulse',
-					}),
 				)}
 			/>
 		);

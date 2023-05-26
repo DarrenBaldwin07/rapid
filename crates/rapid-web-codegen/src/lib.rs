@@ -8,7 +8,6 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
-use syn::parse_macro_input;
 use utils::{
 	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
 	REMIX_ROUTE_PATH,
@@ -306,17 +305,31 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 /// rapid_configure_remix!()
 /// ```
 #[proc_macro]
-pub fn rapid_configure_remix(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
-	let path = REMIX_ROUTE_PATH;
+pub fn rapid_configure_remix(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
+	// Parse the tokens and check if they did not contain anything...
+	let path = if tokens.is_empty() {
+		// Output the default remix routes path if we did not find any tokens passed in by the user
+		REMIX_ROUTE_PATH.to_string()
+    } else {
+		// If we found any tokens we want to output them and use them as the routes path
+		let path_string = if let proc_macro::TokenTree::Literal(literal) = tokens.into_iter().next().unwrap() {
+			let raw_path = literal.to_string();
+			raw_path[1..raw_path.len() - 1].to_string()
+		} else {
+			REMIX_ROUTE_PATH.to_string()
+		};
+		path_string.to_string()
+    };
+
 	let module_name = Ident::new("routes", Span::call_site());
 
 	let mut route_dirs: Vec<PathBuf> = vec![];
 
 	// Get every nested dir and append them to the route_dirs array
-	get_all_dirs(path, &mut route_dirs);
+	get_all_dirs(&path, &mut route_dirs);
 
 	// Grab all of the base idents that we need to power the base "/" handler
-	let base_idents = std::fs::read_dir(path)
+	let base_idents = std::fs::read_dir(&path)
 		.unwrap()
 		.map(|it| {
 			let path = it.unwrap().path();

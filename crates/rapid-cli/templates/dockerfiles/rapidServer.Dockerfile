@@ -11,8 +11,8 @@ RUN apt-get install libssl-dev -y
 RUN apt-get install libpq-dev -y
 
 # Create a new empty project
-RUN USER=root cargo new --bin coredb-gcp-issue
-WORKDIR /coredb-gcp-issue
+RUN USER=root cargo new --bin api
+WORKDIR /api
 
 # Copy the Cargo.toml and Cargo.lock files to cache dependencies
 COPY ./Cargo.lock ./Cargo.lock
@@ -29,8 +29,8 @@ RUN rm -rf ./src
 COPY ./src ./src
 
 # Finally, Build for release.
-RUN rm ./target/release/coredb-gcp-issue*
+RUN rm ./target/release/api*
 RUN cargo install --path .
 
 # Entry point for the container
-CMD ["./target/release/coredb-gcp-issue"]
+CMD ["./target/release/api"]

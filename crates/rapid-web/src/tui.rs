@@ -11,6 +11,7 @@ pub fn server_init(bind_config: (String, u16)) {
 	// This print statement removes all prev terminal logs (aka the same as running a clear command)
 	print!("{esc}c", esc = 27 as char);
 	let server_url = format!("http://{}:{}", &bind_config.0, &bind_config.1).color(Color::Blue);
+	// Grab the current crate version at compile time...
 	let crate_version = env!("CARGO_PKG_VERSION");
 	println!(
 		"{} {} {} and serving requests: \n\n➜  {} {}",

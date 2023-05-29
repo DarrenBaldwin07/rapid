@@ -26,12 +26,12 @@ export default function Index() {
           <div className='flex flex-col mt-32 lg:mt-56'>
             <div className='flex items-center gap-2 px-2 py-1 rounded-full hover:cursor-pointer bg-[#18181C] w-max border-2 border-[#27272D] hover:-translate-y-1 transition ease-linear'>
               <Text styles='text-white'>Announcement blog post</Text>
-              <FontAwesomeIcon icon={faCircleArrowRight} className='text-white' />
+              <FontAwesomeIcon icon={faCircleArrowRight} width={16} height={16} className='text-white' />
             </div>
             <Heading styles='text-white font-extrabold md:text-4xl lg:text-6xl max-w-[1000px] gradient-text leading-tight mt-12'>A new way to build web applications with React and Rust.</Heading>
             <div className='flex mt-12 border-2 border-white p-4 rounded-xl w-max gap-4'>
               <div className='flex items-center gap-2'>
-                <FontAwesomeIcon icon={faChevronRight} size='sm' className='text-white' />
+                <FontAwesomeIcon icon={faChevronRight} width={16} height={16} size='sm' className='text-white' />
                 <code className='text-white'>cargo install rapid-cli</code>
               </div>
               <button className='w-[20px]' onClick={() => {

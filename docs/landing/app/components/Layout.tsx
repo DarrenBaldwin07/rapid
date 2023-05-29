@@ -5,7 +5,6 @@ import Navigation from './Navigation';
 interface Props {
     children: React.ReactNode;
     isNavigation?: boolean;
-
 }
 
 const Layout = ({ children, isNavigation }: Props) => {

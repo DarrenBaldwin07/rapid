@@ -8,6 +8,7 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
+use syn::{parse_macro_input, LitStr, Lit};
 use utils::{
 	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
 	REMIX_ROUTE_PATH,
@@ -286,12 +287,13 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 
 	proc_macro::TokenStream::from(quote!(
 		use include_dir::{include_dir, Dir};
+		use rapid_web::actix::web;
 		mod #module_name { #(pub mod #base_idents;)* }
 		pub use #module_name::{
 			#(#base_idents,)*
 		};
 		#(#nested_idents)*
-		#[cfg(debug_assertions)] // Only run this in debug mod (having extra code in main.rs file makes binary way larger)
+		#[cfg(debug_assertions)] // Only run this in debug mode (having extra code in main.rs file makes binary way larger)
 		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
 	))
 }
@@ -351,12 +353,13 @@ pub fn rapid_configure_remix(tokens: proc_macro::TokenStream) -> proc_macro::Tok
 
 	proc_macro::TokenStream::from(quote!(
 		use include_dir::{include_dir, Dir};
+		use rapid_web::actix::web;
 		mod #module_name { #(pub mod #base_idents;)* }
 		pub use #module_name::{
 			#(#base_idents,)*
 		};
 		#(#nested_idents)*
-		#[cfg(debug_assertions)] // Only run this in debug mod (having extra code in main.rs file makes binary way larger)
+		#[cfg(debug_assertions)] // Only run this in debug mode (having extra code in main.rs file makes binary way larger)
 		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
 	))
 }

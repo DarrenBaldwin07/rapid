@@ -152,7 +152,7 @@ fn handle_run_server(server_port: u16, app_type: String) {
 		server_port
 	);
 
-	// If we have a app_type equal to remix we want to use a different watch command (this specific one will only reload the routes dir by defaul)
+	// If we have a app_type equal to remix we want to use a different watch command (this specific one will only reload the routes dir by default)
 	if app_type == String::from("remix") {
 		hot_reload_command = String::from("systemfd --no-pid --quiet -s http::8080 -- cargo watch -x run -w app/api -q --ignore 'bindings.ts'");
 	}
@@ -162,7 +162,7 @@ fn handle_run_server(server_port: u16, app_type: String) {
 		|| !std::str::from_utf8(&install_list.stdout).unwrap().contains("systemfd")
 	{
 		let s = Spinach::new("Installing build scripts...");
-		// To be safe, lets install both cargo-watch and systemfd
+		// To be safe, lets attempt install both cargo-watch and systemfd
 		StdCommand::new("sh")
 			.arg("-c")
 			.arg("cargo install cargo-watch")

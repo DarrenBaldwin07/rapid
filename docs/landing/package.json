@@ -1,0 +1,40 @@
+{
+  "private": true,
+  "sideEffects": false,
+  "name": "landing",
+  "scripts": {
+    "build": "remix build",
+    "dev": "remix dev",
+    "start": "cross-env NODE_ENV=production netlify dev",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+		"@fortawesome/free-solid-svg-icons": "^6.3.0",
+		"@fortawesome/react-fontawesome": "^0.2.0",
+    "@netlify/functions": "^1.4.0",
+    "@remix-run/css-bundle": "^1.16.1",
+    "@remix-run/netlify": "^1.16.1",
+    "@remix-run/node": "^1.16.1",
+    "@remix-run/react": "^1.16.1",
+    "cross-env": "^7.0.3",
+    "framer-motion": "^9.0.4",
+    "isbot": "^3.6.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@rapid-web/ui": "0.2.1",
+    "@remix-run/dev": "^1.16.1",
+    "@remix-run/eslint-config": "^1.16.1",
+    "@remix-run/serve": "^1.16.1",
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "eslint": "^8.38.0",
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

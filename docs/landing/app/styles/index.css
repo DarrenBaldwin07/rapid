@@ -1,9 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;300;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;300;500;600;700;800;900&display=swap');
 
 html, body {
     margin:0;
     padding:0;
     height:100%;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #092AD0 3.81%, #1A4E61 38.62%, #0EC5FF 90.83%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
 }
 
 @tailwind base;

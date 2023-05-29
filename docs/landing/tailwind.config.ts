@@ -22,7 +22,7 @@ export default {
 			// Configure global styles variants here (documentation coming soon)
 			global: {
 				body: {
-					background: '#000000',
+					background: '#0E0C13',
 					fontFamily: 'archivo',
 				}
 			},

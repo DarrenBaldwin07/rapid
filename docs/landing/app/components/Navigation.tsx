@@ -3,6 +3,8 @@ import GradientMain from '../../assets/gradientMain.svg';
 import { Container } from '@rapid-web/ui';
 import { Link } from '@remix-run/react';
 import Logo from '../../assets/logo.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 const Navigation = () => {
   return (
@@ -12,8 +14,13 @@ const Navigation = () => {
         <div className='pt-4 flex items-center justify-between'>
           <img width={120} src={Logo} alt='logo' />
           <div className='flex items-center gap-4'>
-            <Link className='z-10 text-white font-bold tracking-widest' to='/docs'>
+            <Link className='z-10 text-white font-bold tracking-widest flex items-center gap-2' to='/docs'>
               Docs
+              <FontAwesomeIcon
+                icon={faArrowUpRightFromSquare}
+                width={14}
+                color='white'
+              />
             </Link>
           </div>
         </div>

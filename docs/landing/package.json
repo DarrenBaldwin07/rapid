@@ -9,6 +9,9 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+		"@fortawesome/free-solid-svg-icons": "^6.3.0",
+		"@fortawesome/react-fontawesome": "^0.2.0",
     "@netlify/functions": "^1.4.0",
     "@remix-run/css-bundle": "^1.16.1",
     "@remix-run/netlify": "^1.16.1",

@@ -22,12 +22,12 @@ export default function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta
           name="description"
-          content="A new way to build web applications!"
+          content="A new way to build web applications with React and Rust!"
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:description"
-          content="A new way to build web applications!"
+          content="A new way to build web applications with React and Rust!"
         />
         <meta name="twitter:site" content="https://rapid.cincinnati.ventures" />
         <meta
@@ -48,7 +48,7 @@ export default function App() {
         />
         <meta
           property="og:description"
-          content="A new way to build web applications!"
+          content="A new way to build web applications with React and Rust!"
         />
         <Meta />
         <Links />

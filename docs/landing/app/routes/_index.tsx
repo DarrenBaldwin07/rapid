@@ -1,9 +1,10 @@
+import React, { useState } from "react";
 import type { V2_MetaFunction } from "@remix-run/node";
 import Layout from "~/components/Layout";
 import { Heading, Text } from "@rapid-web/ui";
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleArrowRight, faClipboard, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faCircleArrowRight, faClipboard, faChevronRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -13,6 +14,7 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export default function Index() {
+  const [isCopied, setIsCopied] = useState(false);
   return (
     <Layout isNavigation>
       <div>
@@ -32,7 +34,15 @@ export default function Index() {
                 <FontAwesomeIcon icon={faChevronRight} size='sm' className='text-white' />
                 <code className='text-white'>cargo install rapid-cli</code>
               </div>
-              <FontAwesomeIcon icon={faClipboard} size='lg' className='text-white' />
+              <button className='w-[20px]' onClick={() => {
+                navigator.clipboard.writeText('cargo install rapid-cli');
+                setIsCopied(true);
+                setTimeout(() => {
+                  setIsCopied(false);
+                }, 1000);
+              }}>
+                {isCopied ? <FontAwesomeIcon icon={faCheck} size='lg' className='text-white' /> : <FontAwesomeIcon icon={faClipboard} size='lg' className='text-white' />}
+              </button>
             </div>
           </div>
         </motion.div>

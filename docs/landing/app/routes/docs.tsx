@@ -34,7 +34,7 @@ const DocsLayout = ({ children }: DocsLayoutProps) => {
 const Docs = () => {
   return (
     <Layout isDocsNavigation>
-      <div>
+      <div className='mobile-menu'>
 
       </div>
       <div className='flex z-10'>

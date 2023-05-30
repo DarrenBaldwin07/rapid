@@ -1,4 +1,4 @@
-![banner (7)](https://user-images.githubusercontent.com/68653294/218370294-a4bcaef6-087c-489e-8748-0b2eea0fcb90.jpg)
+![banner (10)](https://github.com/Cincinnati-Ventures/rapid/assets/68653294/ac30ab86-5016-48c0-8026-5141b4411052)
 
 <h1 align='center'>Rapid</h1>
 <h4 align='center'>The intersection between developer experience and scalability</h4>

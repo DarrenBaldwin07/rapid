@@ -23,7 +23,8 @@
     "isbot": "^3.6.8",
     "mdx-bundler": "^9.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.7"
   },
   "devDependencies": {
     "@rapid-web/ui": "0.2.1",

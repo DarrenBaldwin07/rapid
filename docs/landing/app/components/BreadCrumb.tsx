@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from '@rapid-web/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { toUpperCased } from '../helpers';
 
 interface Props {
   routes: string[];

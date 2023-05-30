@@ -1,4 +1,4 @@
-![web-banner](https://user-images.githubusercontent.com/68653294/230900821-06221c9d-3769-4dc8-8e8a-b9e2af81fdca.svg)
+![banner-web](https://github.com/Cincinnati-Ventures/rapid/assets/68653294/4d643e6e-8d97-4be7-ad35-3fe6aa8d6002)
 <h1 align='center'>Rapid-web</h1>
 <h4 align='center'>A blazingly fast, modern, and simple Rust server framework enabling end-to-end typesafety for Typescript-based frontends</h4>
 <div align='center'>

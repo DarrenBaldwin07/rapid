@@ -1,9 +1,9 @@
 import React from 'react'
 
-const docsInstallation = () => {
+const DocsInstallation = () => {
   return (
     <div className='text-white'>Installation doc!</div>
   )
 }
 
-export default docsInstallation
+export default DocsInstallation

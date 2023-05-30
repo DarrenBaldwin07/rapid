@@ -1,9 +1,9 @@
 import React from 'react'
 
-const docsDemoApp = () => {
+const DocsDemoApp = () => {
   return (
     <div className='text-white'>Demo App doc</div>
   )
 }
 
-export default docsDemoApp
+export default DocsDemoApp

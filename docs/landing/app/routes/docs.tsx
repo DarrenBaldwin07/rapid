@@ -1,16 +1,26 @@
 import React from 'react';
 import Layout from '~/components/Layout';
 import DocsSidebar from '~/components/DocsSidebar';
-import { redirect } from '@remix-run/node';
+import { redirect, json } from '@remix-run/node';
 import type { LoaderFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 import { Outlet } from '@remix-run/react';
+import { BreadCrumb } from '~/components/BreadCrumb';
+
+interface LoaderOutput {
+  routes: string[]
+}
 
 export const loader: LoaderFunction = ({ request }) => {
-  const path = new URL(request.url).pathname;
-  if (path === '/docs') {
+  const url = new URL(request.url);
+  const routes = url.pathname.split('/').filter(Boolean);
+  if (url.pathname === '/docs') {
     return redirect('/docs/introduction');
   }
-  return null;
+
+  return json({
+    routes
+  });
 }
 
 interface DocsLayoutProps {
@@ -26,12 +36,14 @@ const DocsLayout = ({ children }: DocsLayoutProps) => {
   );
 }
 
-const docs = () => {
+const Docs = () => {
+  const data = useLoaderData<LoaderOutput>();
   return (
     <Layout isDocsNavigation>
       <div className='flex z-10'>
         <DocsSidebar />
         <DocsLayout>
+          <BreadCrumb routes={data.routes} />
           <Outlet />
         </DocsLayout>
       </div>
@@ -39,4 +51,4 @@ const docs = () => {
   )
 }
 
-export default docs
+export default Docs;

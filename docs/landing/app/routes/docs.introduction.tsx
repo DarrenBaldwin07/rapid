@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+import type { LoaderFunction } from '@remix-run/node';
 
-const docsIntroduction = () => {
+export const loader: LoaderFunction = ({ request }) => {
+  return null;
+}
+
+const DocsIntroduction = () => {
   return (
     <div className='text-white'>Introduction doc!</div>
   )
 }
 
-export default docsIntroduction;
+export default DocsIntroduction;

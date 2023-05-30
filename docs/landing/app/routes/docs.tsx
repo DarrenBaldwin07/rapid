@@ -7,13 +7,11 @@ import { useLoaderData } from '@remix-run/react';
 import { Outlet } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 
-interface LoaderOutput {
-  routes: string[]
-}
 
 export const loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url);
   const routes = url.pathname.split('/').filter(Boolean);
+
   if (url.pathname === '/docs') {
     return redirect('/docs/introduction');
   }
@@ -37,13 +35,11 @@ const DocsLayout = ({ children }: DocsLayoutProps) => {
 }
 
 const Docs = () => {
-  const data = useLoaderData<LoaderOutput>();
   return (
     <Layout isDocsNavigation>
       <div className='flex z-10'>
         <DocsSidebar />
         <DocsLayout>
-          <BreadCrumb routes={data.routes} />
           <Outlet />
         </DocsLayout>
       </div>

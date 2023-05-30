@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;300;500;600;700;800;900&display=swap');
 
-html, body {
-    margin:0;
-    padding:0;
-    height:100%;
+body,html {
+    margin: 0;
+    padding: 0;
+}
+* {
+    box-sizing: border-box;
 }
 
 .gradient-text {

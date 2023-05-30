@@ -13,7 +13,8 @@ export default {
 			colors: {
 				main: '#040211',
 				mainBlue: '#092AD0',
-				secondaryBlue: '#0EC5FF'
+				secondaryBlue: '#0EC5FF',
+				docsText: '#A6AABF'
 			}
 		}),
 	},

@@ -3,10 +3,7 @@ import Layout from '~/components/Layout';
 import DocsSidebar from '~/components/DocsSidebar';
 import { redirect, json } from '@remix-run/node';
 import type { LoaderFunction } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
 import { Outlet } from '@remix-run/react';
-import { BreadCrumb } from '~/components/BreadCrumb';
-
 
 export const loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url);
@@ -28,7 +25,7 @@ interface DocsLayoutProps {
 
 const DocsLayout = ({ children }: DocsLayoutProps) => {
   return (
-    <div className='p-12'>
+    <div className='p-0 py-12 md:p-12'>
       {children}
     </div>
   );
@@ -37,8 +34,13 @@ const DocsLayout = ({ children }: DocsLayoutProps) => {
 const Docs = () => {
   return (
     <Layout isDocsNavigation>
+      <div>
+
+      </div>
       <div className='flex z-10'>
-        <DocsSidebar />
+        <div className='hidden md:flex'>
+          <DocsSidebar />
+        </div>
         <DocsLayout>
           <Outlet />
         </DocsLayout>

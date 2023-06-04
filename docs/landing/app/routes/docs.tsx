@@ -37,7 +37,7 @@ const Docs = () => {
       <div className='mobile-menu'>
 
       </div>
-      <div className='flex z-10'>
+      <div className='flex flex-col md:flex-row z-10'>
         <div className='hidden md:flex'>
           <DocsSidebar />
         </div>

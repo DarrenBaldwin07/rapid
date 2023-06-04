@@ -34,13 +34,8 @@ const DocsLayout = ({ children }: DocsLayoutProps) => {
 const Docs = () => {
   return (
     <Layout isDocsNavigation>
-      <div className='mobile-menu'>
-
-      </div>
       <div className='flex flex-col md:flex-row z-10'>
-        <div className='hidden md:flex'>
-          <DocsSidebar />
-        </div>
+        <DocsSidebar />
         <DocsLayout>
           <Outlet />
         </DocsLayout>

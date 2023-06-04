@@ -22,7 +22,6 @@ interface DocsLayoutProps {
   children: React.ReactNode;
 }
 
-
 const DocsLayout = ({ children }: DocsLayoutProps) => {
   return (
     <div className='p-0 py-12 md:p-12'>
@@ -34,7 +33,7 @@ const DocsLayout = ({ children }: DocsLayoutProps) => {
 const Docs = () => {
   return (
     <Layout isDocsNavigation>
-      <div className='flex flex-col md:flex-row z-10'>
+      <div className='flex flex-col md:flex-row z-10 mt-32 md:mt-0'>
         <DocsSidebar />
         <DocsLayout>
           <Outlet />

@@ -16,6 +16,22 @@ body,html {
     text-fill-color: transparent;
 }
 
+.safari-blur {
+    -webkit-backdrop-filter: blur(10px)
+}
+
+.markdown-container {
+    color: white;
+}
+
+.no-scroll-bar {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.no-scroll-bar::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

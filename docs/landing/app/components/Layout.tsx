@@ -11,7 +11,7 @@ interface Props {
 
 const Layout = ({ children, isNavigation, isDocsNavigation }: Props) => {
   return (
-    <div className='relative h-screen overflow-hidden' >
+    <div className='relative h-screen md:overflow-hidden pb-12'>
         {!!isNavigation && <Navigation />}
         {!!isDocsNavigation && <DocsNavigation />}
         <Container>

@@ -11,13 +11,13 @@ const DocsSidebar = () => {
                         <Text styles='gradient-text uppercase text-xs'>Getting Started</Text>
                         <div className='flex flex-col gap-2 border-l-[0.5px] border-[#222222] z-10'>
                             <NavLink to='/docs/introduction' className={({ isActive }) => `text-docsText hover:text-white border-l-2 border-transparent pl-4 transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white border-l-mainBlue'}`}>
-                                <Text>Introduction</Text>
+                                <Text styles='exclude-from-markdown'>Introduction</Text>
                             </NavLink>
                             <NavLink to='/docs/installation' className={({ isActive }) => `text-docsText hover:text-white border-l-2 border-transparent pl-4 transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white border-l-mainBlue'}`}>
-                                <Text>Installation</Text>
+                                <Text styles='exclude-from-markdown'>Installation</Text>
                             </NavLink>
                             <NavLink to='/docs/demo-app' className={({ isActive }) => `text-docsText hover:text-white border-l-2 border-transparent pl-4 transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white border-l-mainBlue'}`}>
-                                <Text>Demo App</Text>
+                                <Text styles='exclude-from-markdown'>Demo App</Text>
                             </NavLink>
                         </div>
                     </div>

@@ -35,13 +35,13 @@ const DocsNavigation = () => {
                   <div className={`flex-col gap-4 items-start w-full mt-2 ${isOpen ? 'flex' : 'hidden'}`}>
                       <Text styles='gradient-text uppercase text-xs'>Getting Started</Text>
                       <div className='flex flex-col gap-2'>
-                          <NavLink to='/docs/introduction' className={({ isActive }) => `text-docsText hover:text-white transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
+                          <NavLink to='/docs/introduction' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
                               <Text styles='exclude-from-markdown'>Introduction</Text>
                           </NavLink>
-                          <NavLink to='/docs/installation' className={({ isActive }) => `text-docsText hover:text-white border-transparent transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
+                          <NavLink to='/docs/installation' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white border-transparent transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
                               <Text styles='exclude-from-markdown'>Installation</Text>
                           </NavLink>
-                          <NavLink to='/docs/demo-app' className={({ isActive }) => `text-docsText hover:text-white transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
+                          <NavLink to='/docs/demo-app' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
                               <Text styles='exclude-from-markdown'>Demo App</Text>
                           </NavLink>
                       </div>

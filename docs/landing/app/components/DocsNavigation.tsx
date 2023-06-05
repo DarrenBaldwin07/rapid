@@ -29,7 +29,7 @@ const DocsNavigation = () => {
               </div>
               <div className='flex flex-col bg-[#1A191D] border border-[#222222] rounded-[25px] py-3 px-6 w-full md:hidden mt-6 gap-4 hover:cursor-pointer z-10' onClick={() => setIsOpen(!isOpen)}>
                   <div className='flex items-center justify-between'>
-                      <Heading styles='text-md text-white'>Rapid Docs Menu</Heading>
+                      <Heading styles='text-md text-white exclude-from-markdown'>Rapid Docs Menu</Heading>
                       <FontAwesomeIcon icon={faChevronDown} color='white' width={20} height={20} />
                   </div>
                   <div className={`flex-col gap-4 items-start w-full mt-2 ${isOpen ? 'flex' : 'hidden'}`}>

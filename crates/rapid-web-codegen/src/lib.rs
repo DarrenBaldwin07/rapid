@@ -8,7 +8,6 @@ use std::{
 	io::prelude::*,
 	path::PathBuf,
 };
-use syn::{parse_macro_input, LitStr, Lit};
 use utils::{
 	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
 	REMIX_ROUTE_PATH,
@@ -345,8 +344,15 @@ pub fn rapid_configure_remix(tokens: proc_macro::TokenStream) -> proc_macro::Tok
 
 	for dir in route_dirs {
 		let string = dir.into_os_string().into_string().unwrap();
+		let delimiter = "routes";
+		let start_index = match string.find(delimiter) {
+			Some(index) => index + delimiter.len(),
+			None => {
+				panic!("Invalid route directory!");
+			}
+		};
 
-		let mod_name = format!("{}", string.replace("src/", "").replace("/", "::"));
+		let mod_name = format!("routes{}",&string[start_index..].replace("/", "::"));
 		let tokens: proc_macro2::TokenStream = mod_name.parse().unwrap();
 		nested_idents.push(quote! { pub use #tokens::*; });
 	}

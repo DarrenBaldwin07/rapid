@@ -1,6 +1,6 @@
 [package]
 name = "rapid-web-codegen"
-version = "0.2.3"
+version = "0.2.4"
 edition = "2021"
 description = "Codegen utilities for the rapid framework."
 repository = "https://github.com/DarrenBaldwin07/rapid"

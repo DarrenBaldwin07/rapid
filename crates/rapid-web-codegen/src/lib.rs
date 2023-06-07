@@ -351,7 +351,6 @@ pub fn rapid_configure_remix(tokens: proc_macro::TokenStream) -> proc_macro::Tok
 				panic!("Invalid route directory!");
 			}
 		};
-
 		let mod_name = format!("routes{}",&string[start_index..].replace("/", "::"));
 		let tokens: proc_macro2::TokenStream = mod_name.parse().unwrap();
 		nested_idents.push(quote! { pub use #tokens::*; });

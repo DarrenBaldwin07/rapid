@@ -356,17 +356,33 @@ pub fn rapid_configure_remix(tokens: proc_macro::TokenStream) -> proc_macro::Tok
 		nested_idents.push(quote! { pub use #tokens::*; });
 	}
 
-	proc_macro::TokenStream::from(quote!(
-		use include_dir::{include_dir, Dir};
-		use rapid_web::actix::web;
-		mod #module_name { #(pub mod #base_idents;)* }
-		pub use #module_name::{
-			#(#base_idents,)*
-		};
-		#(#nested_idents)*
-		#[cfg(debug_assertions)] // Only run this in debug mode (having extra code in main.rs file makes binary way larger)
-		const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
-	))
+	// If the user wanted to use their own path we should force them to import their routes dir
+	if path != REMIX_ROUTE_PATH {
+		return proc_macro::TokenStream::from(quote!(
+			use include_dir::{include_dir, Dir};
+			use rapid_web::actix::web;
+			pub use #module_name::{
+				#(#base_idents,)*
+			};
+			#(#nested_idents)*
+			#[cfg(debug_assertions)] // Only run this in debug mode when the user actually wants hot-reload (having extra code in main.rs file makes binary way larger)
+			const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
+		));
+	} else {
+		// Since the user did not specify a custom path we can just assume they used the `REMIX_ROUTE_PATH`
+		return proc_macro::TokenStream::from(quote!(
+			use include_dir::{include_dir, Dir};
+			use rapid_web::actix::web;
+			mod #module_name { #(pub mod #base_idents;)* }
+			pub use #module_name::{
+				#(#base_idents,)*
+			};
+			#(#nested_idents)*
+			#[cfg(debug_assertions)] // Only run this in debug mode (having extra code in main.rs file makes binary way larger)
+			const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
+		));
+	}
+
 }
 
 /// Function that generates handler tokens from a Handler type

@@ -1,18 +1,12 @@
-use super::RapidCommand;
-use crate::cli::{logo, Config};
-use clap::{ArgMatches, Command};
+use crate::utils::logos::logo;
+use clap::Args;
 
-// Coming soon...(rapid templates for generating landing pages and much more!)
-pub struct Templates {}
+#[derive(Args, Debug)]
+/// SaaS templates for the rapid framework. Coming soon...
+pub struct TemplatesArgs {}
 
-impl RapidCommand for Templates {
-	fn cmd() -> clap::Command {
-		Command::new("templates").about("SaaS templates for the rapid framework.")
-	}
-
-	fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
-		println!("{}", logo());
-		println!("> Welcome to RAPID templates");
-		Ok(())
-	}
+/// execute the templates command
+pub fn execute(_args: &TemplatesArgs) -> () {
+	println!("{}", logo());
+	println!("> Welcome to RAPID templates");
 }

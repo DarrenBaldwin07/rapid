@@ -1,4 +1,4 @@
-use crate::cli::{binary_dir, current_directory};
+use crate::utils::paths::{binary_dir, current_directory};
 use serde::Deserialize;
 use std::fs::read_to_string;
 use strum_macros::EnumString;
@@ -10,7 +10,7 @@ use toml;
 pub enum AppType {
 	App,
 	Server,
-	Remix
+	Remix,
 }
 
 #[derive(Deserialize, Clone)]
@@ -48,7 +48,7 @@ pub struct RapidConfig {
 	pub app_type: String,
 	pub features: Option<Features>,
 	pub server: Option<ServerConfig>,
-	pub remix: Option<RemixConfig>
+	pub remix: Option<RemixConfig>,
 }
 
 pub fn find_rapid_config() -> RapidConfig {

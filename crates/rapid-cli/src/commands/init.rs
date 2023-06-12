@@ -1,14 +1,11 @@
-use super::RapidCommand;
-use crate::{
-	cli::{current_directory, logo, rapid_logo, Config},
-	constants::BOLT_EMOJI,
-};
-use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
+use crate::cli::Framework;
+use crate::utils::logos::{logo, rapid_logo};
+use crate::{constants::BOLT_EMOJI, utils::paths::current_directory};
+use clap::{Args, Subcommand};
 use colorful::{Color, Colorful};
 use rust_embed::RustEmbed;
 use std::{
 	fs::{write, File},
-	path::PathBuf,
 	thread, time,
 };
 
@@ -28,159 +25,66 @@ struct NextJsAssets;
 #[folder = "templates/dockerfiles/"]
 struct Dockerfiles;
 
-pub struct Init {}
+#[derive(Subcommand, Debug)]
+pub enum InitSubCommand {
+	/// Initialize Rapid server
+	Server {
+		#[arg(long)]
+		/// Generate Dockerfile(s) for server deployment
+		deploy: bool,
+	},
+	/// Initialize Rapid UI
+	Ui {
+		#[arg(value_enum)]
+		/// The framework your project uses
+		framework: Framework,
+	},
+	/// Initialize Rapid fullstack (server + UI)
+	Fullstack {
+		#[arg(value_enum)]
+		/// The framework you are using
+		framework: Framework,
+	},
+}
 
-impl RapidCommand for Init {
-	fn cmd() -> clap::Command {
-		Command::new("init")
-			.about("A command for initializing Rapid libraries in your projects!")
-			.subcommand(Command::new("fullstack").about("A command for initializing a fullstack rapid application in your react projects!"))
-			.subcommand(
-				Command::new("server")
-					.about("A command for initializing functionality inside of a rapid server")
-					.arg(
-						arg!(
-							-deploy --deploy "Initializes functionality inside of an existing rapid server application"
-						)
-						.required(false)
-						.action(ArgAction::SetTrue)
-						.value_parser(value_parser!(PathBuf)),
-					),
-			)
-			.subcommand(
-				Command::new("ui")
-					.about("A command for initializing Rapid-UI in your react projects!")
-					.arg(
-						arg!(
-							-vite --vite "Initializes rapid-ui in your React + Vitejs project!"
-						)
-						.required(false)
-						.action(ArgAction::SetTrue)
-						.value_parser(value_parser!(PathBuf)),
-					)
-					.arg(
-						arg!(
-							-remix --remix "Initializes rapid-ui in your Remix.run application!"
-						)
-						.required(false)
-						.action(ArgAction::SetTrue)
-						.value_parser(value_parser!(PathBuf)),
-					)
-					.arg(
-						arg!(
-							-nextjs --nextjs "Initializes rapid-ui in your Nextjs application!"
-						)
-						.required(false)
-						.action(ArgAction::SetTrue)
-						.value_parser(value_parser!(PathBuf)),
-					),
-			)
-	}
+#[derive(Args, Debug)]
+/// Initialize Rapid libraries in your existing projects!
+pub struct InitArgs {
+	#[command(subcommand)]
+	command: InitSubCommand,
+}
 
-	fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
-		println!("{}", logo());
-		parse_init_args(args);
-		Ok(())
+/// Execute the init command
+pub fn execute(args: &InitArgs) -> () {
+	println!("{}", logo());
+	match &args.command {
+		InitSubCommand::Ui { framework } => ui_subcommand_handler(&framework),
+		InitSubCommand::Server { deploy } => server_subcommand_handler(&deploy),
+		// TODO: Implement rapid init fullstack
+		InitSubCommand::Fullstack { framework: _ } => todo!(),
 	}
 }
 
-pub fn ui_subcommand_handler(init_args: [&str; 3], subcommand_args: &ArgMatches, current_working_directory: PathBuf) {
-	for ui_arg in init_args {
-		match subcommand_args.get_one::<PathBuf>(ui_arg) {
-			Some(val) => {
-				if val == &PathBuf::from("true") {
-					match ui_arg {
-						"vite" => {
-							init_vite_template(current_working_directory, ui_arg);
-							break;
-						}
-						"remix" => {
-							init_remix_template(current_working_directory, ui_arg);
-							break;
-						}
-						"nextjs" => {
-							init_nextjs_template(current_working_directory, ui_arg);
-							break;
-						}
-						_ => {
-							println!("{}", "No template found. Please try '--vite' or '--remix'".color(Color::Red));
-							break;
-						}
-					}
-				}
-			}
-			None => {
-				println!("{}", "No template found. Please try '--vite' or '--remix'".color(Color::Red));
-			}
-		}
+pub fn ui_subcommand_handler(framework: &Framework) {
+	use Framework::*;
+	match framework {
+		Vite => init_vite_template(),
+		Remix => init_remix_template(),
+		Nextjs => init_nextjs_template(),
 	}
 }
 
-pub fn server_subcommand_handler(init_args: [&str; 1], subcommand_args: &ArgMatches, current_working_directory: PathBuf) {
-	for server_arg in init_args {
-		match subcommand_args.get_one::<PathBuf>(server_arg) {
-			Some(val) => {
-				if val == &PathBuf::from("true") {
-					match server_arg {
-						"deploy" => {
-							init_deployments_dockerfile(current_working_directory);
-							return;
-						}
-						_ => {
-							println!("{}", "No command found. Please try '--deploy'".color(Color::Red));
-							return;
-						}
-					}
-				}
-			}
-			None => {
-				println!("{}", "No command found. Please try '--deploy'".color(Color::Red));
-			}
-		}
-	}
-
-	println!("{}", "No init commands found! Please try using '--deploy'".color(Color::Red));
+pub fn server_subcommand_handler(deploy: &bool) {
+	if *deploy {
+		init_deployments_dockerfile()
+	};
+	// TODO: Fully Implement rapid init server
+	todo!()
 }
 
-fn parse_init_args(args: &ArgMatches) {
-	/// NOTE: We can add more args for templates here (ideally we add nextjs asap)
-	const UI_INIT_ARGS: [&str; 3] = ["vite", "remix", "nextjs"];
-	const SERVER_INIT_ARGS: [&str; 1] = ["deploy"];
-	const INIT_COMMANDS: [&str; 3] = ["ui", "fullstack", "server"];
-	// Get the current working directory of the user
+pub fn init_vite_template() {
 	let current_working_directory = current_directory();
-	for arg in INIT_COMMANDS {
-		match args.subcommand() {
-			Some((name, subcommand_args)) => {
-				match name {
-					"ui" => {
-						ui_subcommand_handler(UI_INIT_ARGS, subcommand_args, current_working_directory);
-						return;
-					}
-					"server" => {
-						server_subcommand_handler(SERVER_INIT_ARGS, subcommand_args, current_working_directory);
-						return;
-					}
-					"fullstack" => {
-						// TODO: this will be the command that runs for initializing a new rapid app inside of an existing nextjs or remix application (different from rapid new that scaffolds an entire fullstack app with rapid)
-						println!("Coming soon...");
-						return;
-					}
-					_ => {
-						println!("{} {}", "No init scripts found.".color(Color::Red), arg);
-						break;
-					}
-				}
-			}
-			None => {} // Do nothing if we dont find anythign
-		}
-	}
-
-	println!("{}", "No init scripts found!".color(Color::Red));
-}
-
-pub fn init_vite_template(current_working_directory: PathBuf, arg: &str) {
-	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), "vite");
 	let tailwind_config_contents = Asset::get("tailwind.config.js").unwrap();
 	let postcss_config_contents = Asset::get("postcss.config.js").unwrap();
 	let index_css_contents = Asset::get("index.css").unwrap();
@@ -207,8 +111,9 @@ pub fn init_vite_template(current_working_directory: PathBuf, arg: &str) {
 	);
 }
 
-pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
-	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+pub fn init_remix_template() {
+	let current_working_directory = current_directory();
+	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), "remix");
 	let tailwind_config_contents = RemixAssets::get("tailwind.config.ts").unwrap();
 	let index_css_contents = RemixAssets::get("index.css").unwrap();
 	// Make the two config files that we need
@@ -232,8 +137,9 @@ pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
 	);
 }
 
-pub fn init_nextjs_template(current_working_directory: PathBuf, arg: &str) {
-	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+pub fn init_nextjs_template() {
+	let current_working_directory = current_directory();
+	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), "nextjs");
 	let tailwind_config_contents = NextJsAssets::get("tailwind.config.ts").unwrap();
 	let postcss_config_contents = NextJsAssets::get("postcss.config.js").unwrap();
 
@@ -258,7 +164,8 @@ pub fn init_nextjs_template(current_working_directory: PathBuf, arg: &str) {
 	);
 }
 
-pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
+pub fn init_deployments_dockerfile() {
+	let current_working_directory = current_directory();
 	println!("{}...", "Initializing rapid deployments".color(Color::Green));
 	let dockerfile_conents = Dockerfiles::get("rapidServer.Dockerfile").unwrap();
 

@@ -2,6 +2,7 @@
 name = "rapid-cli"
 version = "0.5.2"
 edition = "2021"
+about = "The CLI tool for the Rapid framework"
 description = "The CLI tool for the Rapid framework"
 repository = "https://github.com/DarrenBaldwin07/rapid"
 homepage = "https://cincinnati.ventures"

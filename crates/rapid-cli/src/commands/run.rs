@@ -9,12 +9,11 @@ use clap::{Args, ValueEnum};
 use spinach::Spinach;
 use std::{process::Command as StdCommand, str::FromStr};
 
-#[derive(Clone, ValueEnum, Debug)]
+#[derive(Clone, Debug, ValueEnum)]
 /// All Rapid runtime modes
 pub enum Mode {
 	/// Runs a rapid fullstack application
 	App,
-
 	/// Runs a rapid server application
 	Server,
 }
@@ -38,7 +37,7 @@ pub fn execute(args: &RunArgs) {
 }
 
 /// Collect the server port from rapid config
-pub fn get_server_port(config: &RapidConfig, fallback_port: u16) -> u16 {
+fn get_server_port(config: &RapidConfig, fallback_port: u16) -> u16 {
 	let app_type = &config.app_type;
 
 	match app_type.as_str() {

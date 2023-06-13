@@ -42,7 +42,7 @@ pub enum InitSubCommand {
 	/// Initialize Rapid fullstack (server + UI)
 	Fullstack {
 		#[arg(value_enum)]
-		/// The framework you are using
+		/// The framework your project uses
 		framework: Framework,
 	},
 }
@@ -51,13 +51,13 @@ pub enum InitSubCommand {
 /// Initialize Rapid libraries in your existing projects!
 pub struct InitArgs {
 	#[command(subcommand)]
-	command: InitSubCommand,
+	subcommand: InitSubCommand,
 }
 
 /// Execute the init command
 pub fn execute(args: &InitArgs) -> () {
 	println!("{}", logo());
-	match &args.command {
+	match &args.subcommand {
 		InitSubCommand::Ui { framework } => ui_subcommand_handler(&framework),
 		InitSubCommand::Server { deploy } => server_subcommand_handler(&deploy),
 		// TODO: Implement rapid init fullstack
@@ -65,7 +65,7 @@ pub fn execute(args: &InitArgs) -> () {
 	}
 }
 
-pub fn ui_subcommand_handler(framework: &Framework) {
+fn ui_subcommand_handler(framework: &Framework) {
 	use Framework::*;
 	match framework {
 		Vite => init_vite_template(),
@@ -74,7 +74,7 @@ pub fn ui_subcommand_handler(framework: &Framework) {
 	}
 }
 
-pub fn server_subcommand_handler(deploy: &bool) {
+fn server_subcommand_handler(deploy: &bool) {
 	if *deploy {
 		init_deployments_dockerfile()
 	};
@@ -82,7 +82,7 @@ pub fn server_subcommand_handler(deploy: &bool) {
 	todo!()
 }
 
-pub fn init_vite_template() {
+fn init_vite_template() {
 	let current_working_directory = current_directory();
 	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), "vite");
 	let tailwind_config_contents = Asset::get("tailwind.config.js").unwrap();
@@ -111,7 +111,7 @@ pub fn init_vite_template() {
 	);
 }
 
-pub fn init_remix_template() {
+fn init_remix_template() {
 	let current_working_directory = current_directory();
 	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), "remix");
 	let tailwind_config_contents = RemixAssets::get("tailwind.config.ts").unwrap();
@@ -137,7 +137,7 @@ pub fn init_remix_template() {
 	);
 }
 
-pub fn init_nextjs_template() {
+fn init_nextjs_template() {
 	let current_working_directory = current_directory();
 	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), "nextjs");
 	let tailwind_config_contents = NextJsAssets::get("tailwind.config.ts").unwrap();
@@ -164,7 +164,7 @@ pub fn init_nextjs_template() {
 	);
 }
 
-pub fn init_deployments_dockerfile() {
+fn init_deployments_dockerfile() {
 	let current_working_directory = current_directory();
 	println!("{}...", "Initializing rapid deployments".color(Color::Green));
 	let dockerfile_conents = Dockerfiles::get("rapidServer.Dockerfile").unwrap();

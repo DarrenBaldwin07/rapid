@@ -4,7 +4,7 @@ use crate::{
 	tui::{clean_console, indent},
 	utils::{logos::*, paths::current_directory},
 };
-use clap::Args;
+use clap::{Args, Subcommand};
 use colorful::{Color, Colorful};
 use include_dir::{include_dir, Dir};
 use requestty::{prompt_one, Question};
@@ -19,37 +19,43 @@ use std::{
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/server");
 static REMIX_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/remix");
 
+#[derive(Subcommand, Debug)]
+enum NewSubCommand {
+	/// Generate a Rapid server
+	Server,
+	/// Generate a fullstack Rapid application
+	Fullstack {
+		#[arg(value_enum, default_value_t=Framework::Remix)]
+		/// The framework your project will use
+		framework: Framework,
+	},
+}
+
 #[derive(Args, Debug)]
 /// Generate a new Rapid project
 pub struct NewArgs {
-	#[arg(short, long)]
-	/// Generate only the server components
-	server: bool,
-
-	#[arg(value_enum, default_value_t=Framework::Remix)]
-	/// The framework to use for template generation
-	framework: Framework,
+	#[command(subcommand)]
+	subcommand: NewSubCommand,
 }
 
 /// Execute the new command
 pub fn execute(args: &NewArgs) {
-	// Generate ONLY the server template if the server flag is active
-	if args.server {
-		init_server_template();
-		return;
-	}
-	// Otherwise, call the relevant init function
-	use Framework::*;
-	match args.framework {
-		Remix => init_remix_template(),
-		// TODO: Add new Nextjs support
-		Nextjs => todo!(),
-		// TODO: Add new Vite support
-		Vite => todo!(),
+	match &args.subcommand {
+		NewSubCommand::Server => new_server_template(),
+		NewSubCommand::Fullstack { framework } => {
+			use Framework::*;
+			match &framework {
+				Remix => new_remix_template(),
+				// TODO: Add new Nextjs support
+				Nextjs => todo!(),
+				// TODO: Add new Vite support
+				Vite => todo!(),
+			}
+		}
 	}
 }
 
-fn init_remix_template() {
+fn new_remix_template() {
 	let current_working_directory = current_directory();
 
 	// Ask the user what they want to name their project
@@ -155,7 +161,7 @@ fn init_remix_template() {
 	);
 }
 
-fn init_server_template() {
+fn new_server_template() {
 	let current_working_directory = current_directory();
 	// Ask the user what they want to name their project
 	let project_name = prompt_one(

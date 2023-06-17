@@ -470,7 +470,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 	}
 }
 
-/// Function for parsing a route fileer and making sure it contains a valid handler
+/// Function for parsing a route file and making sure it contains a valid handler
 /// If it does, we want to push the valid handler to the handlers array
 /// Note: no need to support HEAD and OPTIONS requests
 fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {

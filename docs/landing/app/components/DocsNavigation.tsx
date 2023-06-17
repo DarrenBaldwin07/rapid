@@ -17,7 +17,7 @@ const DocsNavigation = () => {
         <div className='fixed md:relative w-full transition duration-500 z-10 top-0 backdrop-blur-lg safari-blur'>
           <img className='absolute -top-[25px] md:-top-[70px] lg:-top-[100px] left-1/2 -translate-x-1/2 overflow-hidden -z-10' src={GradientMain} alt='main gradient' />
           <Container>
-              <div className='pt-4 flex items-center justify-between'>
+              <div className='pt-[18px] flex items-center justify-between'>
                   <Link className='z-10' to='/'>
                     <img width={120} src={Logo} alt='logo' />
                   </Link>
@@ -48,7 +48,7 @@ const DocsNavigation = () => {
                   </div>
               </div>
           </Container>
-          <hr className='mt-3 border-none bg-[#222222] h-[0.5px] z-10' />
+          <hr className='mt-[18px] border-none bg-[#222222] h-[0.5px] z-10' />
         </div>
     </div>
   )

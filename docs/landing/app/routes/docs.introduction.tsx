@@ -41,7 +41,7 @@ export const loader: LoaderFunction = ({ request }) => {
 const DocsIntroduction = () => {
   const data = useLoaderData<LoaderOutput>();
   return (
-    <div className='h-full md:h-[85vh] md:overflow-y-scroll w-full flex flex-col no-scroll-bar'>
+    <div className='w-full flex flex-col'>
       <BreadCrumb routes={data.routes} />
       <Heading styles='exclude-from-markdown text-white text-5xl font-bold'>Introduction</Heading>
       <div className='mt-6 text-white'>

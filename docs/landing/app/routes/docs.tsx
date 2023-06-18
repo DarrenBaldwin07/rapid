@@ -24,7 +24,7 @@ interface DocsLayoutProps {
 
 const DocsLayout = ({ children }: DocsLayoutProps) => {
   return (
-    <div className='p-0 py-12 md:p-12'>
+    <div className='p-0 py-12 md:p-12 h-full md:h-[85vh] md:overflow-y-scroll no-scroll-bar'>
       {children}
     </div>
   );

@@ -77,6 +77,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 				"char" => TypescriptType::new("string".to_string(), false),
 				"str" => TypescriptType::new("string".to_string(), false),
 				"String" => TypescriptType::new("string".to_string(), false),
+				"Value" => TypescriptType::new("string".to_string(), false),
 				"NaiveDateTime" => TypescriptType::new("Date".to_string(), false),
 				"DateTime" => TypescriptType::new("Date".to_string(), false),
 				"Uuid" => TypescriptType::new("string".to_string(), false),

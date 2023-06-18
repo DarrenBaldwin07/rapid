@@ -5,7 +5,7 @@ import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 import { Outlet } from '@remix-run/react';
-import styles from '../styles/introduction.css';
+import styles from '../styles/markdown.css';
 
 interface LoaderOutput {
   routes: string[]
@@ -30,6 +30,7 @@ export const loader: LoaderFunction = ({ request }) => {
   if (url.pathname == '/docs/introduction/doc') {
     url.pathname = '/docs/introduction';
   }
+
   const routes = url.pathname.split('/').filter(Boolean);
 
   return json({

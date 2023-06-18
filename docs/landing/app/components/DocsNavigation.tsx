@@ -7,7 +7,8 @@ import Github from '../../assets/github.svg';
 import { NavLink } from '@remix-run/react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import NpmLogo from '../components/NpmLogo';
+import CratesIoLogo from './CratesIoLogo';
 
 const DocsNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +22,13 @@ const DocsNavigation = () => {
                   <Link className='z-10' to='/'>
                     <img width={120} src={Logo} alt='logo' />
                   </Link>
-                  <div className='flex items-center gap-4'>
+                  <div className='flex items-center gap-6'>
+                    <a href="https://crates.io/crates/rapid-web" target='_blank' rel="noreferrer">
+                      <CratesIoLogo />
+                    </a>
+                    <a href="https://www.npmjs.com/org/rapid-web" target='_blank' rel="noreferrer">
+                      <NpmLogo />
+                    </a>
                     <a href="https://github.com/Cincinnati-Ventures/rapid" target='_blank' rel="noreferrer">
                       <img width={24} src={Github} alt='github' />
                     </a>

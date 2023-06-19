@@ -88,7 +88,6 @@ pub fn is_valid_route_function(file_contents: &str) -> bool {
 		return true;
 	}
 
-
 	false
 }
 

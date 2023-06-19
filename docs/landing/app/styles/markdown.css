@@ -43,3 +43,12 @@ blockquote {
     padding-bottom: 2px;
     padding-left: 16px;
 }
+
+hr:not(.exclude-from-markdown) {
+    border-color: #222222;
+    height: 0.5px;
+    z-index: 10;
+    width: 100%;
+    margin-top: 12px;
+    margin-bottom: 22px;
+}

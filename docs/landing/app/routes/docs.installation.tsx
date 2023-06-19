@@ -5,12 +5,11 @@ import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import { useLoaderData, Outlet } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 import styles from '../styles/markdown.css';
+import prism from '../styles/prism.css';
 
 interface LoaderOutput {
   routes: string[]
 }
-
-
 
 
 export const links: LinksFunction = () => {
@@ -18,6 +17,10 @@ export const links: LinksFunction = () => {
     {
       rel: "stylesheet",
       href: styles,
+    },
+    {
+      rel: "stylesheet",
+      href: prism,
     },
   ];
 };
@@ -44,10 +47,10 @@ export const loader: LoaderFunction = ({ request }) => {
 const DocsInstallation = () => {
   const data = useLoaderData<LoaderOutput>();
   return (
-    <div>
+    <div className='w-full'>
       <BreadCrumb routes={data.routes} />
       <Heading styles='exclude-from-markdown text-white text-5xl font-bold'>Installation</Heading>
-      <div className='mt-6 text-white'>
+      <div className='mt-12 text-white w-full'>
         <Outlet />
       </div>
     </div>

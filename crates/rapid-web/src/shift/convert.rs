@@ -77,6 +77,7 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 				"char" => TypescriptType::new("string".to_string(), false),
 				"str" => TypescriptType::new("string".to_string(), false),
 				"String" => TypescriptType::new("string".to_string(), false),
+				"Value" => TypescriptType::new("string".to_string(), false),
 				"NaiveDateTime" => TypescriptType::new("Date".to_string(), false),
 				"DateTime" => TypescriptType::new("Date".to_string(), false),
 				"Uuid" => TypescriptType::new("string".to_string(), false),
@@ -379,7 +380,7 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 				}
 
 				// Go through the newly parsed file and look for types that we want to convert
-				// TODO: add more support here for other rust types (enums, etc)
+				// TODO: add more support here for other rust types (enums, constants, etc)
 				for item in file.items {
 					match item {
 						Item::Struct(val) => {

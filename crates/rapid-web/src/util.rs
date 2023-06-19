@@ -60,8 +60,8 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	for item in parsed_file.items {
 		if let Item::Fn(function) = item {
 			let is_valid = is_valid_handler("rapid_handler", function.attrs);
-			has_rapid_handler = is_valid;
 			if is_valid {
+				has_rapid_handler = true;
 				handler_count += 1;
 			}
 		}
@@ -87,7 +87,6 @@ pub fn is_valid_route_function(file_contents: &str) -> bool {
 	} else if file_contents.contains("async fn mutation") {
 		return true;
 	}
-
 
 	false
 }

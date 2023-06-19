@@ -13,8 +13,8 @@ const DocsSidebar = () => {
                             <NavLink to='/docs/introduction' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white border-l-2 border-transparent pl-4 transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white border-l-mainBlue'}`}>
                                 <Text styles='exclude-from-markdown'>Introduction</Text>
                             </NavLink>
-                            <NavLink to='/docs/installation' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white border-l-2 border-transparent pl-4 transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white border-l-mainBlue'}`}>
-                                <Text styles='exclude-from-markdown'>Installation</Text>
+                            <NavLink to='/docs/quickstart' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white border-l-2 border-transparent pl-4 transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white border-l-mainBlue'}`}>
+                                <Text styles='exclude-from-markdown'>Quickstart</Text>
                             </NavLink>
                             <NavLink to='/docs/demo-app' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white border-l-2 border-transparent pl-4 transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white border-l-mainBlue'}`}>
                                 <Text styles='exclude-from-markdown'>Demo App</Text>

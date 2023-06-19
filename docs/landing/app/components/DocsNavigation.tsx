@@ -42,8 +42,8 @@ const DocsNavigation = () => {
                   <div className={`flex-col gap-4 items-start w-full mt-2 ${isOpen ? 'flex' : 'hidden'}`}>
                       <Text styles='gradient-text uppercase text-xs'>Getting Started</Text>
                       <div className='flex flex-col gap-2'>
-                          <NavLink to='/docs/introduction' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
-                              <Text styles='exclude-from-markdown'>Introduction</Text>
+                          <NavLink to='/docs/quickstart' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
+                              <Text styles='exclude-from-markdown'>Quickstart</Text>
                           </NavLink>
                           <NavLink to='/docs/installation' className={({ isActive }) => `text-docsText exclude-from-markdown hover:text-white border-transparent transition-all z-10 ease-in-out duration-100 ${isActive && 'text-white'}`}>
                               <Text styles='exclude-from-markdown'>Installation</Text>
@@ -55,7 +55,7 @@ const DocsNavigation = () => {
                   </div>
               </div>
           </Container>
-          <hr className='mt-[18px] border-none bg-[#222222] h-[0.5px] z-10' />
+          <hr className='mt-[18px] border-none bg-[#222222] h-[0.5px] z-10 exclude-from-markdown' />
         </div>
     </div>
   )

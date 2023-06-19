@@ -29,12 +29,12 @@ export const links: LinksFunction = () => {
 export const loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url);
 
-  if (url.pathname === '/docs/installation') {
-    return redirect('/docs/installation/doc');
+  if (url.pathname === '/docs/quickstart') {
+    return redirect('/docs/quickstart/doc');
   }
 
-  if (url.pathname == '/docs/installation/doc') {
-    url.pathname = '/docs/installation';
+  if (url.pathname == '/docs/quickstart/doc') {
+    url.pathname = '/docs/quickstart';
   }
 
   const routes = url.pathname.split('/').filter(Boolean);
@@ -49,7 +49,7 @@ const DocsInstallation = () => {
   return (
     <div className='w-full'>
       <BreadCrumb routes={data.routes} />
-      <Heading styles='exclude-from-markdown text-white text-5xl font-bold'>Installation</Heading>
+      <Heading styles='exclude-from-markdown text-white text-5xl font-bold'>Quickstart</Heading>
       <div className='mt-12 text-white w-full'>
         <Outlet />
       </div>

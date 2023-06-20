@@ -87,7 +87,7 @@ Rapid is built on multiple React and Rust libraries. View them below:
 
 ### Maybe
 
-- A full featured react meta-framework built on Rapid (leveraging Rust and server-side rendering)
+- A full featured react meta-framework built on Rapid (leveraging Rust and RSC)
 - Rapid ORM (fully async ORM inspired by Prisma and built for Rust)
 
 # Getting Started

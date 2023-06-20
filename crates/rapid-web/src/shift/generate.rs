@@ -202,6 +202,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
 	convert_all_types_in_path(route_dir.to_str().unwrap(), &mut converter);
 
+	// Loop through every handler and generate the typescript type for it
 	for handler in handlers {
 		match handler {
 			Handler::Query(query) => {

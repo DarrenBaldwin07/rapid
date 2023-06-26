@@ -199,6 +199,9 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	let mut queries_ts = String::from("{");
 	let mut mutations_ts = String::from("{");
 
+	// TODO: convert every type in the entire project to a typescript type
+	// Make sure that we skip the routes directory when converting types
+
 	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
 	convert_all_types_in_path(route_dir.to_str().unwrap(), &mut converter);
 

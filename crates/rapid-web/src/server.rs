@@ -17,7 +17,7 @@ use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
 use rapid_cli::{
-	cli::rapid_logo,
+	tui::rapid_logo,
 	rapid_config::config::{find_rapid_config, RapidConfig},
 };
 use spinach::Spinach;
@@ -61,8 +61,6 @@ impl RapidServer {
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// First we need to detect our app type
 		let app_type = &RAPID_SERVER_CONFIG.app_type;
-
-
 
 		// Next we need to go to the rapid config file and check for the is_logging variable
 		let is_logging = match app_type.as_str() {

@@ -1,5 +1,5 @@
 use super::RapidCommand;
-use crate::cli::{logo, Config};
+use crate::{cli::Config, tui::logo};
 use clap::{ArgMatches, Command};
 
 // Coming soon...(rapid templates for generating landing pages and much more!)

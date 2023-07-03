@@ -174,7 +174,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 	handlers
 }
 
-pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
+pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf, type_generation_dir: PathBuf) {
 	// Create a new bindings.ts file to store all of our generated types
 	let file = OpenOptions::new()
 		.write(true)
@@ -203,7 +203,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf) {
 	// Make sure that we skip the routes directory when converting types
 
 	// Convert every type in project to a typescript type (this is so that any used types in the route handlers generated above do not error out)
-	convert_all_types_in_path(route_dir.to_str().unwrap(), &mut converter);
+	convert_all_types_in_path(type_generation_dir.to_str().unwrap(), &mut converter);
 
 	// Loop through every handler and generate the typescript type for it
 	for handler in handlers {

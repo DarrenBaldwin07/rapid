@@ -34,3 +34,11 @@ pub fn rapid_log_target() -> GradientDisplay<'static, [RGB; 4]> {
 	);
 	target
 }
+
+pub fn rapid_error(message: &str) {
+	println!(
+		"{}",
+		message.color(Color::Red).bold()
+	);
+}
+

@@ -262,8 +262,9 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 	// Generate our type gen dir
 	let type_generation_directory = if every_dir_types_gen != "" {
 		current_dir()
-		.unwrap().join(every_dir_types_gen)
+		.expect("Could not parse current directory while executing type generation!").join(every_dir_types_gen)
 	} else {
+		// If the typegen directory was not defined by the user, simply fallback to only doing handler types in the routes directorys
 		routes_directory.clone()
 	};
 

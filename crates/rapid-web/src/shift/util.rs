@@ -207,7 +207,7 @@ pub fn get_route_key(file_path: &str, handler_source: &str) -> String {
 /// Function for checking if a rapid route path is dynamic (example: "/route/todo/_id_" -- this route is dynamic because it has a "_id_" substring)
 pub fn is_dynamic_route(str: &str) -> bool {
 	// Check for a regex match for a substring similar to "_anythingInHere_"
-	let regex = regex::Regex::new(r"_\w+_").unwrap();
+	let regex = regex::Regex::new(r"^_[^_]+_$").unwrap();
 	regex.is_match(str)
 }
 

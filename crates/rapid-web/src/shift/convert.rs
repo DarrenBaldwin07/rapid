@@ -386,7 +386,13 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 						Item::Struct(val) => {
 							converter_instance.convert_struct(val);
 						}
-						Item::Type(val) => converter_instance.convert_type_alias(val),
+						Item::Type(val) => {
+							// We want to ignore all type aliases that have the name `RapidOutput`
+							if val.ident.to_string() == "RapidOutput" {
+								continue;
+							}
+							converter_instance.convert_type_alias(val)
+						},
 						_ => {
 							// If we found a rust item that we do not care about lets just continue
 							continue;

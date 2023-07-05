@@ -1,4 +1,4 @@
-use super::convert::TypescriptType;
+use super::convert::{TypescriptType, convert_primitive};
 use syn::{parse_file, Expr, File as SynFile, Generics, Item, Lit, Type};
 
 pub const GENERATED_TS_FILE_MESSAGE: &str =
@@ -219,19 +219,9 @@ pub fn get_output_type_alias(handler_source: &str) -> TypescriptType {
 		if let Item::Type(item_type) = item {
 			// Check to make sure that the user named the type "Output"
 			// We do not want to support any other names (for now)
-			if item_type.ident.to_string() == "Output" {
+			if item_type.ident.to_string() == "RapidOutput" {
 				let syn_type = *item_type.ty;
-				// Get the type of the type alias
-				if let syn::Type::Path(type_path) = &syn_type {
-					if let Some(segment) = type_path.path.segments.last() {
-						let tokens = &segment.ident;
-						let parsed_type = tokens.to_string();
-						return TypescriptType {
-							typescript_type: parsed_type,
-							is_optional: false
-						}
-					}
-				}
+				return convert_primitive(&syn_type)
 			}
 		}
 	}

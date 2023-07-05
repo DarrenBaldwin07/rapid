@@ -3,7 +3,7 @@
 exports[`Skeleton > should render correctly 1`] = `
 <div>
   <div
-    class="h-6 w-full rounded-md rapid-skeleton skeleton-pulse"
+    class="skeleton-pulse h-6 w-full rounded-md rapid-skeleton"
   />
 </div>
 `;
@@ -11,7 +11,7 @@ exports[`Skeleton > should render correctly 1`] = `
 exports[`Skeleton > should render correctly with props 1`] = `
 <div>
   <div
-    class="h-6 w-full rounded-md custom-class rapid-skeleton skeleton-pulse-fast"
+    class="skeleton-pulse-fast h-6 w-full rounded-md custom-class rapid-skeleton"
   />
 </div>
 `;

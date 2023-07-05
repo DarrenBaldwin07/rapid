@@ -1,6 +1,7 @@
 use super::RapidCommand;
 use crate::{
-	cli::{current_directory, logo, rapid_logo, Config},
+	tui::{logo, rapid_logo},
+	cli::{current_directory, Config},
 	constants::BOLT_EMOJI,
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};

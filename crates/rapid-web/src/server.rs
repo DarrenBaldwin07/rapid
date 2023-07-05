@@ -17,7 +17,7 @@ use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
 use rapid_cli::{
-	cli::rapid_logo,
+	tui::rapid_logo,
 	rapid_config::config::{find_rapid_config, RapidConfig},
 };
 use spinach::Spinach;
@@ -61,8 +61,6 @@ impl RapidServer {
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
 		// First we need to detect our app type
 		let app_type = &RAPID_SERVER_CONFIG.app_type;
-
-
 
 		// Next we need to go to the rapid config file and check for the is_logging variable
 		let is_logging = match app_type.as_str() {
@@ -198,7 +196,7 @@ impl RapidServer {
 		// Only trigger type generation if the users configured options in their rapid config file permits it
 		// (we also dont want to generate types in a production environment)
 		if should_generate_typescript_types && cfg!(debug_assertions) {
-			generate_typescript_types(bindings_out_dir, routes_dir.clone());
+			generate_typescript_types(bindings_out_dir, routes_dir.clone(), RAPID_SERVER_CONFIG.clone());
 		}
 
 		// Show the server initialization message
@@ -207,6 +205,8 @@ impl RapidServer {
 		// Check for any invalid routes and log them to the console
 		check_for_invalid_handlers(&routes_dir);
 
+
+		// Finally, bind and run the rapid server
 		server.bind(bind_config)?.run().await
 	}
 }
@@ -232,9 +232,41 @@ fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port:
 	(server_hostname, port)
 }
 
-pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String) {
+pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, config: RapidConfig) {
 	// Clean the console before proceeding...
 	clean_console();
+
+	// Check if we should be converting types inside of every directory
+	let every_dir_types_gen = match config.app_type.as_str() {
+		"server" => match config.server {
+			Some(server) => match server.typescript_generation_directory {
+				Some(value) => value,
+				None => "".to_string(),
+			},
+			None => "".to_string(),
+		},
+		"remix" => match config.remix {
+			Some(remix) => match remix.typescript_generation_directory {
+				Some(value) => value,
+				None => "".to_string(),
+			},
+			None => "".to_string(),
+		},
+		_ => "".to_string(),
+	};
+
+	let routes_directory = current_dir()
+	.expect("Could not parse routes direcory path found in rapid config file.")
+	.join(PathBuf::from(routes_dir.clone()));
+
+	// Generate our type gen dir
+	let type_generation_directory = if every_dir_types_gen != "" {
+		current_dir()
+		.expect("Could not parse current directory while executing type generation!").join(every_dir_types_gen)
+	} else {
+		// If the typegen directory was not defined by the user, simply fallback to only doing handler types in the routes directorys
+		routes_directory.clone()
+	};
 
 	// Show a loading spinner as needed
 	let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
@@ -242,9 +274,8 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String) 
 	// TODO: Support output types with this function
 	create_typescript_types(
 		bindings_out_dir,
-		current_dir()
-			.expect("Could not parse bindings export path found in rapid config file.")
-			.join(PathBuf::from(routes_dir.clone())),
+		routes_directory,
+		type_generation_directory
 	);
 
 	// Sleep a little to show loading animation

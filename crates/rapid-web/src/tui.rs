@@ -1,5 +1,5 @@
 use colorful::{Color, Colorful};
-use rapid_cli::cli::rapid_logo;
+use rapid_cli::tui::rapid_logo;
 use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 use std::env;
 
@@ -34,3 +34,11 @@ pub fn rapid_log_target() -> GradientDisplay<'static, [RGB; 4]> {
 	);
 	target
 }
+
+pub fn rapid_error(message: &str) {
+	println!(
+		"{}",
+		message.color(Color::Red).bold()
+	);
+}
+

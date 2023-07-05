@@ -463,9 +463,9 @@ dependencies = [
 
 [[package]]
 name = "clerk-rs"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c92b3f9da1eb67fe624da533d8e9ca65209c9a24bd85db74339faa3fb05783d7"
+checksum = "8c359474486f10c220428958a34cf148f94091049194957277a2747673fdefb8"
 dependencies = [
  "actix-web",
  "futures-util",
@@ -1499,18 +1499,18 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.56"
+version = "1.0.63"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b63bdb0cd06f1f4dedf69b254734f9b45af66e4a031e42a7480257d9898b435"
+checksum = "7b368fba921b0dce7e60f5e04ec15e565b3303972b42bcfde1d0713b881959eb"
 dependencies = [
  "unicode-ident",
 ]
 
 [[package]]
 name = "quote"
-version = "1.0.26"
+version = "1.0.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4424af4bf778aae2051a77b60283332f386554255d722233d09fbfc7e30da2fc"
+checksum = "573015e8ab27661678357f27dc26460738fd2b6c86e46f386fde94cb5d913105"
 dependencies = [
  "proc-macro2",
 ]
@@ -1543,29 +1543,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 dependencies = [
  "getrandom",
-]
-
-[[package]]
-name = "rapid-cli"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "497792ac2062b54580708d5870836eb06c6a5c19ce1a1ec28872261c7225b380"
-dependencies = [
- "clap",
- "colorful",
- "ctrlc",
- "include_dir",
- "requestty",
- "rust-embed",
- "serde",
- "spinach",
- "strum",
- "strum_macros",
- "terminal-emoji",
- "tiny-gradient",
- "toml",
- "tui",
- "walkdir",
 ]
 
 [[package]]
@@ -1614,7 +1591,7 @@ dependencies = [
  "lazy_static",
  "log",
  "proc-macro2",
- "rapid-cli 0.5.0",
+ "rapid-cli",
  "rapid-web-codegen",
  "regex",
  "serde",

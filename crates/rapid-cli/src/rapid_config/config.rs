@@ -22,6 +22,7 @@ pub struct ServerConfig {
 	pub bindings_export_path: Option<String>,
 	pub routes_directory: Option<String>,
 	pub typescript_generation: Option<bool>,
+	pub typescript_generation_directory: Option<String>,
 }
 
 #[derive(Deserialize, Clone)]
@@ -32,6 +33,7 @@ pub struct RemixConfig {
 	pub serve_static_files: Option<bool>,
 	pub bindings_export_path: Option<String>,
 	pub typescript_generation: Option<bool>,
+	pub typescript_generation_directory: Option<String>,
 }
 
 #[derive(Deserialize, Clone)]

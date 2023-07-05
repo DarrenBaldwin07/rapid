@@ -1,3 +1,4 @@
+use super::convert::{TypescriptType, convert_primitive};
 use syn::{parse_file, Expr, File as SynFile, Generics, Item, Lit, Type};
 
 pub const GENERATED_TS_FILE_MESSAGE: &str =
@@ -8,8 +9,8 @@ pub enum TypeClass {
 	InputBody,
 	QueryParam,
 	Path,
-	Return,
 	Invalid,
+	Return
 }
 
 #[derive(Debug, Clone)]
@@ -166,9 +167,9 @@ pub fn get_struct_generics(type_generics: Generics) -> String {
 /// A function for getting the route key of a rapid route handler
 /// Handlers will have a route key that is always unique (we can never have duplicate route keys)
 /// If we find a handler with a ROUTE_KEY constant delcared in it we want to use it as the route key for the handler (This is the key that clients will use to request the route)
-pub fn get_route_key(file_path: &str, handler_source: &str) -> String {
+pub fn get_route_key(file_path: String, handler_source: &str) -> String {
 	// Parse the file into a rust syntax tree
-	let file = parse_file(handler_source).expect("Error: Syn could not parse handler source file!");
+	let file = parse_file(handler_source).expect("Error: Rapid compiler could not parse handler source file!");
 
 	// Generate a default route_key as a fallback (this is based on the file path)
 	let fallback_key = file_path.replacen("/", "", 1).replace("/", "_").replace(".rs", "");
@@ -204,10 +205,34 @@ pub fn get_route_key(file_path: &str, handler_source: &str) -> String {
 	fallback_key
 }
 
+pub fn get_output_type_alias(handler_source: &str) -> TypescriptType {
+	// Parse the file into a rust syntax tree
+	let file = parse_file(handler_source).expect("Error: Rapid compiler could not parse handler source file!");
+
+	// Fallback to an `any` type if we can't find a type alias configured by the user
+	let fallback_alias = TypescriptType {
+		typescript_type: "any".to_string(),
+		is_optional: false,
+	};
+
+	for item in file.items {
+		if let Item::Type(item_type) = item {
+			// Check to make sure that the user named the type "Output"
+			// We do not want to support any other names (for now)
+			if item_type.ident.to_string() == "RapidOutput" {
+				let syn_type = *item_type.ty;
+				return convert_primitive(&syn_type)
+			}
+		}
+	}
+
+	return fallback_alias;
+}
+
 /// Function for checking if a rapid route path is dynamic (example: "/route/todo/_id_" -- this route is dynamic because it has a "_id_" substring)
 pub fn is_dynamic_route(str: &str) -> bool {
 	// Check for a regex match for a substring similar to "_anythingInHere_"
-	let regex = regex::Regex::new(r"_\w+_").unwrap();
+	let regex = regex::Regex::new(r"^_[^_]+_$").unwrap();
 	regex.is_match(str)
 }
 

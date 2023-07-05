@@ -93,7 +93,7 @@ pub fn parse_handler_path(file_name: &str) -> String {
 }
 
 pub fn parse_route_path(route_path: String) -> String {
-	let dynamic_route_path_regex = Regex::new(r"_.*?_").unwrap();
+	let dynamic_route_path_regex = Regex::new(r"/_.*?_").unwrap();
 
 	let mut captures: Vec<String> = Vec::new();
 

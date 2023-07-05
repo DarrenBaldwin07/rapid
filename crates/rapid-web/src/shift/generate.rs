@@ -3,6 +3,7 @@ use super::{
 	util::{
 		extract_handler_types, get_handler_type, get_route_key, is_dynamic_route, remove_last_occurrence, space, HandlerRequestType, TypeClass,
 		GENERATED_TS_FILE_MESSAGE,
+		get_output_type_alias
 	},
 };
 use crate::util::validate_route_handler;
@@ -88,7 +89,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 			.replace(".rs", "");
 
 		let route_key = RouteKey {
-			key: get_route_key(&parsed_route_dir, &route_file_contents),
+			key: get_route_key(parsed_route_dir.clone(), &route_file_contents),
 			value: parsed_route_dir,
 		};
 
@@ -106,7 +107,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 		let mut query_params: Option<TypescriptType> = None;
 		let mut body_type: Option<TypescriptType> = None;
 		let mut path: Option<TypescriptType> = None;
-		let mut ouput_type: Option<TypescriptType> = None;
+		let output_type: TypescriptType = get_output_type_alias(&route_file_contents);
 		let request_type = handler_types[0].as_ref().unwrap().handler_type.clone();
 
 		for typed in handler_types {
@@ -137,10 +138,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 					request_type,
 					path,
 					query_params,
-					output_type: TypescriptType {
-						typescript_type: "any".to_string(),
-						is_optional: true,
-					},
+					output_type,
 					route_key,
 				}));
 			}
@@ -149,10 +147,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 					request_type,
 					path,
 					query_params,
-					output_type: TypescriptType {
-						typescript_type: "any".to_string(),
-						is_optional: true,
-					},
+					output_type,
 					route_key,
 				}));
 			}
@@ -162,10 +157,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 					query_params,
 					path,
 					input_type: body_type,
-					output_type: TypescriptType {
-						typescript_type: "any".to_string(),
-						is_optional: true,
-					},
+					output_type,
 					route_key,
 				}));
 			}
@@ -404,7 +396,7 @@ pub fn generate_routes(routes_dir: &str) -> String {
 
 		// Construct our routes object
 		let route_key = RouteKey {
-			key: get_route_key(&parsed_route_dir, &route_file_contents),
+			key: get_route_key(parsed_route_dir.clone(), &route_file_contents),
 			value: remove_last_occurrence(&parsed_route_dir, "index"),
 		};
 

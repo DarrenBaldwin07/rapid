@@ -5,7 +5,7 @@ import { NavLink } from '@remix-run/react';
 const DocsSidebar = () => {
     return (
         <div className='z-10'>
-            <div className='md:flex flex-col gap-4 border-r-[0.5px] border-[#222222] h-screen w-56 z-10 hidden'>
+            <div className='md:flex flex-col gap-4 border-r-[0.5px] border-[#222222] h-screen w-44 lg:w-56 z-10 hidden'>
                 <div className='flex flex-col gap-4 mt-12'>
                     <div className='flex flex-col gap-6'>
                         <Text styles='gradient-text uppercase text-xs'>Getting Started</Text>

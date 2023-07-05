@@ -328,8 +328,8 @@ impl TypescriptConverter {
 		self.converted_types.push(alias_name);
 	}
 
-	pub fn generate(&mut self, value: Option<&str>) {
-		match value {
+	pub fn generate(&mut self, types: Option<&str>) {
+		match types {
 			Some(val) => {
 				self.file.write_all(val.as_bytes()).expect("Could not write to typescript bindings file!");
 			}

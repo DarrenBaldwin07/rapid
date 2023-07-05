@@ -127,7 +127,6 @@ pub fn get_server_port(config: RapidConfig, fallback_port: u16) -> u16 {
 	}
 }
 
-
 pub fn should_generate_types(config: RapidConfig) -> bool {
 	let app_type = config.app_type.as_str();
 

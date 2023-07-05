@@ -106,6 +106,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 		let mut query_params: Option<TypescriptType> = None;
 		let mut body_type: Option<TypescriptType> = None;
 		let mut path: Option<TypescriptType> = None;
+		let mut ouput_type: Option<TypescriptType> = None;
 		let request_type = handler_types[0].as_ref().unwrap().handler_type.clone();
 
 		for typed in handler_types {

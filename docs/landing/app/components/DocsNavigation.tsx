@@ -15,8 +15,8 @@ const DocsNavigation = () => {
 
   return (
     <div>
-        <div className='fixed md:relative w-full transition duration-500 z-10 top-0 backdrop-blur-lg safari-blur'>
-          <img className='absolute -top-[25px] md:-top-[70px] lg:-top-[100px] left-1/2 -translate-x-1/2 overflow-hidden -z-10' src={GradientMain} alt='main gradient' />
+        <div className='fixed md:relative w-full transition duration-500 top-0 backdrop-blur-lg safari-blur'>
+          <img className='absolute -top-[25px] md:-top-[70px] lg:-top-[100px] left-1/2 -translate-x-1/2 overflow-hidden -z-50' src={GradientMain} alt='main gradient' />
           <Container>
               <div className='pt-[18px] flex items-center justify-between'>
                   <Link className='z-10' to='/'>

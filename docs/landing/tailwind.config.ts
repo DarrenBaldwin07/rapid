@@ -14,8 +14,8 @@ export default {
 				main: '#040211',
 				mainBlue: '#092AD0',
 				secondaryBlue: '#0EC5FF',
-				docsText: '#A6AABF'
-			}
+				docsText: '#A6AABF',
+			},
 		}),
 	},
 	plugins: [
@@ -25,7 +25,7 @@ export default {
 				body: {
 					background: '#0E0C13',
 					fontFamily: 'archivo',
-				}
+				},
 			},
 		}),
 	],

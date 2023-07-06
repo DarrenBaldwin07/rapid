@@ -75,7 +75,7 @@ const DocsNavigation = () => {
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<div className='flex items-center gap-4'>
-              <FontAwesomeIcon
+							<FontAwesomeIcon
 								icon={isOpen ? faChevronDown : faChevronRight}
 								color='white'
 								width={20}

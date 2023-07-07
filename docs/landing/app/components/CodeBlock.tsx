@@ -22,20 +22,19 @@ const CodeBlock = ({ language, code }: Props) => {
 	}, []);
 
 	return (
-		<div className='relative rounded-lg'>
-			<pre
-				onMouseOver={() => setIsShowingCopy(true)}
-				onMouseLeave={() =>
-					setTimeout(() => setIsShowingCopy(false), 250)
-				}
-			>
-				<code ref={codeRef} className={`language-${language}`}>
+		<div
+			className='mt-6 z-2'
+			onMouseOver={() => setIsShowingCopy(true)}
+			onMouseLeave={() => setTimeout(() => setIsShowingCopy(false), 250)}
+		>
+			<div className='flex bg-[#282C34] rounded-lg justify-between w-full'>
+				<pre ref={codeRef as any} className={`language-${language}`}>
 					{code}
-				</code>
+				</pre>
 				<div>
 					{isShowingCopy && (
 						<button
-							className='absolute right-[15px] top-1/2 -translate-y-1/2 rounded-lg border border-[#27272D] bg-[#18181C] p-[3.5px] text-white transition-all duration-100 ease-linear'
+							className='flex m-2 self-end transition-all duration-100 ease-linear text-white bg-[#18181C] border border-[#27272D] p-2 rounded-lg'
 							onClick={() => {
 								navigator.clipboard.writeText(code);
 								setIsShowingCopy(false);
@@ -49,13 +48,13 @@ const CodeBlock = ({ language, code }: Props) => {
 								icon={isCopied ? faCheck : faCopy}
 								color='white'
 								size='sm'
-								width={24}
-								height={24}
+								width={16}
+								height={16}
 							/>
 						</button>
 					)}
 				</div>
-			</pre>
+			</div>
 		</div>
 	);
 };

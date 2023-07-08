@@ -20,6 +20,7 @@ use spinach::Spinach;
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/server");
 static REMIX_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/remix");
+static REMIX_WITHOUT_CLERK_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/remix-without-clerk");
 
 pub struct New {}
 
@@ -162,7 +163,7 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	let package_manager = match package_manager.get("packageManagerSelect") {
 		Some(Answer::ListItem(choice)) => choice.text.clone(),
 		_ => {
-			println!("Aborting...an error occurred while trying to parse package manager selection. Please try again!");
+			println!("{}", "Aborting...an error occurred while trying to parse package manager selection. Please try again!".bold().color(Color::Red));
 			exit(64);
 		}
 	};
@@ -171,6 +172,25 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 	// Have the user select from a list of technologies they might or might not want to use
 	let tech_choices = vec!["Clerk (authentication)"];
+
+	let tech_choices = requestty::Question::multi_select("What technologies would you like included?").choices(tech_choices);
+
+	let tech_choices = prompt_one(tech_choices).expect("Error: Could not scaffold project. Please try again!");
+
+	let tech_choices = match tech_choices {
+		Answer::ListItems(choices) => {
+			choices
+		},
+		_ => {
+			println!("{}", "Aborting...an error occurred while trying to parse technology choices. Please try again!".bold().color(Color::Red));
+			exit(64);
+		}
+	};
+
+	let should_include_clerk = tech_choices.iter().any(|x| x.text == "Clerk (authentication)");
+
+
+
 
 	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
 
@@ -195,8 +215,11 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		.expect("Error: Could not scaffold project. Please try again!");
 
 	// Replace the default source dir with our own template files
-	REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
-
+	if should_include_clerk {
+		REMIX_WITHOUT_CLERK_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
+	} else {
+		REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
+	}
 
 	// Rename cargo.toml file (We have to set it to Cargo__toml due to a random bug with cargo publish command in a workspace)
 	StdCommand::new("sh")

@@ -146,6 +146,9 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 	// Before we initialize the project, lets ask the user to specify which package manager they want to use and then run the install process with that package manager
 	let manager_choices = vec!["pnpm", "npm", "yarn"];
+
+	println!("{}", indent(1));
+
 	let package_manager = requestty::Question::select("packageManagerSelect")
 	.message("Which package manager would you like to use?:")
 	.choices(
@@ -201,7 +204,6 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	.unwrap()
 	.wait()
 	.expect("Error: Could not scaffold project. Please try again!");
-
 
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)

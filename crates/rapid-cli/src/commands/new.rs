@@ -169,6 +169,9 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 	println!("{}", indent(1));
 
+	// Have the user select from a list of technologies they might or might not want to use
+	let tech_choices = vec!["Clerk (authentication)"];
+
 	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
 
 	// Run the scaffold commands

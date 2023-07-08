@@ -8,7 +8,7 @@ use crate::{
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
 use include_dir::{include_dir, Dir};
-use requestty::{prompt_one, Question};
+use requestty::{prompt_one, prompt, Question, Answer};
 use std::{
 	fs::remove_dir_all,
 	path::PathBuf,
@@ -144,6 +144,26 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		}
 	}
 
+	// Before we initialize the project, lets ask the user to specify which package manager they want to use and then run the install process with that package manager
+	let manager_choices = vec!["pnpm", "npm", "yarn"];
+	let package_manager = requestty::Question::select("packageManagerSelect")
+	.message("Which package manager would you like to use?:")
+	.choices(
+		manager_choices
+	)
+	.page_size(6)
+	.build();
+
+	let package_manager = prompt(vec![package_manager]).expect("Error: Could not scaffold project. Please try again!");
+
+	let package_manager = match package_manager.get("packageManagerSelect") {
+		Some(Answer::ListItem(choice)) => choice.text.clone(),
+		_ => {
+			println!("Aborting...an error occurred while trying to parse package manager selection. Please try again!");
+			exit(64);
+		}
+	};
+
 	println!("{}", indent(1));
 
 	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
@@ -183,11 +203,29 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	.expect("Error: Could not scaffold project. Please try again!");
 
 
+
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(675);
+	let timeout = time::Duration::from_millis(1000);
 	thread::sleep(timeout);
 
 	// stop showing the loader
+	loading.stop();
+
+
+	clean_console();
+
+	// Take the package manager and run the install command
+	let loading = Spinach::new(format!("{}", "Installing dependencies...".color(Color::LightCyan)));
+
+	StdCommand::new("sh")
+		.current_dir(current_directory().join(project_name))
+		.arg("-c")
+		.arg(format!("{} install > /dev/null 2>&1", package_manager))
+		.spawn()
+		.unwrap()
+		.wait()
+		.expect("Error: Could not install project dependencies!");
+
 	loading.stop();
 
 	clean_console();

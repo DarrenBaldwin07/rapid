@@ -171,9 +171,10 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	println!("{}", indent(1));
 
 	// Have the user select from a list of technologies they might or might not want to use
-	let tech_choices = vec!["Clerk (authentication)"];
+	// TODO: use this when we actually have more choices (like prettier, eslint, rapid-ui, etc)
+	let _ = vec!["Clerk (authentication)"];
 
-	let tech_choices = requestty::Question::multi_select("What technologies would you like included?").choices(tech_choices);
+	let tech_choices = requestty::Question::multi_select("What technologies would you like included?").choice_with_default("Clerk (authentication)", true);
 
 	let tech_choices = prompt_one(tech_choices).expect("Error: Could not scaffold project. Please try again!");
 
@@ -189,8 +190,7 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 	let should_include_clerk = tech_choices.iter().any(|x| x.text == "Clerk (authentication)");
 
-
-
+	println!("{}", indent(1));
 
 	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
 
@@ -215,7 +215,7 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		.expect("Error: Could not scaffold project. Please try again!");
 
 	// Replace the default source dir with our own template files
-	if should_include_clerk {
+	if !should_include_clerk {
 		REMIX_WITHOUT_CLERK_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
 	} else {
 		REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
@@ -237,10 +237,7 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	thread::sleep(timeout);
 
 	// stop showing the loader
-	loading.stop();
-
-
-	clean_console();
+	loading.succeed("Initialized!");
 
 	// Take the package manager and run the install command
 	let loading = Spinach::new(format!("{}", "Installing dependencies...".color(Color::LightCyan)));
@@ -254,7 +251,7 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		.wait()
 		.expect("Error: Could not install project dependencies!");
 
-	loading.stop();
+	loading.succeed("Installed dependencies!");
 
 	clean_console();
 

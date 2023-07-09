@@ -8,7 +8,6 @@
 		"typecheck": "tsc"
 	},
 	"dependencies": {
-		"@clerk/remix": "^2.5.5",
 		"@netlify/functions": "^1.4.0",
 		"@rapid-web/react": "^0.2.2",
 		"@remix-run/netlify": "^1.16.0",

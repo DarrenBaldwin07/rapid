@@ -6,9 +6,6 @@ import {
 	Scripts,
 	ScrollRestoration,
 } from '@remix-run/react';
-import type { LoaderFunction } from '@remix-run/node';
-import { rootAuthLoader } from '@clerk/remix/ssr.server';
-import { ClerkApp, ClerkCatchBoundary } from '@clerk/remix';
 import { routes } from './api/bindings';
 import type { Handlers } from './api/bindings';
 import { createBoltClient } from '@rapid-web/react';
@@ -21,10 +18,6 @@ export const bolt = createBoltClient<Handlers, typeof routes>(routes, {
 export function links() {
 	return [{ rel: 'stylesheet', href: styles }];
 }
-
-export const loader: LoaderFunction = (args) => {
-	return rootAuthLoader(args);
-};
 
 function App() {
 	return (
@@ -48,7 +41,4 @@ function App() {
 	);
 }
 
-export default ClerkApp(App);
-
-// Refer to this documentation for more info on how to use Clerk with Remix: https://clerk.com/docs/quickstarts/get-started-with-remix
-export const CatchBoundary = ClerkCatchBoundary();
+export default App;

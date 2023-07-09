@@ -9,7 +9,7 @@ exports[`Select > should render correctly with variant 1`] = `
       class="rapid-select-select w-full focus:outline-none focus:shadow-none px-3 bg-transparent"
     />
     <div
-      class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+      class="pointer-events-none absolute right-0 top-1/2 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
     >
       <svg
         height="16px"
@@ -42,7 +42,7 @@ exports[`Select > should render correctly with variant and children 1`] = `
       </option>
     </select>
     <div
-      class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+      class="pointer-events-none absolute right-0 top-1/2 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
     >
       <svg
         height="16px"
@@ -81,7 +81,7 @@ exports[`Select > should render default correctly 1`] = `
         Test
       </option>
       <div
-        class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+        class="pointer-events-none absolute right-0 top-1/2 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
       >
         <svg
           height="16px"
@@ -99,7 +99,7 @@ exports[`Select > should render default correctly 1`] = `
       </div>
     </select>
     <div
-      class="pointer-events-none absolute top-1/2 right-0 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
+      class="pointer-events-none absolute right-0 top-1/2 mr-3 inline-flex -translate-y-1/2 items-center justify-center"
     >
       <svg
         height="16px"

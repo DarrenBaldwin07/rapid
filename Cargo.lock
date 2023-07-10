@@ -1547,7 +1547,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-cli"
-version = "0.5.3"
+version = "0.5.4"
 dependencies = [
  "clap",
  "colorful",
@@ -1603,7 +1603,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web-codegen"
-version = "0.2.6"
+version = "0.2.7"
 dependencies = [
  "include_dir",
  "proc-macro2",

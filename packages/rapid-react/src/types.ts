@@ -6,20 +6,21 @@ export type BoltDynamicOutput<
 	T2,
 	T3,
 	T4,
+	T5,
 > = T extends 'post'
-	? PostFunctionDynamic<T1, T2, T3, T4>
+	? PostFunctionDynamic<T1, T2, T3, T4, T5>
 	: T extends 'get'
-	? GetFunctionDynamic<T1, T2, T4>
+	? GetFunctionDynamic<T1, T2, T4, T5>
 	: T extends 'put'
-	? PutFunctionDynamic<T1, T2, T3, T4>
+	? PutFunctionDynamic<T1, T2, T3, T4, T5>
 	: T extends 'delete'
-	? DeleteFunctionDynamic<T1, T2, T4>
+	? DeleteFunctionDynamic<T1, T2, T4, T5>
 	: T extends 'patch'
-	? PatchFunctionDynamic<T1, T2, T3, T4>
+	? PatchFunctionDynamic<T1, T2, T3, T4, T5>
 	: T extends 'query'
-	? GetFunctionDynamic<T1, T2, T4>
+	? GetFunctionDynamic<T1, T2, T4, T5>
 	: T extends 'mutation'
-	? MutationFunctionDynamic<T1, T2, T3, T4>
+	? MutationFunctionDynamic<T1, T2, T3, T4, T5>
 	: never;
 
 export type BoltOutput<
@@ -27,31 +28,32 @@ export type BoltOutput<
 	T1,
 	T2,
 	T3,
+	T4
 > = T extends 'post'
-	? PostFunction<T1, T2, T3>
+	? PostFunction<T1, T2, T3, T4>
 	: T extends 'get'
-	? GetFunction<T1, T2>
+	? GetFunction<T1, T2, T4>
 	: T extends 'put'
-	? PutFunction<T1, T2, T3>
+	? PutFunction<T1, T2, T3, T4>
 	: T extends 'delete'
-	? DeleteFunction<T1, T2>
+	? DeleteFunction<T1, T2, T4>
 	: T extends 'patch'
-	? PatchFunction<T1, T2, T3>
+	? PatchFunction<T1, T2, T3, T4>
 	: T extends 'query'
-	? GetFunction<T1, T2>
+	? GetFunction<T1, T2, T4>
 	: T extends 'mutation'
-	? MutationFunction<T1, T2, T3>
+	? MutationFunction<T1, T2, T3, T4>
 	: never;
 
-export type Bolt<T extends SupportedHTTPMethods, T1, T2, T3, T4> = {
-	dynamic: BoltDynamicOutput<T, T1, T2, T3, T4>;
-	default: BoltOutput<T, T1, T2, T3>;
+export type Bolt<T extends SupportedHTTPMethods, T1, T2, T3, T4, T5> = {
+	dynamic: BoltDynamicOutput<T, T1, T2, T3, T4, T5>;
+	default: BoltOutput<T, T1, T2, T3, T5>;
 };
 
-export type MutationFunction<T1, T2, T3> = {
+export type MutationFunction<T1, T2, T3, T4> = {
 	post: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -63,7 +65,7 @@ export type MutationFunction<T1, T2, T3> = {
 	) => Promise<R>;
 	put: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -75,7 +77,7 @@ export type MutationFunction<T1, T2, T3> = {
 	) => Promise<R>;
 	patch: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -87,7 +89,7 @@ export type MutationFunction<T1, T2, T3> = {
 	) => Promise<R>;
 	delete: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -98,10 +100,10 @@ export type MutationFunction<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type MutationFunctionDynamic<T1, T2, T3, T4> = {
+export type MutationFunctionDynamic<T1, T2, T3, T4, T5> = {
 	post: <
 		W extends T1,
-		T = any,
+		T = T5,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -114,7 +116,7 @@ export type MutationFunctionDynamic<T1, T2, T3, T4> = {
 	) => Promise<R>;
 	put: <
 		W extends T1,
-		T = any,
+		T = T5,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -127,7 +129,7 @@ export type MutationFunctionDynamic<T1, T2, T3, T4> = {
 	) => Promise<R>;
 	patch: <
 		W extends T1,
-		T = any,
+		T = T5,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -140,7 +142,7 @@ export type MutationFunctionDynamic<T1, T2, T3, T4> = {
 	) => Promise<R>;
 	delete: <
 		W extends T1,
-		T = any,
+		T = T5,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -152,10 +154,10 @@ export type MutationFunctionDynamic<T1, T2, T3, T4> = {
 	) => Promise<R>;
 };
 
-export type PostFunctionDynamic<T1, T2, T3, T4> = {
+export type PostFunctionDynamic<T1, T2, T3, T4, T5> = {
 	post: <
 		W extends T1,
-		T = any,
+		T = T5,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -168,10 +170,10 @@ export type PostFunctionDynamic<T1, T2, T3, T4> = {
 	) => Promise<R>;
 };
 
-export type PutFunctionDynamic<T1, T2, T3, T4> = {
+export type PutFunctionDynamic<T1, T2, T3, T4, T5> = {
 	put: <
 		W extends T1,
-		T = any,
+		T = T5,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -184,10 +186,10 @@ export type PutFunctionDynamic<T1, T2, T3, T4> = {
 	) => Promise<R>;
 };
 
-export type PatchFunctionDynamic<T1, T2, T3, T4> = {
+export type PatchFunctionDynamic<T1, T2, T3, T4, T5> = {
 	patch: <
 		W extends T1,
-		T = any,
+		T = T5,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -200,10 +202,10 @@ export type PatchFunctionDynamic<T1, T2, T3, T4> = {
 	) => Promise<R>;
 };
 
-export type GetFunctionDynamic<T1, T2, T3> = {
+export type GetFunctionDynamic<T1, T2, T3, T4> = {
 	get: <
 		W extends T1,
-		T = any, // Using any here because we do not yet support typesafe output (TODO: support this)
+		T = T4, // Using any here because we do not yet support typesafe output (TODO: support this)
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -215,10 +217,10 @@ export type GetFunctionDynamic<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type DeleteFunctionDynamic<T1, T2, T3> = {
+export type DeleteFunctionDynamic<T1, T2, T3, T4> = {
 	delete: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -230,10 +232,10 @@ export type DeleteFunctionDynamic<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type PostFunction<T1, T2, T3> = {
+export type PostFunction<T1, T2, T3, T4> = {
 	post: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -245,10 +247,10 @@ export type PostFunction<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type GetFunction<T1, T2> = {
+export type GetFunction<T1, T2, T3> = {
 	get: <
 		W extends T1,
-		T = any,
+		T = T3,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -259,10 +261,10 @@ export type GetFunction<T1, T2> = {
 	) => Promise<R>;
 };
 
-export type PutFunction<T1, T2, T3> = {
+export type PutFunction<T1, T2, T3, T4> = {
 	put: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -274,10 +276,10 @@ export type PutFunction<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type DeleteFunction<T1, T2> = {
+export type DeleteFunction<T1, T2, T3> = {
 	delete: <
 		W extends T1,
-		T = any,
+		T = T3,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,
@@ -287,10 +289,10 @@ export type DeleteFunction<T1, T2> = {
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };
-export type PatchFunction<T1, T2, T3> = {
+export type PatchFunction<T1, T2, T3, T4> = {
 	patch: <
 		W extends T1,
-		T = any,
+		T = T4,
 		U = any,
 		V = T2,
 		R = AxiosResponse<T, U>,

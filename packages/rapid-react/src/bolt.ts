@@ -121,7 +121,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						Route | RequestUrl,
 						R,
 						InputBody,
-						MutationPathType
+						MutationPathType,
+						OutputMutationBody
 					>[isDynamicMutationType];
 				}
 				return {
@@ -150,7 +151,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					Route | RequestUrl,
 					R,
 					InputBody,
-					MutationPathType
+					MutationPathType,
+					OutputMutationBody
 				>[isDynamicMutationType];
 			case 'get':
 				if (isDynamic) {
@@ -188,7 +190,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						Route | RequestUrl,
 						R,
 						never,
-						QueryPathType
+						QueryPathType,
+						OutputQueryBody
 					>[isDynamicQueryType];
 				}
 				return {
@@ -216,7 +219,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					Route | RequestUrl,
 					R,
 					never,
-					QueryPathType
+					QueryPathType,
+					OutputQueryBody
 				>[isDynamicQueryType];
 			case 'delete':
 				if (isDynamic) {
@@ -253,7 +257,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						Route | RequestUrl,
 						R,
 						never,
-						QueryPathType
+						QueryPathType,
+						OutputQueryBody
 					>[isDynamicQueryType];
 				}
 				return {
@@ -282,7 +287,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					Route | RequestUrl,
 					R,
 					never,
-					QueryPathType
+					QueryPathType,
+					OutputQueryBody
 				>[isDynamicQueryType];
 			case 'put':
 				if (isDynamic) {
@@ -322,7 +328,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						Route | RequestUrl,
 						R,
 						InputBody,
-						MutationPathType
+						MutationPathType,
+						OutputMutationBody
 					>[isDynamicMutationType];
 				}
 				return {
@@ -352,7 +359,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					Route | RequestUrl,
 					R,
 					InputBody,
-					MutationPathType
+					MutationPathType,
+					OutputMutationBody
 				>[isDynamicMutationType];
 			case 'patch':
 				if (isDynamic) {
@@ -392,7 +400,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						Route | RequestUrl,
 						R,
 						InputBody,
-						MutationPathType
+						MutationPathType,
+						OutputMutationBody
 					>[isDynamicMutationType];
 				}
 				return {
@@ -421,7 +430,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					Route | RequestUrl,
 					R,
 					InputBody,
-					MutationPathType
+					MutationPathType,
+					OutputMutationBody
 				>[isDynamicMutationType];
 			case 'query':
 				if (isDynamic) {
@@ -459,7 +469,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						Route | RequestUrl,
 						R,
 						never,
-						QueryPathType
+						QueryPathType,
+						OutputQueryBody
 					>[isDynamicQueryType];
 				}
 				return {
@@ -487,7 +498,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					Route | RequestUrl,
 					R,
 					never,
-					QueryPathType
+					QueryPathType,
+					OutputQueryBody
 				>[isDynamicQueryType];
 			case 'mutation':
 				if (isDynamic) {
@@ -614,7 +626,8 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						Route | RequestUrl,
 						R,
 						InputBody,
-						MutationPathType
+						MutationPathType,
+						OutputMutationBody
 					>[isDynamicMutationType];
 				}
 				return {
@@ -704,14 +717,11 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					Route | RequestUrl,
 					R,
 					InputBody,
-					MutationPathType
+					MutationPathType,
+					OutputMutationBody
 				>[isDynamicMutationType];
 		}
 	};
 }
 
-
 export default createBoltClient;
-
-
-

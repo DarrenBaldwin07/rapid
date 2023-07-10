@@ -8,7 +8,7 @@ use crate::{
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
 use include_dir::{include_dir, Dir};
-use requestty::{prompt_one, Question};
+use requestty::{prompt_one, prompt, Question, Answer};
 use std::{
 	fs::remove_dir_all,
 	path::PathBuf,
@@ -20,6 +20,7 @@ use spinach::Spinach;
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/server");
 static REMIX_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/remix");
+static REMIX_WITHOUT_CLERK_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/remix-without-clerk");
 
 pub struct New {}
 
@@ -144,6 +145,51 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		}
 	}
 
+	// Before we initialize the project, lets ask the user to specify which package manager they want to use and then run the install process with that package manager
+	let manager_choices = vec!["pnpm", "npm", "yarn"];
+
+	println!("{}", indent(1));
+
+	let package_manager = requestty::Question::select("packageManagerSelect")
+	.message("Which package manager would you like to use?:")
+	.choices(
+		manager_choices
+	)
+	.page_size(6)
+	.build();
+
+	let package_manager = prompt(vec![package_manager]).expect("Error: Could not scaffold project. Please try again!");
+
+	let package_manager = match package_manager.get("packageManagerSelect") {
+		Some(Answer::ListItem(choice)) => choice.text.clone(),
+		_ => {
+			println!("{}", "Aborting...an error occurred while trying to parse package manager selection. Please try again!".bold().color(Color::Red));
+			exit(64);
+		}
+	};
+
+	println!("{}", indent(1));
+
+	// Have the user select from a list of technologies they might or might not want to use
+	// TODO: use this when we actually have more choices (like prettier, eslint, rapid-ui, etc)
+	let _ = vec!["Clerk (authentication)"];
+
+	let tech_choices = requestty::Question::multi_select("What technologies would you like included?").choice_with_default("Clerk (authentication)", true);
+
+	let tech_choices = prompt_one(tech_choices).expect("Error: Could not scaffold project. Please try again!");
+
+	let tech_choices = match tech_choices {
+		Answer::ListItems(choices) => {
+			choices
+		},
+		_ => {
+			println!("{}", "Aborting...an error occurred while trying to parse technology choices. Please try again!".bold().color(Color::Red));
+			exit(64);
+		}
+	};
+
+	let should_include_clerk = tech_choices.iter().any(|x| x.text == "Clerk (authentication)");
+
 	println!("{}", indent(1));
 
 	let loading = Spinach::new(format!("{}", "Initializing a new Rapid Remix application..".color(Color::LightCyan)));
@@ -169,8 +215,11 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 		.expect("Error: Could not scaffold project. Please try again!");
 
 	// Replace the default source dir with our own template files
-	REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
-
+	if !should_include_clerk {
+		REMIX_WITHOUT_CLERK_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
+	} else {
+		REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
+	}
 
 	// Rename cargo.toml file (We have to set it to Cargo__toml due to a random bug with cargo publish command in a workspace)
 	StdCommand::new("sh")
@@ -184,11 +233,25 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(675);
+	let timeout = time::Duration::from_millis(1000);
 	thread::sleep(timeout);
 
 	// stop showing the loader
-	loading.stop();
+	loading.succeed("Initialized!");
+
+	// Take the package manager and run the install command
+	let loading = Spinach::new(format!("{}", "Installing dependencies...".color(Color::LightCyan)));
+
+	StdCommand::new("sh")
+		.current_dir(current_directory().join(project_name))
+		.arg("-c")
+		.arg(format!("{} install > /dev/null 2>&1", package_manager))
+		.spawn()
+		.unwrap()
+		.wait()
+		.expect("Error: Could not install project dependencies!");
+
+	loading.succeed("Installed dependencies!");
 
 	clean_console();
 

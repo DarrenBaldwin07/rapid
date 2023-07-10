@@ -5,27 +5,26 @@ import { useLoaderData } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 
 interface LoaderOutput {
-  routes: string[]
+	routes: string[];
 }
 
 export const loader: LoaderFunction = ({ request }) => {
-  const url = new URL(request.url);
-  const routes = url.pathname.split('/').filter(Boolean);
+	const url = new URL(request.url);
+	const routes = url.pathname.split('/').filter(Boolean);
 
-  return json({
-    routes
-  });
-}
+	return json({
+		routes,
+	});
+};
 
 const DocsDemoApp = () => {
-  const data = useLoaderData<LoaderOutput>();
-  return (
-    <div>
-      <BreadCrumb routes={data.routes} />
-      <div className='text-white'>Demo App doc (Coming soon...)</div>
-    </div>
-
-  )
-}
+	const data = useLoaderData<LoaderOutput>();
+	return (
+		<div>
+			<BreadCrumb routes={data.routes} />
+			<div className='text-white'>Demo App doc (Coming soon...)</div>
+		</div>
+	);
+};
 
 export default DocsDemoApp;

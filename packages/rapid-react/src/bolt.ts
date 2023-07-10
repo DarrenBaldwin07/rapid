@@ -725,32 +725,3 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 }
 
 export default createBoltClient;
-
-
-
-
-export interface Handlers {
-	queries: {},
-	mutations: {
-		"helloWorld": {
-  			output: string
-  			type: 'mutation'
-  			isDynamic: false
-		}
-	},
-}
-
-
-export const routes = {
-	"helloWorld": {
-		url: '/test/',
-		type: 'mutation',
-	},
-} as const;
-
-
-const bolt = createBoltClient<Handlers, typeof routes>(routes, {
-	transport: 'https://api.github.com',
-});
-
-const res = await bolt('helloWorld').post(routes.helloWorld);

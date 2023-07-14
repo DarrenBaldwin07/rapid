@@ -171,7 +171,7 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	println!("{}", indent(1));
 
 	// Have the user select from a list of technologies they might or might not want to use
-	// TODO: use this when we actually have more choices (like prettier, eslint, rapid-ui, etc)
+	// TODO: use this when we actually have more choices (like prettier, eslint, rapid-ui, diesel, sea-orm, sqlx, etc)
 	let _ = vec!["Clerk (authentication)"];
 
 	let tech_choices = requestty::Question::multi_select("What technologies would you like included?").choice_with_default("Clerk (authentication)", true);

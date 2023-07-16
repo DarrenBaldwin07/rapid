@@ -5,7 +5,7 @@ use crate::{
 	constants::BOLT_EMOJI,
 	tui::{clean_console, indent},
 };
-use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
+use clap::{arg, Arg, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
 use include_dir::{include_dir, Dir};
 use requestty::{prompt_one, prompt, Question, Answer};
@@ -29,20 +29,20 @@ impl RapidCommand for New {
 		Command::new("new")
 			.about("Creates a new Rapid project at the current working directory!")
 			.arg(
-				arg!(
-					-remix --remix "Scaffolds a Remix Rapid project!"
-				)
+				Arg::new("remix")
+				.long("remix")
 				.required(false)
 				.action(ArgAction::SetTrue)
-				.value_parser(value_parser!(PathBuf)),
+				.value_name("REMIX")
+				.help("Scaffolds a fullstack Rapid project with remix!"),
 			)
 			.arg(
-				arg!(
-					-server --server "Scaffolds a server-side only Rapid project!"
-				)
+				Arg::new("server")
+				.long("server")
 				.required(false)
 				.action(ArgAction::SetTrue)
-				.value_parser(value_parser!(PathBuf)),
+				.value_name("SERVER")
+				.help("Scaffolds a server-side only Rapid project!"),
 			)
 	}
 
@@ -54,53 +54,25 @@ impl RapidCommand for New {
 }
 
 pub fn parse_new_args(args: &ArgMatches) {
-	/// NOTE: We can add more args for templates here (ideally we add nextjs asap)
-	const NEW_ARGS: [&str; 2] = ["remix", "server"];
 	// Get the current working directory of the user
 	let current_working_directory = current_directory();
 
-	// We want to check if the user did in fact input a valid application type ("fullstack" or "server")
-	// This handles the case when "rapid new" is ran with no inputs
-	let mut did_find_match = false;
+	let is_remix = args.get_one::<bool>("remix").unwrap_or(&true);
+	let is_server = args.get_one::<bool>("server").unwrap_or(&false);
 
-	for arg in NEW_ARGS {
-		match args.get_one::<PathBuf>(arg) {
-			Some(val) => {
-				if val == &PathBuf::from("true") {
-					match arg {
-						"remix" => {
-							init_remix_template(current_working_directory.clone());
-							did_find_match = true;
-							break;
-						}
-						"server" => {
-							init_server_template(current_working_directory.clone(), arg);
-							did_find_match = true;
-							break;
-						}
-						_ => {
-							// By default we should generate the remix template:
-							init_remix_template(current_working_directory.clone());
-							did_find_match = true;
-							break;
-						}
-					}
-				}
-			}
-			None => {
-				// By default we should generate the remix template:
-				init_remix_template(current_working_directory.clone());
-				did_find_match = true;
-				break;
-			}
+	match (is_remix, is_server) {
+		(true, false) => {
+			init_remix_template(current_working_directory);
 		}
-	}
-
-	// Check if we found a app type match
-	// If we did not than we want to simply generate the remix template
-	if !did_find_match {
-		// By default we should generate the remix template:
-		init_remix_template(current_working_directory);
+		(false, true) => {
+			init_server_template(current_working_directory, "server");
+		}
+		(true, true) => {
+			init_remix_template(current_working_directory);
+		}
+		(false, false) => {
+			init_remix_template(current_working_directory);
+		}
 	}
 }
 

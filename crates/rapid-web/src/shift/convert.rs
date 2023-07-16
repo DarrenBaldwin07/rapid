@@ -105,6 +105,18 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 						_ => "unknown".to_string(),
 					},
 				},
+				"Union" => TypescriptType {
+					is_optional: false,
+					typescript_type: match arguments {
+						syn::PathArguments::Parenthesized(parenthesized_argument) => {
+							format!("{:?}", parenthesized_argument)
+						}
+						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
+							convert_generic_type(anglebracketed_argument.args.first().unwrap()).typescript_type
+						}
+						_ => "unknown".to_string(),
+					},
+				},
 				"Option" => TypescriptType {
 					is_optional: true,
 					typescript_type: match arguments {

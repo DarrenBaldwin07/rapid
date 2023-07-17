@@ -26,7 +26,7 @@ pub struct ServerConfig {
 }
 
 #[derive(Deserialize, Clone)]
-pub struct RemixConfig {
+pub struct ReactFrameworkConfig {
 	pub server_port: Option<u16>,
 	pub is_logging: Option<bool>,
 	pub show_error_pages: Option<bool>,
@@ -50,7 +50,8 @@ pub struct RapidConfig {
 	pub app_type: String,
 	pub features: Option<Features>,
 	pub server: Option<ServerConfig>,
-	pub remix: Option<RemixConfig>
+	pub remix: Option<ReactFrameworkConfig>,
+	pub nextjs: Option<ReactFrameworkConfig>
 }
 
 pub fn find_rapid_config() -> RapidConfig {

@@ -297,10 +297,9 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 	))
 }
 
-
-/// A macro for generating imports for every route handler in a Rapid Remix application
+/// A macro for generating imports for every route handler in a Rapid NextJS application
 ///
-/// This macro must be used before any other code runs.
+/// This macro must be used before any other code runs within your `root.rs` file.
 ///
 /// # Examples
 /// ```
@@ -313,7 +312,7 @@ pub fn rapid_configure_nextjs(tokens: proc_macro::TokenStream) -> proc_macro::To
 
 /// A macro for generating imports for every route handler in a Rapid Remix application
 ///
-/// This macro must be used before any other code runs.
+/// This macro must be used before any other code runs within your `root.rs` file.
 ///
 /// # Examples
 /// ```

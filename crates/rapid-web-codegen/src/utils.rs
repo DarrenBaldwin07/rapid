@@ -8,6 +8,7 @@ use std::{
 use syn::{parse_file, parse_str, File as SynFile, Item};
 
 pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
+pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
 
 pub fn get_all_dirs(path: &str, path_array: &mut Vec<PathBuf>) {
 	let dir = fs::read_dir(path);

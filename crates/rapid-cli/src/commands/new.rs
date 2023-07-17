@@ -37,6 +37,14 @@ impl RapidCommand for New {
 				.help("Scaffolds a fullstack Rapid project with remix!"),
 			)
 			.arg(
+				Arg::new("nextjs")
+				.long("nextjs")
+				.required(false)
+				.action(ArgAction::SetTrue)
+				.value_name("NEXTJS")
+				.help("Scaffolds a fullstack Rapid project with Nextjs!"),
+			)
+			.arg(
 				Arg::new("server")
 				.long("server")
 				.required(false)

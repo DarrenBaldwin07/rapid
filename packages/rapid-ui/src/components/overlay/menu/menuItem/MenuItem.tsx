@@ -1,33 +1,32 @@
-import { Menu as HeadlessMenu } from '@headlessui/react';
-import { HeadlessMenuTyped } from '../menu/Menu';
-import { RapidStyles } from '../../../../utils';
-import type { ExtractProps } from '../../../../types';
+import {
+	Menu as HeadlessMenu,
+	MenuItemProps as HeadlessMenuItemProps,
+} from "@headlessui/react";
+import { RapidStyles } from "../../../../utils";
 
-const RAPID_CLASSNAME = 'rapid-menu-item';
-
-type MenuItemType = ExtractProps<typeof HeadlessMenuTyped.Item>;
+const RAPID_CLASSNAME = "rapid-menu-item";
 
 // TODO: fix this
 // @ts-ignore
-interface MenuItemProps extends MenuItemType {
+interface MenuItemProps extends HeadlessMenuItemProps<"div"> {
 	styles?: string;
 }
 
 const MenuItem = ({ styles, ...rest }: MenuItemProps) => {
 	const defaultStyles =
-		'p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer';
+		"p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer";
 	return (
 		<HeadlessMenu.Item
 			className={RapidStyles(
 				styles || rest.className,
 				defaultStyles,
-				RAPID_CLASSNAME,
+				RAPID_CLASSNAME
 			)}
 			{...rest}
 		/>
 	);
 };
 
-MenuItem.displayName = 'MenuItem';
+MenuItem.displayName = "MenuItem";
 
 export default MenuItem;

@@ -2,6 +2,7 @@ use crate::cli::{binary_dir, current_directory};
 use serde::Deserialize;
 use std::fs::read_to_string;
 use strum_macros::EnumString;
+use colorful::{Color, Colorful};
 use toml;
 
 #[derive(Debug, PartialEq, EnumString)]
@@ -92,6 +93,15 @@ pub fn find_config(dir: &std::path::PathBuf) -> RapidConfig {
 
 	// Parse/deserialize the rapid config file from the .toml file format
 	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
+
+	// Before we output the config, we need to make sure that the app_type is valid (`it can only be either `server`, `remix`, or `nextjs`)
+	let app_type = rapid_config.app_type.clone();
+
+	if app_type != "server" && app_type != "remix" && app_type != "nextjs" {
+		eprintln!("{}", "Invalid app_type in rapid.toml. The app_type can only be either `server`, `remix`, or `nextjs`.".color(Color::Red).bold());
+		std::process::exit(200);
+	}
+
 
 	rapid_config
 }

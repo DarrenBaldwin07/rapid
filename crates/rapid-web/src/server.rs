@@ -71,6 +71,10 @@ impl RapidServer {
 			"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
 				Some(value) => value.is_logging.unwrap_or(true),
 				None => true,
+			},
+			"nextjs" => match RAPID_SERVER_CONFIG.nextjs.as_ref() {
+				Some(value) => value.is_logging.unwrap_or(true),
+				None => true,
 			}
 			_ => panic!("Error: invalid config type found in rapid config file. Please use either `server` or `remix`")
 		};
@@ -82,6 +86,10 @@ impl RapidServer {
 				None => true,
 			},
 			"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
+				Some(value) => value.serve_static_files.unwrap_or(true),
+				None => true,
+			}
+			"nextjs" => match RAPID_SERVER_CONFIG.nextjs.as_ref() {
 				Some(value) => value.serve_static_files.unwrap_or(true),
 				None => true,
 			}

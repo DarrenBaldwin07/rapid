@@ -56,38 +56,12 @@ pub struct RapidConfig {
 
 pub fn find_rapid_config() -> RapidConfig {
 	let dir = current_directory();
-	// Look for the Rapid config file inside of the current working directory
-	let config_file_contents = read_to_string(dir.join("rapid.toml"));
-
-	// Check to make sure that the config file did not throw an error
-	if let Err(_) = config_file_contents {
-		// TODO: We should improve error log styling later (just uses standard exit 200 best practices for now)
-		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a project scaffolded with the Rapid CLI.");
-		std::process::exit(200);
-	}
-
-	// Parse/deserialize the rapid config file from the .toml format
-	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
-
-	rapid_config
+	find_config(&dir)
 }
 
 pub fn find_rapid_config_from_binary() -> RapidConfig {
 	let dir = binary_dir();
-	// Look for the Rapid config file inside of the current working directory
-	let config_file_contents = read_to_string(dir.join("rapid.toml"));
-
-	// Check to make sure that the config file did not throw an error
-	if let Err(_) = config_file_contents {
-		// TODO: We should improve error log styling later (just uses standard exit 200 best practices for now)
-		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a project scaffolded with the Rapid CLI.");
-		std::process::exit(200);
-	}
-
-	// Parse/deserialize the rapid config file from the .toml file format
-	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
-
-	rapid_config
+	find_config(&dir)
 }
 
 // A helper function to check if the current running process is inside of a rapid application
@@ -103,4 +77,21 @@ pub fn is_rapid() -> bool {
 	}
 
 	return true;
+}
+
+pub fn find_config(dir: &std::path::PathBuf) -> RapidConfig {
+	// Look for the Rapid config file inside of the current working directory
+	let config_file_contents = read_to_string(dir.join("rapid.toml"));
+
+	// Check to make sure that the config file did not throw an error
+	if let Err(_) = config_file_contents {
+		// TODO: We should improve error log styling later (just uses standard exit 200 best practices for now)
+		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a project scaffolded with the Rapid CLI.");
+		std::process::exit(200);
+	}
+
+	// Parse/deserialize the rapid config file from the .toml file format
+	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
+
+	rapid_config
 }

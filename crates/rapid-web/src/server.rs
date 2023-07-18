@@ -63,10 +63,8 @@ impl RapidServer {
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
-		// First we need to detect our app type
-		let app_type = &RAPID_SERVER_CONFIG.app_type;
 
-		// Next we need to go to the rapid config file and check for the is_logging variable
+		// First we need to go to the rapid config file and check for the is_logging variable
 		let is_logging = is_logging();
 
 		// Check if we should also be serving static files

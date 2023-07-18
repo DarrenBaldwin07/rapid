@@ -1,32 +1,32 @@
 import {
 	Menu as HeadlessMenu,
 	MenuItemProps as HeadlessMenuItemProps,
-} from "@headlessui/react";
-import { RapidStyles } from "../../../../utils";
+} from '@headlessui/react';
+import { RapidStyles } from '../../../../utils';
 
-const RAPID_CLASSNAME = "rapid-menu-item";
+const RAPID_CLASSNAME = 'rapid-menu-item';
 
 // TODO: fix this
 // @ts-ignore
-interface MenuItemProps extends HeadlessMenuItemProps<"div"> {
+type MenuItemProps = {
 	styles?: string;
-}
+} & HeadlessMenuItemProps<'div'>;
 
 const MenuItem = ({ styles, ...rest }: MenuItemProps) => {
 	const defaultStyles =
-		"p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer";
+		'p-1 hover:disabled:cursor-not-allowed hover:cursor-pointer';
 	return (
 		<HeadlessMenu.Item
 			className={RapidStyles(
-				styles || rest.className,
+				styles || (rest.className as string),
 				defaultStyles,
-				RAPID_CLASSNAME
+				RAPID_CLASSNAME,
 			)}
 			{...rest}
 		/>
 	);
 };
 
-MenuItem.displayName = "MenuItem";
+MenuItem.displayName = 'MenuItem';
 
 export default MenuItem;

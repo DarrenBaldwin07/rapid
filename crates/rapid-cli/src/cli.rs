@@ -2,7 +2,7 @@ use crate::{
 	args::flag,
 	commands::{self, RapidCommand},
 };
-use clap::{command, ArgMatches, Command, crate_version};
+use clap::{command, crate_version, ArgMatches, Command};
 use colorful::Colorful;
 use std::{
 	env::{current_dir, current_exe},

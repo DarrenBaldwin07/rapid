@@ -161,7 +161,6 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	let mut has_rapid_handler = false;
 	let mut handler_count = 0;
 
-
 	for item in parsed_file.items {
 		if let Item::Fn(function) = item {
 			let is_valid = is_valid_handler("rapid_handler", function.attrs);

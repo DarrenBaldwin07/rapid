@@ -10,7 +10,7 @@ use std::{
 };
 use utils::{
 	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
-	REMIX_ROUTE_PATH, NEXTJS_ROUTE_PATH
+	NEXTJS_ROUTE_PATH, REMIX_ROUTE_PATH,
 };
 
 // TODO: some of this could leverage tokio
@@ -391,7 +391,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 			quote!(
 				.route(#rapid_routes_path, web::get().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
-		},
+		}
 		"mutation" => {
 			// If we got a mutation type we want to generate routes for each of the following (all at the same path):
 			// `post`, `put`, `patch`, `delete`
@@ -401,10 +401,10 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 				.route(#rapid_routes_path, web::patch().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
-		},
+		}
 		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
 		// ^^^ Eventually, what was described above should get deprecated
-		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*)),
 	}
 }
 
@@ -436,7 +436,7 @@ fn generate_route_imports(tokens: proc_macro::TokenStream, routes_directory: &st
 	let path = if tokens.is_empty() {
 		// Output the default remix routes path if we did not find any tokens passed in by the user
 		routes_directory.to_string()
-    } else {
+	} else {
 		// If we found any tokens we want to output them and use them as the routes path
 		let path_string = if let proc_macro::TokenTree::Literal(literal) = tokens.into_iter().next().unwrap() {
 			let raw_path = literal.to_string();
@@ -445,7 +445,7 @@ fn generate_route_imports(tokens: proc_macro::TokenStream, routes_directory: &st
 			routes_directory.to_string()
 		};
 		path_string.to_string()
-    };
+	};
 
 	let module_name = Ident::new("routes", Span::call_site());
 
@@ -476,7 +476,7 @@ fn generate_route_imports(tokens: proc_macro::TokenStream, routes_directory: &st
 				panic!("Invalid route directory!");
 			}
 		};
-		let mod_name = format!("routes{}",&string[start_index..].replace("/", "::"));
+		let mod_name = format!("routes{}", &string[start_index..].replace("/", "::"));
 		let tokens: proc_macro2::TokenStream = mod_name.parse().unwrap();
 		nested_idents.push(quote! { pub use #tokens::*; });
 	}

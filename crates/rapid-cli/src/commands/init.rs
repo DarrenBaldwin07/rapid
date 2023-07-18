@@ -1,8 +1,8 @@
 use super::RapidCommand;
 use crate::{
-	tui::{logo, rapid_logo},
 	cli::{current_directory, Config},
 	constants::BOLT_EMOJI,
+	tui::{logo, rapid_logo},
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};

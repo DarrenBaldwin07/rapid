@@ -7,9 +7,9 @@ pub use rapid_web_codegen;
 pub(crate) mod default_routes;
 pub mod logger;
 pub mod server;
-pub mod types;
 pub(crate) mod shift; // TODO: shift needs to be abstracted out into its own crate (for now it will be left private to rapid-web as users do not need to access it)
 pub(crate) mod tui;
+pub mod types;
 pub(crate) mod util;
 
 // Create new namings for every actix extractor (this is so that Shift can easily parse new route files and generate the correct typescript types)

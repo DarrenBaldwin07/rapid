@@ -1,21 +1,20 @@
 use super::RapidCommand;
 use crate::{
-	tui::{logo, rapid_logo},
 	cli::{current_directory, Config},
 	constants::BOLT_EMOJI,
-	tui::{clean_console, indent},
+	tui::{clean_console, indent, logo, rapid_logo},
 };
 use clap::{arg, Arg, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
 use include_dir::{include_dir, Dir};
-use requestty::{prompt_one, prompt, Question, Answer};
+use requestty::{prompt, prompt_one, Answer, Question};
+use spinach::Spinach;
 use std::{
 	fs::remove_dir_all,
 	path::PathBuf,
 	process::{exit, Command as StdCommand},
 	thread, time,
 };
-use spinach::Spinach;
 
 // We need to get the project directory to extract the template files (this is because include_dir!() is yoinked inside of a workspace)
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/templates/server");
@@ -30,27 +29,27 @@ impl RapidCommand for New {
 			.about("Creates a new Rapid project at the current working directory!")
 			.arg(
 				Arg::new("remix")
-				.long("remix")
-				.required(false)
-				.action(ArgAction::SetTrue)
-				.value_name("REMIX")
-				.help("Scaffolds a fullstack Rapid project with remix!"),
+					.long("remix")
+					.required(false)
+					.action(ArgAction::SetTrue)
+					.value_name("REMIX")
+					.help("Scaffolds a fullstack Rapid project with remix!"),
 			)
 			.arg(
 				Arg::new("nextjs")
-				.long("nextjs")
-				.required(false)
-				.action(ArgAction::SetTrue)
-				.value_name("NEXTJS")
-				.help("Scaffolds a fullstack Rapid project with Nextjs!"),
+					.long("nextjs")
+					.required(false)
+					.action(ArgAction::SetTrue)
+					.value_name("NEXTJS")
+					.help("Scaffolds a fullstack Rapid project with Nextjs!"),
 			)
 			.arg(
 				Arg::new("server")
-				.long("server")
-				.required(false)
-				.action(ArgAction::SetTrue)
-				.value_name("SERVER")
-				.help("Scaffolds a server-side only Rapid project!"),
+					.long("server")
+					.required(false)
+					.action(ArgAction::SetTrue)
+					.value_name("SERVER")
+					.help("Scaffolds a server-side only Rapid project!"),
 			)
 	}
 
@@ -131,19 +130,22 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	println!("{}", indent(1));
 
 	let package_manager = requestty::Question::select("packageManagerSelect")
-	.message("Which package manager would you like to use?:")
-	.choices(
-		manager_choices
-	)
-	.page_size(6)
-	.build();
+		.message("Which package manager would you like to use?:")
+		.choices(manager_choices)
+		.page_size(6)
+		.build();
 
 	let package_manager = prompt(vec![package_manager]).expect("Error: Could not scaffold project. Please try again!");
 
 	let package_manager = match package_manager.get("packageManagerSelect") {
 		Some(Answer::ListItem(choice)) => choice.text.clone(),
 		_ => {
-			println!("{}", "Aborting...an error occurred while trying to parse package manager selection. Please try again!".bold().color(Color::Red));
+			println!(
+				"{}",
+				"Aborting...an error occurred while trying to parse package manager selection. Please try again!"
+					.bold()
+					.color(Color::Red)
+			);
 			exit(64);
 		}
 	};
@@ -154,16 +156,20 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	// TODO: use this when we actually have more choices (like prettier, eslint, rapid-ui, diesel, sea-orm, sqlx, etc)
 	let _ = vec!["Clerk (authentication)"];
 
-	let tech_choices = requestty::Question::multi_select("What technologies would you like included?").choice_with_default("Clerk (authentication)", true);
+	let tech_choices =
+		requestty::Question::multi_select("What technologies would you like included?").choice_with_default("Clerk (authentication)", true);
 
 	let tech_choices = prompt_one(tech_choices).expect("Error: Could not scaffold project. Please try again!");
 
 	let tech_choices = match tech_choices {
-		Answer::ListItems(choices) => {
-			choices
-		},
+		Answer::ListItems(choices) => choices,
 		_ => {
-			println!("{}", "Aborting...an error occurred while trying to parse technology choices. Please try again!".bold().color(Color::Red));
+			println!(
+				"{}",
+				"Aborting...an error occurred while trying to parse technology choices. Please try again!"
+					.bold()
+					.color(Color::Red)
+			);
 			exit(64);
 		}
 	};
@@ -196,21 +202,22 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 	// Replace the default source dir with our own template files
 	if !should_include_clerk {
-		REMIX_WITHOUT_CLERK_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
+		REMIX_WITHOUT_CLERK_DIR
+			.extract(current_working_directory.join(project_name).clone())
+			.unwrap();
 	} else {
 		REMIX_DIR.extract(current_working_directory.join(project_name).clone()).unwrap();
 	}
 
 	// Rename cargo.toml file (We have to set it to Cargo__toml due to a random bug with cargo publish command in a workspace)
 	StdCommand::new("sh")
-	.current_dir(current_directory().join(project_name))
-	.arg("-c")
-	.arg(format!("mv Cargo__toml Cargo.toml"))
-	.spawn()
-	.unwrap()
-	.wait()
-	.expect("Error: Could not scaffold project. Please try again!");
-
+		.current_dir(current_directory().join(project_name))
+		.arg("-c")
+		.arg(format!("mv Cargo__toml Cargo.toml"))
+		.spawn()
+		.unwrap()
+		.wait()
+		.expect("Error: Could not scaffold project. Please try again!");
 
 	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
 	let timeout = time::Duration::from_millis(1000);

@@ -16,7 +16,6 @@ pub fn indent(amount: u32) -> String {
 	new_amount
 }
 
-
 /// Logo with signs
 pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
 	GradientStr::gradient(

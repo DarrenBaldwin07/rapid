@@ -12,7 +12,7 @@ keywords = ["server", "web-framework", "rapid"]
 # Example showing a rapid server in action
 [[example]]
 name = "server"
-path = "examples/server/main.rs"
+path = "examples/server"
 
 [dependencies]
 actix-web = "4.3.1"

@@ -1,8 +1,8 @@
 use crate::cli::{binary_dir, current_directory};
+use colorful::{Color, Colorful};
 use serde::Deserialize;
 use std::fs::read_to_string;
 use strum_macros::EnumString;
-use colorful::{Color, Colorful};
 use toml;
 
 #[derive(Debug, PartialEq, EnumString)]
@@ -11,7 +11,7 @@ use toml;
 pub enum AppType {
 	App,
 	Server,
-	Remix
+	Remix,
 }
 
 #[derive(Deserialize, Clone)]
@@ -52,7 +52,7 @@ pub struct RapidConfig {
 	pub features: Option<Features>,
 	pub server: Option<ServerConfig>,
 	pub remix: Option<ReactFrameworkConfig>,
-	pub nextjs: Option<ReactFrameworkConfig>
+	pub nextjs: Option<ReactFrameworkConfig>,
 }
 
 pub fn find_rapid_config() -> RapidConfig {
@@ -98,10 +98,14 @@ pub fn find_config(dir: &std::path::PathBuf) -> RapidConfig {
 	let app_type = rapid_config.app_type.clone();
 
 	if app_type != "server" && app_type != "remix" && app_type != "nextjs" {
-		eprintln!("{}", "Invalid app_type in rapid.toml. The app_type can only be either `server`, `remix`, or `nextjs`.".color(Color::Red).bold());
+		eprintln!(
+			"{}",
+			"Invalid `app_type` found in rapid.toml. The app_type can only be either `server`, `remix`, or `nextjs`."
+				.color(Color::Red)
+				.bold()
+		);
 		std::process::exit(200);
 	}
-
 
 	rapid_config
 }

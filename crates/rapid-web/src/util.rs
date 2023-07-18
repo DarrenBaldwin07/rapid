@@ -1,12 +1,14 @@
-use super::{shift::util::is_valid_handler, tui::rapid_log_target};
+use super::{server::RAPID_SERVER_CONFIG, shift::util::is_valid_handler, tui::rapid_log_target};
 use colorful::{Color, Colorful};
-use log::info;
-use rapid_cli::rapid_config::config::ServerConfig;
 use core::panic;
-use std::{fs::File, io::Read};
+use log::info;
+use rapid_cli::rapid_config::config::{RapidConfig, ServerConfig};
+use std::{env::current_dir, fs::File, io::Read, path::PathBuf};
 use syn::{parse_file, parse_str, File as SynFile, Item};
 use walkdir::WalkDir;
-use rapid_cli::rapid_config::config::RapidConfig;
+
+pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
+pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
 
 /// Checks to make sure that there are no conflicting routes in the handlers directory
 /// If there are, it prints helpful warnings to the user
@@ -112,18 +114,24 @@ pub fn get_server_port(config: RapidConfig, fallback_port: u16) -> u16 {
 		"server" => match config.server {
 			Some(val) => match val.port {
 				Some(p) => p,
-				None => fallback_port
+				None => fallback_port,
 			},
-			_ => fallback_port
-		}
+			_ => fallback_port,
+		},
 		"remix" => match config.remix {
 			Some(val) => match val.server_port {
 				Some(s_port) => s_port,
-				None => fallback_port
+				None => fallback_port,
 			},
-			_ => fallback_port
-		}
-		_ => fallback_port
+			_ => fallback_port,
+		},
+		_ => match config.nextjs {
+			Some(val) => match val.server_port {
+				Some(s_port) => s_port,
+				None => fallback_port,
+			},
+			_ => fallback_port,
+		},
 	}
 }
 
@@ -139,12 +147,96 @@ pub fn should_generate_types(config: RapidConfig) -> bool {
 			None => true,
 		},
 		"remix" => match config.remix.as_ref() {
-			Some(server) => match server.typescript_generation.clone() {
+			Some(remix) => match remix.typescript_generation.clone() {
 				Some(val) => val,
 				None => true,
 			},
 			None => true,
-		}
-		_ => panic!("Error: invalid app_type found inside of rapid config file!")
+		},
+		_ => match config.nextjs.as_ref() {
+			Some(nextjs) => match nextjs.typescript_generation.clone() {
+				Some(val) => val,
+				None => true,
+			},
+			None => true,
+		},
 	}
 }
+
+/// Gets the bindings_out_directory from a valid `RapidConfig` object
+pub fn get_bindings_directory() -> PathBuf {
+	match RAPID_SERVER_CONFIG.app_type.as_str() {
+		"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(server) => match server.bindings_export_path.clone() {
+				Some(dir) => match dir == "/" {
+					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
+					false => current_dir()
+						.expect("Could not parse bindings export path found in rapid config file.")
+						.join(PathBuf::from(dir)),
+				},
+				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
+			},
+			None => panic!("You must have a valid rapid config file in the base project directory!"),
+		},
+		"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
+			Some(remix) => match remix.bindings_export_path.clone() {
+				Some(dir) => match dir == "/" {
+					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
+					false => current_dir()
+						.expect("Could not parse bindings export path found in rapid config file.")
+						.join(PathBuf::from(dir)),
+				},
+				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
+			},
+			None => panic!("You must have a valid rapid config file in the base project directory!"),
+		},
+		_ => match RAPID_SERVER_CONFIG.nextjs.as_ref() {
+			Some(nextjs) => match nextjs.bindings_export_path.clone() {
+				Some(dir) => match dir == "/" {
+					true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
+					false => current_dir()
+						.expect("Could not parse bindings export path found in rapid config file.")
+						.join(PathBuf::from(dir)),
+				},
+				None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
+			},
+			None => panic!("You must have a valid rapid config file in the base project directory!"),
+		},
+	}
+}
+
+pub fn is_logging() -> bool {
+	match RAPID_SERVER_CONFIG.app_type.as_str() {
+		"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(value) => value.is_logging.unwrap_or(true),
+			None => true,
+		},
+		"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
+			Some(value) => value.is_logging.unwrap_or(true),
+			None => true,
+		},
+		_ => match RAPID_SERVER_CONFIG.nextjs.as_ref() {
+			Some(value) => value.is_logging.unwrap_or(true),
+			None => true,
+		},
+	}
+}
+
+pub fn is_serving_static_files() -> bool {
+	match RAPID_SERVER_CONFIG.app_type.as_str() {
+		"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
+			Some(value) => value.serve_static_files.unwrap_or(true),
+			None => true,
+		},
+		"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
+			Some(value) => value.serve_static_files.unwrap_or(true),
+			None => true,
+		},
+		_ => match RAPID_SERVER_CONFIG.nextjs.as_ref() {
+			Some(value) => value.serve_static_files.unwrap_or(true),
+			None => true,
+		},
+	}
+}
+
+

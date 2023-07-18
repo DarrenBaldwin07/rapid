@@ -407,7 +407,7 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 								continue;
 							}
 							converter_instance.convert_type_alias(val)
-						},
+						}
 						_ => {
 							// If we found a rust item that we do not care about lets just continue
 							continue;

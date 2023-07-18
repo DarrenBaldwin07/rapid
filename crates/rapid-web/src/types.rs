@@ -10,8 +10,6 @@ use serde::{Deserialize, Serialize};
 /// type RapidOutput = Union<String, ErrorJsonBody>;
 /// ```
 pub struct Union<O, E> {
-    pub output: O,
-    pub error: E,
+	pub output: O,
+	pub error: E,
 }
-
-

@@ -11,22 +11,39 @@ import CodeBlock from '../components/CodeBlock';
 ## Installation
 <hr />
 
-### Install the rapid cli with cargo
+### Install the rapid cli with cargo:
 
-<CodeBlock language='bash' code={`cargo install rapid-cli`} />
+<CodeBlock language='sh' code={`cargo install rapid-cli`} />
 
 <br />
 ## Usage
 <hr />
-
-### Generate a new rapid project for netlify deployment
-
-<CodeBlock language='bash' code={`rapid new`} />
+{/* TODO: in the future, provide heading links to relevant sections here*/}
+The rapid framework is versatile. You choose how much of it you want to use.
 
 <br />
-### Or, specify your your deployment type
-<CodeBlock language='bash' code={`Coming soon...`} />
+
+-   Scaffold a new fullstack rapid project
+-   Integrate Rapid's frontend or backend with your existing application
 
 <br />
-### Run your project
-<CodeBlock language='bash' code={`rapid run`} />
+### Generate a new fullstack rapid project:
+<CodeBlock language='sh' code={`rapid new`} />
+
+<br />
+### Integrate the rapid backend into your existing application:
+<CodeBlock language='sh' code={`rapid init server`} />
+
+<br />
+### Integrate the rapid frontend into your application:
+<CodeBlock language='sh' code={`npm install @rapid-web/ui`} />
+
+<br />
+## Start your application:
+<hr />
+<br />
+### Run the backend:
+<CodeBlock language='sh' code={`rapid run `} />
+<br />
+### Run the frontend:
+<CodeBlock language='sh' code={`npm run dev`} />

@@ -1,16 +1,13 @@
 import React from 'react';
-import { Menu as HeadlessMenu } from '@headlessui/react';
+import {
+	Menu as HeadlessMenu,
+	MenuProps as HeadlessMenuProps,
+} from '@headlessui/react';
 import { RapidStyles } from '../../../../utils';
 
-interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
+type MenuProps = {
 	styles?: string;
-}
-
-export const HeadlessMenuTyped = Object.assign(HeadlessMenu, {
-	Item: HeadlessMenu.Item,
-	Button: HeadlessMenu.Button,
-	Items: HeadlessMenu.Items,
-});
+} & HeadlessMenuProps<'div'>;
 
 const RAPID_CLASSNAME = 'rapid-menu';
 
@@ -22,7 +19,7 @@ const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
 		return (
 			<HeadlessMenu
 				className={RapidStyles(
-					styles || rest.className,
+					styles || (rest.className as string),
 					defaultStyles,
 					RAPID_CLASSNAME,
 				)}

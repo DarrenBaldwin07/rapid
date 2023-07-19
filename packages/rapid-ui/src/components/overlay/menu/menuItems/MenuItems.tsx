@@ -1,14 +1,19 @@
-import { Menu as HeadlessMenu, Transition } from '@headlessui/react';
+import {
+	Menu as HeadlessMenu,
+	MenuItemsProps as HeadlessMenuItemsProps,
+	Transition,
+} from '@headlessui/react';
 import React, { Fragment } from 'react';
 import { RapidStyles } from '../../../../utils';
 import { ScaleFade } from '../../../transition';
 
 const RAPID_CLASSNAME = 'rapid-menu-items';
 
-interface MenuItemsProps extends React.HTMLAttributes<HTMLDivElement> {
+type MenuItemsProps = {
 	styles?: string;
 	wrapperStyles?: string;
-}
+	children?: React.ReactNode;
+} & HeadlessMenuItemsProps<'div'>;
 
 const MenuItems = React.forwardRef<
 	React.ElementRef<typeof HeadlessMenu.Items>,
@@ -32,7 +37,7 @@ const MenuItems = React.forwardRef<
 			>
 				<ScaleFade
 					styles={RapidStyles(
-						styles || rest.className,
+						styles || (rest.className as string),
 						defaultStyles,
 					)}
 					exitAnimation='exit'

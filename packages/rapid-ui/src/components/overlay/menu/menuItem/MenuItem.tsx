@@ -1,17 +1,16 @@
-import { Menu as HeadlessMenu } from '@headlessui/react';
-import { HeadlessMenuTyped } from '../menu/Menu';
+import {
+	Menu as HeadlessMenu,
+	MenuItemProps as HeadlessMenuItemProps,
+} from '@headlessui/react';
 import { RapidStyles } from '../../../../utils';
-import type { ExtractProps } from '../../../../types';
 
 const RAPID_CLASSNAME = 'rapid-menu-item';
 
-type MenuItemType = ExtractProps<typeof HeadlessMenuTyped.Item>;
-
 // TODO: fix this
 // @ts-ignore
-interface MenuItemProps extends MenuItemType {
+type MenuItemProps = {
 	styles?: string;
-}
+} & HeadlessMenuItemProps<'div'>;
 
 const MenuItem = ({ styles, ...rest }: MenuItemProps) => {
 	const defaultStyles =
@@ -19,7 +18,7 @@ const MenuItem = ({ styles, ...rest }: MenuItemProps) => {
 	return (
 		<HeadlessMenu.Item
 			className={RapidStyles(
-				styles || rest.className,
+				styles || (rest.className as string),
 				defaultStyles,
 				RAPID_CLASSNAME,
 			)}

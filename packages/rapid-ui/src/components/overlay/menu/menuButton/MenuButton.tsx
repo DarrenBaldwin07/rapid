@@ -1,5 +1,8 @@
 import React, { forwardRef } from 'react';
-import { Menu as HeadlessMenu } from '@headlessui/react';
+import {
+	Menu as HeadlessMenu,
+	MenuButtonProps as HeadlessMenuButtonProps,
+} from '@headlessui/react';
 import { RapidStyles } from '../../../../utils';
 import { createVariant } from '../../../../theme';
 
@@ -24,12 +27,11 @@ export const menuButtonTheme = createVariant({
 	},
 });
 
-interface MenuButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type MenuButtonProps = {
 	styles?: string;
 	variant?: string;
 	size?: string;
-}
+} & HeadlessMenuButtonProps<'div'>;
 
 const getVariantClassName = (
 	variant: string | undefined,
@@ -53,7 +55,7 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
 				ref={ref}
 				{...rest}
 				className={RapidStyles(
-					styles || rest.className,
+					styles || (rest.className as string),
 					getVariantClassName(variant, size) || THEME_CLASSNAME,
 				)}
 			/>

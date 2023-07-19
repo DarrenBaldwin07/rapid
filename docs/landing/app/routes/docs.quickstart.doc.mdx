@@ -1,12 +1,21 @@
 import CodeBlock from '../components/CodeBlock';
+import Nextjs from '../../assets/nextjs.png';
+import Remix from '../../assets/remix.svg';
 
-# Rapid CLI
+## Supported Frameworks
 
+<br />
+<div className='flex space-x-4'>
+	<img height='64px' width='64px' src={Nextjs} />
+	<img height='64px' width='64px' src={Remix} />
+</div>
+<br />
 ## Prerequisites
+<hr />
 
--   Install [node.js](https://nodejs.org/en) and [rust](https://www.rust-lang.org/)
--   Install your favorite package manager (npm, pnpm, yarn)
+Install [node.js](https://nodejs.org/en), [rust](https://www.rust-lang.org/), and your favorite package manager
 
+<br />
 <br />
 ## Installation
 <hr />
@@ -16,34 +25,50 @@ import CodeBlock from '../components/CodeBlock';
 <CodeBlock language='sh' code={`cargo install rapid-cli`} />
 
 <br />
-## Usage
+<br />
+## Getting Started With Remix
+
 <hr />
-{/* TODO: in the future, provide heading links to relevant sections here*/}
-The rapid framework is versatile. You choose how much of it you want to use.
 
-<br />
+### Generate a new [fullstack Rapid remix project:](https://github.com/Cincinnati-Ventures/rapid/tree/main/examples/fullstack)
 
--   Scaffold a new [fullstack rapid project](https://github.com/Cincinnati-Ventures/rapid/tree/main/examples/fullstack)
--   Integrate Rapid's frontend or backend with your existing application
-
-<br />
-### Generate a new fullstack rapid project:
-<CodeBlock language='sh' code={`rapid new`} />
+<CodeBlock language='sh' code={`rapid new --remix `} />
 
 <br />
 ### Integrate the rapid backend into your existing application:
-<CodeBlock language='sh' code={`rapid init server`} />
+<CodeBlock language='sh' code={`rapid new --server`} />
 
 <br />
 ### Integrate the rapid frontend into your application:
 <CodeBlock language='sh' code={`npm install @rapid-web/ui`} />
 
 <br />
+<br />
+## Getting Started With NextJS
+
+<hr />
+
+### Generate a new fullstack Nextjs project:
+
+<CodeBlock language='sh' code={`rapid new --nextjs`} />
+
+<br />
+### Integrate the rapid backend into your existing application:
+<CodeBlock language='sh' code={`rapid new --server`} />
+
+<br />
+### Integrate the rapid frontend into your application:
+<CodeBlock language='sh' code={`npm install @rapid-web/ui`} />
+
+<br />
+<br />
 ## Start your application:
 <hr />
-<br />
+
 ### Run the backend:
+
 <CodeBlock language='sh' code={`rapid run `} />
+
 <br />
 ### Run the frontend:
 <CodeBlock language='sh' code={`npm run dev`} />

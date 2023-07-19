@@ -1,0 +1,25 @@
+// Vitest Snapshot v1
+
+exports[`Link > should render  with href correctly 1`] = `
+<div>
+  <a
+    class="rapid-link"
+  />
+</div>
+`;
+
+exports[`Link > should render correctly 1`] = `
+<div>
+  <a
+    class="rapid-link"
+  />
+</div>
+`;
+
+exports[`Link > should render href correctly 1`] = `
+<div>
+  <a
+    class="rapid-link"
+  />
+</div>
+`;

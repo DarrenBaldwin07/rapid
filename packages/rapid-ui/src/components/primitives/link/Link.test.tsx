@@ -9,3 +9,11 @@ describe('Link', () => {
 		expect(container).toMatchSnapshot();
 	});
 });
+describe('Link', () => {
+	it('should render  with href correctly', () => {
+		const { container } = render(
+			<Link href='www.example.com'>click here</Link>,
+		);
+		expect(container).toMatchSnapshot();
+	});
+});

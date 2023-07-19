@@ -1,7 +1,7 @@
 import React from 'react';
 import { RapidStyles } from '../../../utils';
 type LinkType = 'a';
-interface LinkProps extends HTMLAnchorElement {
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	styles?: string;
 	as?: LinkType;
 }

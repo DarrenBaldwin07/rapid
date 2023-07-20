@@ -13,4 +13,4 @@ rapid-web = "0.4.6"
 # Rapid binary
 [[bin]]
 name = "api"
-path = "app/api/root.rs"
+path = "pages/api/root.rs"

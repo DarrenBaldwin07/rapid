@@ -10,7 +10,7 @@ use std::{
 };
 use utils::{
 	base_file_name, get_all_dirs, get_all_middleware, parse_handler_path, parse_route_path, reverse_route_path, validate_route_handler,
-	REMIX_ROUTE_PATH,
+	NEXTJS_ROUTE_PATH, REMIX_ROUTE_PATH,
 };
 
 // TODO: some of this could leverage tokio
@@ -297,9 +297,22 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 	))
 }
 
+/// A macro for generating imports for every route handler in a Rapid NextJS application
+///
+/// This macro must be used before any other code runs within your `root.rs` file.
+///
+/// # Examples
+/// ```
+/// rapid_configure_nextjs!()
+/// ```
+#[proc_macro]
+pub fn rapid_configure_nextjs(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
+	generate_route_imports(tokens, NEXTJS_ROUTE_PATH)
+}
+
 /// A macro for generating imports for every route handler in a Rapid Remix application
 ///
-/// This macro must be used before any other code runs.
+/// This macro must be used before any other code runs within your `root.rs` file.
 ///
 /// # Examples
 /// ```
@@ -307,82 +320,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 /// ```
 #[proc_macro]
 pub fn rapid_configure_remix(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
-	// Parse the tokens and check if they did not contain anything...
-	let path = if tokens.is_empty() {
-		// Output the default remix routes path if we did not find any tokens passed in by the user
-		REMIX_ROUTE_PATH.to_string()
-    } else {
-		// If we found any tokens we want to output them and use them as the routes path
-		let path_string = if let proc_macro::TokenTree::Literal(literal) = tokens.into_iter().next().unwrap() {
-			let raw_path = literal.to_string();
-			raw_path[1..raw_path.len() - 1].to_string()
-		} else {
-			REMIX_ROUTE_PATH.to_string()
-		};
-		path_string.to_string()
-    };
-
-	let module_name = Ident::new("routes", Span::call_site());
-
-	let mut route_dirs: Vec<PathBuf> = vec![];
-
-	// Get every nested dir and append them to the route_dirs array
-	get_all_dirs(&path, &mut route_dirs);
-
-	// Grab all of the base idents that we need to power the base "/" handler
-	let base_idents = std::fs::read_dir(&path)
-		.unwrap()
-		.map(|it| {
-			let path = it.unwrap().path();
-			let name = path.file_stem().unwrap().to_string_lossy();
-			Ident::new(&name, Span::call_site())
-		})
-		.filter(|it| it.to_string() != "mod")
-		.collect::<Vec<_>>();
-
-	let mut nested_idents: Vec<TokenStream2> = Vec::new();
-
-	for dir in route_dirs {
-		let string = dir.into_os_string().into_string().unwrap();
-		let delimiter = "routes";
-		let start_index = match string.find(delimiter) {
-			Some(index) => index + delimiter.len(),
-			None => {
-				panic!("Invalid route directory!");
-			}
-		};
-		let mod_name = format!("routes{}",&string[start_index..].replace("/", "::"));
-		let tokens: proc_macro2::TokenStream = mod_name.parse().unwrap();
-		nested_idents.push(quote! { pub use #tokens::*; });
-	}
-
-	// If the user wanted to use their own path we should force them to import their routes dir
-	if path != REMIX_ROUTE_PATH {
-		return proc_macro::TokenStream::from(quote!(
-			use include_dir::{include_dir, Dir};
-			use rapid_web::actix::web;
-			pub use #module_name::{
-				#(#base_idents,)*
-			};
-			#(#nested_idents)*
-			#[cfg(debug_assertions)] // Only run this in debug mode when the user actually wants hot-reload (having extra code in main.rs file makes binary way larger)
-			const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
-		));
-	} else {
-		// Since the user did not specify a custom path we can just assume they used the `REMIX_ROUTE_PATH`
-		return proc_macro::TokenStream::from(quote!(
-			use include_dir::{include_dir, Dir};
-			use rapid_web::actix::web;
-			mod #module_name { #(pub mod #base_idents;)* }
-			pub use #module_name::{
-				#(#base_idents,)*
-			};
-			#(#nested_idents)*
-			#[cfg(debug_assertions)] // Only run this in debug mode (having extra code in main.rs file makes binary way larger)
-			const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
-		));
-	}
-
+	generate_route_imports(tokens, REMIX_ROUTE_PATH)
 }
 
 /// Function that generates handler tokens from a Handler type
@@ -453,7 +391,7 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 			quote!(
 				.route(#rapid_routes_path, web::get().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
-		},
+		}
 		"mutation" => {
 			// If we got a mutation type we want to generate routes for each of the following (all at the same path):
 			// `post`, `put`, `patch`, `delete`
@@ -463,10 +401,10 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 				.route(#rapid_routes_path, web::patch().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
-		},
+		}
 		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
 		// ^^^ Eventually, what was described above should get deprecated
-		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*))
+		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*)),
 	}
 }
 
@@ -492,3 +430,81 @@ fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String,
 	}
 }
 
+/// Generates route imports based on a framework specific base routes directory
+fn generate_route_imports(tokens: proc_macro::TokenStream, routes_directory: &str) -> proc_macro::TokenStream {
+	// Parse the tokens and check if they did not contain anything...
+	let path = if tokens.is_empty() {
+		// Output the default remix routes path if we did not find any tokens passed in by the user
+		routes_directory.to_string()
+	} else {
+		// If we found any tokens we want to output them and use them as the routes path
+		let path_string = if let proc_macro::TokenTree::Literal(literal) = tokens.into_iter().next().unwrap() {
+			let raw_path = literal.to_string();
+			raw_path[1..raw_path.len() - 1].to_string()
+		} else {
+			routes_directory.to_string()
+		};
+		path_string.to_string()
+	};
+
+	let module_name = Ident::new("routes", Span::call_site());
+
+	let mut route_dirs: Vec<PathBuf> = vec![];
+
+	// Get every nested dir and append them to the route_dirs array
+	get_all_dirs(&path, &mut route_dirs);
+
+	// Grab all of the base idents that we need to power the base "/" handler
+	let base_idents = std::fs::read_dir(&path)
+		.unwrap()
+		.map(|it| {
+			let path = it.unwrap().path();
+			let name = path.file_stem().unwrap().to_string_lossy();
+			Ident::new(&name, Span::call_site())
+		})
+		.filter(|it| it.to_string() != "mod")
+		.collect::<Vec<_>>();
+
+	let mut nested_idents: Vec<TokenStream2> = Vec::new();
+
+	for dir in route_dirs {
+		let string = dir.into_os_string().into_string().unwrap();
+		let delimiter = "routes";
+		let start_index = match string.find(delimiter) {
+			Some(index) => index + delimiter.len(),
+			None => {
+				panic!("Invalid route directory!");
+			}
+		};
+		let mod_name = format!("routes{}", &string[start_index..].replace("/", "::"));
+		let tokens: proc_macro2::TokenStream = mod_name.parse().unwrap();
+		nested_idents.push(quote! { pub use #tokens::*; });
+	}
+
+	// If the user wanted to use their own path we should force them to import their routes dir
+	if path != routes_directory {
+		return proc_macro::TokenStream::from(quote!(
+			use include_dir::{include_dir, Dir};
+			use rapid_web::actix::web;
+			pub use #module_name::{
+				#(#base_idents,)*
+			};
+			#(#nested_idents)*
+			#[cfg(debug_assertions)] // Only run this in debug mode when the user actually wants hot-reload (having extra code in main.rs file makes binary way larger)
+			const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
+		));
+	} else {
+		// Since the user did not specify a custom path we can just assume they used the `REMIX_ROUTE_PATH`
+		return proc_macro::TokenStream::from(quote!(
+			use include_dir::{include_dir, Dir};
+			use rapid_web::actix::web;
+			mod #module_name { #(pub mod #base_idents;)* }
+			pub use #module_name::{
+				#(#base_idents,)*
+			};
+			#(#nested_idents)*
+			#[cfg(debug_assertions)] // Only run this in debug mode (having extra code in main.rs file makes binary way larger)
+			const ROUTES_DIR: Dir = include_dir!(#path); // Including the entire routes dir here is what provides the "hot-reload" effect to the config macro
+		));
+	}
+}

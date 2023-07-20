@@ -105,6 +105,21 @@ pub fn convert_primitive(rust_primitive: &Type) -> TypescriptType {
 						_ => "unknown".to_string(),
 					},
 				},
+				"Union" => TypescriptType {
+					is_optional: false,
+					typescript_type: match arguments {
+						syn::PathArguments::AngleBracketed(anglebracketed_argument) => {
+							let mut converted_types: Vec<TypescriptType> = Vec::new();
+							for generic_type in anglebracketed_argument.args.iter() {
+								converted_types.push(convert_generic_type(generic_type));
+							}
+
+							// A `Union` type will only ever have two generic types (per `/shift/types.rs`)
+							format!("{} | {}", converted_types[0].typescript_type, converted_types[1].typescript_type)
+						}
+						_ => "unknown".to_string(),
+					},
+				},
 				"Option" => TypescriptType {
 					is_optional: true,
 					typescript_type: match arguments {
@@ -392,7 +407,7 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 								continue;
 							}
 							converter_instance.convert_type_alias(val)
-						},
+						}
 						_ => {
 							// If we found a rust item that we do not care about lets just continue
 							continue;

@@ -8,6 +8,7 @@ use std::{
 use syn::{parse_file, parse_str, File as SynFile, Item};
 
 pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
+pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
 
 pub fn get_all_dirs(path: &str, path_array: &mut Vec<PathBuf>) {
 	let dir = fs::read_dir(path);
@@ -159,7 +160,6 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	// Rapid will ignore all files that have more than one handler
 	let mut has_rapid_handler = false;
 	let mut handler_count = 0;
-
 
 	for item in parsed_file.items {
 		if let Item::Fn(function) = item {

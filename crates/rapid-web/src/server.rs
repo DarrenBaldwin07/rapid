@@ -1,4 +1,3 @@
-use std::{env::current_dir, path::PathBuf};
 use super::{
 	actix::{
 		dev::{ServiceRequest, ServiceResponse},
@@ -10,18 +9,23 @@ use super::{
 	logger::{init_logger, RapidLogger},
 	shift::generate::create_typescript_types,
 	tui::{clean_console, server_init},
-	util::{check_for_invalid_handlers, get_routes_dir, get_server_port, should_generate_types},
+	util::{
+		check_for_invalid_handlers, get_bindings_directory, get_routes_dir, get_server_port, should_generate_types, NEXTJS_ROUTE_PATH,
+		REMIX_ROUTE_PATH,
+		is_logging,
+		is_serving_static_files
+	},
 };
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
 use rapid_cli::{
-	tui::rapid_logo,
 	rapid_config::config::{find_rapid_config, RapidConfig},
+	tui::rapid_logo,
 };
 use spinach::Spinach;
-use std::{thread, time};
+use std::{env::current_dir, path::PathBuf, thread, time};
 extern crate proc_macro;
 
 #[derive(Clone)]
@@ -32,7 +36,7 @@ pub struct RapidServer {
 
 // A lazily evaluated const variable for accessing the rapidConfig at runtime
 lazy_static! {
-	static ref RAPID_SERVER_CONFIG: RapidConfig = find_rapid_config();
+	pub static ref RAPID_SERVER_CONFIG: RapidConfig = find_rapid_config();
 }
 
 /// A custom actix-web server implementation for the Rapid Framework
@@ -59,34 +63,12 @@ impl RapidServer {
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
-		// First we need to detect our app type
-		let app_type = &RAPID_SERVER_CONFIG.app_type;
 
-		// Next we need to go to the rapid config file and check for the is_logging variable
-		let is_logging = match app_type.as_str() {
-			"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
-				Some(value) => value.is_logging.unwrap_or(true),
-				None => true,
-			},
-			"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
-				Some(value) => value.is_logging.unwrap_or(true),
-				None => true,
-			}
-			_ => panic!("Error: invalid config type found in rapid config file. Please use either `server` or `remix`")
-		};
+		// First we need to go to the rapid config file and check for the is_logging variable
+		let is_logging = is_logging();
 
 		// Check if we should also be serving static files
-		let is_serving_static_files = match app_type.as_str() {
-			"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
-				Some(value) => value.serve_static_files.unwrap_or(true),
-				None => true,
-			},
-			"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
-				Some(value) => value.serve_static_files.unwrap_or(true),
-				None => true,
-			}
-			_ => panic!("Error: invalid config type found in rapid config file. Please use either `server` or `remix`")
-		};
+		let is_serving_static_files = is_serving_static_files();
 
 		let config_logging_server = {
 			if is_logging {
@@ -155,40 +137,14 @@ impl RapidServer {
 		// Note: make sure we panic if we are not able to detect it
 		let routes_dir = match RAPID_SERVER_CONFIG.app_type.as_str() {
 			"server" => get_routes_dir(RAPID_SERVER_CONFIG.server.as_ref()),
-			"remix" => String::from("app/api/routes"),
-			_ => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!")
+			"remix" => REMIX_ROUTE_PATH.to_owned(),
+			_ => NEXTJS_ROUTE_PATH.to_owned(),
 		};
 
 		// Grab the bindings directory from the rapid config file
 		// We want to make sure that it is valid and is actually defined (it defaults to an Option<String>)
 		// TODO: this needs refactored (or abstracted) really bad -- we need to have the match statements if we want better panic messages
-		let bindings_out_dir = match RAPID_SERVER_CONFIG.app_type.as_str() {
-			"server" => match RAPID_SERVER_CONFIG.server.as_ref() {
-				Some(server) => match server.bindings_export_path.clone() {
-					Some(dir) => match dir == "/" {
-						true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
-						false => current_dir()
-							.expect("Could not parse bindings export path found in rapid config file.")
-							.join(PathBuf::from(dir)),
-					},
-					None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
-				},
-				None => panic!("You must have a valid rapid config file in the base project directory!"),
-			},
-			"remix" => match RAPID_SERVER_CONFIG.remix.as_ref() {
-				Some(remix) => match remix.bindings_export_path.clone() {
-					Some(dir) => match dir == "/" {
-						true => current_dir().expect("Could not parse bindings export path found in rapid config file."),
-						false => current_dir()
-							.expect("Could not parse bindings export path found in rapid config file.")
-							.join(PathBuf::from(dir)),
-					},
-					None => panic!("Error: the 'bindings_export_path' variable must be set in your rapid config file!"),
-				},
-				None => panic!("You must have a valid rapid config file in the base project directory!"),
-			},
-			_ => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!")
-		};
+		let bindings_out_dir = get_bindings_directory();
 
 		// Check if we should generate typescript types or not
 		let should_generate_typescript_types = should_generate_types(RAPID_SERVER_CONFIG.clone());
@@ -204,7 +160,6 @@ impl RapidServer {
 
 		// Check for any invalid routes and log them to the console
 		check_for_invalid_handlers(&routes_dir);
-
 
 		// Finally, bind and run the rapid server
 		server.bind(bind_config)?.run().await
@@ -252,17 +207,24 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 			},
 			None => "".to_string(),
 		},
-		_ => "".to_string(),
+		_ => match config.nextjs {
+			Some(nextjs) => match nextjs.typescript_generation_directory {
+				Some(value) => value,
+				None => "".to_string(),
+			},
+			None => "".to_string(),
+		},
 	};
 
 	let routes_directory = current_dir()
-	.expect("Could not parse routes direcory path found in rapid config file.")
-	.join(PathBuf::from(routes_dir.clone()));
+		.expect("Could not parse routes direcory path found in rapid config file.")
+		.join(PathBuf::from(routes_dir.clone()));
 
 	// Generate our type gen dir
 	let type_generation_directory = if every_dir_types_gen != "" {
 		current_dir()
-		.expect("Could not parse current directory while executing type generation!").join(every_dir_types_gen)
+			.expect("Could not parse current directory while executing type generation!")
+			.join(every_dir_types_gen)
 	} else {
 		// If the typegen directory was not defined by the user, simply fallback to only doing handler types in the routes directorys
 		routes_directory.clone()
@@ -272,11 +234,7 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 	let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
 
 	// TODO: Support output types with this function
-	create_typescript_types(
-		bindings_out_dir,
-		routes_directory,
-		type_generation_directory
-	);
+	create_typescript_types(bindings_out_dir, routes_directory, type_generation_directory);
 
 	// Sleep a little to show loading animation
 	let timeout = time::Duration::from_millis(650);

@@ -1,4 +1,5 @@
 use crate::cli::{binary_dir, current_directory};
+use colorful::{Color, Colorful};
 use serde::Deserialize;
 use std::fs::read_to_string;
 use strum_macros::EnumString;
@@ -8,9 +9,9 @@ use toml;
 #[strum(ascii_case_insensitive)]
 #[derive(Deserialize, Clone)]
 pub enum AppType {
-	App,
 	Server,
-	Remix
+	Remix,
+	Nextjs
 }
 
 #[derive(Deserialize, Clone)]
@@ -26,7 +27,7 @@ pub struct ServerConfig {
 }
 
 #[derive(Deserialize, Clone)]
-pub struct RemixConfig {
+pub struct ReactFrameworkConfig {
 	pub server_port: Option<u16>,
 	pub is_logging: Option<bool>,
 	pub show_error_pages: Option<bool>,
@@ -50,43 +51,18 @@ pub struct RapidConfig {
 	pub app_type: String,
 	pub features: Option<Features>,
 	pub server: Option<ServerConfig>,
-	pub remix: Option<RemixConfig>
+	pub remix: Option<ReactFrameworkConfig>,
+	pub nextjs: Option<ReactFrameworkConfig>,
 }
 
 pub fn find_rapid_config() -> RapidConfig {
 	let dir = current_directory();
-	// Look for the Rapid config file inside of the current working directory
-	let config_file_contents = read_to_string(dir.join("rapid.toml"));
-
-	// Check to make sure that the config file did not throw an error
-	if let Err(_) = config_file_contents {
-		// TODO: We should improve error log styling later (just uses standard exit 200 best practices for now)
-		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a project scaffolded with the Rapid CLI.");
-		std::process::exit(200);
-	}
-
-	// Parse/deserialize the rapid config file from the .toml format
-	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
-
-	rapid_config
+	find_config(&dir)
 }
 
 pub fn find_rapid_config_from_binary() -> RapidConfig {
 	let dir = binary_dir();
-	// Look for the Rapid config file inside of the current working directory
-	let config_file_contents = read_to_string(dir.join("rapid.toml"));
-
-	// Check to make sure that the config file did not throw an error
-	if let Err(_) = config_file_contents {
-		// TODO: We should improve error log styling later (just uses standard exit 200 best practices for now)
-		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a project scaffolded with the Rapid CLI.");
-		std::process::exit(200);
-	}
-
-	// Parse/deserialize the rapid config file from the .toml file format
-	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
-
-	rapid_config
+	find_config(&dir)
 }
 
 // A helper function to check if the current running process is inside of a rapid application
@@ -102,4 +78,34 @@ pub fn is_rapid() -> bool {
 	}
 
 	return true;
+}
+
+pub fn find_config(dir: &std::path::PathBuf) -> RapidConfig {
+	// Look for the Rapid config file inside of the current working directory
+	let config_file_contents = read_to_string(dir.join("rapid.toml"));
+
+	// Check to make sure that the config file did not throw an error
+	if let Err(_) = config_file_contents {
+		// TODO: We should improve error log styling later (just uses standard exit 200 best practices for now)
+		eprintln!("Could not find a valid config file in the current working directory. Please make sure you are in a project scaffolded with the Rapid CLI.");
+		std::process::exit(200);
+	}
+
+	// Parse/deserialize the rapid config file from the .toml file format
+	let rapid_config: RapidConfig = toml::from_str(&config_file_contents.unwrap()).unwrap();
+
+	// Before we output the config, we need to make sure that the app_type is valid (`it can only be either `server`, `remix`, or `nextjs`)
+	let app_type = rapid_config.app_type.clone();
+
+	if app_type != "server" && app_type != "remix" && app_type != "nextjs" {
+		eprintln!(
+			"{}",
+			"Invalid `app_type` found in rapid.toml. The app_type can only be either `server`, `remix`, or `nextjs`."
+				.color(Color::Red)
+				.bold()
+		);
+		std::process::exit(200);
+	}
+
+	rapid_config
 }

@@ -1,7 +1,7 @@
 use colorful::{Color, Colorful};
 use rapid_cli::tui::rapid_logo;
-use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 use std::env;
+use tiny_gradient::{GradientDisplay, GradientStr, RGB};
 
 pub fn started_server_message() -> colorful::core::color_string::CString {
 	"Started".bg_blue().color(Color::White).bold()
@@ -36,9 +36,5 @@ pub fn rapid_log_target() -> GradientDisplay<'static, [RGB; 4]> {
 }
 
 pub fn rapid_error(message: &str) {
-	println!(
-		"{}",
-		message.color(Color::Red).bold()
-	);
+	println!("{}", message.color(Color::Red).bold());
 }
-

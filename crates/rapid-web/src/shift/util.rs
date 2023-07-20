@@ -1,4 +1,4 @@
-use super::convert::{TypescriptType, convert_primitive};
+use super::convert::{convert_primitive, TypescriptType};
 use syn::{parse_file, Expr, File as SynFile, Generics, Item, Lit, Type};
 
 pub const GENERATED_TS_FILE_MESSAGE: &str =
@@ -10,7 +10,7 @@ pub enum TypeClass {
 	QueryParam,
 	Path,
 	Invalid,
-	Return
+	Return,
 }
 
 #[derive(Debug, Clone)]
@@ -21,7 +21,7 @@ pub enum HandlerRequestType {
 	Put,
 	Patch,
 	Query,
-	Mutation
+	Mutation,
 }
 
 #[derive(Debug)]
@@ -74,7 +74,7 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 						"patch" => HandlerRequestType::Patch,
 						"query" => HandlerRequestType::Query,
 						"mutation" => HandlerRequestType::Mutation,
-						_ => HandlerRequestType::Get
+						_ => HandlerRequestType::Get,
 					},
 				}));
 
@@ -221,7 +221,7 @@ pub fn get_output_type_alias(handler_source: &str) -> TypescriptType {
 			// We do not want to support any other names (for now)
 			if item_type.ident.to_string() == "RapidOutput" {
 				let syn_type = *item_type.ty;
-				return convert_primitive(&syn_type)
+				return convert_primitive(&syn_type);
 			}
 		}
 	}

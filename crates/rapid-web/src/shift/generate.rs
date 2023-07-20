@@ -1,9 +1,8 @@
 use super::{
 	convert::{convert_all_types_in_path, TypescriptConverter, TypescriptType},
 	util::{
-		extract_handler_types, get_handler_type, get_route_key, is_dynamic_route, remove_last_occurrence, space, HandlerRequestType, TypeClass,
-		GENERATED_TS_FILE_MESSAGE,
-		get_output_type_alias
+		extract_handler_types, get_handler_type, get_output_type_alias, get_route_key, is_dynamic_route, remove_last_occurrence, space,
+		HandlerRequestType, TypeClass, GENERATED_TS_FILE_MESSAGE,
 	},
 };
 use crate::util::validate_route_handler;

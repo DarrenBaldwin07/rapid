@@ -3,62 +3,21 @@ import Nextjs from '../../assets/nextjs.png';
 import Remix from '../../assets/remix.svg';
 
 ## Supported Frameworks
-
-<br />
-<div className='flex space-x-4'>
-	<img height='64px' width='64px' src={Nextjs} />
-	<img height='64px' width='64px' src={Remix} />
+<div className='flex space-x-10 mt-6'>
+	<img width={70} height={70} src={Nextjs} />
+	<img width='50px' src={Remix} />
 </div>
-<br />
-## Prerequisites
-<hr />
-
-Install [node.js](https://nodejs.org/en), [rust](https://www.rust-lang.org/), and your favorite package manager
 
 <br />
-<br />
-## Installation
-<hr />
 
-### Install the rapid cli with cargo:
-
-<CodeBlock language='sh' code={`cargo install rapid-cli`} />
-
-<br />
-<br />
-## Getting Started With Remix
+## Getting Started
 
 <hr />
 
-### Generate a new [fullstack Rapid remix project:](https://github.com/Cincinnati-Ventures/rapid/tree/main/examples/fullstack)
-
-<CodeBlock language='sh' code={`rapid new --remix `} />
-
-<br />
-### Integrate the rapid backend into your existing application:
-<CodeBlock language='sh' code={`rapid new --server`} />
-
-<br />
-### Integrate the rapid frontend into your application:
-<CodeBlock language='sh' code={`npm install @rapid-web/ui`} />
-
-<br />
-<br />
-## Getting Started With NextJS
-
-<hr />
-
-### Generate a new fullstack Nextjs project:
-
+### Generate a new fullstack Rapid project with nextjs or remix:
+<div className='mt-2'></div>
+> This will give you a project scaffold containing all the needed files to develop an application with either Nextjs or Remix (use "rapid new --remix" to scaffold with Remix instead of Nextjs)
 <CodeBlock language='sh' code={`rapid new --nextjs`} />
-
-<br />
-### Integrate the rapid backend into your existing application:
-<CodeBlock language='sh' code={`rapid new --server`} />
-
-<br />
-### Integrate the rapid frontend into your application:
-<CodeBlock language='sh' code={`npm install @rapid-web/ui`} />
 
 <br />
 <br />
@@ -72,3 +31,13 @@ Install [node.js](https://nodejs.org/en), [rust](https://www.rust-lang.org/), an
 <br />
 ### Run the frontend:
 <CodeBlock language='sh' code={`npm run dev`} />
+
+
+<br />
+<br />
+## File structure
+<hr />
+The Rapid scaffolds have an almost identical structure to the defaults that you get with both the `nextjs` and `remix` CLIs. The only thing that is different is the `/api` directory.
+<br />
+### NextJS:
+

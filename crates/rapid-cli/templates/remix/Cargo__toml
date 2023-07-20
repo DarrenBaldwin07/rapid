@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 futures-util = "0.3.28"
 include_dir = "0.7.3"
-rapid-web = "0.4.5"
+rapid-web = "0.4.6"
 
 # Rapid binary
 [[bin]]

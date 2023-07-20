@@ -9,9 +9,9 @@ use toml;
 #[strum(ascii_case_insensitive)]
 #[derive(Deserialize, Clone)]
 pub enum AppType {
-	App,
 	Server,
 	Remix,
+	Nextjs
 }
 
 #[derive(Deserialize, Clone)]

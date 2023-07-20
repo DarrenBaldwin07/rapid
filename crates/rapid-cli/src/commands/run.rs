@@ -115,9 +115,9 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 	let application_type = AppType::from_str(&rapid_config.app_type).expect("Error: invalid rapid application type!");
 
 	match application_type {
-		AppType::App => {
-			// Currently app does nothing (we are yet to implement this)
-			println!("Coming soon...");
+		AppType::Nextjs => {
+			handle_run_server(server_port, rapid_config.app_type);
+			return Ok(());
 		}
 		AppType::Server => {
 			handle_run_server(server_port, rapid_config.app_type);
@@ -128,8 +128,6 @@ fn parse_run_args(args: &ArgMatches) -> Result<(), ()> {
 			return Ok(());
 		}
 	}
-
-	Ok(())
 }
 
 fn handle_run_server(server_port: u16, app_type: String) {

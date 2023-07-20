@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"@netlify/functions": "^1.4.0",
-		"@rapid-web/react": "^0.2.3",
+		"@rapid-web/react": "^0.2.4",
 		"@remix-run/netlify": "^1.16.0",
 		"@remix-run/node": "^1.16.0",
 		"@remix-run/react": "^1.16.0",

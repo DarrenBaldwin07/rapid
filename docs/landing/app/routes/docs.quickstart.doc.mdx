@@ -20,6 +20,11 @@ import Remix from '../../assets/remix.svg';
 <CodeBlock language='sh' code={`rapid new --nextjs`} />
 
 <br />
+
+### If you just want a backend web server with rapid you can run the following:
+<CodeBlock language='sh' code={`rapid new --server`} />
+
+<br />
 <br />
 ## Start your application:
 <hr />
@@ -37,7 +42,9 @@ import Remix from '../../assets/remix.svg';
 <br />
 ## File structure
 <hr />
-The Rapid scaffolds have an almost identical structure to the defaults that you get with both the `nextjs` and `remix` CLIs. The only thing that is different is the `/api` directory.
-<br />
-### NextJS:
-
+The Rapid scaffolds have an almost identical structure to the defaults that you get with both the `nextjs` and `remix` CLIs. The only thing that is different is the `/api` directory:
+<CodeBlock language='sh' code={`/api
+	/public // Any static files added to this directory will be served by rapid
+	/routes // Declare your route handlers
+	root.rs // Server entrypoint
+`} />

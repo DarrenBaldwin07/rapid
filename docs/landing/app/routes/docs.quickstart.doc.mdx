@@ -1,6 +1,50 @@
 import CodeBlock from '../components/CodeBlock';
+import Nextjs from '../../assets/nextjs.png';
+import Remix from '../../assets/remix.svg';
 
-## Rapid CLI
-> Begin by installing the Rapid-cli on your machine 💻
+## Supported Frameworks
+<div className='flex space-x-10 mt-6'>
+	<img width={70} height={70} src={Nextjs} />
+	<img width='50px' src={Remix} />
+</div>
+
+<br />
+
+## Getting Started
+
 <hr />
-<CodeBlock language="bash" code={`cargo install rapid-cli`} />
+
+### Generate a new fullstack Rapid project with nextjs or remix:
+<div className='mt-2'></div>
+> This will give you a project scaffold containing all the needed files to develop an application with either Nextjs or Remix (use "rapid new --remix" to scaffold with Remix instead of Nextjs)
+<CodeBlock language='sh' code={`rapid new --nextjs`} />
+
+<br />
+
+### If you just want a backend web server with rapid you can run the following:
+<CodeBlock language='sh' code={`rapid new --server`} />
+
+<br />
+<br />
+## Start your application:
+<hr />
+
+### Run the backend:
+
+<CodeBlock language='sh' code={`rapid run `} />
+
+<br />
+### Run the frontend:
+<CodeBlock language='sh' code={`npm run dev`} />
+
+
+<br />
+<br />
+## File structure
+<hr />
+The Rapid scaffolds have an almost identical structure to the defaults that you get with both the `nextjs` and `remix` CLIs. The only thing that is different is the `/api` directory:
+<CodeBlock language='sh' code={`/api
+	/public // Any static files added to this directory will be served by rapid
+	/routes // Declare your route handlers
+	root.rs // Server entrypoint
+`} />

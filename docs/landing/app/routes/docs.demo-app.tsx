@@ -22,7 +22,7 @@ const DocsDemoApp = () => {
 	return (
 		<div>
 			<BreadCrumb routes={data.routes} />
-			<div className='text-white'>Demo App doc (Coming soon...)</div>
+			<div className='text-white'>Coming soon...</div>
 		</div>
 	);
 };

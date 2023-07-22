@@ -15,6 +15,9 @@ import Remix from '../../assets/remix.svg';
 <br />
 
 ## Getting Started
+<br />
+### Start by installing the rapid cli:
+<CodeBlock language='sh' code={`cargo install rapid-cli`} />
 
 <hr />
 
@@ -33,7 +36,7 @@ import Remix from '../../assets/remix.svg';
 ## Start your application:
 <hr />
 
-### Run the backend:
+### Run the backend dev-server:
 
 <CodeBlock language='sh' code={`rapid run `} />
 
@@ -41,14 +44,16 @@ import Remix from '../../assets/remix.svg';
 ### Run the frontend:
 <CodeBlock language='sh' code={`npm run dev`} />
 
-
 <br />
 <br />
 ## File structure
 <hr />
-The Rapid scaffolds have an almost identical structure to the defaults that you get with both the `nextjs` and `remix` CLIs. The only thing that is different is the `/api` directory:
+The Rapid framework scaffolds have an almost identical structure to the defaults that you get with both the `nextjs` and `remix` CLIs. The only thing that is different is the `/api` directory:
 <CodeBlock language='sh' code={`/api
 	/public // Any static files added to this directory will be served by rapid
 	/routes // Declare your route handlers
 	root.rs // Server entrypoint
 `} />
+<div className='mt-2'></div>
+> For more rapid examples head over to the "/examples" directory in our <a href='https://github.com/Cincinnati-Ventures/rapid/tree/main/examples' target='_blank'>Github</a>
+

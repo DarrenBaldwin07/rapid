@@ -2,28 +2,28 @@
 
 export interface Handlers {
 	queries: {
-		"index": {
-  			output: any
-  			type: 'query'
-  			isDynamic: false
-		},
+		index: {
+			output: any;
+			type: 'query';
+			isDynamic: false;
+		};
 
-		"hello": {
-  			output: any
-  			type: 'query'
-  			isDynamic: false
-		},
-	},
-	mutations: {},
+		hello: {
+			output: any;
+			type: 'query';
+			isDynamic: false;
+		};
+	};
+	mutations: {};
 }
 
 export const routes = {
-	"index": {
+	index: {
 		url: '/',
 		type: 'query',
 	},
-	"hello": {
+	hello: {
 		url: '/hello',
 		type: 'query',
 	},
-} as const
+} as const;

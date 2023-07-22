@@ -10,8 +10,8 @@ import {
 export default {
 	content: [
 		'./pages/**/*.{js,ts,jsx,tsx}',
-    	'./components/**/*.{js,ts,jsx,tsx}',
-		rapidStylesPath
+		'./components/**/*.{js,ts,jsx,tsx}',
+		rapidStylesPath,
 	],
 	theme: {
 		extend: rapidTailwindTheme({

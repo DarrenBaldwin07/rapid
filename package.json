@@ -6,7 +6,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"pretty": "prettier --write \"./**/*.{ts,tsx,json}\" --config ./prettier.config.js"
+		"pretty": "prettier --write \"./**/*.{ts,tsx,json}\" --config ./prettier.config.js",
+		"docs": "cd ./docs/landing && pnpm run dev"
 	},
 	"homepage": "https://rapid.cincinnati.ventures",
 	"keywords": [

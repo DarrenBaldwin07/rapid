@@ -5,7 +5,10 @@ import Logo from '../../assets/logo.svg';
 import GradientMain from '../../assets/gradientMain.svg';
 import Github from '../../assets/github.svg';
 import { NavLink } from '@remix-run/react';
-import { faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import {
+	faChevronRight,
+	faChevronDown,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NpmLogo from '../components/NpmLogo';
 import CratesIoLogo from './CratesIoLogo';
@@ -96,7 +99,7 @@ const DocsNavigation = () => {
 									<Text styles='gradient-text uppercase text-xs'>
 										Getting Started
 									</Text>
-									<div className='flex flex-col gap-2 mt-2'>
+									<div className='mt-2 flex flex-col gap-2'>
 										<NavLink
 											to='/docs/introduction'
 											className={({ isActive }) =>

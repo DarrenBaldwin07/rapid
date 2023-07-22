@@ -1,5 +1,5 @@
 import React from 'react';
-import { json, redirect } from '@remix-run/node';
+import { docsSetup } from '~/helpers';
 import { Heading } from '@rapid-web/ui';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
@@ -21,21 +21,7 @@ export const links: LinksFunction = () => {
 };
 
 export const loader: LoaderFunction = ({ request }) => {
-	const url = new URL(request.url);
-
-	if (url.pathname === '/docs/introduction') {
-		return redirect('/docs/introduction/doc');
-	}
-
-	if (url.pathname == '/docs/introduction/doc') {
-		url.pathname = '/docs/introduction';
-	}
-
-	const routes = url.pathname.split('/').filter(Boolean);
-
-	return json({
-		routes,
-	});
+	return docsSetup("introduction", request);
 };
 
 const DocsIntroduction = () => {

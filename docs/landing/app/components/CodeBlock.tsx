@@ -23,18 +23,18 @@ const CodeBlock = ({ language, code }: Props) => {
 
 	return (
 		<div
-			className='mt-6 z-2'
+			className='z-2 mt-6'
 			onMouseOver={() => setIsShowingCopy(true)}
 			onMouseLeave={() => setTimeout(() => setIsShowingCopy(false), 250)}
 		>
-			<div className='flex bg-[#282C34] rounded-lg justify-between w-full'>
+			<div className='flex w-full justify-between rounded-lg bg-[#282C34]'>
 				<pre ref={codeRef as any} className={`language-${language}`}>
 					{code}
 				</pre>
 				<div>
 					{isShowingCopy && (
 						<button
-							className='flex m-2 self-end transition-all duration-100 ease-linear text-white bg-[#18181C] border border-[#27272D] p-2 rounded-lg'
+							className='m-2 flex self-end rounded-lg border border-[#27272D] bg-[#18181C] p-2 text-white transition-all duration-100 ease-linear'
 							onClick={() => {
 								navigator.clipboard.writeText(code);
 								setIsShowingCopy(false);

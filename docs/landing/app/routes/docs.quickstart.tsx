@@ -1,5 +1,5 @@
 import React from 'react';
-import { json, redirect } from '@remix-run/node';
+import { docsSetup } from '~/helpers';
 import { Heading } from '@rapid-web/ui';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import { useLoaderData, Outlet } from '@remix-run/react';
@@ -25,21 +25,7 @@ export const links: LinksFunction = () => {
 };
 
 export const loader: LoaderFunction = ({ request }) => {
-	const url = new URL(request.url);
-
-	if (url.pathname === '/docs/quickstart') {
-		return redirect('/docs/quickstart/doc');
-	}
-
-	if (url.pathname == '/docs/quickstart/doc') {
-		url.pathname = '/docs/quickstart';
-	}
-
-	const routes = url.pathname.split('/').filter(Boolean);
-
-	return json({
-		routes,
-	});
+	return docsSetup("quickstart", request);
 };
 
 const DocsInstallation = () => {

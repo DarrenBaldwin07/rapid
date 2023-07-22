@@ -28,7 +28,7 @@ export type BoltOutput<
 	T1,
 	T2,
 	T3,
-	T4
+	T4,
 > = T extends 'post'
 	? PostFunction<T1, T2, T3, T4>
 	: T extends 'get'

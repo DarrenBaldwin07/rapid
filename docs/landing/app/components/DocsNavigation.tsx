@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NpmLogo from '../components/NpmLogo';
 import CratesIoLogo from './CratesIoLogo';
 import { motion } from 'framer-motion';
+import DocsLinks from './DocsLinks';
 
 const DocsNavigation = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -93,50 +94,8 @@ const DocsNavigation = () => {
 								animate={isOpen ? 'open' : 'closed'}
 								variants={variants}
 							>
-								<div
-									className={`mt-2 w-full flex-col items-start gap-4`}
-								>
-									<Text styles='gradient-text uppercase text-xs'>
-										Getting Started
-									</Text>
-									<div className='mt-2 flex flex-col gap-2'>
-										<NavLink
-											to='/docs/introduction'
-											className={({ isActive }) =>
-												`text-docsText exclude-from-markdown z-10 transition-all duration-100 ease-in-out hover:text-white ${
-													isActive && 'text-white'
-												}`
-											}
-										>
-											<Text styles='exclude-from-markdown'>
-												Introduction
-											</Text>
-										</NavLink>
-										<NavLink
-											to='/docs/quickstart'
-											className={({ isActive }) =>
-												`text-docsText exclude-from-markdown z-10 border-transparent transition-all duration-100 ease-in-out hover:text-white ${
-													isActive && 'text-white'
-												}`
-											}
-										>
-											<Text styles='exclude-from-markdown'>
-												Quickstart
-											</Text>
-										</NavLink>
-										<NavLink
-											to='/docs/demo-app'
-											className={({ isActive }) =>
-												`text-docsText exclude-from-markdown z-10 transition-all duration-100 ease-in-out hover:text-white ${
-													isActive && 'text-white'
-												}`
-											}
-										>
-											<Text styles='exclude-from-markdown'>
-												Demo App
-											</Text>
-										</NavLink>
-									</div>
+								<div className='mt-4 flex flex-col gap-12 pb-4'>
+									<DocsLinks />
 								</div>
 							</motion.div>
 						</div>

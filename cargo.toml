@@ -2,6 +2,8 @@
 exclude = [
   "crates/rapid-cli/src/templates/server",
   "crates/rapid-cli/src/templates/remix",
-  "examples/fullstack",
+  "examples/fullstackRemix",
+  "examples/server",
+  "examples/fullstackNextjs"
 ]
 members = ["crates/*"]

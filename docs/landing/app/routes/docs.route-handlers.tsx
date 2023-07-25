@@ -1,6 +1,7 @@
 import React from 'react';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, Outlet } from '@remix-run/react';
+import { Heading } from '@rapid-web/ui';
 import { BreadCrumb } from '~/components/BreadCrumb';
 import { docsSetup } from '~/helpers';
 import prism from '../styles/prism.css';
@@ -32,7 +33,12 @@ const RouteHandlers = () => {
 	return (
 		<div>
 			<BreadCrumb routes={data.routes} />
-			<div className='text-white'>Coming soon...</div>
+            <Heading styles='exclude-from-markdown text-white text-5xl font-bold'>
+				Route handlers
+			</Heading>
+            <div className='mt-12 w-full text-white'>
+				<Outlet />
+			</div>
 		</div>
 	);
 };

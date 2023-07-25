@@ -11,7 +11,7 @@ const DocsLinks = () => {
 				</Text>
 				<div className='z-10 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
 					<NavLink
-						to='/docs/introduction'
+						to='/docs/introduction/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -21,7 +21,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Introduction</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/quickstart'
+						to='/docs/quickstart/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -31,7 +31,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Quickstart</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/demo-app'
+						to='/docs/demo-app/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -46,7 +46,7 @@ const DocsLinks = () => {
 				<Text styles='gradient-text uppercase text-xs'>Server</Text>
 				<div className='z-10 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
 					<NavLink
-						to='/docs/route-handlers'
+						to='/docs/route-handlers/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -58,7 +58,7 @@ const DocsLinks = () => {
 						</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/middleware'
+						to='/docs/middleware/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -68,7 +68,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Middleware</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/type-safety'
+						to='/docs/type-safety/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -78,7 +78,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Type Safety</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/rapid-config'
+						to='/docs/rapid-config/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -95,7 +95,7 @@ const DocsLinks = () => {
 				<Text styles='gradient-text uppercase text-xs'>Client</Text>
 				<div className='z-10 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
 					<NavLink
-						to='/docs/client/vanilla'
+						to='/docs/client/vanilla/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -105,7 +105,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Vanilla</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/client/remix'
+						to='/docs/client/remix/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -115,7 +115,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Remix</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/client/nextjs'
+						to='/docs/client/nextjs/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'

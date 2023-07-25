@@ -1,4 +1,4 @@
-// TODO: check to make sure this is not still an issue with react + TS (it could have recently been fixed but was still an issue in react18.0.0)
+// TODO: check to make sure this is not still an issue with react + TS (it could have recently been fixed but was still an issue as of react18.0.0)
 lazy_static! {
 	pub static ref POLYFILL: String = {
 		let mut polyfill = String::new();

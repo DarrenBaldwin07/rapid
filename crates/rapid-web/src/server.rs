@@ -58,7 +58,7 @@ impl RapidServer {
 
 	/// A stock re-export of the actix-web "App::new()" router with a few extras
 	/// This router does not support type-safe file based routing
-	/// Note: to experience the full capabilities of rapid-web, we recommend useing the RapidServer::fs_router function
+	/// Note: to experience the full capabilities of rapid-web, we recommend using the RapidServer::fs_router function
 	pub fn router(
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,

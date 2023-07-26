@@ -1,7 +1,7 @@
 import React from 'react';
-import { json } from '@remix-run/node';
+import { docsSetup } from '~/helpers';
 import type { LoaderFunction } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { Outlet, useLoaderData } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 
 interface LoaderOutput {
@@ -9,12 +9,7 @@ interface LoaderOutput {
 }
 
 export const loader: LoaderFunction = ({ request }) => {
-	const url = new URL(request.url);
-	const routes = url.pathname.split('/').filter(Boolean);
-
-	return json({
-		routes,
-	});
+	return docsSetup("demo-app", request);
 };
 
 const DocsDemoApp = () => {
@@ -22,7 +17,9 @@ const DocsDemoApp = () => {
 	return (
 		<div>
 			<BreadCrumb routes={data.routes} />
-			<div className='text-white'>Coming soon...</div>
+			<div className='mt-12 w-full text-white'>
+				<Outlet />
+			</div>
 		</div>
 	);
 };

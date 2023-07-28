@@ -10,3 +10,4 @@ target
 build
 tailwind-dev.css
 .DS_STORE
+.vscode

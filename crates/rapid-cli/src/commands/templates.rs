@@ -10,7 +10,7 @@ impl RapidCommand for Templates {
 		Command::new("templates").about("SaaS templates for the rapid framework.")
 	}
 
-	fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
+	fn execute(_: &Config, _args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
 		println!("{}", logo());
 		println!("> Welcome to RAPID templates");
 		Ok(())

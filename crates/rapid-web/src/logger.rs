@@ -1,4 +1,3 @@
-use super::tui::rapid_log_target;
 use actix_web::{
 	dev::{forward_ready, Service, ServiceRequest, ServiceResponse, Transform},
 	http::header::HeaderValue,
@@ -7,34 +6,13 @@ use actix_web::{
 use colorful::{Color, Colorful};
 use futures_util::future::LocalBoxFuture;
 use log::info;
-use std::{
-	env,
-	future::{ready, Ready},
-	io::Write,
-	str,
-};
+use std::future::{ready, Ready};
 
 pub fn init_logger() {
-	// Configure our logger
-	env::set_var("RUST_LOG", "info");
-
-	env_logger::builder()
-		.format(|buf, record| {
-			// All the targets that actix-web logs from by default
-			const TARGETS: [&'static str; 4] = [
-				"actix_server::builder",
-				"actix_server::server",
-				"actix_server::worker",
-				"actix_server::accept",
-			];
-			// We want to hide the actix web default logs
-			// Check for a specific target from actix and write nothing to the console instead
-			if TARGETS.contains(&record.metadata().target()) {
-				return write!(buf, "");
-			}
-			writeln!(buf, "{}: {}", record.level(), record.args())
-		})
-		.init();
+	pretty_env_logger::formatted_builder()
+		.filter_level(log::LevelFilter::Info)
+		.filter(Some("actix_server"), log::LevelFilter::Error)
+		.try_init().ok();
 }
 
 /// An enum for selecting a RapidLogger output type
@@ -97,9 +75,7 @@ impl RapidLogger {
 		let request_http = req.version();
 
 		let logs = format!(
-			"{} {} {} {} {:?}",
-			rapid_log_target(),
-			"REQUEST",
+			"REQUEST {} {} {:?}",
 			request_method,
 			request_path,
 			request_http
@@ -110,7 +86,7 @@ impl RapidLogger {
 	fn minimal_response_logs<B>(res: &ServiceResponse<B>) {
 		let response_status = res.status().to_string().color(Color::LightCyan);
 
-		info!("{} {} {}", rapid_log_target(), "RESPONSE", response_status);
+		info!("RESPONSE {}", response_status);
 	}
 
 	fn detailed_request_logs(req: &ServiceRequest) {
@@ -131,9 +107,7 @@ impl RapidLogger {
 		};
 
 		let logs = format!(
-			"{} {} {} {} {} {:?} {} {} {}",
-			rapid_log_target(),
-			"REQUEST",
+			"REQUEST {} {} {} {:?} {} {} {}",
 			request_method,
 			request_path,
 			request_uri,
@@ -166,9 +140,7 @@ impl RapidLogger {
 		};
 
 		let logs = format!(
-			"{} {} {} {}",
-			rapid_log_target(),
-			"RESPONSE",
+			"RESPONSE {} {}",
 			response_status,
 			format!("{}{:?}", "headers=".color(Color::LightCyan), response_headers)
 		);
@@ -247,8 +219,6 @@ where
 	fn call(&self, req: ServiceRequest) -> Self::Future {
 		let cloned_log_type = self.log_type.clone();
 
-		// We want spacing between each log
-		println!("\n");
 		// Log all of the request logs to the users console
 		RapidLogger::get_request_logs(&req, cloned_log_type);
 		let fut = self.service.call(req);

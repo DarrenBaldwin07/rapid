@@ -2,6 +2,7 @@ use super::util::{get_struct_generics, indent, space};
 use std::{env::current_dir, ffi::OsStr, fs::File, io::prelude::*};
 use syn::{parse_file, Item, ItemStruct, ItemType, Type};
 use walkdir::WalkDir;
+use log::error;
 
 #[derive(Debug, Clone)]
 pub struct TypescriptType {
@@ -217,6 +218,7 @@ pub fn get_rust_typename(rust_type: &Type) -> String {
 }
 
 // TODO: support `Function`, `TypeAlias`, `Enum`, and `Const`
+#[allow(dead_code)]
 pub enum ConversionType {
 	Primitive,
 	Struct,
@@ -304,12 +306,15 @@ impl TypescriptConverter {
 	}
 
 	// TODO: we should also convert constants to typescript aliases as well
+	#[allow(dead_code)]
 	pub fn convert_const() {}
 
 	// TODO: enums in typescript suck but might be ideal to atleast support conversion
+	#[allow(dead_code)]
 	pub fn convert_enum() {}
 
 	// TODO: support converting all functions to typescript types
+	#[allow(dead_code)]
 	pub fn convert_function() {}
 
 	/// Converts rust type aliases to typescript types or interfaces
@@ -417,7 +422,7 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 			}
 			Err(_) => {
 				// if we were not able to parse the file lets error out
-				println!("An error occurred when attempting to parse directory with path: {:?}", parsing_directory);
+				error!("An error occurred when attempting to parse directory with path: {:?}", parsing_directory);
 				continue;
 			}
 		}

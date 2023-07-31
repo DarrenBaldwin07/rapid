@@ -1,40 +1,14 @@
 use colorful::{Color, Colorful};
-use rapid_cli::tui::rapid_logo;
 use std::env;
-use tiny_gradient::{GradientDisplay, GradientStr, RGB};
-
-pub fn started_server_message() -> colorful::core::color_string::CString {
-	"Started".bg_blue().color(Color::White).bold()
-}
+use log::info;
 
 pub fn server_init(bind_config: (String, u16)) {
-	// This print statement removes all prev terminal logs (aka the same as running a clear command)
-	print!("{esc}c", esc = 27 as char);
 	let server_url = format!("http://{}:{}", &bind_config.0, &bind_config.1).color(Color::Blue);
 	// Grab the current crate version at compile time...
 	let crate_version = env!("CARGO_PKG_VERSION");
-	println!(
-		"{} {} {} and serving requests: \n\n➜  {} {}",
-		rapid_logo(),
-		crate_version.bold(),
-		started_server_message(),
-		"Dev Server:".bold(),
+	info!(
+		"started rapid version {} server on {}",
+		crate_version,
 		server_url
 	);
-}
-
-pub fn clean_console() {
-	print!("{esc}c", esc = 27 as char);
-}
-
-pub fn rapid_log_target() -> GradientDisplay<'static, [RGB; 4]> {
-	let target = GradientStr::gradient(
-		&"[rapid-web::logger]",
-		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)],
-	);
-	target
-}
-
-pub fn rapid_error(message: &str) {
-	println!("{}", message.color(Color::Red).bold());
 }

@@ -2,15 +2,15 @@ use super::RapidCommand;
 use crate::{
 	cli::{current_directory, Config},
 	constants::BOLT_EMOJI,
-	tui::{logo, rapid_logo},
+	tui::logo,
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
 use rust_embed::RustEmbed;
+use log::{error, info};
 use std::{
 	fs::{write, File},
 	path::PathBuf,
-	thread, time,
 };
 
 #[derive(RustEmbed)]
@@ -104,14 +104,14 @@ pub fn ui_subcommand_handler(init_args: [&str; 3], subcommand_args: &ArgMatches,
 							break;
 						}
 						_ => {
-							println!("{}", "No template found. Please try '--vite' or '--remix'".color(Color::Red));
+							error!("{}", "no template found. Please try '--vite' or '--remix'".color(Color::Red));
 							break;
 						}
 					}
 				}
 			}
 			None => {
-				println!("{}", "No template found. Please try '--vite' or '--remix'".color(Color::Red));
+				error!("{}", "no template found. Please try '--vite' or '--remix'".color(Color::Red));
 			}
 		}
 	}
@@ -128,19 +128,19 @@ pub fn server_subcommand_handler(init_args: [&str; 1], subcommand_args: &ArgMatc
 							return;
 						}
 						_ => {
-							println!("{}", "No command found. Please try '--deploy'".color(Color::Red));
+							error!("{}", "no command found. Please try '--deploy'".color(Color::Red));
 							return;
 						}
 					}
 				}
 			}
 			None => {
-				println!("{}", "No command found. Please try '--deploy'".color(Color::Red));
+				error!("{}", "no command found. Please try '--deploy'".color(Color::Red));
 			}
 		}
 	}
 
-	println!("{}", "No init commands found! Please try using '--deploy'".color(Color::Red));
+	error!("{}", "no init commands found! Please try using '--deploy'".color(Color::Red));
 }
 
 fn parse_init_args(args: &ArgMatches) {
@@ -164,11 +164,11 @@ fn parse_init_args(args: &ArgMatches) {
 					}
 					"fullstack" => {
 						// TODO: this will be the command that runs for initializing a new rapid app inside of an existing nextjs or remix application (different from rapid new that scaffolds an entire fullstack app with rapid)
-						println!("Coming soon...");
+						error!("coming soon...");
 						return;
 					}
 					_ => {
-						println!("{} {}", "No init scripts found.".color(Color::Red), arg);
+						error!("no init scripts found for `{}`", arg);
 						break;
 					}
 				}
@@ -177,11 +177,11 @@ fn parse_init_args(args: &ArgMatches) {
 		}
 	}
 
-	println!("{}", "No init scripts found!".color(Color::Red));
+	error!("no init scripts found");
 }
 
 pub fn init_vite_template(current_working_directory: PathBuf, arg: &str) {
-	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+	info!("Initializing rapid-ui with the template: {:?}...", arg);
 	let tailwind_config_contents = Asset::get("tailwind.config.js").unwrap();
 	let postcss_config_contents = Asset::get("postcss.config.js").unwrap();
 	let index_css_contents = Asset::get("index.css").unwrap();
@@ -195,21 +195,14 @@ pub fn init_vite_template(current_working_directory: PathBuf, arg: &str) {
 	write("postcss.config.js", std::str::from_utf8(postcss_config_contents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
 	write("src/index.css", std::str::from_utf8(index_css_contents.data.as_ref()).unwrap()).expect("Could not write to index.css file!");
 
-	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(500);
-	thread::sleep(timeout);
-
-	println!(
-		"{} {} {} {}",
-		format!("{}", rapid_logo()).bold(),
-		"Success".bg_blue().color(Color::White).bold(),
+	info!(
+		"{} rapid-ui has been initialized in your Vite project!",
 		BOLT_EMOJI,
-		"Rapid-ui has been initialized in your Vite project!"
 	);
 }
 
 pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
-	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+	info!("initializing rapid-ui with the template {:?}...", arg);
 	let tailwind_config_contents = RemixAssets::get("tailwind.config.ts").unwrap();
 	let index_css_contents = RemixAssets::get("index.css").unwrap();
 	// Make the two config files that we need
@@ -220,21 +213,14 @@ pub fn init_remix_template(current_working_directory: PathBuf, arg: &str) {
 		.expect("Could not write to tailwind config file!");
 	write("app/index.css", std::str::from_utf8(index_css_contents.data.as_ref()).unwrap()).expect("Could not write to index.css file!");
 
-	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(500);
-	thread::sleep(timeout);
-
-	println!(
-		"{} {} {} {}",
-		format!("{}", rapid_logo()).bold(),
-		"Success".bg_blue().color(Color::White).bold(),
+	info!(
+		"{} rapid-ui has been initialized in your Remix project!",
 		BOLT_EMOJI,
-		"Rapid-ui has been initialized in your Remix project!"
 	);
 }
 
 pub fn init_nextjs_template(current_working_directory: PathBuf, arg: &str) {
-	println!("{} {:?}...", "Initializing rapid-ui with the template".color(Color::Green), arg);
+	info!("initializing rapid-ui with the template {:?}...", arg);
 	let tailwind_config_contents = NextJsAssets::get("tailwind.config.ts").unwrap();
 	let postcss_config_contents = NextJsAssets::get("postcss.config.js").unwrap();
 
@@ -246,21 +232,14 @@ pub fn init_nextjs_template(current_working_directory: PathBuf, arg: &str) {
 	write("tailwind.config.ts", std::str::from_utf8(tailwind_config_contents.data.as_ref()).unwrap())
 		.expect("Could not write to tailwind config file!");
 
-	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(500);
-	thread::sleep(timeout);
-
-	println!(
-		"{} {} {} {}",
-		format!("{}", rapid_logo()).bold(),
-		"Success".bg_blue().color(Color::White).bold(),
+	info!(
+		"{} rapid-ui has been initialized in your NextJS project!",
 		BOLT_EMOJI,
-		"Rapid-ui has been initialized in your NextJS project!"
 	);
 }
 
 pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
-	println!("{}...", "Initializing rapid deployments".color(Color::Green));
+	info!("Initializing rapid deployments...");
 	let dockerfile_conents = Dockerfiles::get("rapidServer.Dockerfile").unwrap();
 
 	// Create the Dockerfile
@@ -270,24 +249,12 @@ pub fn init_deployments_dockerfile(current_working_directory: PathBuf) {
 	// Write to the Dockerfuke
 	write("rapid.Dockerfile", std::str::from_utf8(dockerfile_conents.data.as_ref()).unwrap()).expect("Could not write to postcss config file!");
 
-	// Sleep a little to show loading animation, etc (there is a nice one we could use from the "tui" crate)
-	let timeout = time::Duration::from_millis(500);
-	thread::sleep(timeout);
-
-	println!(
-		"{} {} {} {} {}",
-		"\n\n🚀".bold(),
-		"Next Steps".bg_blue().color(Color::White).bold(),
+	info!(
+		"{}\n{}{}\n{}{}",
 		BOLT_EMOJI,
-		format!(
-			"{}{}",
-			format!("\n\nBuild: {}", "").bold(),
-			"docker build -t rapid-server -f ./rapid.Dockerfile .".color(Color::LightCyan)
-		),
-		format!(
-			"{}{}",
-			format!("\nRun: {}", "").bold(),
-			"docker run -p 8080:8080 rapid-server".color(Color::LightCyan)
-		),
+		"Build: ".bold(),
+		"docker build -t rapid-server -f ./rapid.Dockerfile .".color(Color::LightCyan),
+		"Run: ".bold(),
+		"docker run -p 8080:8080 rapid-server".color(Color::LightCyan),
 	);
 }

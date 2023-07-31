@@ -6,9 +6,9 @@ use super::{
 	},
 	cors::Cors,
 	default_routes::static_files,
-	logger::{init_logger, RapidLogger},
+	logger::RapidLogger,
 	shift::generate::create_typescript_types,
-	tui::{clean_console, server_init},
+	tui::server_init,
 	util::{
 		check_for_invalid_handlers, get_bindings_directory, get_routes_dir, get_server_port, should_generate_types, NEXTJS_ROUTE_PATH,
 		REMIX_ROUTE_PATH,
@@ -20,12 +20,10 @@ use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
-use rapid_cli::{
-	rapid_config::config::{find_rapid_config, RapidConfig},
-	tui::rapid_logo,
-};
-use spinach::Spinach;
-use std::{env::current_dir, path::PathBuf, thread, time};
+use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
+use std::{env::current_dir, path::PathBuf, time::Instant};
+use log::info;
+use crate::logger::init_logger;
 extern crate proc_macro;
 
 #[derive(Clone)]
@@ -188,9 +186,6 @@ fn get_default_bind_config(config: RapidConfig, host_name: Option<String>, port:
 }
 
 pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, config: RapidConfig) {
-	// Clean the console before proceeding...
-	clean_console();
-
 	// Check if we should be converting types inside of every directory
 	let every_dir_types_gen = match config.app_type.as_str() {
 		"server" => match config.server {
@@ -230,16 +225,11 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 		routes_directory.clone()
 	};
 
-	// Show a loading spinner as needed
-	let loading = Spinach::new(format!("{} Generating types...", rapid_logo()));
+	let start_time = Instant::now();
+	info!("generating types...");
 
 	// TODO: Support output types with this function
 	create_typescript_types(bindings_out_dir, routes_directory, type_generation_directory);
 
-	// Sleep a little to show loading animation
-	let timeout = time::Duration::from_millis(650);
-	thread::sleep(timeout);
-
-	// Stop the loading animation
-	loading.stop();
+	info!("generated types in {} ms", start_time.elapsed().as_millis());
 }

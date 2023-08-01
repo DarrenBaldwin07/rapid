@@ -114,6 +114,11 @@ impl RapidServer {
 	}
 
 	/// Takes in a pre-configured HttpServer and listens on the specified port(s)
+	/// 
+	/// # Notes
+	/// This function will try to initalize a logger in case one has not already been initalized.
+	/// If you would like to use your own logger, make sure it has been initalized before this 
+	/// function is called
 	pub async fn listen<F, I, S, B>(self, server: HttpServer<F, I, S, B>) -> std::io::Result<()>
 	where
 		F: Fn() -> I + Send + Clone + 'static,

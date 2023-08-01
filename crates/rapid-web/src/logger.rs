@@ -23,9 +23,8 @@ pub fn init_logger() {
 /// 3. `RapidLogger::verbose`
 ///
 /// # Example output
-/// [rapid-web::logger] REQUEST GET /get-todos HTTP/1.1
-///
-///
+/// INFO  rapid_web::logger > REQUEST GET /hello HTTP/1.1
+/// INFO  rapid_web::logger > RESPONSE 200 OK
 #[derive(Copy, Clone)]
 pub enum LoggerType {
 	Minimal,
@@ -47,9 +46,8 @@ pub struct RapidLogger {
 /// 3. `RapidLogger::verbose`
 ///
 /// # Example output
-/// [rapid-web::logger] REQUEST GET /get-todos HTTP/1.1
-///
-///
+/// INFO  rapid_web::logger > REQUEST GET /hello HTTP/1.1
+/// INFO  rapid_web::logger > RESPONSE 200 OK
 impl RapidLogger {
 	pub fn minimal() -> Self {
 		Self {

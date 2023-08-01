@@ -20,9 +20,10 @@ use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
+use spinach::Spinach;
 use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
+use rapid_cli::tui::rapid_logo;
 use std::{env::current_dir, path::PathBuf, time::Instant};
-use log::info;
 use crate::logger::init_logger;
 extern crate proc_macro;
 
@@ -231,10 +232,9 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 	};
 
 	let start_time = Instant::now();
-	info!("generating types...");
-
+	let loading = Spinach::new(format!("{} generating types...", rapid_logo()));
 	// TODO: Support output types with this function
 	create_typescript_types(bindings_out_dir, routes_directory, type_generation_directory);
-
-	info!("generated types in {} ms", start_time.elapsed().as_millis());
+	
+	loading.stop_with(rapid_logo(), format!("generated types in {} ms", start_time.elapsed().as_millis()), None);
 }

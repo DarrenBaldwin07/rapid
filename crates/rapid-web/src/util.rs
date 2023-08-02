@@ -1,7 +1,7 @@
-use super::{server::RAPID_SERVER_CONFIG, shift::util::is_valid_handler, tui::rapid_log_target};
+use super::{server::RAPID_SERVER_CONFIG, shift::util::is_valid_handler};
 use colorful::{Color, Colorful};
 use core::panic;
-use log::info;
+use log::warn;
 use rapid_cli::rapid_config::config::{RapidConfig, ServerConfig};
 use std::{env::current_dir, fs::File, io::Read, path::PathBuf};
 use syn::{parse_file, parse_str, File as SynFile, Item};
@@ -28,10 +28,8 @@ pub fn check_for_invalid_handlers(dir: &str) {
 			// Check if the handler is invalid (this is specifically for the actual function itself)
 			if !validate_route_handler(&file_contents) || !is_valid_route_function(&file_contents) {
 				// Show warning logs to the user as needed
-				println!("\n"); // Each log should have a indent of 1 so that we get some nice spacing
-				info!(
-					"{} Found invalid route handler file at {}",
-					rapid_log_target(),
+				warn!(
+					"found invalid route handler file at {}",
 					format!("`{}`", entry.path().to_str().expect("Error: could not parse invalid route handler")).color(Color::LightCyan)
 				);
 			}

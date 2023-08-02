@@ -2,11 +2,12 @@ use super::RapidCommand;
 use crate::{
 	cli::{current_directory, Config},
 	rapid_config::config::{find_rapid_config, is_rapid, AppType, RapidConfig},
-	tui::{logo, rapid_logo},
+	tui::logo,
 };
 use clap::{arg, value_parser, ArgAction, ArgMatches, Command};
 use spinach::Spinach;
 use std::{path::PathBuf, process::Command as StdCommand, str::FromStr};
+use log::info;
 pub struct Run {}
 
 impl RapidCommand for Run {
@@ -175,7 +176,7 @@ fn handle_run_server(server_port: u16, app_type: String) {
 		s.succeed("Rapid build scripts installed!");
 	}
 
-	println!("{} Building rapid application...", rapid_logo());
+	info!("building rapid application...");
 
 	// Trigger the shell command to actually run + watch the rapid server
 	StdCommand::new("sh")

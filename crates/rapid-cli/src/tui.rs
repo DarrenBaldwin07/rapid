@@ -17,11 +17,14 @@ pub fn indent(amount: u32) -> String {
 }
 
 /// Logo with signs
-pub fn rapid_logo<'a>() -> GradientDisplay<'a, [RGB; 4]> {
-	GradientStr::gradient(
-		&">>> R A P I D",
-		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)],
-	)
+pub fn rapid_logo<'a>() -> &'static str {
+	// GradientStr::gradient(
+	// 	&">>> R A P I D",
+	// 	[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208), RGB::new(14, 197, 255)],
+	// )
+	// precomputed string of above gradient
+	// this allows the use in Spinach spinners
+	"\x1b[38;2;9;42;208m>\x1b[0m\x1b[38;2;15;55;175m>\x1b[0m\x1b[38;2;20;65;140m>\x1b[0m\x1b[38;2;26;78;96m \x1b[0m\x1b[38;2;21;68;130mR\x1b[0m\x1b[38;2;17;60;158m \x1b[0m\x1b[38;2;14;52;184mA\x1b[0m\x1b[38;2;9;42;208m \x1b[0m\x1b[38;2;9;99;215mP\x1b[0m\x1b[38;2;10;130;223m \x1b[0m\x1b[38;2;11;155;233mI\x1b[0m\x1b[38;2;12;177;244m \x1b[0m\x1b[38;2;14;197;255mD\x1b[0m"
 }
 
 /// Normal Logo

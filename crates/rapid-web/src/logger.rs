@@ -7,11 +7,15 @@ use colorful::{Color, Colorful};
 use futures_util::future::LocalBoxFuture;
 use log::info;
 use std::future::{ready, Ready};
+use std::io::Write;
 
 pub fn init_logger() {
 	pretty_env_logger::formatted_builder()
 		.filter_level(log::LevelFilter::Info)
 		.filter(Some("actix_server"), log::LevelFilter::Error)
+		.format(|buf, record| {
+			writeln!(buf, "{}: {}", record.level().to_string().color(Color::Cyan), record.args())
+		})
 		.try_init().ok();
 }
 

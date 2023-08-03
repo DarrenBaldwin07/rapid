@@ -16,16 +16,17 @@ use super::{
 		is_serving_static_files
 	},
 };
+use crate::{logger::init_logger, tui::rapid_chevrons};
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
 use lazy_static::lazy_static;
 use spinach::Spinach;
 use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
-use rapid_cli::tui::rapid_logo;
-use std::{env::current_dir, path::PathBuf, time::Instant};
-use crate::logger::init_logger;
+use std::{env::current_dir, path::PathBuf, time::{self, Instant}, thread};
+use colorful::{Color, Colorful};
 extern crate proc_macro;
+
 
 #[derive(Clone)]
 pub struct RapidServer {
@@ -115,10 +116,10 @@ impl RapidServer {
 	}
 
 	/// Takes in a pre-configured HttpServer and listens on the specified port(s)
-	/// 
+	///
 	/// # Notes
 	/// This function will try to initalize a logger in case one has not already been initalized.
-	/// If you would like to use your own logger, make sure it has been initalized before this 
+	/// If you would like to use your own logger, make sure it has been initalized before this
 	/// function is called
 	pub async fn listen<F, I, S, B>(self, server: HttpServer<F, I, S, B>) -> std::io::Result<()>
 	where
@@ -153,14 +154,14 @@ impl RapidServer {
 		// Check if we should generate typescript types or not
 		let should_generate_typescript_types = should_generate_types(RAPID_SERVER_CONFIG.clone());
 
+		// Show the server initialization message
+		server_init(bind_config.clone());
+
 		// Only trigger type generation if the users configured options in their rapid config file permits it
 		// (we also dont want to generate types in a production environment)
 		if should_generate_typescript_types && cfg!(debug_assertions) {
 			generate_typescript_types(bindings_out_dir, routes_dir.clone(), RAPID_SERVER_CONFIG.clone());
 		}
-
-		// Show the server initialization message
-		server_init(bind_config.clone());
 
 		// Check for any invalid routes and log them to the console
 		check_for_invalid_handlers(&routes_dir);
@@ -232,9 +233,15 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 	};
 
 	let start_time = Instant::now();
-	let loading = Spinach::new(format!("{} generating types...", rapid_logo()));
+	// Show a loading spinner as needed
+	let loading = Spinach::new(format!("{} Generating types...", rapid_chevrons()));
 	// TODO: Support output types with this function
 	create_typescript_types(bindings_out_dir, routes_directory, type_generation_directory);
-	
-	loading.stop_with(rapid_logo(), format!("generated types in {} ms", start_time.elapsed().as_millis()), None);
+
+	// Sleep a little to show loading animation
+	let timeout = time::Duration::from_millis(550);
+	thread::sleep(timeout);
+
+	loading.succeed(format!("Generated typescript types in {} ms\n", start_time.elapsed().as_millis().to_string().color(Color::Blue).bold()));
 }
+

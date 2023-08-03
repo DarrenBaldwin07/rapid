@@ -12,7 +12,7 @@ impl RapidCommand for Routes {
 
 	fn execute(_: &Config, args: &ArgMatches) -> Result<(), crate::cli::CliError<'static>> {
 		println!("{}", logo());
-		println!("> Welcome to RAPID templates");
+		println!("Coming soon...");
 		Ok(())
 	}
 }

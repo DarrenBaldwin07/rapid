@@ -57,6 +57,7 @@ impl RapidCLI {
 			commands::init::Init::cmd(),
 			commands::run::Run::cmd(),
 			commands::templates::Templates::cmd(),
+			commands::routes::Routes::cmd(),
 		]
 	}
 
@@ -66,6 +67,7 @@ impl RapidCLI {
 			"init" => commands::init::Init::execute,
 			"run" => commands::run::Run::execute,
 			"templates" => commands::templates::Templates::execute,
+			"routes" => commands::routes::Routes::execute,
 			_ => return None,
 		};
 
@@ -97,7 +99,7 @@ impl RapidCLI {
 // Note: Do not change indentation of this or else it will break
 fn get_help_template() -> String {
 	format!(
-		"RAPID -- The modern software toolkit built on React and Rust
+		"RAPID -- Build type-safe applications with Rust and Typescript
 
 Commands:
   {init}	Initialize Rapid functionality in an existing app

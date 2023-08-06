@@ -2,11 +2,12 @@ use super::RapidCommand;
 use crate::{
 	cli::{current_directory, Config},
 	constants::BOLT_EMOJI,
-	tui::{clean_console, indent, logo, rapid_logo},
+	tui::{indent, logo, rapid_logo},
 };
-use clap::{arg, Arg, ArgAction, ArgMatches, Command};
+use clap::{Arg, ArgAction, ArgMatches, Command};
 use colorful::{Color, Colorful};
 use include_dir::{include_dir, Dir};
+use log::error;
 use requestty::{prompt, prompt_one, Answer, Question};
 use spinach::Spinach;
 use std::{
@@ -107,7 +108,7 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 	// Validate that the project name does not contain any invalid chars
 	if !project_name.chars().all(|x| x.is_alphanumeric() || x == '-' || x == '_') {
-		println!("Aborting...your project name may only contain alphanumeric characters along with '-' and '_'...");
+		error!("Aborting...your project name may only contain alphanumeric characters along with '-' and '_'...");
 		exit(64);
 	}
 
@@ -149,11 +150,8 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	let package_manager = match package_manager.get("packageManagerSelect") {
 		Some(Answer::ListItem(choice)) => choice.text.clone(),
 		_ => {
-			println!(
-				"{}",
+			error!(
 				"Aborting...an error occurred while trying to parse package manager selection. Please try again!"
-					.bold()
-					.color(Color::Red)
 			);
 			exit(64);
 		}
@@ -173,11 +171,9 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 	let tech_choices = match tech_choices {
 		Answer::ListItems(choices) => choices,
 		_ => {
-			println!(
+			error!(
 				"{}",
-				"Aborting...an error occurred while trying to parse technology choices. Please try again!"
-					.bold()
-					.color(Color::Red)
+				"aborting...an error occurred while trying to parse technology choices. Please try again!"
 			);
 			exit(64);
 		}
@@ -249,8 +245,6 @@ pub fn init_remix_template(current_working_directory: PathBuf) {
 
 	loading.succeed("Installed dependencies!");
 
-	clean_console();
-
 	println!(
 		"\n\n{} {} {} {}",
 		format!("{}", rapid_logo()).bold(),
@@ -283,7 +277,7 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 
 	// Validate that the project name does not contain any invalid chars
 	if !project_name.chars().all(|x| x.is_alphanumeric() || x == '-' || x == '_') {
-		println!("Aborting...your project name may only contain alphanumeric characters along with '-' and '_'...");
+		error!("aborting...your project name may only contain alphanumeric characters along with '-' and '_'...");
 		exit(64);
 	}
 
@@ -345,8 +339,6 @@ pub fn init_server_template(current_working_directory: PathBuf, _: &str) {
 	// Stop our loading spinner
 	loading.stop();
 
-	clean_console();
-
 	println!(
 		"\n\n{} {} {} {}",
 		format!("{}", rapid_logo()).bold(),
@@ -380,7 +372,7 @@ pub fn init_nextjs_template(current_working_directory: PathBuf) {
 
 	// Validate that the project name does not contain any invalid chars
 	if !project_name.chars().all(|x| x.is_alphanumeric() || x == '-' || x == '_') {
-		println!("Aborting...your project name may only contain alphanumeric characters along with '-' and '_'...");
+		error!("aborting...your project name may only contain alphanumeric characters along with '-' and '_'...");
 		exit(64);
 	}
 
@@ -489,8 +481,6 @@ pub fn init_nextjs_template(current_working_directory: PathBuf) {
 		.expect("Error: Could not install project dependencies!");
 
 	loading.succeed("Installed dependencies!");
-
-	clean_console();
 
 	println!(
 		"\n\n{} {} {} {}",

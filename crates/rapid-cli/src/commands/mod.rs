@@ -2,6 +2,7 @@ pub mod init;
 pub mod new;
 pub mod run;
 pub mod templates;
+pub mod routes;
 use crate::cli::{CliError, Config};
 use clap::Command;
 

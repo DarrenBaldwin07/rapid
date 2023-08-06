@@ -5,6 +5,7 @@ use walkdir::WalkDir;
 use std::fs::File;
 use std::io::Read;
 use colorful::{Color, Colorful};
+use regex::Regex;
 
 pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
 pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
@@ -75,7 +76,8 @@ pub fn generate_routes(routes_dir: &str) {
 	for route in routes {
 		let route_url = remove_last_occurrence(&route.replace(".rs", ""), "index");
 		let route_path = format!("{}{}", routes_dir, route);
-		println!("{} {} {}\n", route_path, "➜".color(Color::LightCyan).bold(), route_url.bold());
+		let dynamic_route_regex = Regex::new(r"_(.*?)_").unwrap();
+		println!("{} {} {}\n", route_path, "➜".color(Color::LightCyan).bold(), dynamic_route_regex.replace_all(&route_url, "{$1}").bold());
 	}
 
 	println!("{} Found {} routes in your project\n", chevrons(), total_routes_count.to_string().color(Color::Blue).bold());

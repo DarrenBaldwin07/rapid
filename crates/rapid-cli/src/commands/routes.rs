@@ -1,9 +1,10 @@
 use super::RapidCommand;
-use crate::{cli::Config, tui::logo, rapid_config::{config::find_rapid_config, config::ServerConfig}};
+use crate::{cli::Config, tui::{logo, chevrons, clean_console}, rapid_config::config::{find_rapid_config, ServerConfig}};
 use clap::{ArgMatches, Command};
 use walkdir::WalkDir;
 use std::fs::File;
 use std::io::Read;
+use colorful::{Color, Colorful};
 
 pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
 pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
@@ -62,16 +63,22 @@ pub fn generate_routes(routes_dir: &str) {
 			.to_string()
 			.replace(routes_dir, "");
 
-
-		let route = remove_last_occurrence(&parsed_route_dir.replace(".rs", ""), "index");
-		routes.push(route);
+		routes.push(parsed_route_dir);
 	}
 
-	for (index, route) in routes.iter().enumerate() {
+	let total_routes_count = routes.len();
 
+	// Clean the console before printing the routes...
+	clean_console();
+	println!();
+
+	for route in routes {
+		let route_url = remove_last_occurrence(&route.replace(".rs", ""), "index");
+		let route_path = format!("{}{}", routes_dir, route);
+		println!("{} {} {}\n", route_path, "➜".color(Color::LightCyan).bold(), route_url.bold());
 	}
 
-	println!("{:?}", routes);
+	println!("{} Found {} routes in your project\n", chevrons(), total_routes_count.to_string().color(Color::Blue).bold());
 }
 
 pub fn remove_last_occurrence(s: &str, sub: &str) -> String {

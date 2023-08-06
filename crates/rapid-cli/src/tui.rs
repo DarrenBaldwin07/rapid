@@ -6,6 +6,14 @@ pub fn clean_console() {
 	print!("{esc}c", esc = 27 as char);
 }
 
+pub fn chevrons<'a>() -> GradientDisplay<'a, [RGB; 3]> {
+	GradientStr::gradient(
+		&">>>",
+		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208)],
+	)
+}
+
+
 /// Helper function for printing indentations to the console
 pub fn indent(amount: u32) -> String {
 	let mut new_amount = String::new();

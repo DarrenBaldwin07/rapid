@@ -13,7 +13,7 @@ pub fn rapid_chevrons<'a>() -> GradientDisplay<'a, [RGB; 3]> {
 		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208)],
 	)
 }
-
+#[allow(dead_code)]
 pub fn gradient_text<'a>(text: &'a str) -> GradientDisplay<'a, [RGB; 3]> {
 	GradientStr::gradient(
 		text,
@@ -21,17 +21,19 @@ pub fn gradient_text<'a>(text: &'a str) -> GradientDisplay<'a, [RGB; 3]> {
 	)
 }
 
+
 pub fn server_init(bind_config: (String, u16)) {
+	let blue_bar = "┃".color(Color::Blue).bold();
 	let server_url = format!("http://{}:{}", &bind_config.0, &bind_config.1).color(Color::Blue);
 	// Grab the current crate version at compile time...
 	let crate_version = env!("CARGO_PKG_VERSION");
 	println!(
-		"\n{} {} {} and serving requests: \n\n➜  {} {}\n",
+		"\n{blue_bar} {} {} {} and serving requests: \n{blue_bar}\n{blue_bar} ➜  {} {}\n",
 		rapid_logo(),
 		crate_version.bold(),
 		started_server_message(),
 		"Dev Server:".bold(),
-		server_url
+		server_url.bold()
 	);
 }
 

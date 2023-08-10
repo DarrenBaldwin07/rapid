@@ -1554,7 +1554,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-cli"
-version = "0.5.9"
+version = "0.6.0"
 dependencies = [
  "clap",
  "colorful",
@@ -1586,7 +1586,7 @@ dependencies = [
 
 [[package]]
 name = "rapid-web"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "actix-cors",
  "actix-files",

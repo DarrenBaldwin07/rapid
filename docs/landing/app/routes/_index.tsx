@@ -44,7 +44,7 @@ export default function Index() {
 							/>
 						</div>
 						<Heading styles='text-white font-extrabold md:text-4xl lg:text-6xl max-w-[1000px] gradient-text leading-tight mt-12'>
-							A new way to build web applications with React and
+							A new way to build web applications with Typescript and
 							Rust.
 						</Heading>
 						<div className='mt-12 flex w-max gap-4 rounded-xl border-2 border-white p-4'>

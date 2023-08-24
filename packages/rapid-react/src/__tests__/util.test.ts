@@ -9,23 +9,23 @@ import { describe, expect, test } from 'vitest';
 // Quick unit tests for mvp bolt logic.
 describe('util', () => {
 	test('getDynamicSubstrings', () => {
-		expect(getDynamicSubstrings('/foo/_bar_')).toEqual(['_bar_']);
+		expect(getDynamicSubstrings('/foo/_bar_')).toEqual(['/_bar_']);
 		expect(getDynamicSubstrings('/foo/_bar_/_baz_')).toEqual([
-			'_bar_',
-			'_baz_',
+			'/_bar_',
+			'/_baz_',
 		]);
 		expect(getDynamicSubstrings('/foo/_bar_/_baz_/qux')).toEqual([
-			'_bar_',
-			'_baz_',
+			'/_bar_',
+			'/_baz_',
 		]);
 		expect(getDynamicSubstrings('/foo/_bar_/_baz_/qux/_quux_')).toEqual([
-			'_bar_',
-			'_baz_',
-			'_quux_',
+			'/_bar_',
+			'/_baz_',
+			'/_quux_',
 		]);
 		expect(
 			getDynamicSubstrings('/foo/_bar_/_baz_/_qux_/_quux_/_quuz_'),
-		).toEqual(['_bar_', '_baz_', '_qux_', '_quux_', '_quuz_']);
+		).toEqual(['/_bar_', '/_baz_', '/_qux_', '/_quux_', '/_quuz_']);
 	});
 
 	test('toArray', () => {
@@ -64,5 +64,9 @@ describe('util', () => {
 				'http://localhost:3000',
 			),
 		).toEqual('http://localhost:3000/foo/bar/baz/qux');
+		expect(
+			generatePathUrl('/foo/foo_bar/_id_/foooo_bar/_id_', ['51', '12'], 'http://localhost:3000'),
+		).toEqual('http://localhost:3000/foo/foo_bar/51/foooo_bar/12');
+
 	});
 });

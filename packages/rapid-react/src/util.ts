@@ -5,7 +5,7 @@ export const isDynamicRoute = (str: string): boolean => {
 
 // Function for getting all dynamic substrings from a rapid-web path string
 export const getDynamicSubstrings = (inputString: string): string[] => {
-	const regex = /_.*?_/g; // the regex pattern we want to match on (this will catch cases like "_id_" etc)
+	const regex = /\/_.*?_/g; // the regex pattern we want to match on (this will catch cases like "_id_" etc)
 	const matches = inputString.match(regex); // returns an array of matches or null if no matches are found
 	if (matches === null) {
 		return []; // return any empty array if no matches are found (this should almost never happen)
@@ -26,7 +26,7 @@ export const generatePathUrl = (
 	if (dynamicPaths.length > 0) {
 		let url = path;
 		dynamicPaths.forEach((dynamicPath, index) => {
-			url = url.replace(dynamicPath, updated_paths[index]);
+			url = url.replace(dynamicPath, "/" + updated_paths[index]);
 		});
 		return `${baseUrl}${url}`;
 	}

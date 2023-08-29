@@ -725,3 +725,4 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 }
 
 export default createBoltClient;
+

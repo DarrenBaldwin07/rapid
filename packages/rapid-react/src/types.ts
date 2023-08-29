@@ -149,7 +149,7 @@ export type MutationFunctionDynamic<T1, T2, T3, T4, T5> = {
 		D = V,
 	>(
 		url: W,
-		params: T3,
+		params: T4,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };

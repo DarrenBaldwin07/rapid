@@ -596,11 +596,11 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 						},
 						delete: <
 							T = OutputQueryBody,
-							R = AxiosResponse<T, OutputQueryBody>,
+							R = AxiosResponse<T, OutputMutationBody>,
 							D = any,
 						>(
 							url: Route | RequestUrl,
-							params: QueryPathType,
+							params: MutationPathType,
 							config?: AxiosRequestConfig<D>,
 						): Promise<R> => {
 							// Users have the option to pass in a string or an object with a url property
@@ -694,7 +694,7 @@ function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
 					},
 					delete: <
 						T = OutputQueryBody,
-						R = AxiosResponse<T, OutputQueryBody>,
+						R = AxiosResponse<T, OutputMutationBody>,
 						D = any,
 					>(
 						url: Route | RequestUrl,

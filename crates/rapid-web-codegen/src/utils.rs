@@ -133,7 +133,7 @@ pub fn reverse_route_path(route_path: String) -> String {
 	new_route_path
 }
 
-// TODO: this is a clone from the rapid-web crate utils (at some point we need a rapid-utils crate)
+// TODO: this is a clone from the rapid-web crate utils (at some point we need a rapid-utils crate so that we can avoid duplication)
 /// Method for checking if a handler function is valid
 /// Handlers are only valid if they have a "#[rapid_handler]" macro on them
 pub fn is_valid_handler(macro_name: &str, attributes: Vec<syn::Attribute>) -> bool {
@@ -186,5 +186,54 @@ mod tests {
 		let parsed_route_path = parse_route_path(route_path);
 		assert_eq!(parsed_route_path, "/api/{id}/test/{name}");
 		assert_eq!(parse_route_path(rout_path2), "/api/{id}/test/hello_world/{id}");
+	}
+
+	#[test]
+	fn test_validate_route_handler() {
+		let valid_route_handler = r#"
+		#[rapid_handler]
+		pub async fn query() -> HttpResponse {
+			HttpResponse::Ok().body("Hello world!")
+		}
+		"#;
+		let invalid_route_handler = r#"
+		pub async fn invalid() -> HttpResponse {s
+			HttpResponse::Ok().body("Hello world!")
+		}
+		"#;
+		assert_eq!(validate_route_handler(&valid_route_handler.to_string()), true);
+		assert_eq!(validate_route_handler(&invalid_route_handler.to_string()), false);
+	}
+
+	#[test]
+	fn test_reverse_route_path() {
+		let route_path = "/api/{id}/test/{name}".to_string();
+		let rout_path2 = "/api/{id}/test/hello_world/{id}".to_string();
+		let parsed_route_path = reverse_route_path(route_path);
+		assert_eq!(reverse_route_path(parsed_route_path), "/api/_id_/test/_name_");
+		assert_eq!(reverse_route_path(rout_path2), "/api/_id_/test/hello_world/_id_");
+	}
+
+	#[test]
+	fn test_parse_handler_path() {
+		let route_path = "/api/{id}/test/{name}";
+		let rout_path2 = "/api/{id}/test/hello_world/{id}";
+		assert_eq!(parse_handler_path(route_path), "/api/_id_/test/{name}");
+		assert_eq!(parse_handler_path(rout_path2), "/api/_id_/test/hello_world/{id}");
+	}
+
+	#[test]
+	fn test_base_file_name() {
+		let path = Path::new("app/api/routes/test.rs");
+		let base_path = "app/api/routes";
+		let parsed_path = base_file_name(path, base_path);
+		assert_eq!(parsed_path, "/test.rs");
+	}
+
+	#[test]
+	fn test_get_all_dirs() {
+		let mut path_array: Vec<PathBuf> = Vec::new();
+		get_all_dirs("tests/mocks/files", &mut path_array);
+		assert_eq!(path_array.len(), 1);
 	}
 }

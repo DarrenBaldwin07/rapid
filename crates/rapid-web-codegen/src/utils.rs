@@ -236,4 +236,11 @@ mod tests {
 		get_all_dirs("tests/mocks/files", &mut path_array);
 		assert_eq!(path_array.len(), 1);
 	}
+
+	#[test]
+	fn test_get_all_middleware() {
+		let mut path_array: Vec<PathBuf> = Vec::new();
+		get_all_middleware("tests/mocks/files", "tests/mocks/files", &mut path_array);
+		assert_eq!(path_array.len(), 1);
+	}
 }

@@ -174,3 +174,17 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	// Route files are only considered valid for route generation if they have a single handler function
 	has_rapid_handler && handler_count == 1
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_parse_route_path() {
+		let route_path = "/api/_id_/test/_name_".to_string();
+		let rout_path2 = "/api/_id_/test/hello_world/_id_".to_string();
+		let parsed_route_path = parse_route_path(route_path);
+		assert_eq!(parsed_route_path, "/api/{id}/test/{name}");
+		assert_eq!(parse_route_path(rout_path2), "/api/{id}/test/hello_world/{id}");
+	}
+}

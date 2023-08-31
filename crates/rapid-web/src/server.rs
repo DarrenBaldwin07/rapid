@@ -248,9 +248,37 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use actix_web::web;
+	use actix_web::{http::header::ContentType, web, test};
+	use std::fs::File;
+	use std::io::prelude::*;
 
+	#[actix_web::test]
 	async fn test_server_and_router() {
+		//let app = RapidServer::create(None, None);
 
+		let rapid_config_test = r#"app_type = "server"
+
+		[server]
+		serve_static_files = true
+		is_logging = true
+		typescript_generation = true
+		port = 8080
+		routes_directory = "src/routes"
+		bindings_export_path = "/"
+		"#;
+
+		let mut rapid_config = File::create("rapid.toml").unwrap();
+
+		rapid_config.write_all(rapid_config_test.as_bytes()).unwrap();
+
+		let app = test::init_service(RapidServer::router(None, None).route("/", web::get().to(|| async { "Hello World!" }))).await;
+
+		let req = test::TestRequest::default()
+            .insert_header(ContentType::plaintext())
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+        assert!(resp.status().is_success());
+
+		std::fs::remove_file("rapid.toml").unwrap();
 	}
 }

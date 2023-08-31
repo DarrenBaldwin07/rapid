@@ -1577,6 +1577,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "rapid-cli"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "746747e38d544926aa56190dc7ac1c852db5e125cd53aeb89172948a79f76fe9"
+dependencies = [
+ "clap",
+ "colorful",
+ "ctrlc",
+ "include_dir",
+ "log",
+ "pretty_env_logger",
+ "regex",
+ "requestty",
+ "rust-embed",
+ "serde",
+ "spinach",
+ "strum",
+ "strum_macros",
+ "terminal-emoji",
+ "tiny-gradient",
+ "toml",
+ "tui",
+ "walkdir",
+]
+
+[[package]]
 name = "rapid-ssr"
 version = "0.1.0"
 dependencies = [
@@ -1601,8 +1627,37 @@ dependencies = [
  "log",
  "pretty_env_logger",
  "proc-macro2",
- "rapid-cli",
- "rapid-web-codegen",
+ "rapid-cli 0.6.0",
+ "rapid-web-codegen 0.2.8",
+ "regex",
+ "serde",
+ "spinach",
+ "syn 2.0.15",
+ "tiny-gradient",
+ "walkdir",
+]
+
+[[package]]
+name = "rapid-web"
+version = "0.4.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "388949b0667620f8008b78125b73c198f2a5c502c32c56d516a87f4c24a1c01d"
+dependencies = [
+ "actix-cors",
+ "actix-files",
+ "actix-http",
+ "actix-service",
+ "actix-web",
+ "actix-web-httpauth",
+ "clerk-rs",
+ "colorful",
+ "futures-util",
+ "lazy_static",
+ "log",
+ "pretty_env_logger",
+ "proc-macro2",
+ "rapid-cli 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rapid-web-codegen 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex",
  "serde",
  "spinach",
@@ -1614,6 +1669,20 @@ dependencies = [
 [[package]]
 name = "rapid-web-codegen"
 version = "0.2.8"
+dependencies = [
+ "include_dir",
+ "proc-macro2",
+ "quote",
+ "rapid-web 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex",
+ "syn 2.0.15",
+]
+
+[[package]]
+name = "rapid-web-codegen"
+version = "0.2.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e19b0b2b0ed401aec0ff540405195d53f8a12659a8b965afdba0a78d2c734411"
 dependencies = [
  "include_dir",
  "proc-macro2",

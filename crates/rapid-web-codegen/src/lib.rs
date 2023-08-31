@@ -514,10 +514,3 @@ fn generate_route_imports(tokens: proc_macro::TokenStream, routes_directory: &st
 	}
 }
 
-#[cfg(test)]
-mod test {
-	#[test]
-	fn test_rapid_configure() {
-
-	}
-}

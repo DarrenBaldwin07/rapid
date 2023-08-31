@@ -245,3 +245,12 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 	loading.succeed(format!("Generated typescript types in {} ms\n", start_time.elapsed().as_millis().to_string().color(Color::Blue).bold()));
 }
 
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use actix_web::web;
+
+	async fn test_server_and_router() {
+
+	}
+}

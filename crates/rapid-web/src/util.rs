@@ -240,8 +240,7 @@ pub fn is_serving_static_files() -> bool {
 #[cfg(test)]
 mod tests {
 	use std::io::Write;
-
-use super::*;
+	use super::*;
 
 	#[test]
 	fn test_is_valid_route_function() {

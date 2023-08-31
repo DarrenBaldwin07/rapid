@@ -217,9 +217,11 @@ mod tests {
 	#[test]
 	fn test_parse_handler_path() {
 		let route_path = "/api/{id}/test/{name}";
-		let rout_path2 = "/api/{id}/test/hello_world/{id}";
+		let route_path2 = "/api/{id}/test/hello_world/{id}";
+		let route_path3 = "/api/{id}/test";
 		assert_eq!(parse_handler_path(route_path), "/api/_id_/test/{name}");
-		assert_eq!(parse_handler_path(rout_path2), "/api/_id_/test/hello_world/{id}");
+		assert_eq!(parse_handler_path(route_path2), "/api/_id_/test/hello_world/{id}");
+		assert_eq!(parse_handler_path(route_path3), "/api/_id_/test");
 	}
 
 	#[test]
@@ -241,6 +243,7 @@ mod tests {
 	fn test_get_all_middleware() {
 		let mut path_array: Vec<PathBuf> = Vec::new();
 		get_all_middleware("tests/mocks/files", "tests/mocks/files", &mut path_array);
+		// We should have at least 1 middleware file according to what we have in the `tests/mocks/files` directory
 		assert_eq!(path_array.len(), 1);
 	}
 }

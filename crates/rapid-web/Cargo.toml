@@ -9,10 +9,8 @@ license = "MIT"
 keywords = ["server", "web-framework", "rapid"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-# Example showing a rapid server in action
-[[example]]
-name = "server"
-path = "examples/server"
+[lib]
+doctest = false
 
 [dependencies]
 actix-web = "4.3.1"

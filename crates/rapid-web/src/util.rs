@@ -237,4 +237,27 @@ pub fn is_serving_static_files() -> bool {
 	}
 }
 
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_is_valid_route_function() {
+		let valid_handler = r#"
+		#[rapid_handler]
+		async fn query() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+		let invalid_handler = r#"
+		#[rapid_handler]
+		async fn invalid() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+
+		assert_eq!(is_valid_route_function(valid_handler), true);
+		assert_eq!(is_valid_route_function(invalid_handler), false);
+	}
+}
 

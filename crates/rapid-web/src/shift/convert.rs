@@ -4,7 +4,7 @@ use syn::{parse_file, Item, ItemStruct, ItemType, Type};
 use walkdir::WalkDir;
 use log::error;
 
-#[derive(Debug, Clone)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct TypescriptType {
 	pub typescript_type: String,
 	pub is_optional: bool,

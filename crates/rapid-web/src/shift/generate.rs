@@ -414,3 +414,9 @@ pub fn generate_routes(routes_dir: &str) -> String {
 
 	typescript_object
 }
+
+
+#[cfg(test)]
+mod tests {
+
+}

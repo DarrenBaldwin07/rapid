@@ -247,7 +247,6 @@ pub fn remove_last_occurrence(s: &str, sub: &str) -> String {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use syn::ItemStruct;
 
 	#[test]
 	fn test_remove_last_occurrence() {
@@ -265,11 +264,4 @@ mod tests {
 		assert_eq!(is_dynamic_route(test_string), true);
 		assert_eq!(is_dynamic_route(test_string_2), false);
 	}
-
-	#[test]
-	fn test_get_struct_generics() {
-
-
-	}
-
 }

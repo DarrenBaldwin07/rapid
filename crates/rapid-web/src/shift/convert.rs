@@ -1,8 +1,8 @@
 use super::util::{get_struct_generics, indent, space};
+use log::error;
 use std::{env::current_dir, ffi::OsStr, fs::File, io::prelude::*};
 use syn::{parse_file, Item, ItemStruct, ItemType, Type};
 use walkdir::WalkDir;
-use log::error;
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct TypescriptType {

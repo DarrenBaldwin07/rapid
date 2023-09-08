@@ -10,23 +10,25 @@ use super::{
 	shift::generate::create_typescript_types,
 	tui::server_init,
 	util::{
-		check_for_invalid_handlers, get_bindings_directory, get_routes_dir, get_server_port, should_generate_types, NEXTJS_ROUTE_PATH,
-		REMIX_ROUTE_PATH,
-		is_logging,
-		is_serving_static_files
+		check_for_invalid_handlers, get_bindings_directory, get_routes_dir, get_server_port, is_logging, is_serving_static_files,
+		should_generate_types, NEXTJS_ROUTE_PATH, REMIX_ROUTE_PATH,
 	},
 };
 use crate::{logger::init_logger, tui::rapid_chevrons};
 use actix_http::{body::MessageBody, Request, Response};
 use actix_service::{IntoServiceFactory, ServiceFactory};
 use actix_web::dev::AppConfig;
-use lazy_static::lazy_static;
-use spinach::Spinach;
-use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
-use std::{env::current_dir, path::PathBuf, time::{self, Instant}, thread};
 use colorful::{Color, Colorful};
+use lazy_static::lazy_static;
+use rapid_cli::rapid_config::config::{find_rapid_config, RapidConfig};
+use spinach::Spinach;
+use std::{
+	env::current_dir,
+	path::PathBuf,
+	thread,
+	time::{self, Instant},
+};
 extern crate proc_macro;
-
 
 #[derive(Clone)]
 pub struct RapidServer {
@@ -63,7 +65,6 @@ impl RapidServer {
 		cors: Option<Cors>,
 		log_type: Option<RapidLogger>,
 	) -> App<impl ServiceFactory<ServiceRequest, Response = ServiceResponse<impl MessageBody>, Config = (), InitError = (), Error = Error>> {
-
 		// First we need to go to the rapid config file and check for the is_logging variable
 		let is_logging = is_logging();
 
@@ -242,13 +243,16 @@ pub fn generate_typescript_types(bindings_out_dir: PathBuf, routes_dir: String, 
 	let timeout = time::Duration::from_millis(550);
 	thread::sleep(timeout);
 
-	loading.succeed(format!("Generated typescript types in {} ms\n", start_time.elapsed().as_millis().to_string().color(Color::Blue).bold()));
+	loading.succeed(format!(
+		"Generated typescript types in {} ms\n",
+		start_time.elapsed().as_millis().to_string().color(Color::Blue).bold()
+	));
 }
 
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use actix_web::{http::header::ContentType, web, test};
+	use actix_web::{http::header::ContentType, test, web};
 	use std::fs::File;
 	use std::io::prelude::*;
 
@@ -273,11 +277,9 @@ mod tests {
 
 		let app = test::init_service(RapidServer::router(None, None).route("/", web::get().to(|| async { "Hello World!" }))).await;
 
-		let req = test::TestRequest::default()
-            .insert_header(ContentType::plaintext())
-            .to_request();
-        let resp = test::call_service(&app, req).await;
-        assert!(resp.status().is_success());
+		let req = test::TestRequest::default().insert_header(ContentType::plaintext()).to_request();
+		let resp = test::call_service(&app, req).await;
+		assert!(resp.status().is_success());
 
 		std::fs::remove_file("rapid.toml").unwrap();
 	}

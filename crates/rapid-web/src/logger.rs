@@ -13,10 +13,9 @@ pub fn init_logger() {
 	pretty_env_logger::formatted_builder()
 		.filter_level(log::LevelFilter::Info)
 		.filter(Some("actix_server"), log::LevelFilter::Error)
-		.format(|buf, record| {
-			writeln!(buf, "{}: {}", record.level().to_string().color(Color::Cyan), record.args())
-		})
-		.try_init().ok();
+		.format(|buf, record| writeln!(buf, "{}: {}", record.level().to_string().color(Color::Cyan), record.args()))
+		.try_init()
+		.ok();
 }
 
 /// An enum for selecting a RapidLogger output type
@@ -76,12 +75,7 @@ impl RapidLogger {
 		let request_path = req.path();
 		let request_http = req.version();
 
-		let logs = format!(
-			"REQUEST {} {} {:?}",
-			request_method,
-			request_path,
-			request_http
-		);
+		let logs = format!("REQUEST {} {} {:?}", request_method, request_path, request_http);
 		info!("{}", logs);
 	}
 

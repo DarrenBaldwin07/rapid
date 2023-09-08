@@ -415,8 +415,16 @@ pub fn generate_routes(routes_dir: &str) -> String {
 	typescript_object
 }
 
-
 #[cfg(test)]
 mod tests {
+	use super::*;
+	#[test]
+	fn test_generate_routes() {
+		let routes = generate_routes("tests/mocks/files");
+		let expected = String::from("\n\nexport const routes = {\n\thello: {\n\t\turl: '/hello',\n\t\ttype: 'query',\n\t},\n} as const");
 
+		assert_eq!(routes, expected);
+	}
 }
+
+

@@ -239,8 +239,8 @@ pub fn is_serving_static_files() -> bool {
 
 #[cfg(test)]
 mod tests {
-	use std::io::Write;
 	use super::*;
+	use std::io::Write;
 
 	#[test]
 	fn test_is_valid_route_function() {
@@ -306,4 +306,3 @@ mod tests {
 		assert_eq!(validate_route_handler(&invalid_handler.to_string()), false);
 	}
 }
-

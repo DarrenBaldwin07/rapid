@@ -13,7 +13,7 @@ pub enum TypeClass {
 	Return,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum HandlerRequestType {
 	Get,
 	Post,

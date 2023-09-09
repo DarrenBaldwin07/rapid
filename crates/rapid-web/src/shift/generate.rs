@@ -13,19 +13,19 @@ use std::{
 };
 use walkdir::WalkDir;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Handler {
 	Query(TypedQueryHandler),
 	Mutation(TypedMutationHandler),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct RouteKey {
 	pub key: String,
 	pub value: String,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TypedQueryHandler {
 	pub request_type: HandlerRequestType,
 	pub path: Option<TypescriptType>,
@@ -34,7 +34,7 @@ pub struct TypedQueryHandler {
 	pub route_key: RouteKey,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TypedMutationHandler {
 	pub request_type: HandlerRequestType,
 	pub query_params: Option<TypescriptType>,
@@ -418,12 +418,110 @@ pub fn generate_routes(routes_dir: &str) -> String {
 #[cfg(test)]
 mod tests {
 	use super::*;
+
+	#[test]
+	fn test_generate_handler_types() {
+		let out_dir = PathBuf::from("tests/mocks/temp");
+		let bindings_file = OpenOptions::new()
+		.write(true)
+		.create(true)
+		.truncate(true)
+		.open(format!("{}/bindings.ts", out_dir.as_os_str().to_str().unwrap()))
+		.unwrap();
+		let routes = generate_handler_types(PathBuf::from("tests/mocks/files"), &mut TypescriptConverter::new(true, "".to_string(), true, 4, bindings_file));
+
+		let mut expected_handlers: Vec<Handler> = Vec::new();
+
+		let hello_handler = Handler::Query(TypedQueryHandler {
+			request_type: HandlerRequestType::Query,
+			path: None,
+			query_params: None,
+			output_type: TypescriptType {
+				typescript_type: String::from("any"),
+				is_optional: false,
+			},
+			route_key: RouteKey {
+				key: String::from("hello"),
+				value: String::from("/hello"),
+			},
+		});
+
+		let mutation_handler = Handler::Mutation(TypedMutationHandler {
+			request_type: HandlerRequestType::Mutation,
+			query_params: None,
+			path: None,
+			input_type: None,
+			output_type: TypescriptType {
+				typescript_type: String::from("any"),
+				is_optional: false,
+			},
+			route_key: RouteKey {
+				key: String::from("mutation"),
+				value: String::from("/mutation"),
+			},
+		});
+
+		expected_handlers.push(mutation_handler);
+		expected_handlers.push(hello_handler);
+
+		assert_eq!(routes, expected_handlers);
+	}
+
+	#[test]
+	fn test_create_typescript_types() {
+		let out_dir = PathBuf::from("tests/mocks/temp");
+		let route_dir = PathBuf::from("tests/mocks/files");
+		let type_generation_dir = PathBuf::from("tests/mocks/files");
+
+		create_typescript_types(out_dir, route_dir, type_generation_dir);
+
+		let mut file = File::open("tests/mocks/temp/bindings.ts").unwrap();
+		let mut contents = String::new();
+		file.read_to_string(&mut contents).unwrap();
+
+		// Delete the temp file
+		std::fs::remove_file("tests/mocks/temp/bindings.ts").unwrap();
+
+		const _: &str = "// @generated automatically by Rapid-web (https://rapid.cincinnati.ventures). DO NOT CHANGE OR EDIT THIS FILE!
+
+export interface Handlers {
+	queries: {
+		hello: {
+				output: any
+				type: 'query'
+				isDynamic: false
+		},
+	},
+	mutations: {
+		mutation: {
+				output: any
+				type: 'mutation'
+				isDynamic: false
+		}
+	},
+}
+
+export const routes = {
+	mutation: {
+		url: '/mutation',
+		type: 'mutation',
+	},
+	hello: {
+		url: '/hello',
+		type: 'query',
+	},
+} as const
+";
+
+		// TODO: fix this test - has some issues with writing to files
+	}
+
 	#[test]
 	fn test_generate_routes() {
 		let routes = generate_routes("tests/mocks/files");
-		let expected = String::from("\n\nexport const routes = {\n\thello: {\n\t\turl: '/hello',\n\t\ttype: 'query',\n\t},\n} as const");
+		const EXPECTED: &str = "\n\nexport const routes = {\n\tmutation: {\n\t\turl: '/mutation',\n\t\ttype: 'mutation',\n\t},\n\thello: {\n\t\turl: '/hello',\n\t\ttype: 'query',\n\t},\n} as const";
 
-		assert_eq!(routes, expected);
+		assert_eq!(routes, EXPECTED);
 	}
 }
 

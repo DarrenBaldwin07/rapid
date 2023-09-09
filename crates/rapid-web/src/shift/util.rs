@@ -13,7 +13,7 @@ pub enum TypeClass {
 	Return,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum HandlerRequestType {
 	Get,
 	Post,
@@ -242,4 +242,26 @@ pub fn remove_last_occurrence(s: &str, sub: &str) -> String {
 	let back = split.next().unwrap_or("");
 	let front = split.next().unwrap_or("").to_owned();
 	front + back
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_remove_last_occurrence() {
+		let test_string = "/src/routes/service/index";
+		let test_substring = "index";
+
+		assert_eq!(remove_last_occurrence(test_string, test_substring), "/src/routes/service/");
+	}
+
+	#[test]
+	fn test_is_dynamic_route() {
+		let test_string = "/src/routes/service/_id_";
+		let test_string_2 = "/src/routes/service/index";
+
+		assert_eq!(is_dynamic_route(test_string), true);
+		assert_eq!(is_dynamic_route(test_string_2), false);
+	}
 }

@@ -20,6 +20,7 @@ use utils::{
 ///
 /// # Examples
 /// ```
+/// use rapid_web;
 /// #[rapid_web::main]
 /// async fn main() {
 ///     async { println!("Hello world"); }.await
@@ -69,6 +70,7 @@ enum RouteHandler {
 /// * `item` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
 /// # Examples
 /// ```
+/// use rapid_web::rapid_web_codegen::routes;
 /// routes!("src/routes")
 /// ```
 #[proc_macro]
@@ -246,6 +248,7 @@ pub fn routes(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 ///
 /// # Examples
 /// ```
+/// use rapid_web::rapid_web_codegen::rapid_configure;
 /// rapid_configure!("src/routes")
 /// ```
 #[proc_macro]
@@ -303,6 +306,7 @@ pub fn rapid_configure(item: proc_macro::TokenStream) -> proc_macro::TokenStream
 ///
 /// # Examples
 /// ```
+/// use rapid_web::rapid_web_codegen::rapid_configure_nextjs;
 /// rapid_configure_nextjs!()
 /// ```
 #[proc_macro]
@@ -316,6 +320,7 @@ pub fn rapid_configure_nextjs(tokens: proc_macro::TokenStream) -> proc_macro::To
 ///
 /// # Examples
 /// ```
+/// use rapid_web::rapid_web_codegen::rapid_configure_remix;
 /// rapid_configure_remix!()
 /// ```
 #[proc_macro]
@@ -508,3 +513,4 @@ fn generate_route_imports(tokens: proc_macro::TokenStream, routes_directory: &st
 		));
 	}
 }
+

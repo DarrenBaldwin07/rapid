@@ -8,19 +8,12 @@ pub fn started_server_message() -> colorful::core::color_string::CString {
 }
 
 pub fn rapid_chevrons<'a>() -> GradientDisplay<'a, [RGB; 3]> {
-	GradientStr::gradient(
-		&">>>",
-		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208)],
-	)
+	GradientStr::gradient(&">>>", [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208)])
 }
 #[allow(dead_code)]
 pub fn gradient_text<'a>(text: &'a str) -> GradientDisplay<'a, [RGB; 3]> {
-	GradientStr::gradient(
-		text,
-		[RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208)],
-	)
+	GradientStr::gradient(text, [RGB::new(9, 42, 208), RGB::new(26, 78, 96), RGB::new(9, 42, 208)])
 }
-
 
 pub fn server_init(bind_config: (String, u16)) {
 	let blue_bar = "┃".color(Color::Blue).bold();

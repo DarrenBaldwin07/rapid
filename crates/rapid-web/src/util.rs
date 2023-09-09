@@ -237,4 +237,72 @@ pub fn is_serving_static_files() -> bool {
 	}
 }
 
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use std::io::Write;
 
+	#[test]
+	fn test_is_valid_route_function() {
+		let valid_handler = r#"
+		#[rapid_handler]
+		async fn query() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+		let invalid_handler = r#"
+		#[rapid_handler]
+		async fn invalid() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+
+		assert_eq!(is_valid_route_function(valid_handler), true);
+		assert_eq!(is_valid_route_function(invalid_handler), false);
+	}
+
+	#[test]
+	fn test_check_for_invalid_handlers() {
+		let valid_handler = r#"
+		#[rapid_handler]
+		async fn query() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+		let invalid_handler = r#"
+		#[rapid_handler]
+		async fn invalid() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+
+		let mut valid_file = File::create("test_valid.rs").unwrap();
+		let mut invalid_file = File::create("test_invalid.rs").unwrap();
+
+		valid_file.write_all(valid_handler.as_bytes()).unwrap();
+		invalid_file.write_all(invalid_handler.as_bytes()).unwrap();
+
+		check_for_invalid_handlers(".");
+
+		std::fs::remove_file("test_valid.rs").unwrap();
+		std::fs::remove_file("test_invalid.rs").unwrap();
+	}
+
+	#[test]
+	fn test_validate_route_handler() {
+		let valid_handler = r#"
+		#[rapid_handler]
+		pub async fn query() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+		let invalid_handler = r#"
+		pub async fn invalid() -> Result<HttpResponse, Error> {
+			Ok(HttpResponse::Ok().body("Hello world!"))
+		}
+		"#;
+
+		assert_eq!(validate_route_handler(&valid_handler.to_string()), true);
+		assert_eq!(validate_route_handler(&invalid_handler.to_string()), false);
+	}
+}

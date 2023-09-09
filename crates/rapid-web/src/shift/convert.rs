@@ -1,10 +1,10 @@
 use super::util::{get_struct_generics, indent, space};
+use log::error;
 use std::{env::current_dir, ffi::OsStr, fs::File, io::prelude::*};
 use syn::{parse_file, Item, ItemStruct, ItemType, Type};
 use walkdir::WalkDir;
-use log::error;
 
-#[derive(Debug, Clone)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct TypescriptType {
 	pub typescript_type: String,
 	pub is_optional: bool,
@@ -426,5 +426,110 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 				continue;
 			}
 		}
+	}
+}
+
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_convert_primitive() {
+		let mut converter = TypescriptConverter::new(false, "".to_string(), false, 0, File::create("test.ts").unwrap());
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u8").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u16").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i64").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u64").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u128").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i8").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i16").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i32").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u32").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i128").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("f32").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("f64").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("isize").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("usize").unwrap());
+
+		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("bool").unwrap());
+		assert_eq!(converted.typescript_type, "boolean");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("char").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("str").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("String").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Value").unwrap());
+		assert_eq!(converted.typescript_type, "any");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("NaiveDateTime").unwrap());
+		assert_eq!(converted.typescript_type, "Date");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("DateTime").unwrap());
+		assert_eq!(converted.typescript_type, "Date");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Uuid").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("RapidPath<String>").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("RapidJson<String>").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Union<String, u8>").unwrap());
+		assert_eq!(converted.typescript_type, "string | number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Option<String>").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Vec<String>").unwrap());
+		assert_eq!(converted.typescript_type, "Array<string>");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("HashMap<String, String>").unwrap());
+		assert_eq!(converted.typescript_type, "Record<string, string>");
 	}
 }

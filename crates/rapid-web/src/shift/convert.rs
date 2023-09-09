@@ -479,5 +479,57 @@ mod tests {
 
 		let converted = converter.convert_primitive(syn::parse_str::<Type>("f32").unwrap());
 		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("f64").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("isize").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("usize").unwrap());
+
+		assert_eq!(converted.typescript_type, "number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("bool").unwrap());
+		assert_eq!(converted.typescript_type, "boolean");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("char").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("str").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("String").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Value").unwrap());
+		assert_eq!(converted.typescript_type, "any");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("NaiveDateTime").unwrap());
+		assert_eq!(converted.typescript_type, "Date");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("DateTime").unwrap());
+		assert_eq!(converted.typescript_type, "Date");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Uuid").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("RapidPath<String>").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("RapidJson<String>").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Union<String, u8>").unwrap());
+		assert_eq!(converted.typescript_type, "string | number");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Option<String>").unwrap());
+		assert_eq!(converted.typescript_type, "string");
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("Vec<String>").unwrap());
+		assert_eq!(converted.typescript_type, "Array<string>");
+
+
+
 	}
 }

@@ -529,7 +529,7 @@ mod tests {
 		let converted = converter.convert_primitive(syn::parse_str::<Type>("Vec<String>").unwrap());
 		assert_eq!(converted.typescript_type, "Array<string>");
 
-
-
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("HashMap<String, String>").unwrap());
+		assert_eq!(converted.typescript_type, "Record<string, string>");
 	}
 }

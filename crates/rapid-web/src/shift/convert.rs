@@ -428,3 +428,56 @@ pub fn convert_all_types_in_path(directory: &str, converter_instance: &mut Types
 		}
 	}
 }
+
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_convert_primitive() {
+		let mut converter = TypescriptConverter::new(false, "".to_string(), false, 0, File::create("test.ts").unwrap());
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u8").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u16").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i64").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u64").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u128").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i8").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i16").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i32").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("u32").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("i128").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+		assert_eq!(converted.is_optional, false);
+
+		let converted = converter.convert_primitive(syn::parse_str::<Type>("f32").unwrap());
+		assert_eq!(converted.typescript_type, "number");
+	}
+}

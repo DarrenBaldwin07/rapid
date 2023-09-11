@@ -1,4 +1,5 @@
 packages:
-  - 'packages/*'
-  - 'examples/*'
-  - 'docs/landing'
+    - 'packages/*'
+    - 'examples/*'
+    - 'docs/landing'
+    - 'docs/ui-landing'

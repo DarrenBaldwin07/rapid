@@ -1,4 +1,3 @@
-import { cssBundleHref } from '@remix-run/css-bundle';
 import type { LinksFunction, V2_MetaFunction } from '@remix-run/node';
 import {
 	Links,
@@ -19,7 +18,8 @@ export const meta: V2_MetaFunction = () => {
 		{ title: 'Rapid UI' },
 		{
 			name: 'description',
-			content: 'Darren Baldwin - OSS, Startups, Dev tools',
+			content:
+				'A supercharged component library with global theming and beautiful unstyled components all built ontop of TailwindCSS.',
 		},
 	];
 };

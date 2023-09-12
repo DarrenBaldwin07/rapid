@@ -4,7 +4,7 @@
 	"scripts": {
 		"build": "remix build",
 		"deploy": "fly deploy --remote-only",
-		"dev": "remix dev",
+		"dev": "concurrently \"pnpm run sass\" \"remix dev\"",
 		"sass": "sass --watch app/styles/",
 		"start": "remix-serve build",
 		"typecheck": "tsc"

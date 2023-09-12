@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@100;300;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -57,7 +58,7 @@ body {
   max-width: 640px;
 }
 .content:after {
-  background-image: radial-gradient(at 27% 37%, #0ec5ff 0px, transparent 50%), radial-gradient(at 97% 21%, #092ad0 0px, transparent 50%), radial-gradient(at 52% 99%, #1a4e61 0px, transparent 50%);
+  background-image: radial-gradient(at 27% 37%, #0ec5ff 0px, transparent 56%), radial-gradient(at 97% 21%, #092ad0 0px, transparent 75%), radial-gradient(at 52% 99%, #1a4e61 0px, transparent 65%);
   position: absolute;
   content: "";
   z-index: 2;

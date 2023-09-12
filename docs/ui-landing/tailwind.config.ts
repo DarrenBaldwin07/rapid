@@ -22,7 +22,11 @@ export default {
 	plugins: [
 		rapidPlugin({
 			// Configure global styles variants here (documentation coming soon)
-			global: {},
+			global: {
+				body: {
+					fontFamily: 'archivo',
+				},
+			},
 		}),
 	],
 } satisfies Config;

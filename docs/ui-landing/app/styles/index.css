@@ -1,79 +1,81 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@100;300;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;300;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 html {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 *,
 *::after,
 *::before {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: #0e0c13;
-  overflow-x: hidden;
-  padding: 0;
-  margin: 0;
+	background-color: #0e0c13;
+	overflow-x: hidden;
+	padding: 0;
+	margin: 0;
 }
 
 .main {
-  width: 100vw;
-  min-height: 100vh;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding: 120px 24px 160px 24px;
+	width: 100vw;
+	min-height: 100vh;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	padding: 120px 24px 160px 24px;
 }
 .main:before {
-  position: absolute;
-  content: "";
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  top: 0;
+	position: absolute;
+	content: '';
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	top: 0;
 }
 .main:after {
-  content: "";
-  background-image: url("/grid.svg");
-  z-index: 1;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  opacity: 0.2;
-  filter: invert(1);
+	content: '';
+	background-image: url('/grid.svg');
+	z-index: 1;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	opacity: 0.2;
+	filter: invert(1);
 }
 
 .content {
-  height: fit-content;
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  max-width: 640px;
+	height: fit-content;
+	position: relative;
+	z-index: 3;
+	width: 100%;
+	max-width: 640px;
 }
 .content:after {
-  background-image: radial-gradient(at 27% 37%, #0ec5ff 0px, transparent 56%), radial-gradient(at 97% 21%, #092ad0 0px, transparent 75%), radial-gradient(at 52% 99%, #1a4e61 0px, transparent 65%);
-  position: absolute;
-  content: "";
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  filter: blur(100px) saturate(150%);
-  z-index: -1;
-  top: 80px;
-  opacity: 0.2;
-  transform: translateZ(0);
+	background-image: radial-gradient(at 27% 37%, #0ec5ff 0px, transparent 56%),
+		radial-gradient(at 97% 21%, #092ad0 0px, transparent 75%),
+		radial-gradient(at 52% 99%, #1a4e61 0px, transparent 65%);
+	position: absolute;
+	content: '';
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	filter: blur(100px) saturate(150%);
+	z-index: -1;
+	top: 80px;
+	opacity: 0.2;
+	transform: translateZ(0);
 }
 @media (prefers-color-scheme: dark) {
-  .content:after {
-    opacity: 0.1;
-  }
+	.content:after {
+		opacity: 0.1;
+	}
 }
 
 /*# sourceMappingURL=index.css.map */

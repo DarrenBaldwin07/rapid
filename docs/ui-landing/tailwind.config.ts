@@ -19,6 +19,10 @@ export default {
 				thirdBlue: '#1A4E61',
 				docsText: '#A6AABF',
 			},
+			screens: {
+				xs: '500px',
+				xxs: '450px',
+			},
 		}),
 	},
 	plugins: [

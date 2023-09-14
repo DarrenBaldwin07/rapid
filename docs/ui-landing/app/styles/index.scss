@@ -85,3 +85,10 @@ body {
 		}
 	}
 }
+
+@media (max-width: 640px) {
+	.main {
+		padding-top: 24px;
+		padding-bottom: 120px;
+	}
+}

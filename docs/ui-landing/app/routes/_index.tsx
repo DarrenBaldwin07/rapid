@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Github from '../../assets/github.svg';
 import Darren from '../../assets/darren.jpg';
 import NpmInstall from '../components/NpmInstall';
-
 export default function Index() {
 	return (
 		<main className='main'>
@@ -42,21 +41,28 @@ export default function Index() {
 						<NpmInstall />
 					</div>
 				</div>
-				<button className='bg-grey border-lightGrey rounded-lg border px-3 py-1 text-sm font-bold text-white'>
-					<div className='flex items-center gap-4'>
-						Join Waitlist
-						<FontAwesomeIcon
-							icon={['fal', 'arrow-right']}
-							width={11}
-							height={11}
-							color='white'
-						/>
-					</div>
-				</button>
-				<div className='mt-[400px] flex items-center justify-center gap-2'>
+				<a href='https://github.com/DarrenBaldwin07/rapid/tree/main/packages/rapid-ui'>
+					<button className='bg-grey border-lightGrey rounded-lg border px-3 py-1 text-sm font-bold text-white'>
+						<div className='flex items-center gap-4'>
+							Coming soon
+							<FontAwesomeIcon
+								icon={['fal', 'arrow-right']}
+								width={11}
+								height={11}
+								color='white'
+							/>
+						</div>
+					</button>
+				</a>
+				<div className='mt-32 flex gap-6'>
+					<div className='bg-grey border-lightGrey mt-8 h-[200px] w-[225px] rounded-lg border'></div>
+					<div className='bg-grey border-lightGrey h-[200px] w-[225px] rounded-lg border'></div>
+					<div className='bg-grey border-lightGrey mt-8 h-[200px] w-[225px] rounded-lg border'></div>
+				</div>
+				<div className='mt-20 flex items-center justify-center gap-2'>
 					<Text styles='font-light text-[#606060]'>Crafted by</Text>
 					<a
-						href='https://darrenbaldwin.dev'
+						href='https://twitter.com/DarrenBaldwin03'
 						rel='noreferrer'
 						target='_blank'
 					>

@@ -6,7 +6,14 @@
 <a href='https://ui.rapidframework.dev' target='_blank'>ui.rapidframework.dev</a>
 </div>
 
-<br />
-<br />
+# Why
+
+> TODO
+
+# Getting Started
+
+> Coming soon ⚡
+> <br />
+> <br />
 
 > Checkout all the components on our storybook found here: http://storybook.rapidframework.dev/

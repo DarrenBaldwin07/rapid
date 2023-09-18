@@ -42,22 +42,20 @@ export default function Index() {
 					</div>
 				</div>
 				<a href='https://github.com/DarrenBaldwin07/rapid/tree/main/packages/rapid-ui'>
-					<button className='bg-grey border-lightGrey rounded-lg border px-3 py-1 text-sm font-bold text-white'>
-						<div className='flex items-center gap-4'>
-							Coming soon
-							<FontAwesomeIcon
-								icon={['fal', 'arrow-right']}
-								width={11}
-								height={11}
-								color='white'
-							/>
-						</div>
-					</button>
+					<div className='flex items-center gap-3 text-white'>
+						Coming soon
+						<FontAwesomeIcon
+							icon={['fal', 'arrow-right']}
+							width={14}
+							height={14}
+							color='white'
+						/>
+					</div>
 				</a>
 				<div className='mt-32 flex gap-6'>
-					<div className='bg-grey border-lightGrey mt-8 h-[200px] w-[225px] rounded-lg border'></div>
-					<div className='bg-grey border-lightGrey h-[200px] w-[225px] rounded-lg border'></div>
-					<div className='bg-grey border-lightGrey mt-8 h-[200px] w-[225px] rounded-lg border'></div>
+					<div className='bg-grey border-lightGrey mt-8 h-[200px] w-[225px] rounded-lg border transition-all duration-150 ease-in-out hover:border-[#4D4D4D]'></div>
+					<div className='bg-grey border-lightGrey h-[200px] w-[225px] rounded-lg border transition-all duration-150 ease-in-out hover:border-[#4D4D4D]'></div>
+					<div className='bg-grey border-lightGrey mt-8 h-[200px] w-[225px] rounded-lg border transition-all duration-150 ease-in-out hover:border-[#4D4D4D]'></div>
 				</div>
 				<div className='mt-20 flex items-center justify-center gap-2'>
 					<Text styles='font-light text-[#606060]'>Crafted by</Text>

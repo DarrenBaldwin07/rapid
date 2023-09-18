@@ -6,14 +6,13 @@
 <a href='https://ui.rapidframework.dev' target='_blank'>ui.rapidframework.dev</a>
 </div>
 
-# Why
+# About
 
-> TODO
+Finally, a UI library built by designers for developers. Rapid-ui is a React component library created with both designers and developers in mind. Its meant to be completely opinionated with good defaults but also enable very easy customization via a one-of-a-kind global theming system. Check out our docs to get started: https://ui.rapidframework.dev.
 
 # Getting Started
 
 > Coming soon ⚡
-> <br />
-> <br />
+> <br /> > <br />
 
 > Checkout all the components on our storybook found here: http://storybook.rapidframework.dev/

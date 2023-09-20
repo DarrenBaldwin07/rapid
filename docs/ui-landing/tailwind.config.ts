@@ -20,6 +20,7 @@ export default {
 				docsText: '#A6AABF',
 				clearCode: 'hsla(0, 0%, 100%, 0.026)',
 				borderClearCode: 'hsl(0, 0%, 20.5%)',
+				backdrop: 'hsla(0, 0%, 100%, 0.0015)',
 			},
 			screens: {
 				xs: '500px',

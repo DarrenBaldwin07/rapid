@@ -130,30 +130,6 @@ body {
   white-space: pre-wrap;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 30px -5px;
 }
-.root button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: var(--grayA3);
-  border-radius: 8px;
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  color: var(--gray11);
-  cursor: copy;
-  transition: color 150ms ease, background 150ms ease, transform 150ms ease;
-}
-.root button:hover {
-  color: var(--gray12);
-  background: var(--grayA4);
-}
-.root button:active {
-  color: var(--gray12);
-  background: var(--grayA5);
-  transform: scale(0.96);
-}
 
 @media (prefers-color-scheme: dark) {
   .shine {

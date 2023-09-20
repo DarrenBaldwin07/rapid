@@ -41,28 +41,29 @@ const theme = {
 };
 
 export default function Index() {
-	const code = `import { Command } from 'cmdk';
+	const code = `import { createVariant } from '@rapid-web/ui';
 
-<Command.Dialog open={open} onOpenChange={setOpen}>
-	<Command.Input />
+const button = createVariant({
+	baseStyle: 'py-2 px-3',
+	variants: {
+		default:
+			'text-white bg-[#6925C0] hover:bg-hoverSecondary rounded-xl transition-all ease-out',
+		gradient:
+			'text-black gradient-button rounded-xl transition-all ease-out duration-300',
+		danger: 'text-white bg-dangerRed rounded-xl transition-all ease-out',
+	},
+	sizes: {
+		default: 'w-40 h-10',
+		sm: 'w-36',
+		lg: 'w-56',
+	},
+	defaultProps: {
+		variant: 'default',
+		size: 'default',
+	},
+});
 
-	<Command.List>
-	{loading && <Command.Loading>Hang on…</Command.Loading>}
-
-	<Command.Empty>No results found.</Command.Empty>
-
-	<Command.Group heading="Fruits">
-		<Command.Item>Apple</Command.Item>
-		<Command.Item>Orange</Command.Item>
-		<Command.Separator />
-		<Command.Item>Pear</Command.Item>
-		<Command.Item>Blueberry</Command.Item>
-	</Command.Group>
-
-	<Command.Item>Fish</Command.Item>
-	</Command.List>
-</Command.Dialog>
-	`;
+export default button;`;
 	return (
 		<main className='main'>
 			<div className='content'>

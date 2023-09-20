@@ -18,6 +18,8 @@ export default {
 				secondaryBlue: '#0EC5FF',
 				thirdBlue: '#1A4E61',
 				docsText: '#A6AABF',
+				clearCode: 'hsla(0, 0%, 100%, 0.026)',
+				borderClearCode: 'hsl(0, 0%, 20.5%)',
 			},
 			screens: {
 				xs: '500px',

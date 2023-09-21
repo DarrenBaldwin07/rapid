@@ -112,11 +112,21 @@ export default function Index() {
 						/>
 					</div>
 				</a>
-				<div className='mt-24 flex w-full gap-6'>
-					<div className='root bg-backdrop w-full'>
+				<div className='mt-24 flex w-full flex-col'>
+					<div className='border-borderClearCode bg-clearCode m-auto flex cursor-default items-center gap-2 rounded-full border px-2 py-1'>
+						<FontAwesomeIcon
+							icon={['fal', 'bolt']}
+							width={18}
+							height={18}
+							color='white'
+						/>
+						<Text styles='font-light text-white'>
+							Introducing build-time theming variants!
+						</Text>
+					</div>
+					<div className='root bg-backdrop mt-2 w-full'>
 						<Highlight theme={theme} language='jsx' code={CODE}>
 							{({
-								className,
 								style,
 								tokens,
 								getLineProps,

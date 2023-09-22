@@ -7,6 +7,7 @@ import NpmInstall from '../components/NpmInstall';
 import { Highlight } from 'prism-react-renderer';
 
 const CODE = `import { createVariant } from '@rapid-web/ui';
+import { Button } from '@rapid-web/ui';
 
 const button = createVariant({
 	baseStyle: 'py-2 px-3',
@@ -28,7 +29,14 @@ const button = createVariant({
 	},
 });
 
-export default button;`;
+const Page = () => {
+	return (
+		<div>
+			<h1>Hello Rapid-UI</h1>
+			<Button variant='danger'>Click me!</Button>
+		</div>
+	)
+}`;
 
 const theme = {
 	plain: {
@@ -113,15 +121,9 @@ export default function Index() {
 					</div>
 				</a>
 				<div className='mt-24 flex w-full flex-col'>
-					<div className='border-borderClearCode bg-clearCode m-auto flex cursor-default items-center gap-2 rounded-full border px-2 py-1'>
-						<FontAwesomeIcon
-							icon={['fal', 'bolt']}
-							width={18}
-							height={18}
-							color='white'
-						/>
+					<div className='border-borderClearCode bg-clearCode m-auto flex cursor-default items-center gap-2 rounded-full border px-4 py-1'>
 						<Text styles='font-light text-white'>
-							Introducing build-time theming variants!
+							Coming Soon...
 						</Text>
 					</div>
 					<div className='root bg-backdrop mt-2 w-full'>

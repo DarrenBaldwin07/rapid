@@ -161,7 +161,7 @@ export default function Index() {
 					</div>
 				</div>
 				<div className='mt-20 flex items-center justify-center gap-2'>
-					<Text styles='font-light text-[#606060]'>Crafted by</Text>
+					<Text styles='font-light text-[#606060]'>Created by</Text>
 					<a
 						href='https://twitter.com/DarrenBaldwin03'
 						rel='noreferrer'

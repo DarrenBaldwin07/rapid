@@ -81,7 +81,7 @@ const Docs = () => {
 		setIsShowingDocsNavigation(
 			shouldShowDocsNavigation(pathName as string),
 		);
-	}, [pathName, nextPathName]);
+	}, []);
 
 	return (
 		<Layout isDocsNavigation>

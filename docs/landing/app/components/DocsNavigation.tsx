@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Container, Text, Heading } from '@rapid-web/ui';
+import { Container, Heading } from '@rapid-web/ui';
 import { Link } from '@remix-run/react';
 import Logo from '../../assets/logo.svg';
 import GradientMain from '../../assets/gradientMain.svg';
 import Github from '../../assets/github.svg';
-import { NavLink } from '@remix-run/react';
 import {
 	faChevronRight,
 	faChevronDown,

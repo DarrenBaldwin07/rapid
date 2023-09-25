@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100;300;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+	padding: 0;
+	margin: 0;
+}
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	background-color: #0e0c13;
+	overflow-x: hidden;
+	padding: 0;
+	margin: 0;
+}
+
+.main {
+	width: 100vw;
+	min-height: 100vh;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	padding: 120px 24px 160px 24px;
+
+	&:before {
+		position: absolute;
+		content: '';
+		z-index: 2;
+		width: 100%;
+		height: 100%;
+		top: 0;
+	}
+
+	&:after {
+		content: '';
+		background-image: url('/grid.svg');
+		z-index: 1;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		opacity: 0.2;
+		filter: invert(1);
+	}
+}
+
+.content {
+	height: fit-content;
+	position: relative;
+	z-index: 3;
+	width: 100%;
+	max-width: 640px;
+
+	&:after {
+		background-image: radial-gradient(
+				at 27% 37%,
+				#0ec5ff 0px,
+				transparent 56%
+			),
+			radial-gradient(at 97% 21%, #092ad0 0px, transparent 75%),
+			radial-gradient(at 52% 99%, #1a4e61 0px, transparent 65%);
+		position: absolute;
+		content: '';
+		z-index: 2;
+		width: 100%;
+		height: 100%;
+		filter: blur(100px) saturate(150%);
+		z-index: -1;
+		top: 80px;
+		opacity: 0.2;
+		transform: translateZ(0);
+
+		@media (prefers-color-scheme: dark) {
+			opacity: 0.1;
+		}
+	}
+}
+
+@media (max-width: 640px) {
+	.main {
+		padding-top: 24px;
+		padding-bottom: 120px;
+	}
+}
+
+:root {
+	--gray1: hsl(0, 0%, 99%);
+	--gray2: hsl(0, 0%, 97.3%);
+	--gray3: hsl(0, 0%, 95.1%);
+	--gray4: hsl(0, 0%, 93%);
+	--gray5: hsl(0, 0%, 90.9%);
+	--gray6: hsl(0, 0%, 88.7%);
+	--gray7: hsl(0, 0%, 85.8%);
+	--gray8: hsl(0, 0%, 78%);
+	--gray9: hsl(0, 0%, 56.1%);
+	--gray10: hsl(0, 0%, 52.3%);
+	--gray11: hsl(0, 0%, 43.5%);
+	--gray12: hsl(0, 0%, 9%);
+
+	--grayA1: hsla(0, 0%, 0%, 0.012);
+	--grayA2: hsla(0, 0%, 0%, 0.027);
+	--grayA3: hsla(0, 0%, 0%, 0.047);
+	--grayA4: hsla(0, 0%, 0%, 0.071);
+	--grayA5: hsla(0, 0%, 0%, 0.09);
+	--grayA6: hsla(0, 0%, 0%, 0.114);
+	--grayA7: hsla(0, 0%, 0%, 0.141);
+	--grayA8: hsla(0, 0%, 0%, 0.22);
+	--grayA9: hsla(0, 0%, 0%, 0.439);
+	--grayA10: hsla(0, 0%, 0%, 0.478);
+	--grayA11: hsla(0, 0%, 0%, 0.565);
+	--grayA12: hsla(0, 0%, 0%, 0.91);
+
+	--blue1: hsl(206, 100%, 99.2%);
+	--blue2: hsl(210, 100%, 98%);
+	--blue3: hsl(209, 100%, 96.5%);
+	--blue4: hsl(210, 98.8%, 94%);
+	--blue5: hsl(209, 95%, 90.1%);
+	--blue6: hsl(209, 81.2%, 84.5%);
+	--blue7: hsl(208, 77.5%, 76.9%);
+	--blue8: hsl(206, 81.9%, 65.3%);
+	--blue9: hsl(206, 100%, 50%);
+	--blue10: hsl(208, 100%, 47.3%);
+	--blue11: hsl(211, 100%, 43.2%);
+	--blue12: hsl(211, 100%, 15%);
+}
+
+.root {
+	border-radius: 12px;
+	padding: 16px;
+	backdrop-filter: blur(10px);
+	position: relative;
+	line-height: 16px;
+	white-space: pre-wrap;
+	box-shadow: rgb(0 0 0 / 10%) 0px 5px 30px -5px;
+}
+
+.shine {
+	@media (prefers-color-scheme: dark) {
+		background: linear-gradient(
+			90deg,
+			rgba(56, 189, 248, 0),
+			var(--gray5) 20%,
+			var(--gray9) 67.19%,
+			rgba(236, 72, 153, 0)
+		);
+		height: 1px;
+		position: absolute;
+		top: -1px;
+		width: 97%;
+		z-index: -1;
+	}
+}

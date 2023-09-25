@@ -7,7 +7,9 @@
 	"scripts": {
 		"test": "cd ./packages/rapid-react && pnpm run test",
 		"pretty": "prettier --write \"./**/*.{ts,tsx,json}\" --config ./prettier.config.js",
-		"docs": "cd ./docs/landing && pnpm run dev"
+		"docs": "cd ./docs/landing && pnpm run dev",
+		"landing": "cd ./docs/landing && pnpm run dev",
+		"ui-landing": "cd ./docs/ui-landing && pnpm run dev"
 	},
 	"homepage": "https://rapid.cincinnati.ventures",
 	"keywords": [

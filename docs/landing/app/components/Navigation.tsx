@@ -20,7 +20,7 @@ const Navigation = () => {
 					<div className='z-10 flex items-center'>
 						<iframe
 							className='hidden sm:flex'
-							src='https://ghbtns.com/github-btn.html?user=Cincinnati-Ventures&repo=rapid&type=star&count=true'
+							src='https://ghbtns.com/github-btn.html?user=DarrenBaldwin07&repo=rapid&type=star&count=true'
 							width='110'
 							height='20'
 							title='GitHub'

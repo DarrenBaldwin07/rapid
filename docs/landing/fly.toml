@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for rapid-ui-landing on 2023-09-22T19:13:28-04:00
+# fly.toml app configuration file generated for rapid-landing-site on 2023-09-25T13:22:42-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "rapid-ui-landing-site"
+app = "rapid-landing-site"
 primary_region = "ord"
 kill_signal = "SIGINT"
 kill_timeout = "5s"

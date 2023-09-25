@@ -160,7 +160,7 @@ export default function Index() {
 						</Highlight>
 					</div>
 				</div>
-				<div className='mt-20 flex items-center justify-center gap-2'>
+				<div className='mt-10 flex items-center justify-center gap-2'>
 					<Text styles='font-light text-[#606060]'>Created by</Text>
 					<a
 						href='https://twitter.com/DarrenBaldwin03'

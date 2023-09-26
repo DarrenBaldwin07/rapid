@@ -3,7 +3,7 @@ name: Storybook
 on:
     push:
         branches:
-            - main # Stoybook will be deployed on every merge into the main branch
+            - ignore
 
 jobs:
     deploy:

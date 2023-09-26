@@ -16,31 +16,18 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV="production"
 
-# Install pnpm
-ARG PNPM_VERSION=7.9.1
-RUN npm install -g pnpm@$PNPM_VERSION
-
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install -y build-essential pkg-config python-is-python3
-
-# Install node_modules
-COPY --link /docs/landing/package.json ./
-COPY /docs/landing/.npmrc ./
-RUN pnpm install --prod=false
-
 # Copy application code
 COPY --link /docs/landing .
-COPY node_modules ./node_modules
+RUN npm install --include=dev
 
 # Build application
-RUN pnpm run build
+RUN npm run build
 
 # Remove development dependencies
-RUN pnpm prune --prod
+RUN npm prune --omit=dev
 
 
 # Final stage for app image
@@ -51,4 +38,4 @@ COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 8080
-CMD [ "pnpm", "run", "start" ]
+CMD [ "npm", "run", "start" ]

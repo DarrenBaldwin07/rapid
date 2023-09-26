@@ -11,7 +11,7 @@
 		"landing": "cd ./docs/landing && pnpm run dev",
 		"ui-landing": "cd ./docs/ui-landing && pnpm run dev"
 	},
-	"homepage": "https://rapid.cincinnati.ventures",
+	"homepage": "https://rapidframework.dev",
 	"keywords": [
 		"frontend",
 		"ssr",

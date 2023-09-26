@@ -3,7 +3,7 @@ name: Deploy (ui-landing)
 on:
     push:
         branches:
-            - main
+            - this-does-not-work
 
 jobs:
     deploy:

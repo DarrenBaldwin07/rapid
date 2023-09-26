@@ -13,7 +13,7 @@ jobs:
             - name: ⬇️ Checkout repo
               uses: actions/checkout@v3
               with:
-                  persist-credentials: true
+                  persist-credentials: false
 
             - name: 👀 Read app name
               uses: SebRollen/toml-action@v1.0.2

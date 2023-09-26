@@ -32,20 +32,26 @@ export default function Index() {
 					transition={{ duration: 1, delay: 0 }}
 				>
 					<div className='mt-32 flex flex-col lg:mt-56'>
-						<div className='flex w-max items-center gap-2 rounded-full border-2 border-[#27272D] bg-[#18181C] px-2 py-1 transition ease-linear hover:-translate-y-1 hover:cursor-pointer'>
-							<Text styles='text-white'>
-								Announcement blog post
-							</Text>
-							<FontAwesomeIcon
-								icon={faCircleArrowRight}
-								width={16}
-								height={16}
-								className='text-white'
-							/>
-						</div>
+						<a
+							href='https://darrenbaldwin.dev/blog/i-built-a-web-framework'
+							target='_blank'
+							rel='noreferrer'
+						>
+							<div className='flex w-max items-center gap-2 rounded-full border-2 border-[#27272D] bg-[#18181C] px-2 py-1 transition ease-linear hover:-translate-y-1 hover:cursor-pointer'>
+								<Text styles='text-white'>
+									Announcement blog post
+								</Text>
+								<FontAwesomeIcon
+									icon={faCircleArrowRight}
+									width={16}
+									height={16}
+									className='text-white'
+								/>
+							</div>
+						</a>
 						<Heading styles='text-white font-extrabold md:text-4xl lg:text-6xl max-w-[1000px] gradient-text leading-tight mt-12'>
-							A new way to build web applications with Typescript and
-							Rust.
+							A new way to build web applications with Typescript
+							and Rust.
 						</Heading>
 						<div className='mt-12 flex w-max gap-4 rounded-xl border-2 border-white p-4'>
 							<div className='flex items-center gap-2'>

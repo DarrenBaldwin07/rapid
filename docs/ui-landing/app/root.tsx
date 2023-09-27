@@ -45,6 +45,33 @@ export default function App() {
 					name='viewport'
 					content='width=device-width,initial-scale=1'
 				/>
+				<meta
+					name='description'
+					content='A supercharged component library with global theming and beautiful unstyled components all built ontop of TailwindCSS.'
+				/>
+				<meta name='twitter:card' content='summary_large_image' />
+				<meta
+					name='twitter:description'
+					content='A supercharged component library with global theming and beautiful unstyled components all built ontop of TailwindCSS.'
+				/>
+				<meta
+					name='twitter:site'
+					content='https://rapidframework.dev'
+				/>
+				<meta name='twitter:title' content='RAPID' />
+				<meta
+					name='twitter:image'
+					content='https://ui.rapidframework.dev/og-image.jpg'
+				/>
+				<meta
+					property='og:image'
+					content='https://ui.rapidframework.dev/og-image.jpg'
+				/>
+				<meta property='og:title' content='RAPID' />
+				<meta
+					property='og:description'
+					content='A supercharged component library with global theming and beautiful unstyled components all built ontop of TailwindCSS.'
+				/>
 				<Meta />
 				<Links />
 			</head>

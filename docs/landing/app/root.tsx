@@ -36,7 +36,7 @@ export default function App() {
 				/>
 				<meta
 					name='twitter:site'
-					content='https://rapid.cincinnati.ventures'
+					content='https://rapidframework.dev'
 				/>
 				<meta name='twitter:title' content='RAPID' />
 				<meta

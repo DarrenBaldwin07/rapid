@@ -9,7 +9,7 @@ import { Highlight } from 'prism-react-renderer';
 const CODE = `import { createVariant } from '@rapid-web/ui';
 import { Button } from '@rapid-web/ui';
 
-const button = createVariant({
+export const button = createVariant({
 	baseStyle: 'py-2 px-3',
 	variants: {
 		default:

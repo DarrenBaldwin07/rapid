@@ -17,6 +17,9 @@ impl RapidCommand for Build {
 			"remix" => REMIX_ROUTE_PATH.to_owned(),
 			_ => NEXTJS_ROUTE_PATH.to_owned(),
 		};
+
+
+
 		Ok(())
 	}
 }

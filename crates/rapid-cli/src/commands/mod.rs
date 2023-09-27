@@ -3,6 +3,7 @@ pub mod new;
 pub mod run;
 pub mod templates;
 pub mod routes;
+pub mod build;
 use crate::cli::{CliError, Config};
 use clap::Command;
 

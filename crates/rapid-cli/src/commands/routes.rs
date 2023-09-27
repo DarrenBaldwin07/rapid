@@ -1,14 +1,12 @@
 use super::RapidCommand;
-use crate::{cli::Config, tui::{logo, chevrons, clean_console}, rapid_config::config::{find_rapid_config, ServerConfig}};
+use crate::{cli::Config, tui::{logo, chevrons, clean_console}, rapid_config::config::find_rapid_config, util::get_routes_dir};
 use clap::{ArgMatches, Command};
 use walkdir::WalkDir;
 use std::fs::File;
 use std::io::Read;
 use colorful::{Color, Colorful};
 use regex::Regex;
-
-pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
-pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
+use crate::util::{NEXTJS_ROUTE_PATH, REMIX_ROUTE_PATH};
 
 // `rapid routes` command for showing all the route rust files and they map to in url form
 pub struct Routes {}
@@ -89,18 +87,7 @@ pub fn remove_last_occurrence(s: &str, sub: &str) -> String {
 	front + back
 }
 
-pub fn get_routes_dir(rapid_server_config: Option<&ServerConfig>) -> String {
-	match rapid_server_config {
-		Some(server) => match server.routes_directory.clone() {
-			Some(dir) => match dir == "/" {
-				true => panic!("The 'routes_directory' variable cannot be set to a base path. Please use something nested!"),
-				false => dir,
-			},
-			None => panic!("Error: the 'routes_directory' variable must be set in your rapid config file!"),
-		},
-		None => panic!("You must have a valid rapid config file in the base project directory!"),
-	}
-}
+
 
 
 pub fn parse_route_path(route_path: String) -> String {

@@ -1614,33 +1614,6 @@ dependencies = [
 [[package]]
 name = "rapid-web"
 version = "0.4.8"
-dependencies = [
- "actix-cors",
- "actix-files",
- "actix-http",
- "actix-service",
- "actix-web",
- "actix-web-httpauth",
- "clerk-rs",
- "colorful",
- "futures-util",
- "lazy_static",
- "log",
- "pretty_env_logger",
- "proc-macro2",
- "rapid-cli 0.6.0",
- "rapid-web-codegen 0.2.8",
- "regex",
- "serde",
- "spinach",
- "syn 2.0.15",
- "tiny-gradient",
- "walkdir",
-]
-
-[[package]]
-name = "rapid-web"
-version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "388949b0667620f8008b78125b73c198f2a5c502c32c56d516a87f4c24a1c01d"
 dependencies = [
@@ -1668,13 +1641,40 @@ dependencies = [
 ]
 
 [[package]]
+name = "rapid-web"
+version = "0.4.9"
+dependencies = [
+ "actix-cors",
+ "actix-files",
+ "actix-http",
+ "actix-service",
+ "actix-web",
+ "actix-web-httpauth",
+ "clerk-rs",
+ "colorful",
+ "futures-util",
+ "lazy_static",
+ "log",
+ "pretty_env_logger",
+ "proc-macro2",
+ "rapid-cli 0.6.0",
+ "rapid-web-codegen 0.2.8",
+ "regex",
+ "serde",
+ "spinach",
+ "syn 2.0.15",
+ "tiny-gradient",
+ "walkdir",
+]
+
+[[package]]
 name = "rapid-web-codegen"
 version = "0.2.8"
 dependencies = [
  "include_dir",
  "proc-macro2",
  "quote",
- "rapid-web 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rapid-web 0.4.8",
  "regex",
  "syn 2.0.15",
 ]

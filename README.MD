@@ -8,6 +8,56 @@
 
 [![OSSRank](https://shields.io/endpoint?url=https://ossrank.com/shield/2856)](https://ossrank.com/p/2856)
 
+# Example
+
+You define a resolver in Rust and Rapid will automatically generate a type schema that enables full-stack type-safety from frontend to backend.
+
+```rust
+use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidPath};
+use serde::{Deserialize, Serialize};
+
+// The name/alias for your route (you will use this to call it from the client)
+pub const ROUTE_KEY: &str = "getUser";
+
+#[derive(Serialize, Deserialize)]
+pub struct User {
+    pub id: i32,
+    pub name: String,
+    pub age: u8,
+}
+
+pub type RapidOutput = User;
+
+#[rapid_handler]
+pub async fn query(user_id: RapidPath<i32>) -> HttpResponse {
+    let user = User {
+        id: user_id.into_inner(),
+        name: "John".to_string(),
+        age: 20,
+    };
+    HttpResponse::Ok()
+    .content_type("text/html; charset=utf-8")
+    .body(user)
+}
+```
+
+You can then make fully type-safe HTTP requests to your rust backend with the `rapid-react` bolt client:
+
+```ts
+import { createBoltClient } from '@rapid-web/react';
+import { routes, type Handlers } from './bindings.ts';
+
+// Init your bolt client that you can use throughout your entire app for making requests
+export const bolt = createBoltClient<Handlers, typeof routes>(routes, {
+	transport: 'http://localhost:8080',
+});
+
+const userId = 1;
+
+const req = await bolt('getUser').get(routes.getUser, userId);
+```
+
 # What is Rapid?
 
 The complete fullstack toolkit for building advanced, scaleable, and highly efficient software.

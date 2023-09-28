@@ -22,4 +22,4 @@ regex = "1.7.3"
 syn = { version = "2.0.15",  features = ["full", "extra-traits"] }
 
 [dev-dependencies]
-rapid-web = "0.4.8"
+rapid-web = "0.4.9"

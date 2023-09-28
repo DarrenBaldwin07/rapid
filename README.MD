@@ -10,7 +10,7 @@
 
 # Example
 
-You define a resolver in Rust and Rapid will automatically generate a type schema that enables full-stack type-safety from frontend to backend.
+You define a resolver in Rust and Rapid will automatically generate a type schema that enables full-stack type-safety from frontend to backend:
 
 ```rust
 use rapid_web::actix::HttpResponse;

@@ -58,6 +58,7 @@ impl RapidCLI {
 			commands::run::Run::cmd(),
 			commands::templates::Templates::cmd(),
 			commands::routes::Routes::cmd(),
+			commands::build::Build::cmd()
 		]
 	}
 
@@ -68,6 +69,7 @@ impl RapidCLI {
 			"run" => commands::run::Run::execute,
 			"templates" => commands::templates::Templates::execute,
 			"routes" => commands::routes::Routes::execute,
+			"build" => commands::build::Build::execute,
 			_ => return None,
 		};
 

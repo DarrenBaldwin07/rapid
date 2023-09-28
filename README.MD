@@ -17,7 +17,7 @@ use rapid_web::actix::HttpResponse;
 use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidPath};
 use serde::{Deserialize, Serialize};
 
-
+// The name alias for your route (you will use this to call it from the client)
 pub const ROUTE_KEY: &str = "getUser";
 
 #[derive(Serialize, Deserialize)]

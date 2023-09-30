@@ -3,13 +3,14 @@ import { docsSetup } from '~/helpers';
 import type { LoaderFunction } from '@remix-run/node';
 import { Outlet, useLoaderData } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
+import NextDoc from '~/components/NextDoc';
 
 interface LoaderOutput {
 	routes: string[];
 }
 
 export const loader: LoaderFunction = ({ request }) => {
-	return docsSetup("demo-app", request);
+	return docsSetup('demo-app', request);
 };
 
 const DocsDemoApp = () => {
@@ -20,6 +21,7 @@ const DocsDemoApp = () => {
 			<div className='mt-12 w-full text-white'>
 				<Outlet />
 			</div>
+			<NextDoc />
 		</div>
 	);
 };

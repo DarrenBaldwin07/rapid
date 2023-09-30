@@ -17,6 +17,7 @@ const NextDoc = () => {
 			shouldShowDocsNavigation(pathName as string),
 		);
 	}, [pathName]);
+
 	return (
 		<>
 			{isShowingDocsNavigation && (

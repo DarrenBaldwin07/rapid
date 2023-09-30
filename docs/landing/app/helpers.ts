@@ -21,3 +21,7 @@ export const docsSetup = (routeName: string, request: Request) => {
 		routes,
 	});
 };
+
+export const useGetBreadcrumb = () => {
+
+}

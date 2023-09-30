@@ -23,3 +23,22 @@ pub async fn query() -> HttpResponse {
     .body("Hello World!")
 }`}
 />
+<p className='mt-4'>Handlers in Rapid are just functions with special keywords that define the request type. All handlers must have a function name of either `query` or `mutation`. Using `query` will make the handler only accept GET requests and `mutation` allows for POST, PUT, PATCH, and DELETE. </p>
+
+<br />
+
+## Route Keys
+<br />
+
+Every route in your project will be given a name automatically. By default, Rapid uses the name of your route file. However, if you want to specify your own route name that does not conflict with the actual path that your route resolves to, you can use a route key:
+<CodeBlock
+    language='rust'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidPath};
+
+// This will constant will get analyzed by the rapid compiler
+// It will then be used as the identifer that you will specify on the frontend to call your handler:
+pub const ROUTE_KEY: &str = "yourRouteName";
+
+//...`}
+/>

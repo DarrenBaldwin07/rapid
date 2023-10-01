@@ -7,7 +7,7 @@ pub use rapid_web_codegen;
 pub(crate) mod default_routes;
 pub mod logger;
 pub mod server;
-pub mod shift; // TODO: shift needs to be abstracted out into its own crate (for now it will be left private to rapid-web as users do not need to access it)
+pub mod shift; // TODO: shift needs to be abstracted out into its own crate
 pub(crate) mod tui;
 pub mod types;
 pub(crate) mod util;

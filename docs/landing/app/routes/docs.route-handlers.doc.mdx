@@ -72,7 +72,7 @@ Us the `RapidQuery` extractor to access query parameters within the request url:
 <CodeBlock
     language='rust'
 	code={`use rapid_web::actix::HttpResponse;
-use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidJson};
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidQuery};
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -81,9 +81,26 @@ struct User {
 }
 
 #[rapid_handler]
-pub async fn query(user: RapidJson<User>) -> HttpResponse {
+pub async fn query(user: RapidQuery<User>) -> HttpResponse {
     let query_data = user.id;
     // ...
 }`}
 />
 
+
+<br />
+### RapidPath
+Us the `RapidPath` extractor to access path parameters within the request url:
+<CodeBlock
+    language='rust'
+    fileName='_id_.rs'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidPath};
+
+#[rapid_handler]
+pub async fn query(path: RapidPath<i32>) -> HttpResponse {
+    let id = path.into_inner();
+    // ...
+}`}
+/>
+<p className='mt-4'>For path paremters to work properly, you will need to tell the Rapid compiler that your route is dynamic. This is done by naming your route files with beginning and ending underscores like `_id_.rs`.</p>

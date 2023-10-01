@@ -34,7 +34,8 @@ a:not(.exclude-from-markdown) {
 }
 
 code {
-	background-color: #424242;
+	background-color: #18181c;
+	border: 1px solid #27272d;
 	padding: 2px;
 	border-radius: 5px;
 }

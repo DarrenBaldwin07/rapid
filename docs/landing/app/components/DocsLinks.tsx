@@ -127,7 +127,6 @@ const DocsLinks = () => {
 				</div>
 			</div>
 		</>
-
 	);
 };
 

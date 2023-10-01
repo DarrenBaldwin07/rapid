@@ -15,13 +15,9 @@ export const docsSetup = (routeName: string, request: Request) => {
 		url.pathname = `/docs/${routeName}`;
 	}
 
-	const routes = url.pathname.split('/').filter(Boolean)
+	const routes = url.pathname.split('/').filter(Boolean);
 
 	return json({
 		routes,
 	});
 };
-
-export const useGetBreadcrumb = () => {
-
-}

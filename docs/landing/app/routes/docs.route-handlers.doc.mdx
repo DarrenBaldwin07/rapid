@@ -12,8 +12,9 @@ Start by creating a new file with any name you want (the name you choose will ma
     language='rust'
     fileName='hello.rs'
 	code={`use rapid_web::actix::HttpResponse;
-use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidPath};
+use rapid_web::{rapid_web_codegen::rapid_handler};
 
+// Rapid compiler will see this and use it to specify the output type of this handler
 pub type RapidOutput = String;
 
 #[rapid_handler]
@@ -34,7 +35,7 @@ Every route in your project will be given a name automatically. By default, Rapi
 <CodeBlock
     language='rust'
 	code={`use rapid_web::actix::HttpResponse;
-use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidPath};
+use rapid_web::{rapid_web_codegen::rapid_handler};
 
 // This will constant will get analyzed by the rapid compiler
 // It will then be used as the identifer that you will specify on the frontend to call your handler:
@@ -48,3 +49,19 @@ pub const ROUTE_KEY: &str = "yourRouteName";
 
 
 ## Processing requests
+Since Rapid is built to be a thin layer on [actix-web](https://actix.rs), all of its request parsing logic is done via extractors. The actix-web docs for extractors can be found [here](https://actix.rs/docs/extractors).
+
+<br />
+### RapidJson
+Us the `RapidJson` extractor to parse the request body as json:
+<CodeBlock
+    language='rust'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidJson};
+
+#[rapid_handler]
+pub async fn query(body: RapidJson<String>) -> HttpResponse {
+    let data = body.into_inner();
+    // ...
+}`}
+/>

@@ -27,7 +27,7 @@ const NextDoc = () => {
 						className='exclude-from-markdown w-full no-underline md:w-1/3'
 					>
 						<div className='hover:border-mainBlue flex items-center gap-2 rounded-lg border-[0.5px] border-[#222222] p-4 transition-all duration-100 ease-linear'>
-							<img width={24} src={Github} alt='github' />
+							<img width={20} src={Github} alt='github' />
 							<Text className='text-sm font-bold text-white'>
 								View on Github
 							</Text>

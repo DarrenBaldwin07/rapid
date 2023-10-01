@@ -61,7 +61,7 @@ const CodeBlock = ({ language, code, fileName }: Props) => {
 					</div>
 				</div>
 				{fileName && (
-					<div className='w-max self-end rounded-full bg-black px-2 py-1 text-xs text-white'>
+					<div className='w-max self-end rounded-full border border-[#27272D] bg-[#18181C] px-2 py-1 text-xs text-white'>
 						<pre>{fileName}</pre>
 					</div>
 				)}

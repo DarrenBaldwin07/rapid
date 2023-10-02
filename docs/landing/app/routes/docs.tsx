@@ -69,7 +69,7 @@ interface DocsLayoutProps {
 
 const DocsLayout = ({ children }: DocsLayoutProps) => {
 	return (
-		<div className='no-scroll-bar h-full w-full p-0 py-12 md:h-[95vh] md:overflow-y-scroll md:p-12'>
+		<div className='no-scroll-bar mt-32 h-full w-full py-12 md:mt-12 md:h-[96vh] md:overflow-y-scroll md:p-12'>
 			{children}
 		</div>
 	);
@@ -78,7 +78,7 @@ const DocsLayout = ({ children }: DocsLayoutProps) => {
 const Docs = () => {
 	return (
 		<Layout isDocsNavigation>
-			<div className='mt-32 flex w-full flex-col md:mt-0 md:flex-row'>
+			<div className='flex w-full flex-col md:flex-row'>
 				<DocsSidebar />
 				<DocsLayout>
 					<Outlet />

@@ -17,9 +17,19 @@ export const getNextDocPathName = (currentPathName?: string) => {
 				path: '/docs/demo-app',
 				text: 'Demo App',
 			};
+		case '/docs/demo-app/doc':
+			return {
+				path: '/docs/route-handlers',
+				text: 'Route Handlers',
+			};
+		case '/docs/route-handlers/doc':
+			return {
+				path: '/docs/middleware',
+				text: 'Middlware',
+			};
 		default:
 			return {
-				path: '/docs/quick-start',
+				path: '/docs/quickstart',
 				text: 'Quickstart',
 			};
 	}
@@ -29,10 +39,12 @@ export const shouldShowDocsNavigation = (pathname: string) => {
 	const docsRoutes = [
 		'/docs/introduction/doc',
 		'/docs/quickstart/doc',
-		'/docs/quick-start/doc',
-		'/docs/quick-start',
 		'/docs/introduction',
 		'/docs/quickstart',
+		'/docs/demo-app',
+		'/docs/demo-app/doc',
+		'/docs/route-handlers',
+		'/docs/route-handlers/doc',
 	];
 
 	return docsRoutes.includes(pathname);

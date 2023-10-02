@@ -17,7 +17,7 @@ use rapid_web::{rapid_web_codegen::rapid_handler};
 // Rapid compiler will see this and use it to specify the output type of this handler
 pub type RapidOutput = String;
 
-#[rapid_handler]
+#[rapid_handler] // This macro specifies a function as a Rapid handler
 pub async fn query() -> HttpResponse {
     HttpResponse::Ok()
     .content_type("text/html; charset=utf-8")

@@ -6,6 +6,7 @@ import { useLoaderData, Outlet } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 import styles from '../styles/markdown.css';
 import NextDoc from '~/components/NextDoc';
+import prism from '../styles/prism.css';
 
 interface LoaderOutput {
 	routes: string[];
@@ -16,6 +17,10 @@ export const links: LinksFunction = () => {
 		{
 			rel: 'stylesheet',
 			href: styles,
+		},
+		{
+			rel: 'stylesheet',
+			href: prism,
 		},
 	];
 };

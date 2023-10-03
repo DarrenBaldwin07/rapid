@@ -27,6 +27,11 @@ export const getNextDocPathName = (currentPathName?: string) => {
 				path: '/docs/middleware',
 				text: 'Middlware',
 			};
+		case '/docs/middleware/doc':
+			return {
+				path: '/docs/type-safety',
+				text: 'Type-safety',
+			};
 		default:
 			return {
 				path: '/docs/quickstart',
@@ -45,6 +50,8 @@ export const shouldShowDocsNavigation = (pathname: string) => {
 		'/docs/demo-app/doc',
 		'/docs/route-handlers',
 		'/docs/route-handlers/doc',
+		'/docs/middleware',
+		'/docs/middleware/doc',
 	];
 
 	return docsRoutes.includes(pathname);

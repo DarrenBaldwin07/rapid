@@ -26,16 +26,16 @@ export const links: LinksFunction = () => {
 };
 
 export const loader: LoaderFunction = ({ request }) => {
-	return docsSetup('middleware', request);
+	return docsSetup('type-safety', request);
 };
 
-const Middleware = () => {
+const TypeSafety = () => {
 	const data = useLoaderData<LoaderOutput>();
 	return (
 		<div className='flex w-full flex-col'>
 			<BreadCrumb routes={data.routes} />
 			<Heading styles='exclude-from-markdown text-white text-5xl font-bold'>
-				Middleware
+				Type safety
 			</Heading>
 			<div className='mt-6 text-white'>
 				<Outlet />
@@ -45,4 +45,4 @@ const Middleware = () => {
 	);
 };
 
-export default Middleware;
+export default TypeSafety;

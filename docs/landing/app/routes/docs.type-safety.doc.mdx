@@ -33,7 +33,7 @@ Rapid exports special types that enable you to specify complex typescript types 
 
 ### Union
 A small rust struct that is used by the Rapid compiler to a specify a normal union type in typescript (like `type Union = string | number`) as the output type for a given handler.
-<CodeBlock language='typescript' code={`use rapid_web::actix::HttpResponse;
+<CodeBlock language='rust' code={`use rapid_web::actix::HttpResponse;
 use rapid_web::{rapid_web_codegen::rapid_handler, types::Union};
 
 // Use the "Union" type to handle cases where a route handler might return 2 possible output types (like a success or error value)

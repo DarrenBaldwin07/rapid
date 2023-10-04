@@ -24,15 +24,15 @@ const CodeBlock = ({ language, code, fileName }: Props) => {
 
 	return (
 		<div
-			className='z-2 mt-6 overflow-y-hidden'
+			className='mt-6 overflow-y-hidden'
 			onMouseOver={() => setIsShowingCopy(true)}
 			onMouseLeave={() => setTimeout(() => setIsShowingCopy(false), 250)}
 		>
-			<div className='z-1 flex flex-col rounded-lg bg-[#282C34] p-2'>
+			<div className='flex flex-col rounded-lg bg-[#282C34] p-2'>
 				<div className='flex w-full justify-between'>
 					<pre
 						ref={codeRef as any}
-						className={`language-${language} z-1 no-scroll-bar text-sm`}
+						className={`language-${language} no-scroll-bar z-10 text-sm`}
 					>
 						{code}
 					</pre>

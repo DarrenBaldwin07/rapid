@@ -37,8 +37,8 @@ const DocsNavigation = () => {
 	};
 
 	return (
-		<div className='z-100'>
-			<div className='safari-blur z-100 fixed top-0 w-full backdrop-blur-lg transition duration-500'>
+		<div className='z-50'>
+			<div className='safari-blur fixed top-0 z-50 w-full backdrop-blur-lg transition duration-500'>
 				<img
 					className='absolute -top-[25px] left-1/2 -z-50 -translate-x-1/2 overflow-hidden md:-top-[70px] lg:-top-[100px]'
 					src={GradientMain}
@@ -74,7 +74,7 @@ const DocsNavigation = () => {
 						</div>
 					</div>
 					<div
-						className='z-10 mt-6 flex w-full flex-col gap-4 rounded-[25px] border border-[#222222] bg-[#1A191D] px-6 py-3 hover:cursor-pointer md:hidden'
+						className='z-50 mt-6 flex w-full flex-col gap-4 rounded-[25px] border border-[#222222] bg-[#1A191D] px-6 py-3 hover:cursor-pointer md:hidden'
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<div className='flex items-center gap-4'>

@@ -78,7 +78,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Type Safety</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/rapid-config/doc'
+						to='/docs/configuration/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'

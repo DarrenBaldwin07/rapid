@@ -6,6 +6,7 @@ import { useLoaderData, Outlet } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 import styles from '../styles/markdown.css';
 import prism from '../styles/prism.css';
+import NextDoc from '~/components/NextDoc';
 
 interface LoaderOutput {
 	routes: string[];
@@ -25,7 +26,7 @@ export const links: LinksFunction = () => {
 };
 
 export const loader: LoaderFunction = ({ request }) => {
-	return docsSetup("quickstart", request);
+	return docsSetup('quickstart', request);
 };
 
 const DocsInstallation = () => {
@@ -39,6 +40,7 @@ const DocsInstallation = () => {
 			<div className='mt-12 w-full text-white'>
 				<Outlet />
 			</div>
+			<NextDoc />
 		</div>
 	);
 };

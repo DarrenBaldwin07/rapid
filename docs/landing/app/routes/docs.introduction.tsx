@@ -2,10 +2,10 @@ import React from 'react';
 import { docsSetup } from '~/helpers';
 import { Heading } from '@rapid-web/ui';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, Outlet } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
-import { Outlet } from '@remix-run/react';
 import styles from '../styles/markdown.css';
+import NextDoc from '~/components/NextDoc';
 
 interface LoaderOutput {
 	routes: string[];
@@ -21,7 +21,7 @@ export const links: LinksFunction = () => {
 };
 
 export const loader: LoaderFunction = ({ request }) => {
-	return docsSetup("introduction", request);
+	return docsSetup('introduction', request);
 };
 
 const DocsIntroduction = () => {
@@ -35,6 +35,7 @@ const DocsIntroduction = () => {
 			<div className='mt-6 text-white'>
 				<Outlet />
 			</div>
+			<NextDoc />
 		</div>
 	);
 };

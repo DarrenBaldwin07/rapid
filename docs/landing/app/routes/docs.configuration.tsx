@@ -1,11 +1,16 @@
 import React from 'react';
 import { docsSetup } from '~/helpers';
+import { Heading } from '@rapid-web/ui';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
-import { Outlet, useLoaderData } from '@remix-run/react';
+import { useLoaderData, Outlet } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
-import NextDoc from '~/components/NextDoc';
 import styles from '../styles/markdown.css';
 import prism from '../styles/prism.css';
+import NextDoc from '~/components/NextDoc';
+
+interface LoaderOutput {
+	routes: string[];
+}
 
 export const links: LinksFunction = () => {
 	return [
@@ -20,19 +25,18 @@ export const links: LinksFunction = () => {
 	];
 };
 
-interface LoaderOutput {
-	routes: string[];
-}
-
 export const loader: LoaderFunction = ({ request }) => {
-	return docsSetup('demo-app', request);
+	return docsSetup('configuration', request);
 };
 
-const DocsDemoApp = () => {
+const Configuration = () => {
 	const data = useLoaderData<LoaderOutput>();
 	return (
-		<div>
+		<div className='w-full'>
 			<BreadCrumb routes={data.routes} />
+			<Heading styles='exclude-from-markdown text-white text-5xl font-bold'>
+				Configuration
+			</Heading>
 			<div className='mt-12 w-full text-white'>
 				<Outlet />
 			</div>
@@ -41,4 +45,4 @@ const DocsDemoApp = () => {
 	);
 };
 
-export default DocsDemoApp;
+export default Configuration;

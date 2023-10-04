@@ -1,0 +1,51 @@
+import CodeBlock from '../components/CodeBlock';
+
+Every Rapid project must have a configuration file called `rapid.toml`. This document outlines all of the possible configuration options and what they do in detail.
+<br />
+## Base configurations
+
+### Server
+This is the default config for a Rapid server project scaffolded with `rapid new --server`:
+<CodeBlock language='rust' code={`app_type = "server"
+
+[server]
+serve_static_files = true // Toggles static file serving from the "/public" directory
+is_logging = true // Toggles request/response logging
+typescript_generation = true
+port = 8080 // Changes the port that the Rapid server is served on
+routes_directory = "src/routes" // Specifies the directory where rapid will parse for file-based routing
+bindings_export_path = "/" // The path where you want your typescript bindings to be exported from
+`} />
+
+<br />
+
+### Remix
+This is the default config for a Rapid remix project scaffolded with `rapid new --remix`:
+<CodeBlock language='rust' code={`app_type = "remix"
+
+[remix]
+server_port = 8080
+serve_static_files = true
+is_logging = true
+typescript_generation = true
+bindings_export_path = "app/api"
+`} />
+
+<br />
+
+### NextJS
+This is the default config for a Rapid nextjs project scaffolded with `rapid new --nextjs`:
+<CodeBlock language='rust' code={`app_type = "nextjs"
+
+[nextjs]
+server_port = 8080
+serve_static_files = true
+is_logging = true
+typescript_generation = true
+bindings_export_path = "pages/api"
+`} />
+
+<br />
+
+## Config options
+> Coming soon...

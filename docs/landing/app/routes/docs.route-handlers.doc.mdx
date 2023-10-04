@@ -1,5 +1,106 @@
+import CodeBlock from '../components/CodeBlock';
+
 At the core of Rapid is a routing system built on the builder API found in [actix-web](https://actix.rs). Everything works via a simple file-based convention that is very similar to [NextJS](https://nextjs.org). Each route is composed of a single `.rs` file with handler functions defined inside of it. Learn more about it below:
 
 <br />
 
 ## Defining a route
+
+Start by creating a new file with any name you want (the name you choose will map directly to the actual url path). For this example, we'll use `hello.rs`. Inside of this file, we will define a basic handler function:
+
+<CodeBlock
+    language='rust'
+    fileName='hello.rs'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler};
+
+// Rapid compiler will see this and use it to specify the output type of this handler
+pub type RapidOutput = String;
+
+#[rapid_handler] // This macro specifies a function as a Rapid handler
+pub async fn query() -> HttpResponse {
+    HttpResponse::Ok()
+    .content_type("text/html; charset=utf-8")
+    .body("Hello World!")
+}`}
+/>
+<p className='mt-4'>Handlers in Rapid are just functions with special keywords that define the request type. All handlers must have a function name of either `query` or `mutation`. Using `query` will make the handler only accept GET requests and `mutation` allows for POST, PUT, PATCH, and DELETE. </p>
+
+<br />
+
+## Route Keys
+
+
+Every route in your project will be given a name automatically. By default, Rapid uses the name of your route file. However, if you want to specify your own route name that does not conflict with the actual path that your route resolves to, you can use a route key:
+<CodeBlock
+    language='rust'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler};
+
+// This will constant will get analyzed by the rapid compiler
+// It will then be used as the identifer that you will specify on the frontend to call your handler:
+pub const ROUTE_KEY: &str = "yourRouteName";
+
+//...`}
+/>
+
+
+<br />
+
+
+## Processing requests
+Since Rapid is built to be a thin layer on [actix-web](https://actix.rs), all of its request parsing logic is done via extractors. The actix-web docs for extractors can be found [here](https://actix.rs/docs/extractors).
+
+<br />
+### RapidJson
+Us the `RapidJson` extractor to parse the request body as json:
+<CodeBlock
+    language='rust'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidJson};
+
+#[rapid_handler]
+pub async fn query(body: RapidJson<String>) -> HttpResponse {
+    let data = body.into_inner();
+    // ...
+}`}
+/>
+
+<br />
+### RapidQuery
+Us the `RapidQuery` extractor to access query parameters within the request url:
+<CodeBlock
+    language='rust'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidQuery};
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+struct User {
+    id: String,
+}
+
+#[rapid_handler]
+pub async fn query(user: RapidQuery<User>) -> HttpResponse {
+    let query_data = user.id;
+    // ...
+}`}
+/>
+
+
+<br />
+### RapidPath
+Us the `RapidPath` extractor to access path parameters within the request url:
+<CodeBlock
+    language='rust'
+    fileName='_id_.rs'
+	code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, request::RapidPath};
+
+#[rapid_handler]
+pub async fn query(path: RapidPath<i32>) -> HttpResponse {
+    let id = path.into_inner();
+    // ...
+}`}
+/>
+<p className='mt-4'>For path paremters to work properly, you will need to tell the Rapid compiler that your route is dynamic. This is done by naming your route files with beginning and ending underscores like `_id_.rs`.</p>

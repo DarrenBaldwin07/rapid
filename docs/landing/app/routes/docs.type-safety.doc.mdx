@@ -1,0 +1,43 @@
+import CodeBlock from '../components/CodeBlock';
+
+<p>Rapid achieves full-stack type-safety via a common technique called "code generation". Whenever the Rapid server starts or when the `rapid build` command is run, the compiler will parse every route handler inside of your project and generate a `bindings.ts` file like the below:</p>
+
+<CodeBlock language='typescript' code={`// @generated automatically by Rapid-web (https://rapidframework.dev). DO NOT CHANGE OR EDIT THIS FILE!
+
+export interface Handlers {
+	queries: {
+		"index": {
+  			output: any
+  			type: 'query'
+  			isDynamic: false
+		},
+	},
+	mutations: {},
+}
+
+export const routes = {
+	"index": {
+		url: '/',
+		type: 'query',
+	},
+} as const`} />
+
+<p className='mt-4'>This generated file is then consumed on the frontend by Rapid's request client called Bolt. For more info, see the client-side doc [here](https://rapidframework.dev/docs/client/doc)</p>
+
+<br />
+
+## Special types
+Rapid exports special types that enable you to specify complex typescript types for your frontend right inside of your rust route handlers.
+
+<br />
+
+### Union
+A small rust struct that is used by the Rapid compiler to a specify a normal union type in typescript (like `type Union = string | number`) as the output type for a given handler.
+<CodeBlock language='rust' code={`use rapid_web::actix::HttpResponse;
+use rapid_web::{rapid_web_codegen::rapid_handler, types::Union};
+
+// Use the "Union" type to handle cases where a route handler might return 2 possible output types (like a success or error value)
+pub type RapidOutput = Union<String, Error>;
+
+
+//...`} />

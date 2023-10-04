@@ -9,7 +9,7 @@ const DocsLinks = () => {
 				<Text styles='gradient-text uppercase text-xs'>
 					Getting Started
 				</Text>
-				<div className='z-10 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
+				<div className='z-100 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
 					<NavLink
 						to='/docs/introduction/doc'
 						className={({ isActive }) =>
@@ -44,7 +44,7 @@ const DocsLinks = () => {
 			</div>
 			<div className='flex flex-col gap-6'>
 				<Text styles='gradient-text uppercase text-xs'>Server</Text>
-				<div className='z-10 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
+				<div className='z-100 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
 					<NavLink
 						to='/docs/route-handlers/doc'
 						className={({ isActive }) =>
@@ -78,7 +78,7 @@ const DocsLinks = () => {
 						<Text styles='exclude-from-markdown'>Type Safety</Text>
 					</NavLink>
 					<NavLink
-						to='/docs/rapid-config/doc'
+						to='/docs/configuration/doc'
 						className={({ isActive }) =>
 							`text-docsText exclude-from-markdown z-10 border-l-2 border-transparent pl-4 transition-all duration-100 ease-in-out hover:text-white ${
 								isActive && 'border-l-mainBlue text-white'
@@ -127,7 +127,6 @@ const DocsLinks = () => {
 				</div>
 			</div>
 		</>
-
 	);
 };
 

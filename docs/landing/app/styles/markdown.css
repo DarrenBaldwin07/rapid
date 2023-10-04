@@ -1,54 +1,59 @@
-
 h1:not(.exclude-from-markdown) {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-    font-family: Arial, Helvetica, sans-serif;
+	font-size: 2.2rem;
+	margin-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 h2:not(.exclude-from-markdown) {
-    font-size: 1.7rem;
-    margin-bottom: 10px;
-    font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.7rem;
+	margin-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+h3:not(.exclude-from-markdown) {
+	font-size: 1.2rem;
+	margin-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 p:not(.exclude-from-markdown) {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 200;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 200;
 }
 
 li {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 200;
-    padding-left: 10px;
-    padding-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 200;
+	padding-left: 10px;
+	padding-bottom: 10px;
 }
 
-
 a:not(.exclude-from-markdown) {
-    text-decoration: underline;
-    color: #2F81F7;
+	text-decoration: underline;
+	color: #2f81f7;
 }
 
 code {
-    background-color: #424242;
-    padding: 2px;
-    border-radius: 5px;
+	background-color: #18181c;
+	border: 1px solid #27272d;
+	padding: 2px;
+	border-radius: 5px;
 }
 
 blockquote {
-    border-left: 4px solid #30363D;
-    color: #586069;
-    margin: 0;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 16px;
+	border-left: 4px solid #30363d;
+	color: #586069;
+	margin: 0;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 16px;
 }
 
 hr:not(.exclude-from-markdown) {
-    border-color: #222222;
-    height: 0.5px;
-    z-index: 10;
-    width: 100%;
-    margin-top: 12px;
-    margin-bottom: 22px;
+	border-color: #222222;
+	height: 0.5px;
+	z-index: 10;
+	width: 100%;
+	margin-top: 12px;
+	margin-bottom: 22px;
 }

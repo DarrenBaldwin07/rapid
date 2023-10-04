@@ -6,6 +6,7 @@ import { BreadCrumb } from '~/components/BreadCrumb';
 import { docsSetup } from '~/helpers';
 import prism from '../styles/prism.css';
 import styles from '../styles/markdown.css';
+import NextDoc from '~/components/NextDoc';
 
 interface LoaderOutput {
 	routes: string[];
@@ -25,7 +26,7 @@ export const links: LinksFunction = () => {
 };
 
 export const loader: LoaderFunction = ({ request }) => {
-	return docsSetup("route-handlers", request);
+	return docsSetup('route-handlers', request);
 };
 
 const RouteHandlers = () => {
@@ -33,12 +34,13 @@ const RouteHandlers = () => {
 	return (
 		<div>
 			<BreadCrumb routes={data.routes} />
-            <Heading styles='exclude-from-markdown text-white text-5xl font-bold'>
+			<Heading styles='exclude-from-markdown text-white text-5xl font-bold'>
 				Route handlers
 			</Heading>
-            <div className='mt-12 w-full text-white'>
+			<div className='mt-12 w-full text-white'>
 				<Outlet />
 			</div>
+			<NextDoc />
 		</div>
 	);
 };

@@ -1,9 +1,24 @@
 import React from 'react';
 import { docsSetup } from '~/helpers';
-import type { LoaderFunction } from '@remix-run/node';
+import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import { Outlet, useLoaderData } from '@remix-run/react';
 import { BreadCrumb } from '~/components/BreadCrumb';
 import NextDoc from '~/components/NextDoc';
+import styles from '../styles/markdown.css';
+import prism from '../styles/prism.css';
+
+export const links: LinksFunction = () => {
+	return [
+		{
+			rel: 'stylesheet',
+			href: styles,
+		},
+		{
+			rel: 'stylesheet',
+			href: prism,
+		},
+	];
+};
 
 interface LoaderOutput {
 	routes: string[];

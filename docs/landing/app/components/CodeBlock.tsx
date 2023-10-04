@@ -4,6 +4,7 @@ import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-toml';
 import { faCopy, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

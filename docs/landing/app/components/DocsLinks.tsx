@@ -9,7 +9,7 @@ const DocsLinks = () => {
 				<Text styles='gradient-text uppercase text-xs'>
 					Getting Started
 				</Text>
-				<div className='z-10 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
+				<div className='z-100 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
 					<NavLink
 						to='/docs/introduction/doc'
 						className={({ isActive }) =>
@@ -44,7 +44,7 @@ const DocsLinks = () => {
 			</div>
 			<div className='flex flex-col gap-6'>
 				<Text styles='gradient-text uppercase text-xs'>Server</Text>
-				<div className='z-10 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
+				<div className='z-100 flex flex-col gap-2 border-l-[0.5px] border-[#222222]'>
 					<NavLink
 						to='/docs/route-handlers/doc'
 						className={({ isActive }) =>

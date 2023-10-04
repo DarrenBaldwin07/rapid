@@ -2,7 +2,7 @@ use super::convert::{convert_primitive, TypescriptType};
 use syn::{parse_file, Expr, File as SynFile, Generics, Item, Lit, Type};
 
 pub const GENERATED_TS_FILE_MESSAGE: &str =
-	"// @generated automatically by Rapid-web (https://rapid.cincinnati.ventures). DO NOT CHANGE OR EDIT THIS FILE!";
+	"// @generated automatically by Rapid-web (https://rapidframework.dev). DO NOT CHANGE OR EDIT THIS FILE!";
 
 #[derive(Debug)]
 pub enum TypeClass {

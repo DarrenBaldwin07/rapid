@@ -2,9 +2,8 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import type { RapidWebHandlerType, BoltRoutes, Bolt } from './types';
 import { isDynamicRoute, generatePathUrl, toArray } from './util';
 
-// TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
 // TODO: Improve some of the generics here (they are a bit messy)
-// TODO: Some of the hover context overlays are bloated with the route generics (not sure how we fix this but would be good to revisit)
+// TODO: Some of the hover context overlays are bloated with the route generics (not sure how we fix this but would be good to revisit so that type trays look better)
 
 type FetchKey<T extends RapidWebHandlerType> =
 	| keyof T['queries']
@@ -727,4 +726,3 @@ function createBoltClient<T extends RapidWebHandlerType>(
 }
 
 export default createBoltClient;
-

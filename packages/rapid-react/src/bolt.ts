@@ -22,7 +22,6 @@ interface BoltConfig {
  * @param config - The bolt config object
  * @returns A new Bolt client
  *
- * TODO: support typesafe output types in v2 (currently, every request returns AxiosResponse<any, any> but will be fully typesafe after V2 is released)
  *
  * # Example
  * ```ts

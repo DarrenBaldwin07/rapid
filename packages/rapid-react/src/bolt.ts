@@ -35,12 +35,14 @@ interface BoltConfig {
  *
  * @beta
  */
-function createBoltClient<T extends RapidWebHandlerType, R extends BoltRoutes>(
+function createBoltClient<T extends RapidWebHandlerType>(
 	routes: BoltRoutes,
 	config: BoltConfig,
 ) {
 	// Get our transport string from the bolt config object (eventually this will be expanded to have more options)
 	const transport = config.transport;
+
+	type R = typeof routes;
 
 	return <Key extends FetchKey<T> & string>(key: Key) => {
 		// Get a reference to the route that we are trying to fetch

@@ -6,6 +6,7 @@ use rapid_cli::rapid_config::config::{RapidConfig, ServerConfig};
 use std::{env::current_dir, fs::File, io::Read, path::PathBuf};
 use syn::{parse_file, parse_str, File as SynFile, Item};
 use walkdir::WalkDir;
+use super::actix::{web, HttpResponse};
 
 pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
 pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
@@ -235,6 +236,31 @@ pub fn is_serving_static_files() -> bool {
 			None => true,
 		},
 	}
+}
+
+/// Creates an HTTP response with JSON data and the correct content-type header.
+/// 
+/// This function ensures that all JSON responses consistently use the
+/// "application/json; charset=utf-8" content-type header.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use rapid_web::util::json_response;
+/// 
+/// #[rapid_handler]
+/// async fn query() -> HttpResponse {
+///     let data = serde_json::json!({ "message": "Hello world!" });
+///     json_response(data)
+/// }
+/// ```
+pub fn json_response<T>(data: T) -> HttpResponse 
+where 
+    T: serde::Serialize,
+{
+    HttpResponse::Ok()
+        .content_type("application/json; charset=utf-8")
+        .json(data)
 }
 
 #[cfg(test)]

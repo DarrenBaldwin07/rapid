@@ -4,13 +4,14 @@ pub use actix_web as actix;
 pub use actix_web_httpauth as auth;
 pub use default_routes::templates::WELCOME_TEMPLATE as welcome_view;
 pub use rapid_web_codegen;
+pub use util::json_response;
 pub(crate) mod default_routes;
 pub mod logger;
 pub mod server;
 pub mod shift; // TODO: shift needs to be abstracted out into its own crate
 pub(crate) mod tui;
 pub mod types;
-pub(crate) mod util;
+pub mod util;
 
 // Create new namings for every actix extractor (this is so that Shift can easily parse new route files and generate the correct typescript types)
 pub mod request {

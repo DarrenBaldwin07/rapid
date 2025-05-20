@@ -6,6 +6,8 @@ use rapid_cli::rapid_config::config::{RapidConfig, ServerConfig};
 use std::{env::current_dir, fs::File, io::Read, path::PathBuf};
 use syn::{parse_file, parse_str, File as SynFile, Item};
 use walkdir::WalkDir;
+use super::actix::HttpResponse;
+use serde;
 
 pub const REMIX_ROUTE_PATH: &'static str = "app/api/routes";
 pub const NEXTJS_ROUTE_PATH: &'static str = "pages/api/routes";
@@ -237,10 +239,33 @@ pub fn is_serving_static_files() -> bool {
 	}
 }
 
+/// Helper function to create a JSON response with the correct content-type header
+/// 
+/// This function ensures that when returning structured data (like User objects or any JSON-serializable structs),
+/// the content-type is properly set to "application/json; charset=utf-8" to match the response body format.
+/// 
+/// # Examples
+/// ```
+/// use rapid_web::util::json_response;
+/// 
+/// // When returning a User object or any serializable struct
+/// let user = User { name: "John", age: 30 };
+/// return json_response(user);
+/// ```
+pub fn json_response<T>(data: T) -> HttpResponse 
+where 
+    T: serde::Serialize,
+{
+    HttpResponse::Ok()
+        .content_type("application/json; charset=utf-8")
+        .json(data)
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
 	use std::io::Write;
+	use serde::{Serialize, Deserialize};
 
 	#[test]
 	fn test_is_valid_route_function() {
@@ -304,5 +329,25 @@ mod tests {
 
 		assert_eq!(validate_route_handler(&valid_handler.to_string()), true);
 		assert_eq!(validate_route_handler(&invalid_handler.to_string()), false);
+	}
+
+	#[test]
+	fn test_json_response() {
+		#[derive(Serialize, Deserialize)]
+		struct TestUser {
+			name: String,
+			age: u32,
+		}
+
+		let user = TestUser {
+			name: "Test User".to_string(),
+			age: 30,
+		};
+
+		let response = json_response(user);
+		
+		// Check that the content-type is set correctly
+		let content_type = response.headers().get("content-type").unwrap();
+		assert_eq!(content_type, "application/json; charset=utf-8");
 	}
 }

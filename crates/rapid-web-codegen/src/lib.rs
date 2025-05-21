@@ -51,7 +51,8 @@ struct Handler {
 	is_nested: bool,
 }
 
-// Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats (we could support patch if needed)
+// The rapid file-based router now primarily supports `query` and `mutation` handlers,
+// with legacy support for GET, POST, DELETE, PUT, and PATCH that will be mapped to query/mutation
 enum RouteHandler {
 	Query(Handler),
 	Mutation(Handler),
@@ -65,7 +66,10 @@ enum RouteHandler {
 /// Macro for generated rapid route handlers based on the file system
 ///
 /// This macro will look through the specified path and codegen route handlers for each one
-/// Currently, there is only logic inplace to support GET, POST, DELETE, and PUT requests as well as middleware via a "_middleware.rs" file
+/// 
+/// Primary support is for `query` and `mutation` handlers, with `query` mapping to GET requests
+/// and `mutation` mapping to POST, PUT, PATCH, and DELETE requests. Legacy HTTP method handlers
+/// are still supported but deprecated. Middleware is supported via "_middleware.rs" files.
 ///
 /// * `item` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
 /// # Examples
@@ -407,8 +411,8 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
 		}
-		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
-		// ^^^ Eventually, what was described above should get deprecated
+			// DEPRECATED: Support for specific HTTP handlers (get, post, etc.) is maintained for backward compatibility
+			// Users should migrate to using only `query` and `mutation` handlers instead
 		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*)),
 	}
 }
@@ -416,22 +420,60 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 /// Function for parsing a route file and making sure it contains a valid handler
 /// If it does, we want to push the valid handler to the handlers array
 /// Note: no need to support HEAD and OPTIONS requests
+///
+/// The handlers `get`, `post`, `delete`, `put`, and `patch` are deprecated.
+/// Please use only `query` and `mutation` handlers instead.
 fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {
-	// TODO: we need to depricate everything except for `query` and `mutation`
-	if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Get(handler))
-	} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Post(handler))
-	} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Delete(handler))
-	} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Put(handler))
-	} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Patch(handler))
-	} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
+	if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
 		route_handlers.push(RouteHandler::Query(handler))
 	} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
 		route_handlers.push(RouteHandler::Mutation(handler))
+	} else {
+		// Handle deprecated handlers with warnings
+		let handler_clone = Handler {
+			path: handler.path.clone(),
+			absolute_path: handler.absolute_path.clone(),
+			name: handler.name.clone(),
+			is_nested: handler.is_nested,
+		};
+
+		if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
+			eprintln!(
+				"Warning: 'get' handler in '{}{}' is deprecated. Please use 'query' instead.",
+				handler.path,
+				handler.name
+			);
+			// Still support it for backward compatibility, but map to Query internally
+			route_handlers.push(RouteHandler::Query(handler))
+		} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
+			eprintln!(
+				"Warning: 'post' handler in '{}{}' is deprecated. Please use 'mutation' instead.",
+				handler.path,
+				handler.name
+			);
+			route_handlers.push(RouteHandler::Mutation(handler))
+		} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
+			eprintln!(
+				"Warning: 'delete' handler in '{}{}' is deprecated. Please use 'mutation' instead.", 
+				handler.path,
+				handler.name
+			);
+			route_handlers.push(RouteHandler::Mutation(handler_clone))
+		} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
+			eprintln!(
+				"Warning: 'put' handler in '{}{}' is deprecated. Please use 'mutation' instead.",
+				handler.path,
+				handler.name
+			);
+			route_handlers.push(RouteHandler::Mutation(handler))
+		} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+			eprintln!(
+				"Warning: 'patch' handler in '{}{}' is deprecated. Please use 'mutation' instead.",
+				handler.path,
+				handler.name
+			);
+			route_handlers.push(RouteHandler::Mutation(handler))
+		}
 	}
 }
 

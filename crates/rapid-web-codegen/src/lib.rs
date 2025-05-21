@@ -51,14 +51,22 @@ struct Handler {
 	is_nested: bool,
 }
 
-// Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats (we could support patch if needed)
+// The rapid file-based router supports `query` and `mutation` handlers, with legacy HTTP verb handlers
 enum RouteHandler {
+	// Preferred handlers
 	Query(Handler),
 	Mutation(Handler),
+	
+	// Deprecated handlers - will be removed in a future version
+	#[deprecated(since = "1.0.0", note = "Use `Query` instead")]
 	Get(Handler),
+	#[deprecated(since = "1.0.0", note = "Use `Mutation` instead")]
 	Post(Handler),
+	#[deprecated(since = "1.0.0", note = "Use `Mutation` instead")]
 	Delete(Handler),
+	#[deprecated(since = "1.0.0", note = "Use `Mutation` instead")]
 	Put(Handler),
+	#[deprecated(since = "1.0.0", note = "Use `Mutation` instead")]
 	Patch(Handler),
 }
 
@@ -407,8 +415,9 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
 		}
-		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
-		// ^^^ Eventually, what was described above should get deprecated
+		// DEPRECATED: Support for specific HTTP verb handlers (ex: `get` or `post` etc)
+		// These handlers are deprecated and will be removed in a future version.
+		// Use `query` for read operations and `mutation` for write operations instead.
 		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*)),
 	}
 }
@@ -417,21 +426,28 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 /// If it does, we want to push the valid handler to the handlers array
 /// Note: no need to support HEAD and OPTIONS requests
 fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {
-	// TODO: we need to depricate everything except for `query` and `mutation`
-	if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Get(handler))
-	} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Post(handler))
-	} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Delete(handler))
-	} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Put(handler))
-	} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
-		route_handlers.push(RouteHandler::Patch(handler))
-	} else if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
+	// Preferred handlers
+	if file_contents.contains("async fn query") && validate_route_handler(&file_contents) {
 		route_handlers.push(RouteHandler::Query(handler))
 	} else if file_contents.contains("async fn mutation") && validate_route_handler(&file_contents) {
 		route_handlers.push(RouteHandler::Mutation(handler))
+	} 
+	// Deprecated handlers - these will be removed in a future version
+	else if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
+		eprintln!("Warning: 'get' handler is deprecated. Please use 'query' handler instead.");
+		route_handlers.push(RouteHandler::Get(handler))
+	} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {
+		eprintln!("Warning: 'post' handler is deprecated. Please use 'mutation' handler instead.");
+		route_handlers.push(RouteHandler::Post(handler))
+	} else if file_contents.contains("async fn delete") && validate_route_handler(&file_contents) {
+		eprintln!("Warning: 'delete' handler is deprecated. Please use 'mutation' handler instead.");
+		route_handlers.push(RouteHandler::Delete(handler))
+	} else if file_contents.contains("async fn put") && validate_route_handler(&file_contents) {
+		eprintln!("Warning: 'put' handler is deprecated. Please use 'mutation' handler instead.");
+		route_handlers.push(RouteHandler::Put(handler))
+	} else if file_contents.contains("async fn patch") && validate_route_handler(&file_contents) {
+		eprintln!("Warning: 'patch' handler is deprecated. Please use 'mutation' handler instead.");
+		route_handlers.push(RouteHandler::Patch(handler))
 	}
 }
 

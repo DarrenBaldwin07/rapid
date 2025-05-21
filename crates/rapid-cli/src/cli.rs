@@ -4,18 +4,50 @@ use crate::{
 };
 use clap::{command, crate_version, ArgMatches, Command};
 use colorful::Colorful;
+use reqwest::blocking::Client;
+use serde_json::Value;
 use std::{
 	env::{current_dir, current_exe},
 	path::PathBuf,
 	process::exit,
+	sync::OnceLock,
+	time::Duration,
 };
 
 pub type App = Command;
 
-// This should 100% pull from a GCP storage bucket or something that gets updataed in CI when we trigger releases
-// TODO: eventually, we should use this to tell the user that they need to update their CLI version
-// (we could detect this by comparing this value with the crate_version!() macro value)
-pub const RAPID_LATEST_VERSION: &str = "v0.4.3";
+// Fetch the latest version from GitHub API
+static LATEST_VERSION: OnceLock<String> = OnceLock::new();
+
+/// Fetches the latest version from GitHub API
+/// Falls back to a default version if the API request fails
+fn fetch_latest_version() -> String {
+    let client = Client::new();
+    
+    // Try to fetch from GitHub API
+    let result = client
+        .get("https://api.github.com/repos/DarrenBaldwin07/rapid/releases/latest")
+        .timeout(Duration::from_secs(2))
+        .header("User-Agent", format!("rapid-cli/{}", crate_version!()))
+        .send()
+        .and_then(|res| res.json::<Value>())
+        .ok();
+    
+    if let Some(json) = result {
+        if let Some(tag_name) = json["tag_name"].as_str() {
+            return tag_name.to_string();
+        }
+    }
+    
+    // Fall back to hardcoded version if API call fails
+    "v0.6.0".to_string()
+}
+
+/// Get the latest Rapid version
+/// Uses a static OnceLock to ensure we only fetch it once per CLI execution
+pub fn rapid_latest_version() -> &'static str {
+    LATEST_VERSION.get_or_init(fetch_latest_version).as_str()
+}
 
 /// Returns what the current working directory of the user is
 pub fn current_directory() -> PathBuf {
@@ -92,8 +124,33 @@ impl RapidCLI {
 			exit(64);
 		}
 
+		// Check if there's a newer version available
+		self.check_for_updates();
+
 		// This outputs only when a command succeeds (would be cool to capture analytics here at some point)
 		Ok(())
+	}
+	
+	fn check_for_updates(&self) {
+		let current_version = crate_version!();
+		let latest_version = rapid_latest_version();
+		
+		// Remove 'v' prefix from latest_version for comparison if it exists
+		let latest_version_str = if latest_version.starts_with('v') {
+			&latest_version[1..]
+		} else {
+			latest_version
+		};
+		
+		if latest_version_str != current_version {
+			println!(
+				"\n{} A new version of Rapid is available: {} (you have {})",
+				"⚠️".yellow(),
+				latest_version.green().bold(),
+				current_version.yellow()
+			);
+			println!("  Run 'cargo install rapid-cli@{}' to update", latest_version_str);
+		}
 	}
 }
 

@@ -1,5 +1,6 @@
 export const isDynamicRoute = (str: string): boolean => {
 	const regex = /_\w+_/;
+	console.log("Checking if route is dynamic:", str);
 	return regex.test(str);
 };
 

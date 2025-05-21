@@ -51,21 +51,29 @@ struct Handler {
 	is_nested: bool,
 }
 
-// Currently, the rapid file-based router will only support GET, POST, DELETE, and PUT request formats (we could support patch if needed)
+// The rapid file-based router now encourages using `query` and `mutation` handlers instead of specific HTTP methods
 enum RouteHandler {
+	// Preferred handler types
 	Query(Handler),
 	Mutation(Handler),
+	// Deprecated handler types - will be removed in a future version
+	#[deprecated(since = "next_version", note = "Use `Query` handler instead")]
 	Get(Handler),
+	#[deprecated(since = "next_version", note = "Use `Mutation` handler instead")]
 	Post(Handler),
+	#[deprecated(since = "next_version", note = "Use `Mutation` handler instead")]
 	Delete(Handler),
+	#[deprecated(since = "next_version", note = "Use `Mutation` handler instead")]
 	Put(Handler),
+	#[deprecated(since = "next_version", note = "Use `Mutation` handler instead")]
 	Patch(Handler),
 }
 
 /// Macro for generated rapid route handlers based on the file system
 ///
 /// This macro will look through the specified path and codegen route handlers for each one
-/// Currently, there is only logic inplace to support GET, POST, DELETE, and PUT requests as well as middleware via a "_middleware.rs" file
+/// The preferred approach is to use `query` and `mutation` handlers for routes rather than specific HTTP methods.
+/// You can also use middleware via a "_middleware.rs" file
 ///
 /// * `item` - A string slice that holds the path to the file system routes root directory (ex: "src/routes")
 /// # Examples
@@ -407,8 +415,8 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 				.route(#rapid_routes_path, web::delete().to(#handler::#parsed_handler_type)#(#middleware_idents)*)
 			)
 		}
-		// Currently we still support declaring handlers with a very specific HTTP type (ex: `get` or `post` etc)
-		// ^^^ Eventually, what was described above should get deprecated
+		// DEPRECATED: Support for specific HTTP handlers will be removed in a future version
+		// Use `query` for GET operations and `mutation` for POST/PUT/PATCH/DELETE operations instead
 		_ => quote!(.route(#rapid_routes_path, web::#parsed_handler_type().to(#handler::#parsed_handler_type)#(#middleware_idents)*)),
 	}
 }
@@ -417,7 +425,8 @@ fn generate_handler_tokens(route_handler: Handler, parsed_path: &str, handler_ty
 /// If it does, we want to push the valid handler to the handlers array
 /// Note: no need to support HEAD and OPTIONS requests
 fn parse_handlers(route_handlers: &mut Vec<RouteHandler>, file_contents: String, handler: Handler) {
-	// TODO: we need to depricate everything except for `query` and `mutation`
+	// DEPRECATED: The following HTTP method handlers will be removed in a future version.
+	// Prefer using `query` for GET operations and `mutation` for POST/PUT/PATCH/DELETE operations.
 	if file_contents.contains("async fn get") && validate_route_handler(&file_contents) {
 		route_handlers.push(RouteHandler::Get(handler))
 	} else if file_contents.contains("async fn post") && validate_route_handler(&file_contents) {

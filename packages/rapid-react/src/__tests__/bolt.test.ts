@@ -15,7 +15,7 @@ interface Handlers {
 	queries: {
 		route: {
 			output: any;
-			type: 'get';
+			type: 'query';
 			isDynamic: false;
 		};
 	};
@@ -25,7 +25,7 @@ interface Handlers {
 const routes = {
 	route: {
 		url: '/route',
-		type: 'get',
+		type: 'query',
 	},
 } as const;
 

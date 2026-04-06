@@ -4,6 +4,12 @@ use syn::{parse_file, Expr, File as SynFile, Generics, Item, Lit, Type};
 pub const GENERATED_TS_FILE_MESSAGE: &str =
 	"// @generated automatically by Rapid-web (https://rapidframework.dev). DO NOT CHANGE OR EDIT THIS FILE!";
 
+/// Valid handler function names that Rapid recognizes as route handlers.
+/// Only `query` and `mutation` are the canonical handler types.
+/// The legacy HTTP method names (`get`, `post`, `put`, `delete`, `patch`) are
+/// deprecated and will be mapped to `query` or `mutation` automatically.
+pub const VALID_HANDLER_NAMES: &[&str] = &["query", "mutation", "get", "post", "put", "delete", "patch"];
+
 #[derive(Debug)]
 pub enum TypeClass {
 	InputBody,
@@ -13,15 +19,65 @@ pub enum TypeClass {
 	Return,
 }
 
+/// Represents the two canonical handler types in Rapid.
+///
+/// - `Query` maps to HTTP GET (read operations)
+/// - `Mutation` maps to HTTP POST/PUT/PATCH/DELETE (write operations)
+///
+/// The legacy HTTP method-specific handler types (`get`, `post`, `put`, `delete`, `patch`)
+/// have been deprecated in favor of `query` and `mutation`.
 #[derive(Debug, Clone, PartialEq)]
 pub enum HandlerRequestType {
-	Get,
-	Post,
-	Delete,
-	Put,
-	Patch,
 	Query,
 	Mutation,
+}
+
+impl HandlerRequestType {
+	/// Parses a handler function name into the corresponding `HandlerRequestType`.
+	///
+	/// - `"query"` and `"get"` map to `Query`
+	/// - `"mutation"`, `"post"`, `"put"`, `"delete"`, and `"patch"` map to `Mutation`
+	///
+	/// Legacy HTTP method names (`get`, `post`, `put`, `delete`, `patch`) are accepted
+	/// for backwards compatibility but will emit a deprecation warning.
+	///
+	/// Unknown function names default to `Query` with a warning.
+	pub fn from_function_name(name: &str) -> Self {
+		match name {
+			"query" => HandlerRequestType::Query,
+			"mutation" => HandlerRequestType::Mutation,
+			// Deprecated: legacy HTTP method names are mapped to query/mutation
+			"get" => {
+				eprintln!(
+					"[rapid-web] DEPRECATION WARNING: Handler function name 'get' is deprecated. Use 'query' instead."
+				);
+				HandlerRequestType::Query
+			}
+			"post" | "put" | "patch" | "delete" => {
+				eprintln!(
+					"[rapid-web] DEPRECATION WARNING: Handler function name '{}' is deprecated. Use 'mutation' instead.",
+					name
+				);
+				HandlerRequestType::Mutation
+			}
+			_ => {
+				eprintln!(
+					"[rapid-web] WARNING: Unknown handler function name '{}'. Defaulting to 'query'. Valid names are: query, mutation.",
+					name
+				);
+				HandlerRequestType::Query
+			}
+		}
+	}
+
+	/// Returns the canonical string representation of this handler type.
+	/// Always returns either `"query"` or `"mutation"`.
+	pub fn as_str(&self) -> &'static str {
+		match self {
+			HandlerRequestType::Query => "query",
+			HandlerRequestType::Mutation => "mutation",
+		}
+	}
 }
 
 #[derive(Debug)]
@@ -40,7 +96,8 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 			if is_valid_handler("rapid_handler", function.attrs) {
 				let mut function_types: Vec<Option<HandlerType>> = Vec::new();
 				let arg_types = function.sig.inputs.iter();
-				let function_name = function.sig.ident;
+				let function_name = function.sig.ident.to_string();
+				let handler_type = HandlerRequestType::from_function_name(&function_name);
 
 				for type_value in arg_types {
 					if let syn::FnArg::Typed(typed) = type_value {
@@ -49,16 +106,7 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 						function_types.push(Some(HandlerType {
 							type_value: Some(rust_type),
 							class: type_class,
-							handler_type: match function_name.to_string().as_str() {
-								"get" => HandlerRequestType::Get,
-								"post" => HandlerRequestType::Post,
-								"delete" => HandlerRequestType::Delete,
-								"put" => HandlerRequestType::Put,
-								"patch" => HandlerRequestType::Patch,
-								"query" => HandlerRequestType::Query,
-								"mutation" => HandlerRequestType::Mutation,
-								_ => HandlerRequestType::Get,
-							},
+							handler_type: handler_type.clone(),
 						}));
 					}
 				}
@@ -66,16 +114,7 @@ pub fn extract_handler_types(route_source: &str) -> Option<Vec<Option<HandlerTyp
 				function_types.push(Some(HandlerType {
 					type_value: None,
 					class: Some(TypeClass::Return),
-					handler_type: match function_name.to_string().as_str() {
-						"get" => HandlerRequestType::Get,
-						"post" => HandlerRequestType::Post,
-						"delete" => HandlerRequestType::Delete,
-						"put" => HandlerRequestType::Put,
-						"patch" => HandlerRequestType::Patch,
-						"query" => HandlerRequestType::Query,
-						"mutation" => HandlerRequestType::Mutation,
-						_ => HandlerRequestType::Get,
-					},
+					handler_type: handler_type.clone(),
 				}));
 
 				return Some(function_types);

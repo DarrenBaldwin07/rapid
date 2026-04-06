@@ -133,7 +133,9 @@ pub fn reverse_route_path(route_path: String) -> String {
 	new_route_path
 }
 
-// TODO: this is a clone from the rapid-web crate utils (at some point we need a rapid-utils crate so that we can avoid duplication)
+// NOTE: This is duplicated from rapid-web/src/shift/util.rs because proc-macro crates
+// cannot export non-macro items. Consider creating a shared `rapid-web-utils` crate to
+// eliminate this duplication.
 /// Method for checking if a handler function is valid
 /// Handlers are only valid if they have a "#[rapid_handler]" macro on them
 pub fn is_valid_handler(macro_name: &str, attributes: Vec<syn::Attribute>) -> bool {

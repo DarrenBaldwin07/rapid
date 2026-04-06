@@ -1,5 +1,15 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
 
+/**
+ * The two canonical handler types in Rapid.
+ * - `query` maps to read operations (HTTP GET)
+ * - `mutation` maps to write operations (HTTP POST/PUT/PATCH/DELETE)
+ */
+export type SupportedHTTPMethods = 'query' | 'mutation';
+
+/**
+ * Resolves the Bolt output type based on whether the route is dynamic and the handler type.
+ */
 export type BoltDynamicOutput<
 	T extends SupportedHTTPMethods,
 	T1,
@@ -7,18 +17,8 @@ export type BoltDynamicOutput<
 	T3,
 	T4,
 	T5,
-> = T extends 'post'
-	? PostFunctionDynamic<T1, T2, T3, T4, T5>
-	: T extends 'get'
-	? GetFunctionDynamic<T1, T2, T4, T5>
-	: T extends 'put'
-	? PutFunctionDynamic<T1, T2, T3, T4, T5>
-	: T extends 'delete'
-	? DeleteFunctionDynamic<T1, T2, T4, T5>
-	: T extends 'patch'
-	? PatchFunctionDynamic<T1, T2, T3, T4, T5>
-	: T extends 'query'
-	? GetFunctionDynamic<T1, T2, T4, T5>
+> = T extends 'query'
+	? QueryFunctionDynamic<T1, T2, T4, T5>
 	: T extends 'mutation'
 	? MutationFunctionDynamic<T1, T2, T3, T4, T5>
 	: never;
@@ -29,18 +29,8 @@ export type BoltOutput<
 	T2,
 	T3,
 	T4,
-> = T extends 'post'
-	? PostFunction<T1, T2, T3, T4>
-	: T extends 'get'
-	? GetFunction<T1, T2, T4>
-	: T extends 'put'
-	? PutFunction<T1, T2, T3, T4>
-	: T extends 'delete'
-	? DeleteFunction<T1, T2, T4>
-	: T extends 'patch'
-	? PatchFunction<T1, T2, T3, T4>
-	: T extends 'query'
-	? GetFunction<T1, T2, T4>
+> = T extends 'query'
+	? QueryFunction<T1, T2, T4>
 	: T extends 'mutation'
 	? MutationFunction<T1, T2, T3, T4>
 	: never;
@@ -50,6 +40,9 @@ export type Bolt<T extends SupportedHTTPMethods, T1, T2, T3, T4, T5> = {
 	default: BoltOutput<T, T1, T2, T3, T5>;
 };
 
+/**
+ * Mutation handler function type — provides `post`, `put`, `patch`, and `delete` methods.
+ */
 export type MutationFunction<T1, T2, T3, T4> = {
 	post: <
 		W extends T1,
@@ -100,6 +93,9 @@ export type MutationFunction<T1, T2, T3, T4> = {
 	) => Promise<R>;
 };
 
+/**
+ * Dynamic mutation handler function type — includes path params.
+ */
 export type MutationFunctionDynamic<T1, T2, T3, T4, T5> = {
 	post: <
 		W extends T1,
@@ -154,100 +150,10 @@ export type MutationFunctionDynamic<T1, T2, T3, T4, T5> = {
 	) => Promise<R>;
 };
 
-export type PostFunctionDynamic<T1, T2, T3, T4, T5> = {
-	post: <
-		W extends T1,
-		T = T5,
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		params: T4,
-		data?: T3,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-
-export type PutFunctionDynamic<T1, T2, T3, T4, T5> = {
-	put: <
-		W extends T1,
-		T = T5,
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		params: T4,
-		data?: T3,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-
-export type PatchFunctionDynamic<T1, T2, T3, T4, T5> = {
-	patch: <
-		W extends T1,
-		T = T5,
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		params: T4,
-		data?: T3,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-
-export type GetFunctionDynamic<T1, T2, T3, T4> = {
-	get: <
-		W extends T1,
-		T = T4, // Using any here because we do not yet support typesafe output (TODO: support this)
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		params: T3,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-
-export type DeleteFunctionDynamic<T1, T2, T3, T4> = {
-	delete: <
-		W extends T1,
-		T = T4,
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		params: T3,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-
-export type PostFunction<T1, T2, T3, T4> = {
-	post: <
-		W extends T1,
-		T = T4,
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		data?: T3,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-
-export type GetFunction<T1, T2, T3> = {
+/**
+ * Query handler function type — provides a `get` method.
+ */
+export type QueryFunction<T1, T2, T3> = {
 	get: <
 		W extends T1,
 		T = T3,
@@ -261,8 +167,11 @@ export type GetFunction<T1, T2, T3> = {
 	) => Promise<R>;
 };
 
-export type PutFunction<T1, T2, T3, T4> = {
-	put: <
+/**
+ * Dynamic query handler function type — includes path params.
+ */
+export type QueryFunctionDynamic<T1, T2, T3, T4> = {
+	get: <
 		W extends T1,
 		T = T4,
 		U = any,
@@ -271,47 +180,10 @@ export type PutFunction<T1, T2, T3, T4> = {
 		D = V,
 	>(
 		url: W,
-		data?: T3,
+		params: T3,
 		config?: AxiosRequestConfig<D>,
 	) => Promise<R>;
 };
-
-export type DeleteFunction<T1, T2, T3> = {
-	delete: <
-		W extends T1,
-		T = T3,
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-export type PatchFunction<T1, T2, T3, T4> = {
-	patch: <
-		W extends T1,
-		T = T4,
-		U = any,
-		V = T2,
-		R = AxiosResponse<T, U>,
-		D = V,
-	>(
-		url: W,
-		data?: T3,
-		config?: AxiosRequestConfig<D>,
-	) => Promise<R>;
-};
-
-export type SupportedHTTPMethods =
-	| 'post'
-	| 'get'
-	| 'put'
-	| 'delete'
-	| 'patch'
-	| 'query'
-	| 'mutation';
 
 export interface RapidWebHandlerType {
 	queries: {

@@ -132,15 +132,6 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 		}
 
 		match request_type {
-			HandlerRequestType::Get => {
-				handlers.push(Handler::Query(TypedQueryHandler {
-					request_type,
-					path,
-					query_params,
-					output_type,
-					route_key,
-				}));
-			}
 			HandlerRequestType::Query => {
 				handlers.push(Handler::Query(TypedQueryHandler {
 					request_type,
@@ -150,7 +141,7 @@ pub fn generate_handler_types(routes_path: PathBuf, converter: &mut TypescriptCo
 					route_key,
 				}));
 			}
-			_ => {
+			HandlerRequestType::Mutation => {
 				handlers.push(Handler::Mutation(TypedMutationHandler {
 					request_type,
 					query_params,
@@ -206,15 +197,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf, type_genera
 				let is_dynamic_route_path = is_dynamic_route(&route_path);
 
 				let spacing = space(2);
-				let request_type = match query.request_type {
-					HandlerRequestType::Post => "post",
-					HandlerRequestType::Put => "put",
-					HandlerRequestType::Delete => "delete",
-					HandlerRequestType::Get => "get",
-					HandlerRequestType::Patch => "patch",
-					HandlerRequestType::Query => "query",
-					HandlerRequestType::Mutation => "mutation",
-				};
+				let request_type = query.request_type.as_str();
 
 				if let Some(query_params_type) = query.query_params {
 					let query_type = query_params_type.typescript_type;
@@ -257,15 +240,7 @@ pub fn create_typescript_types(out_dir: PathBuf, route_dir: PathBuf, type_genera
 				let route_path = mutation.route_key.value;
 				let spacing = space(2);
 				let is_dynamic_route_path = is_dynamic_route(&route_path);
-				let request_type = match mutation.request_type {
-					HandlerRequestType::Post => "post",
-					HandlerRequestType::Put => "put",
-					HandlerRequestType::Delete => "delete",
-					HandlerRequestType::Get => "get",
-					HandlerRequestType::Patch => "patch",
-					HandlerRequestType::Query => "query",
-					HandlerRequestType::Mutation => "mutation",
-				};
+				let request_type = mutation.request_type.as_str();
 
 				if let Some(query_params_type) = mutation.query_params {
 					// We only want to add query params if the TS type has already been generated
@@ -390,7 +365,7 @@ pub fn generate_routes(routes_dir: &str) -> String {
 
 		let handler_type = match get_handler_type(&route_file_contents) {
 			Some(name) => name,
-			None => String::from("get"),
+			None => String::from("query"),
 		};
 
 		// Construct our routes object

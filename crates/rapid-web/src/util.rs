@@ -1,4 +1,4 @@
-use super::{server::RAPID_SERVER_CONFIG, shift::util::is_valid_handler};
+use super::{server::RAPID_SERVER_CONFIG, shift::util::{is_valid_handler, VALID_HANDLER_NAMES}};
 use colorful::{Color, Colorful};
 use core::panic;
 use log::warn;
@@ -37,9 +37,12 @@ pub fn check_for_invalid_handlers(dir: &str) {
 	}
 }
 
-/// Note: this is a dupe of a function in the rapid-web-codegen crate (ideally we create a rapid-web-utils crate at some point)
-/// Helper function for checking if a rapid route file is valid
-/// We need this so that we can generate actix-web routes for only valid route files
+/// NOTE: This is duplicated from rapid-web-codegen/src/utils.rs because proc-macro crates
+/// cannot export non-macro items. Consider creating a shared `rapid-web-utils` crate to
+/// eliminate this duplication.
+///
+/// Helper function for checking if a rapid route file is valid.
+/// We need this so that we can generate actix-web routes for only valid route files.
 pub fn validate_route_handler(handler_source: &String) -> bool {
 	// Check if the file is actually valid rust code
 	// If not, we want to output a invalid route rusult (false)
@@ -70,25 +73,12 @@ pub fn validate_route_handler(handler_source: &String) -> bool {
 	has_rapid_handler && handler_count == 1
 }
 
-/// Make sure there is a valid function with the correct HTTP method
+/// Make sure there is a valid function with a recognized handler name.
+/// Accepted names: `query`, `mutation` (canonical), plus deprecated `get`, `post`, `put`, `delete`, `patch`.
 pub fn is_valid_route_function(file_contents: &str) -> bool {
-	if file_contents.contains("async fn get") {
-		return true;
-	} else if file_contents.contains("async fn post") {
-		return true;
-	} else if file_contents.contains("async fn delete") {
-		return true;
-	} else if file_contents.contains("async fn put") {
-		return true;
-	} else if file_contents.contains("async fn patch") {
-		return true;
-	} else if file_contents.contains("async fn query") {
-		return true;
-	} else if file_contents.contains("async fn mutation") {
-		return true;
-	}
-
-	false
+	VALID_HANDLER_NAMES
+		.iter()
+		.any(|name| file_contents.contains(&format!("async fn {}", name)))
 }
 
 /// Function for getting the routes directory from the rapid config file
